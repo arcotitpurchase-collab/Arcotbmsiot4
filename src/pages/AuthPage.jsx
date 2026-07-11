@@ -246,27 +246,48 @@ export default function AuthPage() {
     resetForm();
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+ const handleLogin = (e) => {
+  e.preventDefault();
 
-    const savedUser = JSON.parse(localStorage.getItem("bmsUser"));
+  const username = form.username.trim();
+  const password = form.password.trim();
 
-    if (!savedUser) {
-      setError("Please register first");
-      return;
-    }
-
-    if (
-      form.username.trim() !== savedUser.username ||
-      form.password.trim() !== savedUser.password
-    ) {
-      setError("Invalid username or password");
-      return;
-    }
-
+  // ============================
+  // SUPER ADMIN LOGIN
+  // Username: vijay
+  // Password: 1234
+  // ============================
+  if (username === "vijay" && password === "1234") {
     localStorage.setItem("bmsLoggedIn", "true");
-    navigate("/");
-  };
+    localStorage.setItem("bmsRole", "superadmin");
+
+    navigate("/admin/superadmin");
+    return;
+  }
+
+  // ============================
+  // NORMAL USER LOGIN
+  // ============================
+  const savedUser = JSON.parse(localStorage.getItem("bmsUser"));
+
+  if (!savedUser) {
+    setError("Please register first");
+    return;
+  }
+
+  if (
+    username !== savedUser.username ||
+    password !== savedUser.password
+  ) {
+    setError("Invalid username or password");
+    return;
+  }
+
+  localStorage.setItem("bmsLoggedIn", "true");
+  localStorage.setItem("bmsRole", "admin");
+
+  navigate("/");
+};
 
   return (
   <div

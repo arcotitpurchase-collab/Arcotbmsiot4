@@ -1887,454 +1887,454 @@
 
 
 
-// import React, { useEffect, useMemo, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import prestigeLogo from "../assets/ser-removebg.png";
-
-// export default function OverviewPage() {
-//   const navigate = useNavigate();
-
-//   const initialFlow = [
-//     { key: "source", title: "33kV Source", short: "SRC", incoming: 1120, outgoing: 1085, today: 18420, month: 486500 },
-//     { key: "feeder", title: "33kV Feeder", short: "FDR", incoming: 1085, outgoing: 1040, today: 17680, month: 462300 },
-//     { key: "transformer", title: "Transformers", short: "TRF", incoming: 1040, outgoing: 980, today: 16940, month: 441900 },
-//     { key: "kiosk", title: "LT Kiosk", short: "KSK", incoming: 980, outgoing: 935, today: 15720, month: 408700 },
-//     { key: "busbar", title: "LT Busbar", short: "BUS", incoming: 935, outgoing: 900, today: 14980, month: 392100 },
-//     { key: "pcc", title: "PCC Main", short: "PCC", incoming: 900, outgoing: 850, today: 14160, month: 366400 },
-//     { key: "wing1", title: "Wing 1", short: "W1", incoming: 425, outgoing: 402, today: 7080, month: 181000 },
-//     { key: "wing2", title: "Wing 2", short: "W2", incoming: 425, outgoing: 410, today: 7420, month: 190400 },
-//   ];
-
-//   const [flowData, setFlowData] = useState(initialFlow);
-//   const [lastUpdated, setLastUpdated] = useState(new Date());
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setFlowData((prev) =>
-//         prev.map((item) => {
-//           const incoming = Math.max(
-//             40,
-//             item.incoming + Math.floor(Math.random() * 15) - 7
-//           );
-
-//           const outgoing = Math.min(
-//             incoming - 5,
-//             Math.max(35, item.outgoing + Math.floor(Math.random() * 13) - 6)
-//           );
-
-//           return {
-//             ...item,
-//             incoming,
-//             outgoing,
-//             today: item.today + Math.floor(outgoing / 360),
-//             month: item.month + Math.floor(outgoing / 180),
-//           };
-//         })
-//       );
-
-//       setLastUpdated(new Date());
-//     }, 1000);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   const totals = useMemo(() => {
-//     const incoming = flowData[0].incoming;
-//     const wing1 = flowData.find((x) => x.key === "wing1")?.outgoing || 0;
-//     const wing2 = flowData.find((x) => x.key === "wing2")?.outgoing || 0;
-//     const outgoing = wing1 + wing2;
-//     const loss = incoming - outgoing;
-//     const efficiency = Math.round((outgoing / incoming) * 100);
-//     const today = flowData.reduce((sum, x) => sum + x.today, 0);
-//     const month = flowData.reduce((sum, x) => sum + x.month, 0);
-
-//     return { incoming, outgoing, loss, efficiency, today, month, wing1, wing2 };
-//   }, [flowData]);
-
-//   const maxValue = Math.max(
-//     ...flowData.flatMap((x) => [x.incoming, x.outgoing])
-//   );
-
-//   const Card = ({ children, className = "" }) => (
-//     <div
-//       className={`rounded-[18px] bg-[#224da3] border border-cyan-300/10 shadow-[0_10px_24px_rgba(0,0,0,0.25)] overflow-hidden ${className}`}
-//     >
-//       {children}
-//     </div>
-//   );
-
-//   const Title = ({ children }) => (
-//     <h3 className="text-[14px] font-bold text-blue-50 mb-2">{children}</h3>
-//   );
-
-//   return (
-//     <div className="min-h-screen w-full bg-[#151c55] text-white">
-//       <header className="sticky top-0 z-50 h-[64px] bg-[#10194b] px-6 flex items-center justify-between border-b border-cyan-400/20">
-//         <div
-//           onClick={() => navigate("/")}
-//           className="flex items-center cursor-pointer"
-//         >
-//           <div>
-//             <h1 className="text-[22px] font-semibold tracking-[0.18em] uppercase leading-none">
-//               ARCOT <span className="text-[#67E8F9]">IIOT 1.0</span>
-//             </h1>
-
-//             <p className="mt-2 text-[8px] tracking-[0.35em] uppercase text-cyan-200">
-//               Industrial Internet of Things
-//             </p>
-//           </div>
-
-//           <div className="h-[46px] border-l border-cyan-300/30 mx-4" />
-
-//           <img
-//             src={prestigeLogo}
-//             alt="Prestige"
-//             className="h-[48px] w-[95px] object-contain"
-//           />
-//         </div>
-
-//         <button
-//           onClick={() => navigate("/")}
-//           className="rounded-full border border-cyan-300/60 px-6 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-cyan-100"
-//         >
-//           Dashboard
-//         </button>
-//       </header>
-
-//       <main className="w-full p-4">
-//         <div className="grid w-full grid-cols-12 gap-4">
-//           {/* LEFT */}
-//           <div className="col-span-3 space-y-4">
-//             <Card className="p-4 h-[140px]">
-//               <div className="grid grid-cols-2 h-full">
-//                 <div className="flex flex-col justify-center">
-//                   <h2 className="text-[34px] font-light leading-none">
-//                     {totals.incoming}
-//                   </h2>
-//                   <p className="mt-3 text-[10px] text-cyan-300">Incoming kW</p>
-//                 </div>
-
-//                 <div className="border-l border-cyan-300/20 pl-5 flex flex-col justify-center">
-//                   <h2 className="text-[34px] font-light leading-none">
-//                     {totals.outgoing}
-//                   </h2>
-//                   <p className="mt-3 text-[10px] text-cyan-300">Outgoing kW</p>
-//                 </div>
-//               </div>
-//             </Card>
-
-//             <Card className="p-4 h-[220px]">
-//               <Title>Live Summary</Title>
-
-//               <div className="grid h-[calc(100%-28px)] grid-cols-2 gap-4">
-//                 <div className="flex flex-col justify-center">
-//                   <h2 className="text-[30px] font-light leading-none text-cyan-100">
-//                     ↑ {totals.today.toLocaleString()}
-//                   </h2>
-//                   <p className="mt-3 text-[10px] text-cyan-300">
-//                     Today Energy kWh
-//                   </p>
-//                 </div>
-
-//                 <div className="flex flex-col justify-center">
-//                   <h2 className="text-[30px] font-light leading-none text-yellow-300">
-//                     ↓ {totals.loss}
-//                   </h2>
-//                   <p className="mt-3 text-[10px] text-cyan-300">Loss kW</p>
-//                 </div>
-//               </div>
-//             </Card>
-
-//             <Card className="p-4 h-[220px]">
-//               <Title>Equipment Load Bars</Title>
-
-//               <div className="flex h-[calc(100%-28px)] flex-col justify-center gap-4">
-//                 {flowData.slice(0, 4).map((item) => (
-//                   <div key={item.key}>
-//                     <div className="mb-1 flex justify-between text-[10px] text-cyan-200">
-//                       <span>{item.title}</span>
-//                       <span>{item.outgoing} kW</span>
-//                     </div>
-
-//                     <div className="h-3 overflow-hidden rounded-full bg-[#173579]">
-//                       <div
-//                         className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-yellow-300"
-//                         style={{ width: `${(item.outgoing / maxValue) * 100}%` }}
-//                       />
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </Card>
-
-//             <Card className="p-4 h-[260px]">
-//               <Title>Day Wise Energy Report</Title>
-
-//               <div className="flex h-[calc(100%-28px)] items-end justify-between gap-3">
-//                 {["12 AM", "04 AM", "08 AM", "12 PM", "04 PM", "08 PM"].map(
-//                   (label, i) => (
-//                     <div
-//                       key={label}
-//                       className="flex flex-1 flex-col items-center justify-end"
-//                     >
-//                       <div className="flex h-[165px] items-end gap-1">
-//                         <div
-//                           className="w-4 rounded-t bg-cyan-400"
-//                           style={{ height: `${82 + (i % 3) * 16}px` }}
-//                         />
-
-//                         <div
-//                           className="w-4 rounded-t bg-yellow-400"
-//                           style={{ height: `${72 + (i % 4) * 14}px` }}
-//                         />
-//                       </div>
-
-//                       <p className="mt-2 text-[10px] text-cyan-100">{label}</p>
-//                     </div>
-//                   )
-//                 )}
-//               </div>
-//             </Card>
-//           </div>
-
-//           {/* MIDDLE */}
-//           <div className="col-span-3 space-y-4">
-//             <Card className="p-4 h-[270px]">
-//               <Title>System Efficiency</Title>
-
-//               <div className="flex h-[calc(100%-28px)] flex-col items-center justify-center">
-//                 <div className="relative h-[155px] w-[155px] rounded-full bg-[conic-gradient(#35D8F5_0_65%,rgba(255,255,255,0.15)_65%_100%)]">
-//                   <div className="absolute inset-[17px] rounded-full bg-[#224da3] flex items-center justify-center">
-//                     <h2 className="text-[40px] font-light">
-//                       {totals.efficiency}%
-//                     </h2>
-//                   </div>
-//                 </div>
-
-//                 <button className="mt-4 rounded-full bg-cyan-400 px-14 py-2 text-[#12306F] text-[12px] font-black">
-//                   Healthy
-//                 </button>
-//               </div>
-//             </Card>
-
-//             <Card className="p-4 h-[270px]">
-//               <Title>Area Load Curve</Title>
-
-//               <svg viewBox="0 0 330 160" className="w-full h-[210px]">
-//                 <polygon
-//                   points="0,95 40,115 80,70 120,108 160,35 200,100 240,75 280,98 330,60 330,160 0,160"
-//                   fill="#35D8F5"
-//                   opacity="0.38"
-//                 />
-
-//                 <polygon
-//                   points="0,125 40,85 80,145 120,75 160,150 200,82 240,140 280,95 330,120 330,160 0,160"
-//                   fill="#F6B23F"
-//                   opacity="0.78"
-//                 />
-//               </svg>
-//             </Card>
-
-//             <Card className="p-4 h-[315px]">
-//               <Title>Monthly Energy</Title>
-
-//               <h2 className="text-[38px] font-light text-yellow-300 leading-none">
-//                 {totals.month.toLocaleString()}
-//               </h2>
-
-//               <p className="text-[11px] text-cyan-300 mt-2 mb-5">
-//                 kWh this month
-//               </p>
-
-//               <div className="space-y-4">
-//                 {[0.22, 0.25, 0.27, 0.26].map((v, i) => (
-//                   <div key={i} className="flex items-center gap-3">
-//                     <span className="w-12 text-[10px] text-cyan-200">
-//                       Week {i + 1}
-//                     </span>
-
-//                     <div className="flex-1 h-4 rounded-full bg-[#173579] overflow-hidden">
-//                       <div
-//                         className="h-full bg-gradient-to-r from-yellow-300 via-cyan-400 to-blue-300"
-//                         style={{ width: `${v * 100}%` }}
-//                       />
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </Card>
-//           </div>
-
-//           {/* RIGHT */}
-//           <div className="col-span-6 space-y-4">
-//             <div className="grid grid-cols-2 gap-4">
-//               <Card className="p-4 h-[145px]">
-//                 <Title>Realtime Monitoring</Title>
-
-//                 <div className="grid grid-cols-2">
-//                   <div>
-//                     <h2 className="text-[32px] font-light">{totals.outgoing}</h2>
-//                     <p className="text-[10px] text-cyan-300">Live Load kW</p>
-//                   </div>
-
-//                   <div>
-//                     <h2 className="text-[20px] font-light text-yellow-300">
-//                       {lastUpdated.toLocaleTimeString()}
-//                     </h2>
-//                     <p className="text-[10px] text-cyan-300">Last Updated</p>
-//                   </div>
-//                 </div>
-//               </Card>
-
-//               <Card className="p-4 h-[145px]">
-//                 <Title>Power Load</Title>
-
-//                 <svg viewBox="0 0 330 115" className="w-full h-[95px]">
-//                   <polyline
-//                     points="30,70 70,80 110,52 150,90 190,30 230,72 270,55 310,82"
-//                     fill="none"
-//                     stroke="#F6B23F"
-//                     strokeWidth="5"
-//                   />
-
-//                   <polyline
-//                     points="30,74 70,82 110,60 150,94 190,30 230,68 270,52 310,78"
-//                     fill="none"
-//                     stroke="#35D8F5"
-//                     strokeWidth="5"
-//                   />
-//                 </svg>
-//               </Card>
-//             </div>
-
-//             <div className="grid grid-cols-2 gap-4">
-//               <Card className="p-4 h-[185px]">
-//                 <Title>Wing Distribution</Title>
-
-//                 <div className="flex items-center justify-around">
-//                   {[
-//                     ["Wing 1", totals.wing1],
-//                     ["Wing 2", totals.wing2],
-//                   ].map(([label, value]) => (
-//                     <div key={label} className="text-center">
-//                       <div className="relative h-[100px] w-[100px] rounded-full bg-[conic-gradient(#F6B23F_0_72%,#35D8F5_72%_100%)]">
-//                         <div className="absolute inset-[13px] rounded-full bg-[#224da3] flex items-center justify-center">
-//                           <h3 className="text-[22px] font-light">{value}</h3>
-//                         </div>
-//                       </div>
-
-//                       <p className="mt-2 text-[11px] text-cyan-200">{label}</p>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </Card>
-
-//               <Card className="p-4 h-[185px]">
-//                 <Title>System Status</Title>
-
-//                 <h2 className="text-[34px] font-light text-cyan-100">HEALTHY</h2>
-
-//                 <p className="text-[11px] text-cyan-300 mt-2">
-//                   All equipment running normally
-//                 </p>
-
-//                 <div className="mt-5 h-3 rounded-full bg-[#173579] overflow-hidden">
-//                   <div
-//                     className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-yellow-300"
-//                     style={{ width: `${totals.efficiency}%` }}
-//                   />
-//                 </div>
-//               </Card>
-//             </div>
-
-//             <Card className="p-4 h-[250px]">
-//               <Title>Power Trend Analysis</Title>
-
-//               <svg viewBox="0 0 760 220" className="w-full h-[200px]">
-//                 {[0, 1, 2, 3, 4].map((i) => (
-//                   <line
-//                     key={i}
-//                     x1="45"
-//                     x2="720"
-//                     y1={35 + i * 35}
-//                     y2={35 + i * 35}
-//                     stroke="rgba(255,255,255,0.12)"
-//                   />
-//                 ))}
-
-//                 <polyline
-//                   points={flowData
-//                     .map(
-//                       (d, i) =>
-//                         `${60 + i * 90},${185 - (d.incoming / maxValue) * 140}`
-//                     )
-//                     .join(" ")}
-//                   fill="none"
-//                   stroke="#F6B23F"
-//                   strokeWidth="4"
-//                   strokeLinecap="round"
-//                 />
-
-//                 <polyline
-//                   points={flowData
-//                     .map(
-//                       (d, i) =>
-//                         `${60 + i * 90},${185 - (d.outgoing / maxValue) * 140}`
-//                     )
-//                     .join(" ")}
-//                   fill="none"
-//                   stroke="#35D8F5"
-//                   strokeWidth="4"
-//                   strokeLinecap="round"
-//                 />
-
-//                 {flowData.map((d, i) => {
-//                   const x = 60 + i * 90;
-//                   const y = 185 - (d.outgoing / maxValue) * 140;
-
-//                   return (
-//                     <g key={d.key}>
-//                       <circle cx={x} cy={y} r="5" fill="#E9FFFF" />
-
-//                       <text
-//                         x={x}
-//                         y="210"
-//                         textAnchor="middle"
-//                         fontSize="10"
-//                         fill="#BCEEFF"
-//                       >
-//                         {d.short}
-//                       </text>
-//                     </g>
-//                   );
-//                 })}
-//               </svg>
-//             </Card>
-
-//             <Card className="p-4 h-[255px]">
-//               <Title>Equipment Flow Overview</Title>
-
-//               <div className="grid grid-cols-4 gap-3 h-[175px]">
-//                 {flowData.map((item) => (
-//                   <div
-//                     key={item.key}
-//                     className="rounded-[12px] bg-[#173579] p-3 flex flex-col justify-center"
-//                   >
-//                     <p className="text-[10px] text-cyan-200">{item.short}</p>
-
-//                     <h4 className="text-[20px] font-light">{item.outgoing}</h4>
-
-//                     <p className="text-[9px] text-cyan-300">kW</p>
-//                   </div>
-//                 ))}
-//               </div>
-//             </Card>
-//           </div>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import prestigeLogo from "../assets/ser-removebg.png";
+
+export default function OverviewPage() {
+  const navigate = useNavigate();
+
+  const initialFlow = [
+    { key: "source", title: "33kV Source", short: "SRC", incoming: 1120, outgoing: 1085, today: 18420, month: 486500 },
+    { key: "feeder", title: "33kV Feeder", short: "FDR", incoming: 1085, outgoing: 1040, today: 17680, month: 462300 },
+    { key: "transformer", title: "Transformers", short: "TRF", incoming: 1040, outgoing: 980, today: 16940, month: 441900 },
+    { key: "kiosk", title: "LT Kiosk", short: "KSK", incoming: 980, outgoing: 935, today: 15720, month: 408700 },
+    { key: "busbar", title: "LT Busbar", short: "BUS", incoming: 935, outgoing: 900, today: 14980, month: 392100 },
+    { key: "pcc", title: "PCC Main", short: "PCC", incoming: 900, outgoing: 850, today: 14160, month: 366400 },
+    { key: "wing1", title: "Wing 1", short: "W1", incoming: 425, outgoing: 402, today: 7080, month: 181000 },
+    { key: "wing2", title: "Wing 2", short: "W2", incoming: 425, outgoing: 410, today: 7420, month: 190400 },
+  ];
+
+  const [flowData, setFlowData] = useState(initialFlow);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFlowData((prev) =>
+        prev.map((item) => {
+          const incoming = Math.max(
+            40,
+            item.incoming + Math.floor(Math.random() * 15) - 7
+          );
+
+          const outgoing = Math.min(
+            incoming - 5,
+            Math.max(35, item.outgoing + Math.floor(Math.random() * 13) - 6)
+          );
+
+          return {
+            ...item,
+            incoming,
+            outgoing,
+            today: item.today + Math.floor(outgoing / 360),
+            month: item.month + Math.floor(outgoing / 180),
+          };
+        })
+      );
+
+      setLastUpdated(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const totals = useMemo(() => {
+    const incoming = flowData[0].incoming;
+    const wing1 = flowData.find((x) => x.key === "wing1")?.outgoing || 0;
+    const wing2 = flowData.find((x) => x.key === "wing2")?.outgoing || 0;
+    const outgoing = wing1 + wing2;
+    const loss = incoming - outgoing;
+    const efficiency = Math.round((outgoing / incoming) * 100);
+    const today = flowData.reduce((sum, x) => sum + x.today, 0);
+    const month = flowData.reduce((sum, x) => sum + x.month, 0);
+
+    return { incoming, outgoing, loss, efficiency, today, month, wing1, wing2 };
+  }, [flowData]);
+
+  const maxValue = Math.max(
+    ...flowData.flatMap((x) => [x.incoming, x.outgoing])
+  );
+
+  const Card = ({ children, className = "" }) => (
+    <div
+      className={`rounded-[18px] bg-[#224da3] border border-cyan-300/10 shadow-[0_10px_24px_rgba(0,0,0,0.25)] overflow-hidden ${className}`}
+    >
+      {children}
+    </div>
+  );
+
+  const Title = ({ children }) => (
+    <h3 className="text-[14px] font-bold text-blue-50 mb-2">{children}</h3>
+  );
+
+  return (
+    <div className="min-h-screen w-full bg-[#151c55] text-white">
+      <header className="sticky top-0 z-50 h-[64px] bg-[#10194b] px-6 flex items-center justify-between border-b border-cyan-400/20">
+        <div
+          onClick={() => navigate("/")}
+          className="flex items-center cursor-pointer"
+        >
+          <div>
+            <h1 className="text-[22px] font-semibold tracking-[0.18em] uppercase leading-none">
+              ARCOT <span className="text-[#67E8F9]">IIOT 1.0</span>
+            </h1>
+
+            <p className="mt-2 text-[8px] tracking-[0.35em] uppercase text-cyan-200">
+              Industrial Internet of Things
+            </p>
+          </div>
+
+          <div className="h-[46px] border-l border-cyan-300/30 mx-4" />
+
+          <img
+            src={prestigeLogo}
+            alt="Prestige"
+            className="h-[48px] w-[95px] object-contain"
+          />
+        </div>
+
+        <button
+          onClick={() => navigate("/")}
+          className="rounded-full border border-cyan-300/60 px-6 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-cyan-100"
+        >
+          Dashboard
+        </button>
+      </header>
+
+      <main className="w-full p-4">
+        <div className="grid w-full grid-cols-12 gap-4">
+          {/* LEFT */}
+          <div className="col-span-3 space-y-4">
+            <Card className="p-4 h-[140px]">
+              <div className="grid grid-cols-2 h-full">
+                <div className="flex flex-col justify-center">
+                  <h2 className="text-[34px] font-light leading-none">
+                    {totals.incoming}
+                  </h2>
+                  <p className="mt-3 text-[10px] text-cyan-300">Incoming kW</p>
+                </div>
+
+                <div className="border-l border-cyan-300/20 pl-5 flex flex-col justify-center">
+                  <h2 className="text-[34px] font-light leading-none">
+                    {totals.outgoing}
+                  </h2>
+                  <p className="mt-3 text-[10px] text-cyan-300">Outgoing kW</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-4 h-[220px]">
+              <Title>Live Summary</Title>
+
+              <div className="grid h-[calc(100%-28px)] grid-cols-2 gap-4">
+                <div className="flex flex-col justify-center">
+                  <h2 className="text-[30px] font-light leading-none text-cyan-100">
+                    ↑ {totals.today.toLocaleString()}
+                  </h2>
+                  <p className="mt-3 text-[10px] text-cyan-300">
+                    Today Energy kWh
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center">
+                  <h2 className="text-[30px] font-light leading-none text-yellow-300">
+                    ↓ {totals.loss}
+                  </h2>
+                  <p className="mt-3 text-[10px] text-cyan-300">Loss kW</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-4 h-[220px]">
+              <Title>Equipment Load Bars</Title>
+
+              <div className="flex h-[calc(100%-28px)] flex-col justify-center gap-4">
+                {flowData.slice(0, 4).map((item) => (
+                  <div key={item.key}>
+                    <div className="mb-1 flex justify-between text-[10px] text-cyan-200">
+                      <span>{item.title}</span>
+                      <span>{item.outgoing} kW</span>
+                    </div>
+
+                    <div className="h-3 overflow-hidden rounded-full bg-[#173579]">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-yellow-300"
+                        style={{ width: `${(item.outgoing / maxValue) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="p-4 h-[260px]">
+              <Title>Day Wise Energy Report</Title>
+
+              <div className="flex h-[calc(100%-28px)] items-end justify-between gap-3">
+                {["12 AM", "04 AM", "08 AM", "12 PM", "04 PM", "08 PM"].map(
+                  (label, i) => (
+                    <div
+                      key={label}
+                      className="flex flex-1 flex-col items-center justify-end"
+                    >
+                      <div className="flex h-[165px] items-end gap-1">
+                        <div
+                          className="w-4 rounded-t bg-cyan-400"
+                          style={{ height: `${82 + (i % 3) * 16}px` }}
+                        />
+
+                        <div
+                          className="w-4 rounded-t bg-yellow-400"
+                          style={{ height: `${72 + (i % 4) * 14}px` }}
+                        />
+                      </div>
+
+                      <p className="mt-2 text-[10px] text-cyan-100">{label}</p>
+                    </div>
+                  )
+                )}
+              </div>
+            </Card>
+          </div>
+
+          {/* MIDDLE */}
+          <div className="col-span-3 space-y-4">
+            <Card className="p-4 h-[270px]">
+              <Title>System Efficiency</Title>
+
+              <div className="flex h-[calc(100%-28px)] flex-col items-center justify-center">
+                <div className="relative h-[155px] w-[155px] rounded-full bg-[conic-gradient(#35D8F5_0_65%,rgba(255,255,255,0.15)_65%_100%)]">
+                  <div className="absolute inset-[17px] rounded-full bg-[#224da3] flex items-center justify-center">
+                    <h2 className="text-[40px] font-light">
+                      {totals.efficiency}%
+                    </h2>
+                  </div>
+                </div>
+
+                <button className="mt-4 rounded-full bg-cyan-400 px-14 py-2 text-[#12306F] text-[12px] font-black">
+                  Healthy
+                </button>
+              </div>
+            </Card>
+
+            <Card className="p-4 h-[270px]">
+              <Title>Area Load Curve</Title>
+
+              <svg viewBox="0 0 330 160" className="w-full h-[210px]">
+                <polygon
+                  points="0,95 40,115 80,70 120,108 160,35 200,100 240,75 280,98 330,60 330,160 0,160"
+                  fill="#35D8F5"
+                  opacity="0.38"
+                />
+
+                <polygon
+                  points="0,125 40,85 80,145 120,75 160,150 200,82 240,140 280,95 330,120 330,160 0,160"
+                  fill="#F6B23F"
+                  opacity="0.78"
+                />
+              </svg>
+            </Card>
+
+            <Card className="p-4 h-[315px]">
+              <Title>Monthly Energy</Title>
+
+              <h2 className="text-[38px] font-light text-yellow-300 leading-none">
+                {totals.month.toLocaleString()}
+              </h2>
+
+              <p className="text-[11px] text-cyan-300 mt-2 mb-5">
+                kWh this month
+              </p>
+
+              <div className="space-y-4">
+                {[0.22, 0.25, 0.27, 0.26].map((v, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <span className="w-12 text-[10px] text-cyan-200">
+                      Week {i + 1}
+                    </span>
+
+                    <div className="flex-1 h-4 rounded-full bg-[#173579] overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-yellow-300 via-cyan-400 to-blue-300"
+                        style={{ width: `${v * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* RIGHT */}
+          <div className="col-span-6 space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4 h-[145px]">
+                <Title>Realtime Monitoring</Title>
+
+                <div className="grid grid-cols-2">
+                  <div>
+                    <h2 className="text-[32px] font-light">{totals.outgoing}</h2>
+                    <p className="text-[10px] text-cyan-300">Live Load kW</p>
+                  </div>
+
+                  <div>
+                    <h2 className="text-[20px] font-light text-yellow-300">
+                      {lastUpdated.toLocaleTimeString()}
+                    </h2>
+                    <p className="text-[10px] text-cyan-300">Last Updated</p>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-4 h-[145px]">
+                <Title>Power Load</Title>
+
+                <svg viewBox="0 0 330 115" className="w-full h-[95px]">
+                  <polyline
+                    points="30,70 70,80 110,52 150,90 190,30 230,72 270,55 310,82"
+                    fill="none"
+                    stroke="#F6B23F"
+                    strokeWidth="5"
+                  />
+
+                  <polyline
+                    points="30,74 70,82 110,60 150,94 190,30 230,68 270,52 310,78"
+                    fill="none"
+                    stroke="#35D8F5"
+                    strokeWidth="5"
+                  />
+                </svg>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4 h-[185px]">
+                <Title>Wing Distribution</Title>
+
+                <div className="flex items-center justify-around">
+                  {[
+                    ["Wing 1", totals.wing1],
+                    ["Wing 2", totals.wing2],
+                  ].map(([label, value]) => (
+                    <div key={label} className="text-center">
+                      <div className="relative h-[100px] w-[100px] rounded-full bg-[conic-gradient(#F6B23F_0_72%,#35D8F5_72%_100%)]">
+                        <div className="absolute inset-[13px] rounded-full bg-[#224da3] flex items-center justify-center">
+                          <h3 className="text-[22px] font-light">{value}</h3>
+                        </div>
+                      </div>
+
+                      <p className="mt-2 text-[11px] text-cyan-200">{label}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              <Card className="p-4 h-[185px]">
+                <Title>System Status</Title>
+
+                <h2 className="text-[34px] font-light text-cyan-100">HEALTHY</h2>
+
+                <p className="text-[11px] text-cyan-300 mt-2">
+                  All equipment running normally
+                </p>
+
+                <div className="mt-5 h-3 rounded-full bg-[#173579] overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-yellow-300"
+                    style={{ width: `${totals.efficiency}%` }}
+                  />
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-4 h-[250px]">
+              <Title>Power Trend Analysis</Title>
+
+              <svg viewBox="0 0 760 220" className="w-full h-[200px]">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <line
+                    key={i}
+                    x1="45"
+                    x2="720"
+                    y1={35 + i * 35}
+                    y2={35 + i * 35}
+                    stroke="rgba(255,255,255,0.12)"
+                  />
+                ))}
+
+                <polyline
+                  points={flowData
+                    .map(
+                      (d, i) =>
+                        `${60 + i * 90},${185 - (d.incoming / maxValue) * 140}`
+                    )
+                    .join(" ")}
+                  fill="none"
+                  stroke="#F6B23F"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                />
+
+                <polyline
+                  points={flowData
+                    .map(
+                      (d, i) =>
+                        `${60 + i * 90},${185 - (d.outgoing / maxValue) * 140}`
+                    )
+                    .join(" ")}
+                  fill="none"
+                  stroke="#35D8F5"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                />
+
+                {flowData.map((d, i) => {
+                  const x = 60 + i * 90;
+                  const y = 185 - (d.outgoing / maxValue) * 140;
+
+                  return (
+                    <g key={d.key}>
+                      <circle cx={x} cy={y} r="5" fill="#E9FFFF" />
+
+                      <text
+                        x={x}
+                        y="210"
+                        textAnchor="middle"
+                        fontSize="10"
+                        fill="#BCEEFF"
+                      >
+                        {d.short}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
+            </Card>
+
+            <Card className="p-4 h-[255px]">
+              <Title>Equipment Flow Overview</Title>
+
+              <div className="grid grid-cols-4 gap-3 h-[175px]">
+                {flowData.map((item) => (
+                  <div
+                    key={item.key}
+                    className="rounded-[12px] bg-[#173579] p-3 flex flex-col justify-center"
+                  >
+                    <p className="text-[10px] text-cyan-200">{item.short}</p>
+
+                    <h4 className="text-[20px] font-light">{item.outgoing}</h4>
+
+                    <p className="text-[9px] text-cyan-300">kW</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
 
 
 
@@ -2945,1560 +2945,1558 @@
 
 
 
-import React, { useEffect, useMemo, useState } from "react";
+// import React, { useEffect, useMemo, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
-import prestigeLogo from "../assets/ser-removebg.png";
+// import prestigeLogo from "../assets/ser-removebg.png";
 
+// export default function OverviewPage() {
 
+//   const navigate = useNavigate();
 
-export default function OverviewPage() {
 
-  const navigate = useNavigate();
 
+//   const initialFlow = [
 
+//     { key: "source", name: "33kV Source", short: "SRC", voltage: "33.1 kV", current: 420, pf: 0.99, incoming: 1120, outgoing: 1085, today: 18420, health: 98 },
 
-  const initialFlow = [
+//     { key: "feeder", name: "33kV Feeder", short: "FDR", voltage: "33.0 kV", current: 388, pf: 0.98, incoming: 1085, outgoing: 1040, today: 17680, health: 97 },
 
-    { key: "source", name: "33kV Source", short: "SRC", voltage: "33.1 kV", current: 420, pf: 0.99, incoming: 1120, outgoing: 1085, today: 18420, health: 98 },
+//     { key: "transformer", name: "Transformer", short: "TRF", voltage: "433 V", current: 430, pf: 0.97, incoming: 1040, outgoing: 980, today: 16940, health: 96 },
 
-    { key: "feeder", name: "33kV Feeder", short: "FDR", voltage: "33.0 kV", current: 388, pf: 0.98, incoming: 1085, outgoing: 1040, today: 17680, health: 97 },
+//     { key: "kiosk", name: "LT Kiosk", short: "KSK", voltage: "433 V", current: 410, pf: 0.97, incoming: 980, outgoing: 935, today: 15720, health: 95 },
 
-    { key: "transformer", name: "Transformer", short: "TRF", voltage: "433 V", current: 430, pf: 0.97, incoming: 1040, outgoing: 980, today: 16940, health: 96 },
+//     { key: "busduct", name: "Busduct", short: "BUS", voltage: "433 V", current: 390, pf: 0.98, incoming: 935, outgoing: 900, today: 14980, health: 96 },
 
-    { key: "kiosk", name: "LT Kiosk", short: "KSK", voltage: "433 V", current: 410, pf: 0.97, incoming: 980, outgoing: 935, today: 15720, health: 95 },
+//     { key: "pcc", name: "PCC", short: "PCC", voltage: "433 V", current: 370, pf: 0.98, incoming: 900, outgoing: 850, today: 14160, health: 95 },
 
-    { key: "busduct", name: "Busduct", short: "BUS", voltage: "433 V", current: 390, pf: 0.98, incoming: 935, outgoing: 900, today: 14980, health: 96 },
+//     { key: "raising", name: "Raising Main", short: "RM", voltage: "433 V", current: 340, pf: 0.97, incoming: 850, outgoing: 812, today: 13280, health: 94 },
 
-    { key: "pcc", name: "PCC", short: "PCC", voltage: "433 V", current: 370, pf: 0.98, incoming: 900, outgoing: 850, today: 14160, health: 95 },
+//     { key: "wing", name: "Wing", short: "WNG", voltage: "433 V", current: 320, pf: 0.96, incoming: 812, outgoing: 780, today: 12450, health: 93 },
 
-    { key: "raising", name: "Raising Main", short: "RM", voltage: "433 V", current: 340, pf: 0.97, incoming: 850, outgoing: 812, today: 13280, health: 94 },
+//   ];
 
-    { key: "wing", name: "Wing", short: "WNG", voltage: "433 V", current: 320, pf: 0.96, incoming: 812, outgoing: 780, today: 12450, health: 93 },
 
-  ];
 
+//   const [flowData, setFlowData] = useState(initialFlow);
 
+//   const [activeView, setActiveView] = useState("overview");
 
-  const [flowData, setFlowData] = useState(initialFlow);
+//   const [lastUpdated, setLastUpdated] = useState(new Date());
 
-  const [activeView, setActiveView] = useState("overview");
 
-  const [lastUpdated, setLastUpdated] = useState(new Date());
 
+//   useEffect(() => {
 
+//     const timer = setInterval(() => {
 
-  useEffect(() => {
+//       setFlowData((prev) =>
 
-    const timer = setInterval(() => {
+//         prev.map((item) => {
 
-      setFlowData((prev) =>
+//           const incoming = Math.max(
 
-        prev.map((item) => {
+//             50,
 
-          const incoming = Math.max(
+//             item.incoming + Math.floor(Math.random() * 13) - 6
 
-            50,
+//           );
 
-            item.incoming + Math.floor(Math.random() * 13) - 6
 
-          );
 
+//           const outgoing = Math.min(
 
+//             incoming - 5,
 
-          const outgoing = Math.min(
+//             Math.max(45, item.outgoing + Math.floor(Math.random() * 11) - 5)
 
-            incoming - 5,
+//           );
 
-            Math.max(45, item.outgoing + Math.floor(Math.random() * 11) - 5)
 
-          );
 
+//           return {
 
+//             ...item,
 
-          return {
+//             incoming,
 
-            ...item,
+//             outgoing,
 
-            incoming,
+//             current: Math.max(20, item.current + Math.floor(Math.random() * 7) - 3),
 
-            outgoing,
+//             today: item.today + Math.floor(outgoing / 360),
 
-            current: Math.max(20, item.current + Math.floor(Math.random() * 7) - 3),
+//             health: Math.min(99, Math.max(88, item.health + Math.floor(Math.random() * 3) - 1)),
 
-            today: item.today + Math.floor(outgoing / 360),
+//           };
 
-            health: Math.min(99, Math.max(88, item.health + Math.floor(Math.random() * 3) - 1)),
+//         })
 
-          };
+//       );
 
-        })
 
-      );
 
+//       setLastUpdated(new Date());
 
+//     }, 1000);
 
-      setLastUpdated(new Date());
 
-    }, 1000);
 
+//     return () => clearInterval(timer);
 
+//   }, []);
 
-    return () => clearInterval(timer);
 
-  }, []);
 
+//   const selectedItem = useMemo(
 
+//     () => flowData.find((item) => item.key === activeView),
 
-  const selectedItem = useMemo(
+//     [activeView, flowData]
 
-    () => flowData.find((item) => item.key === activeView),
+//   );
 
-    [activeView, flowData]
 
-  );
 
+//   const totals = useMemo(() => {
 
+//     const incoming = flowData[0].incoming;
 
-  const totals = useMemo(() => {
+//     const outgoing = flowData[flowData.length - 1].outgoing;
 
-    const incoming = flowData[0].incoming;
+//     const loss = incoming - outgoing;
 
-    const outgoing = flowData[flowData.length - 1].outgoing;
+//     const efficiency = Math.round((outgoing / incoming) * 100);
 
-    const loss = incoming - outgoing;
+//     const today = flowData.reduce((sum, item) => sum + item.today, 0);
 
-    const efficiency = Math.round((outgoing / incoming) * 100);
 
-    const today = flowData.reduce((sum, item) => sum + item.today, 0);
 
+//     return { incoming, outgoing, loss, efficiency, today };
 
+//   }, [flowData]);
 
-    return { incoming, outgoing, loss, efficiency, today };
 
-  }, [flowData]);
 
+//   const sideItems = [
 
+//     { key: "overview", label: "Overview", icon: "▦" },
 
-  const sideItems = [
+//     { key: "source", label: "Source", icon: "S" },
 
-    { key: "overview", label: "Overview", icon: "▦" },
+//     { key: "feeder", label: "Feeder", icon: "F" },
 
-    { key: "source", label: "Source", icon: "S" },
+//     { key: "transformer", label: "Transformer", icon: "T" },
 
-    { key: "feeder", label: "Feeder", icon: "F" },
+//     { key: "kiosk", label: "LT Kiosk", icon: "K" },
 
-    { key: "transformer", label: "Transformer", icon: "T" },
+//     { key: "busduct", label: "Busduct", icon: "B" },
 
-    { key: "kiosk", label: "LT Kiosk", icon: "K" },
+//     { key: "pcc", label: "PCC", icon: "P" },
 
-    { key: "busduct", label: "Busduct", icon: "B" },
+//     { key: "raising", label: "Raising Main", icon: "R" },
 
-    { key: "pcc", label: "PCC", icon: "P" },
+//     { key: "wing", label: "Wing", icon: "W" },
 
-    { key: "raising", label: "Raising Main", icon: "R" },
+//   ];
 
-    { key: "wing", label: "Wing", icon: "W" },
 
-  ];
 
+//   const Card = ({ children, className = "" }) => (
 
+//     <div className={`bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden ${className}`}>
 
-  const Card = ({ children, className = "" }) => (
+//       {children}
 
-    <div className={`bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden ${className}`}>
+//     </div>
 
-      {children}
+//   );
 
-    </div>
 
-  );
 
+//   const DarkCard = ({ children, className = "" }) => (
 
+//     <div className={`bg-[#061A2D] border border-[#173F55] rounded-2xl overflow-hidden ${className}`}>
 
-  const DarkCard = ({ children, className = "" }) => (
+//       {children}
 
-    <div className={`bg-[#061A2D] border border-[#173F55] rounded-2xl overflow-hidden ${className}`}>
+//     </div>
 
-      {children}
+//   );
 
-    </div>
 
-  );
 
+//   const MiniTrend = ({ height = 52 }) => (
 
+//     <svg viewBox="0 0 180 52" className="w-full" style={{ height }}>
 
-  const MiniTrend = ({ height = 52 }) => (
+//       <path
 
-    <svg viewBox="0 0 180 52" className="w-full" style={{ height }}>
+//         d="M4 36 L22 30 L40 34 L58 22 L76 28 L94 16 L112 24 L130 15 L148 22 L176 18"
 
-      <path
+//         fill="none"
 
-        d="M4 36 L22 30 L40 34 L58 22 L76 28 L94 16 L112 24 L130 15 L148 22 L176 18"
+//         stroke="#00A997"
 
-        fill="none"
+//         strokeWidth="3"
 
-        stroke="#00A997"
+//         strokeLinecap="round"
 
-        strokeWidth="3"
+//       />
 
-        strokeLinecap="round"
+//     </svg>
 
-      />
+//   );
 
-    </svg>
 
-  );
 
+//   const PageHeader = ({ title, subtitle }) => (
 
+//     <div className="h-[56px] px-5 flex items-center justify-between border-b border-[#173F55] bg-[#061A2D] text-white">
 
-  const PageHeader = ({ title, subtitle }) => (
+//       <button
 
-    <div className="h-[56px] px-5 flex items-center justify-between border-b border-[#173F55] bg-[#061A2D] text-white">
+//         onClick={() => setActiveView("overview")}
 
-      <button
+//         className="rounded-lg bg-[#00A997] px-4 py-2 text-[12px] font-black text-white"
 
-        onClick={() => setActiveView("overview")}
+//       >
 
-        className="rounded-lg bg-[#00A997] px-4 py-2 text-[12px] font-black text-white"
+//         ← Back
 
-      >
+//       </button>
 
-        ← Back
 
-      </button>
 
+//       <div className="text-center">
 
+//         <h2 className="text-[21px] font-black uppercase tracking-wide">{title}</h2>
 
-      <div className="text-center">
+//         <p className="text-[10px] text-slate-400">{subtitle}</p>
 
-        <h2 className="text-[21px] font-black uppercase tracking-wide">{title}</h2>
+//       </div>
 
-        <p className="text-[10px] text-slate-400">{subtitle}</p>
 
-      </div>
 
+//       <p className="text-[12px] font-black text-[#30E6D3]">
 
+//         ● LIVE {lastUpdated.toLocaleTimeString()}
 
-      <p className="text-[12px] font-black text-[#30E6D3]">
+//       </p>
 
-        ● LIVE {lastUpdated.toLocaleTimeString()}
+//     </div>
 
-      </p>
+//   );
 
-    </div>
 
-  );
 
+//   const StatStrip = ({ items }) => (
 
+//     <div
 
-  const StatStrip = ({ items }) => (
+//       className="h-[86px] grid border-b border-[#173F55]"
 
-    <div
+//       style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}
 
-      className="h-[86px] grid border-b border-[#173F55]"
+//     >
 
-      style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}
+//       {items.map((item) => (
 
-    >
+//         <div
 
-      {items.map((item) => (
+//           key={item.label}
 
-        <div
+//           className="px-4 flex flex-col justify-center border-r border-[#173F55] last:border-r-0"
 
-          key={item.label}
+//         >
 
-          className="px-4 flex flex-col justify-center border-r border-[#173F55] last:border-r-0"
+//           <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.12em]">
 
-        >
+//             {item.label}
 
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.12em]">
+//           </p>
 
-            {item.label}
+//           <h3 className="mt-2 text-[23px] font-light text-white">{item.value}</h3>
 
-          </p>
+//           <p className="text-[10px] font-black text-[#30E6D3]">{item.sub}</p>
 
-          <h3 className="mt-2 text-[23px] font-light text-white">{item.value}</h3>
+//         </div>
 
-          <p className="text-[10px] font-black text-[#30E6D3]">{item.sub}</p>
+//       ))}
 
-        </div>
+//     </div>
 
-      ))}
+//   );
 
-    </div>
 
-  );
 
+//   const OverviewSource = ({ item }) => {
 
+//     const inc1 = Math.round(item.incoming * 0.52);
 
-  const OverviewSource = ({ item }) => {
+//     const inc2 = item.incoming - inc1;
 
-    const inc1 = Math.round(item.incoming * 0.52);
+//     const meter = item.outgoing;
 
-    const inc2 = item.incoming - inc1;
 
-    const meter = item.outgoing;
 
+//     return (
 
+//       <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-    return (
+//         <CardHead item={item} tag="FLOW" />
 
-      <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-        <CardHead item={item} tag="FLOW" />
 
+//         <div className="mt-4 grid grid-cols-[1fr_1fr] gap-3">
 
+//           <MiniValue label="INC1" value={inc1} />
 
-        <div className="mt-4 grid grid-cols-[1fr_1fr] gap-3">
+//           <MiniValue label="INC2" value={inc2} />
 
-          <MiniValue label="INC1" value={inc1} />
+//         </div>
 
-          <MiniValue label="INC2" value={inc2} />
 
-        </div>
 
+//         <FlowProgress label="Outgoing" value={item.incoming} max={item.incoming} />
 
+//         <FlowProgress label="Meter" value={meter} max={item.incoming} />
 
-        <FlowProgress label="Outgoing" value={item.incoming} max={item.incoming} />
 
-        <FlowProgress label="Meter" value={meter} max={item.incoming} />
 
+//         <p className="mt-3 text-[11px] font-black text-[#647B78]">
 
+//           INC1 + INC2 → OUT → METER
 
-        <p className="mt-3 text-[11px] font-black text-[#647B78]">
+//         </p>
 
-          INC1 + INC2 → OUT → METER
+//       </Card>
 
-        </p>
+//     );
 
-      </Card>
+//   };
 
-    );
 
-  };
 
+//   const OverviewFeeder = ({ item }) => {
 
+//     const ogs = Array.from({ length: 6 }, (_, i) =>
 
-  const OverviewFeeder = ({ item }) => {
+//       Math.round(item.outgoing / 6 + (i - 2) * 8)
 
-    const ogs = Array.from({ length: 6 }, (_, i) =>
+//     );
 
-      Math.round(item.outgoing / 6 + (i - 2) * 8)
 
-    );
 
+//     return (
 
+//       <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-    return (
+//         <CardHead item={item} tag="6 OG" />
 
-      <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-        <CardHead item={item} tag="6 OG" />
 
+//         <div className="mt-4 h-[150px] flex items-end gap-2">
 
+//           {ogs.map((v, i) => (
 
-        <div className="mt-4 h-[150px] flex items-end gap-2">
+//             <Bar key={i} label={`OG${i + 1}`} value={v} max={Math.max(...ogs)} />
 
-          {ogs.map((v, i) => (
+//           ))}
 
-            <Bar key={i} label={`OG${i + 1}`} value={v} max={Math.max(...ogs)} />
+//         </div>
 
-          ))}
+//       </Card>
 
-        </div>
+//     );
 
-      </Card>
+//   };
 
-    );
 
-  };
 
+//   const OverviewTransformer = ({ item }) => {
 
+//     const loads = [68, 62, 71, 65, 74, 60];
 
-  const OverviewTransformer = ({ item }) => {
 
-    const loads = [68, 62, 71, 65, 74, 60];
 
+//     return (
 
+//       <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-    return (
+//         <CardHead item={item} tag="6 TR" />
 
-      <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-        <CardHead item={item} tag="6 TR" />
 
+//         <div className="mt-4 grid grid-cols-3 gap-3">
 
+//           {loads.map((load, i) => (
 
-        <div className="mt-4 grid grid-cols-3 gap-3">
+//             <div key={i} className="rounded-xl bg-[#F4FAF9] p-3 text-center">
 
-          {loads.map((load, i) => (
+//               <div className="mx-auto h-12 w-12 rounded-full bg-[conic-gradient(#00A997_0_70%,#E8F5F2_70%_100%)] flex items-center justify-center">
 
-            <div key={i} className="rounded-xl bg-[#F4FAF9] p-3 text-center">
+//                 <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center text-[9px] font-black text-[#00796D]">
 
-              <div className="mx-auto h-12 w-12 rounded-full bg-[conic-gradient(#00A997_0_70%,#E8F5F2_70%_100%)] flex items-center justify-center">
+//                   {load}%
 
-                <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center text-[9px] font-black text-[#00796D]">
+//                 </div>
 
-                  {load}%
+//               </div>
 
-                </div>
+//               <p className="mt-2 text-[9px] font-black text-[#647B78]">TR-{i + 1}</p>
 
-              </div>
+//             </div>
 
-              <p className="mt-2 text-[9px] font-black text-[#647B78]">TR-{i + 1}</p>
+//           ))}
 
-            </div>
+//         </div>
 
-          ))}
+//       </Card>
 
-        </div>
+//     );
 
-      </Card>
+//   };
 
-    );
 
-  };
 
+//   const OverviewKiosk = ({ item }) => {
 
+//     const loads = [168, 154, 162, 149, 158, 144];
 
-  const OverviewKiosk = ({ item }) => {
 
-    const loads = [168, 154, 162, 149, 158, 144];
 
+//     return (
 
+//       <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-    return (
+//         <CardHead item={item} tag="433V" />
 
-      <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-        <CardHead item={item} tag="433V" />
 
+//         <div className="mt-4 space-y-2.5">
 
+//           {loads.map((v, i) => (
 
-        <div className="mt-4 space-y-2.5">
+//             <FlowProgress key={i} label={`KIOSK-${i + 1}`} value={v} max={180} small />
 
-          {loads.map((v, i) => (
+//           ))}
 
-            <FlowProgress key={i} label={`KIOSK-${i + 1}`} value={v} max={180} small />
+//         </div>
 
-          ))}
+//       </Card>
 
-        </div>
+//     );
 
-      </Card>
+//   };
 
-    );
 
-  };
 
+//   const OverviewBusduct = ({ item }) => {
 
+//     const phases = [
 
-  const OverviewBusduct = ({ item }) => {
+//       ["R", 88],
 
-    const phases = [
+//       ["Y", 82],
 
-      ["R", 88],
+//       ["B", 86],
 
-      ["Y", 82],
+//     ];
 
-      ["B", 86],
 
-    ];
 
+//     return (
 
+//       <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-    return (
+//         <CardHead item={item} tag="R/Y/B" />
 
-      <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-        <CardHead item={item} tag="R/Y/B" />
 
+//         <div className="mt-5 h-[145px] flex items-end gap-5 px-8">
 
+//           {phases.map(([p, v]) => (
 
-        <div className="mt-5 h-[145px] flex items-end gap-5 px-8">
+//             <Bar key={p} label={p} value={v} max={100} suffix="%" />
 
-          {phases.map(([p, v]) => (
+//           ))}
 
-            <Bar key={p} label={p} value={v} max={100} suffix="%" />
+//         </div>
 
-          ))}
+//       </Card>
 
-        </div>
+//     );
 
-      </Card>
+//   };
 
-    );
 
-  };
 
+//   const OverviewPcc = ({ item }) => {
 
+//     const wing1 = Math.round(item.outgoing * 0.48);
 
-  const OverviewPcc = ({ item }) => {
+//     const wing2 = item.outgoing - wing1;
 
-    const wing1 = Math.round(item.outgoing * 0.48);
 
-    const wing2 = item.outgoing - wing1;
 
+//     return (
 
+//       <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-    return (
+//         <CardHead item={item} tag="WINGS" />
 
-      <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-        <CardHead item={item} tag="WINGS" />
 
+//         <div className="mt-5 grid grid-cols-[1fr_80px_1fr] gap-3 items-center">
 
+//           <MiniValue label="WING 1" value={wing1} />
 
-        <div className="mt-5 grid grid-cols-[1fr_80px_1fr] gap-3 items-center">
+//           <div className="h-20 w-20 rounded-full bg-[#061A2D] flex flex-col items-center justify-center text-white">
 
-          <MiniValue label="WING 1" value={wing1} />
+//             <p className="text-[9px]">PCC</p>
 
-          <div className="h-20 w-20 rounded-full bg-[#061A2D] flex flex-col items-center justify-center text-white">
+//             <h4 className="text-[20px]">{item.outgoing}</h4>
 
-            <p className="text-[9px]">PCC</p>
+//           </div>
 
-            <h4 className="text-[20px]">{item.outgoing}</h4>
+//           <MiniValue label="WING 2" value={wing2} />
 
-          </div>
+//         </div>
 
-          <MiniValue label="WING 2" value={wing2} />
 
-        </div>
 
+//         <div className="mt-5 h-3 bg-[#E8F5F2] rounded-full overflow-hidden">
 
+//           <div className="h-full bg-[#00A997] rounded-full" style={{ width: "48%" }} />
 
-        <div className="mt-5 h-3 bg-[#E8F5F2] rounded-full overflow-hidden">
+//         </div>
 
-          <div className="h-full bg-[#00A997] rounded-full" style={{ width: "48%" }} />
+//       </Card>
 
-        </div>
+//     );
 
-      </Card>
+//   };
 
-    );
 
-  };
 
+//   const OverviewRaising = ({ item }) => (
 
+//     <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-  const OverviewRaising = ({ item }) => (
+//       <CardHead item={item} tag="FLOORS" />
 
-    <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-      <CardHead item={item} tag="FLOORS" />
 
+//       <div className="mt-5 h-[150px] flex items-end gap-1">
 
+//         {Array.from({ length: 16 }).map((_, i) => {
 
-      <div className="mt-5 h-[150px] flex items-end gap-1">
+//           const h = 35 + ((item.outgoing + i * 9) % 95);
 
-        {Array.from({ length: 16 }).map((_, i) => {
+//           return <div key={i} className="flex-1 rounded-t bg-[#00A997]" style={{ height: h }} />;
 
-          const h = 35 + ((item.outgoing + i * 9) % 95);
+//         })}
 
-          return <div key={i} className="flex-1 rounded-t bg-[#00A997]" style={{ height: h }} />;
+//       </div>
 
-        })}
+//     </Card>
 
-      </div>
+//   );
 
-    </Card>
 
-  );
 
+//   const OverviewWing = ({ item }) => (
 
+//     <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-  const OverviewWing = ({ item }) => (
+//       <CardHead item={item} tag="HEATMAP" />
 
-    <Card className="p-4 hover:border-[#00A997] hover:shadow-lg transition cursor-pointer" onClick={() => setActiveView(item.key)}>
 
-      <CardHead item={item} tag="HEATMAP" />
 
+//       <div className="mt-5 grid grid-cols-5 grid-rows-4 gap-2 h-[150px]">
 
+//         {Array.from({ length: 20 }).map((_, i) => {
 
-      <div className="mt-5 grid grid-cols-5 grid-rows-4 gap-2 h-[150px]">
+//           const opacity = [0.25, 0.45, 0.7, 1][(i + item.health) % 4];
 
-        {Array.from({ length: 20 }).map((_, i) => {
+//           return <div key={i} className="rounded-lg bg-[#00A997]" style={{ opacity }} />;
 
-          const opacity = [0.25, 0.45, 0.7, 1][(i + item.health) % 4];
+//         })}
 
-          return <div key={i} className="rounded-lg bg-[#00A997]" style={{ opacity }} />;
+//       </div>
 
-        })}
+//     </Card>
 
-      </div>
+//   );
 
-    </Card>
 
-  );
 
+//   const CardHead = ({ item, tag }) => (
 
+//     <div className="flex items-start justify-between">
 
-  const CardHead = ({ item, tag }) => (
+//       <div>
 
-    <div className="flex items-start justify-between">
+//         <p className="text-[10px] text-[#00A997] font-black tracking-[0.16em] uppercase">
 
-      <div>
+//           {item.short}
 
-        <p className="text-[10px] text-[#00A997] font-black tracking-[0.16em] uppercase">
+//         </p>
 
-          {item.short}
+//         <h3 className="text-[17px] font-black text-[#132F2C]">{item.name}</h3>
 
-        </p>
+//       </div>
 
-        <h3 className="text-[17px] font-black text-[#132F2C]">{item.name}</h3>
 
-      </div>
 
+//       <span className="px-3 py-1 rounded-full bg-[#E8F5F2] text-[#00A997] text-[10px] font-black">
 
+//         {tag}
 
-      <span className="px-3 py-1 rounded-full bg-[#E8F5F2] text-[#00A997] text-[10px] font-black">
+//       </span>
 
-        {tag}
+//     </div>
 
-      </span>
+//   );
 
-    </div>
 
-  );
 
+//   const MiniValue = ({ label, value }) => (
 
+//     <div className="rounded-xl bg-[#F4FAF9] p-3 text-center">
 
-  const MiniValue = ({ label, value }) => (
+//       <p className="text-[9px] font-black text-[#647B78]">{label}</p>
 
-    <div className="rounded-xl bg-[#F4FAF9] p-3 text-center">
+//       <h4 className="text-[22px] font-light text-[#00796D]">{value}</h4>
 
-      <p className="text-[9px] font-black text-[#647B78]">{label}</p>
+//     </div>
 
-      <h4 className="text-[22px] font-light text-[#00796D]">{value}</h4>
+//   );
 
-    </div>
 
-  );
 
+//   const FlowProgress = ({ label, value, max, small = false }) => (
 
+//     <div className={`${small ? "mt-0" : "mt-4"}`}>
 
-  const FlowProgress = ({ label, value, max, small = false }) => (
+//       <div className="flex justify-between text-[10px] font-black text-[#647B78]">
 
-    <div className={`${small ? "mt-0" : "mt-4"}`}>
+//         <span>{label}</span>
 
-      <div className="flex justify-between text-[10px] font-black text-[#647B78]">
+//         <span>{value} kW</span>
 
-        <span>{label}</span>
+//       </div>
 
-        <span>{value} kW</span>
+//       <div className="h-3 mt-1 bg-[#E8F5F2] rounded-full overflow-hidden">
 
-      </div>
+//         <div
 
-      <div className="h-3 mt-1 bg-[#E8F5F2] rounded-full overflow-hidden">
+//           className="h-full bg-[#00A997] rounded-full"
 
-        <div
+//           style={{ width: `${Math.min(100, (value / max) * 100)}%` }}
 
-          className="h-full bg-[#00A997] rounded-full"
+//         />
 
-          style={{ width: `${Math.min(100, (value / max) * 100)}%` }}
+//       </div>
 
-        />
+//     </div>
 
-      </div>
+//   );
 
-    </div>
 
-  );
 
+//   const Bar = ({ label, value, max, suffix = "" }) => (
 
+//     <div className="flex-1 flex flex-col items-center justify-end">
 
-  const Bar = ({ label, value, max, suffix = "" }) => (
+//       <p className="text-[10px] font-black text-[#132F2C] mb-2">
 
-    <div className="flex-1 flex flex-col items-center justify-end">
+//         {value}{suffix}
 
-      <p className="text-[10px] font-black text-[#132F2C] mb-2">
+//       </p>
 
-        {value}{suffix}
+//       <div
 
-      </p>
+//         className="w-full rounded-t-lg bg-gradient-to-t from-[#00796D] to-[#30E6D3]"
 
-      <div
+//         style={{ height: `${Math.max(35, (value / max) * 110)}px` }}
 
-        className="w-full rounded-t-lg bg-gradient-to-t from-[#00796D] to-[#30E6D3]"
+//       />
 
-        style={{ height: `${Math.max(35, (value / max) * 110)}px` }}
+//       <p className="mt-2 text-[9px] font-black text-[#647B78]">{label}</p>
 
-      />
+//     </div>
 
-      <p className="mt-2 text-[9px] font-black text-[#647B78]">{label}</p>
+//   );
 
-    </div>
 
-  );
 
+//   const OverviewCard = ({ item }) => {
 
+//     if (item.key === "source") return <OverviewSource item={item} />;
 
-  const OverviewCard = ({ item }) => {
+//     if (item.key === "feeder") return <OverviewFeeder item={item} />;
 
-    if (item.key === "source") return <OverviewSource item={item} />;
+//     if (item.key === "transformer") return <OverviewTransformer item={item} />;
 
-    if (item.key === "feeder") return <OverviewFeeder item={item} />;
+//     if (item.key === "kiosk") return <OverviewKiosk item={item} />;
 
-    if (item.key === "transformer") return <OverviewTransformer item={item} />;
+//     if (item.key === "busduct") return <OverviewBusduct item={item} />;
 
-    if (item.key === "kiosk") return <OverviewKiosk item={item} />;
+//     if (item.key === "pcc") return <OverviewPcc item={item} />;
 
-    if (item.key === "busduct") return <OverviewBusduct item={item} />;
+//     if (item.key === "raising") return <OverviewRaising item={item} />;
 
-    if (item.key === "pcc") return <OverviewPcc item={item} />;
+//     if (item.key === "wing") return <OverviewWing item={item} />;
 
-    if (item.key === "raising") return <OverviewRaising item={item} />;
+//     return null;
 
-    if (item.key === "wing") return <OverviewWing item={item} />;
+//   };
 
-    return null;
 
-  };
 
+//   const AllOverview = () => {
 
+//     const kpis = [
 
-  const AllOverview = () => {
+//       { label: "Main Incoming", value: `${totals.incoming} kW`, sub: "33kV source input" },
 
-    const kpis = [
+//       { label: "Final Output", value: `${totals.outgoing} kW`, sub: "wing delivery" },
 
-      { label: "Main Incoming", value: `${totals.incoming} kW`, sub: "33kV source input" },
+//       { label: "Loss", value: `${totals.loss} kW`, sub: "overall loss" },
 
-      { label: "Final Output", value: `${totals.outgoing} kW`, sub: "wing delivery" },
+//       { label: "Efficiency", value: `${totals.efficiency}%`, sub: "source to wing" },
 
-      { label: "Loss", value: `${totals.loss} kW`, sub: "overall loss" },
+//       { label: "Today Energy", value: totals.today.toLocaleString(), sub: "kWh total" },
 
-      { label: "Efficiency", value: `${totals.efficiency}%`, sub: "source to wing" },
+//     ];
 
-      { label: "Today Energy", value: totals.today.toLocaleString(), sub: "kWh total" },
 
-    ];
 
+//     return (
 
+//       <div className="h-full grid grid-rows-[104px_1fr] gap-4 min-h-0">
 
-    return (
+//         <div className="grid grid-cols-5 gap-4">
 
-      <div className="h-full grid grid-rows-[104px_1fr] gap-4 min-h-0">
+//           {kpis.map((item) => (
 
-        <div className="grid grid-cols-5 gap-4">
+//             <DarkCard key={item.label} className="relative px-5 py-4">
 
-          {kpis.map((item) => (
+//               <div className="absolute right-[-30px] top-[-30px] h-24 w-24 rounded-full bg-[#30E6D3]/10" />
 
-            <DarkCard key={item.label} className="relative px-5 py-4">
+//               <p className="text-[10px] font-black text-[#30E6D3] uppercase tracking-[0.16em]">
 
-              <div className="absolute right-[-30px] top-[-30px] h-24 w-24 rounded-full bg-[#30E6D3]/10" />
+//                 {item.label}
 
-              <p className="text-[10px] font-black text-[#30E6D3] uppercase tracking-[0.16em]">
+//               </p>
 
-                {item.label}
+//               <h2 className="mt-2 text-[26px] font-light text-white">{item.value}</h2>
 
-              </p>
+//               <p className="mt-1 text-[10px] font-bold text-slate-300">{item.sub}</p>
 
-              <h2 className="mt-2 text-[26px] font-light text-white">{item.value}</h2>
+//             </DarkCard>
 
-              <p className="mt-1 text-[10px] font-bold text-slate-300">{item.sub}</p>
+//           ))}
 
-            </DarkCard>
+//         </div>
 
-          ))}
 
-        </div>
 
+//         <div className="grid grid-cols-4 grid-rows-2 gap-4 min-h-0">
 
+//           {flowData.map((item) => (
 
-        <div className="grid grid-cols-4 grid-rows-2 gap-4 min-h-0">
+//             <OverviewCard key={item.key} item={item} />
 
-          {flowData.map((item) => (
+//           ))}
 
-            <OverviewCard key={item.key} item={item} />
+//         </div>
 
-          ))}
+//       </div>
 
-        </div>
+//     );
 
-      </div>
+//   };
 
-    );
 
-  };
 
+//   const SourceDashboard = ({ item }) => {
 
+//     const inc1 = Math.round(item.incoming * 0.52);
 
-  const SourceDashboard = ({ item }) => {
+//     const inc2 = item.incoming - inc1;
 
-    const inc1 = Math.round(item.incoming * 0.52);
+//     const meter = item.outgoing;
 
-    const inc2 = item.incoming - inc1;
+//     const feeder = item.outgoing - 8;
 
-    const meter = item.outgoing;
+//     const loss = item.incoming - feeder;
 
-    const feeder = item.outgoing - 8;
+//     const efficiency = ((feeder / item.incoming) * 100).toFixed(1);
 
-    const loss = item.incoming - feeder;
 
-    const efficiency = ((feeder / item.incoming) * 100).toFixed(1);
 
+//     return (
 
+//       <DashboardShell
 
-    return (
+//         title="33kV Source Analytical Dashboard"
 
-      <DashboardShell
+//         subtitle="INC1 + INC2 → Outgoing → Meter → Feeder"
 
-        title="33kV Source Analytical Dashboard"
+//         stats={[
 
-        subtitle="INC1 + INC2 → Outgoing → Meter → Feeder"
+//           { label: "INC1", value: `${inc1} kW`, sub: "source input" },
 
-        stats={[
+//           { label: "INC2", value: `${inc2} kW`, sub: "source input" },
 
-          { label: "INC1", value: `${inc1} kW`, sub: "source input" },
+//           { label: "Outgoing", value: `${item.incoming} kW`, sub: "combined" },
 
-          { label: "INC2", value: `${inc2} kW`, sub: "source input" },
+//           { label: "Meter", value: `${meter} kW`, sub: "meter reading" },
 
-          { label: "Outgoing", value: `${item.incoming} kW`, sub: "combined" },
+//           { label: "Feeder", value: `${feeder} kW`, sub: "final output" },
 
-          { label: "Meter", value: `${meter} kW`, sub: "meter reading" },
+//           { label: "Loss", value: `${loss} kW`, sub: `${efficiency}% efficient` },
 
-          { label: "Feeder", value: `${feeder} kW`, sub: "final output" },
+//         ]}
 
-          { label: "Loss", value: `${loss} kW`, sub: `${efficiency}% efficient` },
+//       >
 
-        ]}
+//         <section className="p-5 border-r border-[#173F55]">
 
-      >
+//           <SectionTitle title="Flow Comparison" />
 
-        <section className="p-5 border-r border-[#173F55]">
+//           <div className="h-[calc(100%-32px)] flex items-end gap-5">
 
-          <SectionTitle title="Flow Comparison" />
+//             {[
 
-          <div className="h-[calc(100%-32px)] flex items-end gap-5">
+//               ["INC1", inc1],
 
-            {[
+//               ["INC2", inc2],
 
-              ["INC1", inc1],
+//               ["OUT", item.incoming],
 
-              ["INC2", inc2],
+//               ["METER", meter],
 
-              ["OUT", item.incoming],
+//               ["FEEDER", feeder],
 
-              ["METER", meter],
+//             ].map(([label, value]) => (
 
-              ["FEEDER", feeder],
+//               <DashBar key={label} label={label} value={value} max={item.incoming} />
 
-            ].map(([label, value]) => (
+//             ))}
 
-              <DashBar key={label} label={label} value={value} max={item.incoming} />
+//           </div>
 
-            ))}
+//         </section>
 
-          </div>
 
-        </section>
 
+//         <section className="p-5 border-r border-[#173F55]">
 
+//           <SectionTitle title="Live Power Trend" />
 
-        <section className="p-5 border-r border-[#173F55]">
+//           <LargeLineChart />
 
-          <SectionTitle title="Live Power Trend" />
+//         </section>
 
-          <LargeLineChart />
 
-        </section>
 
+//         <section className="grid grid-rows-2">
 
+//           <div className="p-5 border-b border-[#173F55]">
 
-        <section className="grid grid-rows-2">
+//             <SectionTitle title="Incoming Share" />
 
-          <div className="p-5 border-b border-[#173F55]">
+//             <Donut center={item.incoming} />
 
-            <SectionTitle title="Incoming Share" />
+//           </div>
 
-            <Donut center={item.incoming} />
 
-          </div>
 
+//           <div className="p-5">
 
+//             <SectionTitle title="Electrical Values" />
 
-          <div className="p-5">
+//             <ParameterRows rows={[
 
-            <SectionTitle title="Electrical Values" />
+//               ["Voltage", item.voltage],
 
-            <ParameterRows rows={[
+//               ["Current", `${item.current} A`],
 
-              ["Voltage", item.voltage],
+//               ["PF", item.pf],
 
-              ["Current", `${item.current} A`],
+//               ["Today", `${item.today.toLocaleString()} kWh`],
 
-              ["PF", item.pf],
+//             ]} />
 
-              ["Today", `${item.today.toLocaleString()} kWh`],
+//           </div>
 
-            ]} />
+//         </section>
 
-          </div>
+//       </DashboardShell>
 
-        </section>
+//     );
 
-      </DashboardShell>
+//   };
 
-    );
 
-  };
 
+//   const FeederDashboard = ({ item }) => {
 
+//     const ogs = Array.from({ length: 6 }, (_, i) => ({
 
-  const FeederDashboard = ({ item }) => {
+//       name: `OG-${i + 1}`,
 
-    const ogs = Array.from({ length: 6 }, (_, i) => ({
+//       value: Math.round(item.outgoing / 6 + (i - 2) * 8),
 
-      name: `OG-${i + 1}`,
+//     }));
 
-      value: Math.round(item.outgoing / 6 + (i - 2) * 8),
 
-    }));
 
+//     return (
 
+//       <DashboardShell
 
-    return (
+//         title="33kV Feeder Analytical Dashboard"
 
-      <DashboardShell
+//         subtitle="1 Incoming feeder → 6 outgoing feeders"
 
-        title="33kV Feeder Analytical Dashboard"
+//         stats={[
 
-        subtitle="1 Incoming feeder → 6 outgoing feeders"
+//           { label: "Incoming", value: `${item.incoming} kW`, sub: "input" },
 
-        stats={[
+//           { label: "Outgoing", value: `${item.outgoing} kW`, sub: "OG total" },
 
-          { label: "Incoming", value: `${item.incoming} kW`, sub: "input" },
+//           { label: "Loss", value: `${item.incoming - item.outgoing} kW`, sub: "feeder loss" },
 
-          { label: "Outgoing", value: `${item.outgoing} kW`, sub: "OG total" },
+//           { label: "Voltage", value: item.voltage, sub: "stable" },
 
-          { label: "Loss", value: `${item.incoming - item.outgoing} kW`, sub: "feeder loss" },
+//           { label: "Current", value: `${item.current} A`, sub: "live" },
 
-          { label: "Voltage", value: item.voltage, sub: "stable" },
+//           { label: "PF", value: item.pf, sub: "healthy" },
 
-          { label: "Current", value: `${item.current} A`, sub: "live" },
+//         ]}
 
-          { label: "PF", value: item.pf, sub: "healthy" },
+//       >
 
-        ]}
+//         <section className="p-6 border-r border-[#173F55] col-span-2">
 
-      >
+//           <SectionTitle title="OG1 - OG6 Outgoing Load" />
 
-        <section className="p-6 border-r border-[#173F55] col-span-2">
+//           <div className="h-[calc(100%-35px)] flex items-end gap-8">
 
-          <SectionTitle title="OG1 - OG6 Outgoing Load" />
+//             {ogs.map((x) => (
 
-          <div className="h-[calc(100%-35px)] flex items-end gap-8">
+//               <DashBar key={x.name} label={x.name} value={x.value} max={Math.max(...ogs.map((o) => o.value))} />
 
-            {ogs.map((x) => (
+//             ))}
 
-              <DashBar key={x.name} label={x.name} value={x.value} max={Math.max(...ogs.map((o) => o.value))} />
+//           </div>
 
-            ))}
+//         </section>
 
-          </div>
 
-        </section>
 
+//         <section className="grid grid-rows-2">
 
+//           <div className="p-6 border-b border-[#173F55]">
 
-        <section className="grid grid-rows-2">
+//             <SectionTitle title="Feeder Trend" />
 
-          <div className="p-6 border-b border-[#173F55]">
+//             <MiniTrend height={170} />
 
-            <SectionTitle title="Feeder Trend" />
+//           </div>
 
-            <MiniTrend height={170} />
+//           <Insight text="OG feeders are balanced. No outgoing feeder is overloaded. Feeder loss is within normal range." />
 
-          </div>
+//         </section>
 
-          <Insight text="OG feeders are balanced. No outgoing feeder is overloaded. Feeder loss is within normal range." />
+//       </DashboardShell>
 
-        </section>
+//     );
 
-      </DashboardShell>
+//   };
 
-    );
 
-  };
 
+//   const TransformerDashboard = ({ item }) => {
 
+//     const transformers = [
 
-  const TransformerDashboard = ({ item }) => {
+//       ["TR-1", 68, 54, 61],
 
-    const transformers = [
+//       ["TR-2", 62, 52, 59],
 
-      ["TR-1", 68, 54, 61],
+//       ["TR-3", 71, 55, 60],
 
-      ["TR-2", 62, 52, 59],
+//       ["TR-4", 65, 53, 58],
 
-      ["TR-3", 71, 55, 60],
+//       ["TR-5", 74, 56, 63],
 
-      ["TR-4", 65, 53, 58],
+//       ["TR-6", 60, 51, 57],
 
-      ["TR-5", 74, 56, 63],
+//     ];
 
-      ["TR-6", 60, 51, 57],
 
-    ];
 
+//     return (
 
+//       <DashboardShell
 
-    return (
+//         title="Transformer Analytical Dashboard"
 
-      <DashboardShell
+//         subtitle="Transformer load, oil temperature, winding temperature and relay health"
 
-        title="Transformer Analytical Dashboard"
+//         stats={[
 
-        subtitle="Transformer load, oil temperature, winding temperature and relay health"
+//           { label: "Input", value: `${item.incoming} kW`, sub: "33kV side" },
 
-        stats={[
+//           { label: "Output", value: `${item.outgoing} kW`, sub: "433V side" },
 
-          { label: "Input", value: `${item.incoming} kW`, sub: "33kV side" },
+//           { label: "Avg Load", value: "66.7%", sub: "normal" },
 
-          { label: "Output", value: `${item.outgoing} kW`, sub: "433V side" },
+//           { label: "Max Oil", value: "56°C", sub: "safe" },
 
-          { label: "Avg Load", value: "66.7%", sub: "normal" },
+//           { label: "Max Winding", value: "63°C", sub: "safe" },
 
-          { label: "Max Oil", value: "56°C", sub: "safe" },
+//           { label: "Relay", value: "Healthy", sub: "buchholz" },
 
-          { label: "Max Winding", value: "63°C", sub: "safe" },
+//         ]}
 
-          { label: "Relay", value: "Healthy", sub: "buchholz" },
+//       >
 
-        ]}
+//         <section className="p-5 border-r border-[#173F55] col-span-2">
 
-      >
+//           <SectionTitle title="Transformer Load Profile" />
 
-        <section className="p-5 border-r border-[#173F55] col-span-2">
+//           <div className="grid grid-cols-3 gap-4">
 
-          <SectionTitle title="Transformer Load Profile" />
+//             {transformers.map(([name, load, oil, winding]) => (
 
-          <div className="grid grid-cols-3 gap-4">
+//               <div key={name} className="bg-[#071D33] border border-[#173F55] rounded-2xl p-4">
 
-            {transformers.map(([name, load, oil, winding]) => (
+//                 <div className="flex justify-between">
 
-              <div key={name} className="bg-[#071D33] border border-[#173F55] rounded-2xl p-4">
+//                   <h4 className="font-black">{name}</h4>
 
-                <div className="flex justify-between">
+//                   <span className="text-[#30E6D3] text-[10px] font-black">LIVE</span>
 
-                  <h4 className="font-black">{name}</h4>
+//                 </div>
 
-                  <span className="text-[#30E6D3] text-[10px] font-black">LIVE</span>
 
-                </div>
 
+//                 <div className="mt-4 mx-auto h-20 w-20 rounded-full bg-[conic-gradient(#00A997_0_70%,#173F55_70%_100%)] flex items-center justify-center">
 
+//                   <div className="h-14 w-14 rounded-full bg-[#061A2D] flex items-center justify-center font-black text-[#30E6D3]">
 
-                <div className="mt-4 mx-auto h-20 w-20 rounded-full bg-[conic-gradient(#00A997_0_70%,#173F55_70%_100%)] flex items-center justify-center">
+//                     {load}%
 
-                  <div className="h-14 w-14 rounded-full bg-[#061A2D] flex items-center justify-center font-black text-[#30E6D3]">
+//                   </div>
 
-                    {load}%
+//                 </div>
 
-                  </div>
 
-                </div>
 
+//                 <div className="mt-3 text-[10px] space-y-1.5">
 
+//                   <p className="flex justify-between"><span className="text-slate-400">Oil</span><b>{oil}°C</b></p>
 
-                <div className="mt-3 text-[10px] space-y-1.5">
+//                   <p className="flex justify-between"><span className="text-slate-400">Winding</span><b>{winding}°C</b></p>
 
-                  <p className="flex justify-between"><span className="text-slate-400">Oil</span><b>{oil}°C</b></p>
+//                 </div>
 
-                  <p className="flex justify-between"><span className="text-slate-400">Winding</span><b>{winding}°C</b></p>
+//               </div>
 
-                </div>
+//             ))}
 
-              </div>
+//           </div>
 
-            ))}
+//         </section>
 
-          </div>
 
-        </section>
 
+//         <section className="p-6">
 
+//           <SectionTitle title="Temperature Trend" />
 
-        <section className="p-6">
+//           <LargeLineChart />
 
-          <SectionTitle title="Temperature Trend" />
+//           <p className="mt-3 text-[13px] text-slate-300">
 
-          <LargeLineChart />
+//             All transformers are operating within safe temperature and load limits.
 
-          <p className="mt-3 text-[13px] text-slate-300">
+//           </p>
 
-            All transformers are operating within safe temperature and load limits.
+//         </section>
 
-          </p>
+//       </DashboardShell>
 
-        </section>
+//     );
 
-      </DashboardShell>
+//   };
 
-    );
 
-  };
 
+//   const DistributionDashboard = ({ item, title, subtitle, blocks = 6 }) => {
 
+//     const loads = Array.from({ length: blocks }, (_, i) =>
 
-  const DistributionDashboard = ({ item, title, subtitle, blocks = 6 }) => {
+//       Math.round(item.outgoing / blocks + (i - 2) * 9)
 
-    const loads = Array.from({ length: blocks }, (_, i) =>
+//     );
 
-      Math.round(item.outgoing / blocks + (i - 2) * 9)
 
-    );
 
+//     return (
 
+//       <DashboardShell
 
-    return (
+//         title={title}
 
-      <DashboardShell
+//         subtitle={subtitle}
 
-        title={title}
+//         stats={[
 
-        subtitle={subtitle}
+//           { label: "Incoming", value: `${item.incoming} kW`, sub: "input" },
 
-        stats={[
+//           { label: "Outgoing", value: `${item.outgoing} kW`, sub: "output" },
 
-          { label: "Incoming", value: `${item.incoming} kW`, sub: "input" },
+//           { label: "Loss", value: `${item.incoming - item.outgoing} kW`, sub: "loss" },
 
-          { label: "Outgoing", value: `${item.outgoing} kW`, sub: "output" },
+//           { label: "Voltage", value: item.voltage, sub: "stable" },
 
-          { label: "Loss", value: `${item.incoming - item.outgoing} kW`, sub: "loss" },
+//           { label: "Current", value: `${item.current} A`, sub: "live" },
 
-          { label: "Voltage", value: item.voltage, sub: "stable" },
+//           { label: "PF", value: item.pf, sub: "healthy" },
 
-          { label: "Current", value: `${item.current} A`, sub: "live" },
+//         ]}
 
-          { label: "PF", value: item.pf, sub: "healthy" },
+//       >
 
-        ]}
+//         <section className="p-6 border-r border-[#173F55] col-span-2">
 
-      >
+//           <SectionTitle title="Load Distribution" />
 
-        <section className="p-6 border-r border-[#173F55] col-span-2">
+//           <div className="h-[calc(100%-35px)] flex items-end gap-5">
 
-          <SectionTitle title="Load Distribution" />
+//             {loads.map((v, i) => (
 
-          <div className="h-[calc(100%-35px)] flex items-end gap-5">
+//               <DashBar key={i} label={`#${i + 1}`} value={v} max={Math.max(...loads)} />
 
-            {loads.map((v, i) => (
+//             ))}
 
-              <DashBar key={i} label={`#${i + 1}`} value={v} max={Math.max(...loads)} />
+//           </div>
 
-            ))}
+//         </section>
 
-          </div>
 
-        </section>
 
+//         <section className="grid grid-rows-2">
 
+//           <div className="p-6 border-b border-[#173F55]">
 
-        <section className="grid grid-rows-2">
+//             <SectionTitle title="Consumption Trend" />
 
-          <div className="p-6 border-b border-[#173F55]">
+//             <MiniTrend height={170} />
 
-            <SectionTitle title="Consumption Trend" />
+//           </div>
 
-            <MiniTrend height={170} />
+//           <Insight text="Distribution is balanced. No abnormal load deviation is detected in this section." />
 
-          </div>
+//         </section>
 
-          <Insight text="Distribution is balanced. No abnormal load deviation is detected in this section." />
+//       </DashboardShell>
 
-        </section>
+//     );
 
-      </DashboardShell>
+//   };
 
-    );
 
-  };
 
+//   const WingDashboard = ({ item }) => (
 
+//     <DashboardShell
 
-  const WingDashboard = ({ item }) => (
+//       title="Wing Analytical Dashboard"
 
-    <DashboardShell
+//       subtitle="Floor, zone and client consumption heatmap"
 
-      title="Wing Analytical Dashboard"
+//       stats={[
 
-      subtitle="Floor, zone and client consumption heatmap"
+//         { label: "Incoming", value: `${item.incoming} kW`, sub: "wing input" },
 
-      stats={[
+//         { label: "Output", value: `${item.outgoing} kW`, sub: "usage" },
 
-        { label: "Incoming", value: `${item.incoming} kW`, sub: "wing input" },
+//         { label: "Floors", value: "20", sub: "active" },
 
-        { label: "Output", value: `${item.outgoing} kW`, sub: "usage" },
+//         { label: "Zones", value: "40", sub: "monitored" },
 
-        { label: "Floors", value: "20", sub: "active" },
+//         { label: "Today", value: `${item.today.toLocaleString()} kWh`, sub: "energy" },
 
-        { label: "Zones", value: "40", sub: "monitored" },
+//         { label: "Health", value: `${item.health}%`, sub: "normal" },
 
-        { label: "Today", value: `${item.today.toLocaleString()} kWh`, sub: "energy" },
+//       ]}
 
-        { label: "Health", value: `${item.health}%`, sub: "normal" },
+//     >
 
-      ]}
+//       <section className="p-6 border-r border-[#173F55] col-span-2">
 
-    >
+//         <SectionTitle title="Zone Heatmap" />
 
-      <section className="p-6 border-r border-[#173F55] col-span-2">
+//         <div className="grid grid-cols-8 grid-rows-5 gap-3 h-[calc(100%-35px)]">
 
-        <SectionTitle title="Zone Heatmap" />
+//           {Array.from({ length: 40 }).map((_, i) => {
 
-        <div className="grid grid-cols-8 grid-rows-5 gap-3 h-[calc(100%-35px)]">
+//             const opacity = [0.25, 0.42, 0.66, 1][(i + item.health) % 4];
 
-          {Array.from({ length: 40 }).map((_, i) => {
+//             return (
 
-            const opacity = [0.25, 0.42, 0.66, 1][(i + item.health) % 4];
+//               <div key={i} className="rounded-xl bg-[#00A997] flex items-center justify-center text-[10px] font-black" style={{ opacity }}>
 
-            return (
+//                 {i + 1}
 
-              <div key={i} className="rounded-xl bg-[#00A997] flex items-center justify-center text-[10px] font-black" style={{ opacity }}>
+//               </div>
 
-                {i + 1}
+//             );
 
-              </div>
+//           })}
 
-            );
+//         </div>
 
-          })}
+//       </section>
 
-        </div>
 
-      </section>
 
+//       <section className="p-6">
 
+//         <SectionTitle title="Floor Consumption" />
 
-      <section className="p-6">
+//         <div className="h-[300px] flex items-end gap-2">
 
-        <SectionTitle title="Floor Consumption" />
+//           {Array.from({ length: 20 }).map((_, i) => {
 
-        <div className="h-[300px] flex items-end gap-2">
+//             const h = 50 + ((item.outgoing + i * 11) % 230);
 
-          {Array.from({ length: 20 }).map((_, i) => {
+//             return <div key={i} className="flex-1 rounded-t bg-[#00A997]" style={{ height: h }} />;
 
-            const h = 50 + ((item.outgoing + i * 11) % 230);
+//           })}
 
-            return <div key={i} className="flex-1 rounded-t bg-[#00A997]" style={{ height: h }} />;
+//         </div>
 
-          })}
+//       </section>
 
-        </div>
+//     </DashboardShell>
 
-      </section>
+//   );
 
-    </DashboardShell>
 
-  );
 
+//   const DashboardShell = ({ title, subtitle, stats, children }) => (
 
+//     <div className="h-full bg-[#061A2D] text-white overflow-hidden">
 
-  const DashboardShell = ({ title, subtitle, stats, children }) => (
+//       <PageHeader title={title} subtitle={subtitle} />
 
-    <div className="h-full bg-[#061A2D] text-white overflow-hidden">
+//       <StatStrip items={stats} />
 
-      <PageHeader title={title} subtitle={subtitle} />
+//       <div className="h-[calc(100%-142px)] grid grid-cols-[36%_36%_28%]">
 
-      <StatStrip items={stats} />
+//         {children}
 
-      <div className="h-[calc(100%-142px)] grid grid-cols-[36%_36%_28%]">
+//       </div>
 
-        {children}
+//     </div>
 
-      </div>
+//   );
 
-    </div>
 
-  );
 
+//   const SectionTitle = ({ title }) => (
 
+//     <h3 className="text-[13px] font-black mb-4 uppercase tracking-[0.08em]">{title}</h3>
 
-  const SectionTitle = ({ title }) => (
+//   );
 
-    <h3 className="text-[13px] font-black mb-4 uppercase tracking-[0.08em]">{title}</h3>
 
-  );
 
+//   const DashBar = ({ label, value, max }) => (
 
+//     <div className="flex-1 flex flex-col items-center justify-end">
 
-  const DashBar = ({ label, value, max }) => (
+//       <p className="text-[11px] font-black mb-2">{value}</p>
 
-    <div className="flex-1 flex flex-col items-center justify-end">
+//       <div
 
-      <p className="text-[11px] font-black mb-2">{value}</p>
+//         className="w-full rounded-t-2xl bg-gradient-to-t from-[#00796D] to-[#30E6D3]"
 
-      <div
+//         style={{ height: `${Math.max(55, (value / max) * 320)}px` }}
 
-        className="w-full rounded-t-2xl bg-gradient-to-t from-[#00796D] to-[#30E6D3]"
+//       />
 
-        style={{ height: `${Math.max(55, (value / max) * 320)}px` }}
+//       <p className="mt-3 text-[10px] text-slate-300 font-black">{label}</p>
 
-      />
+//     </div>
 
-      <p className="mt-3 text-[10px] text-slate-300 font-black">{label}</p>
+//   );
 
-    </div>
 
-  );
 
+//   const LargeLineChart = () => (
 
+//     <svg viewBox="0 0 720 400" className="w-full h-[calc(100%-34px)]">
 
-  const LargeLineChart = () => (
+//       {[80, 160, 240, 320].map((y) => (
 
-    <svg viewBox="0 0 720 400" className="w-full h-[calc(100%-34px)]">
+//         <line key={y} x1="40" x2="700" y1={y} y2={y} stroke="#173F55" />
 
-      {[80, 160, 240, 320].map((y) => (
+//       ))}
 
-        <line key={y} x1="40" x2="700" y1={y} y2={y} stroke="#173F55" />
+//       <path d="M40 310 C130 280,220 210,310 130 C420 65,535 85,625 145 C670 180,690 240,705 300" fill="none" stroke="#30E6D3" strokeWidth="5" />
 
-      ))}
+//       <path d="M40 345 C130 320,220 260,310 190 C420 135,535 150,625 205 C670 240,690 295,705 340" fill="none" stroke="#00A997" strokeWidth="4" />
 
-      <path d="M40 310 C130 280,220 210,310 130 C420 65,535 85,625 145 C670 180,690 240,705 300" fill="none" stroke="#30E6D3" strokeWidth="5" />
+//       <path d="M40 370 C130 350,220 310,310 250 C420 205,535 215,625 265 C670 300,690 340,705 370" fill="none" stroke="#00796D" strokeWidth="4" />
 
-      <path d="M40 345 C130 320,220 260,310 190 C420 135,535 150,625 205 C670 240,690 295,705 340" fill="none" stroke="#00A997" strokeWidth="4" />
+//     </svg>
 
-      <path d="M40 370 C130 350,220 310,310 250 C420 205,535 215,625 265 C670 300,690 340,705 370" fill="none" stroke="#00796D" strokeWidth="4" />
+//   );
 
-    </svg>
 
-  );
 
+//   const Donut = ({ center }) => (
 
+//     <div className="flex items-center justify-center">
 
-  const Donut = ({ center }) => (
+//       <div className="h-[170px] w-[170px] rounded-full bg-[conic-gradient(#30E6D3_0_52%,#00796D_52%_100%)] flex items-center justify-center">
 
-    <div className="flex items-center justify-center">
+//         <div className="h-[108px] w-[108px] rounded-full bg-[#061A2D] border border-[#173F55] flex flex-col items-center justify-center">
 
-      <div className="h-[170px] w-[170px] rounded-full bg-[conic-gradient(#30E6D3_0_52%,#00796D_52%_100%)] flex items-center justify-center">
+//           <p className="text-[10px] text-slate-400">TOTAL</p>
 
-        <div className="h-[108px] w-[108px] rounded-full bg-[#061A2D] border border-[#173F55] flex flex-col items-center justify-center">
+//           <h3 className="text-[28px] font-light">{center}</h3>
 
-          <p className="text-[10px] text-slate-400">TOTAL</p>
+//           <p className="text-[10px] text-slate-400">kW</p>
 
-          <h3 className="text-[28px] font-light">{center}</h3>
+//         </div>
 
-          <p className="text-[10px] text-slate-400">kW</p>
+//       </div>
 
-        </div>
+//     </div>
 
-      </div>
+//   );
 
-    </div>
 
-  );
 
+//   const ParameterRows = ({ rows }) => (
 
+//     <div>
 
-  const ParameterRows = ({ rows }) => (
+//       {rows.map(([label, value]) => (
 
-    <div>
+//         <div key={label} className="flex justify-between border-b border-[#173F55] py-3">
 
-      {rows.map(([label, value]) => (
+//           <span className="text-slate-400 text-[11px]">{label}</span>
 
-        <div key={label} className="flex justify-between border-b border-[#173F55] py-3">
+//           <span className="font-black">{value}</span>
 
-          <span className="text-slate-400 text-[11px]">{label}</span>
+//         </div>
 
-          <span className="font-black">{value}</span>
+//       ))}
 
-        </div>
+//     </div>
 
-      ))}
+//   );
 
-    </div>
 
-  );
 
+//   const Insight = ({ text }) => (
 
+//     <div className="p-6">
 
-  const Insight = ({ text }) => (
+//       <SectionTitle title="Insight" />
 
-    <div className="p-6">
+//       <p className="text-[13px] text-slate-300 leading-relaxed">{text}</p>
 
-      <SectionTitle title="Insight" />
+//       <h2 className="mt-6 text-[30px] font-light text-[#30E6D3]">HEALTHY</h2>
 
-      <p className="text-[13px] text-slate-300 leading-relaxed">{text}</p>
+//     </div>
 
-      <h2 className="mt-6 text-[30px] font-light text-[#30E6D3]">HEALTHY</h2>
+//   );
 
-    </div>
 
-  );
 
+//   const ComponentDetail = () => {
 
+//     if (!selectedItem) return null;
 
-  const ComponentDetail = () => {
 
-    if (!selectedItem) return null;
 
+//     if (selectedItem.key === "source") return <SourceDashboard item={selectedItem} />;
 
+//     if (selectedItem.key === "feeder") return <FeederDashboard item={selectedItem} />;
 
-    if (selectedItem.key === "source") return <SourceDashboard item={selectedItem} />;
+//     if (selectedItem.key === "transformer") return <TransformerDashboard item={selectedItem} />;
 
-    if (selectedItem.key === "feeder") return <FeederDashboard item={selectedItem} />;
+//     if (selectedItem.key === "kiosk") return <DistributionDashboard item={selectedItem} title="LT Kiosk Analytical Dashboard" subtitle="Kiosk-wise 433V distribution analytics" />;
 
-    if (selectedItem.key === "transformer") return <TransformerDashboard item={selectedItem} />;
+//     if (selectedItem.key === "busduct") return <DistributionDashboard item={selectedItem} title="Busduct Analytical Dashboard" subtitle="Busduct phase and load analytics" />;
 
-    if (selectedItem.key === "kiosk") return <DistributionDashboard item={selectedItem} title="LT Kiosk Analytical Dashboard" subtitle="Kiosk-wise 433V distribution analytics" />;
+//     if (selectedItem.key === "pcc") return <DistributionDashboard item={selectedItem} title="PCC Analytical Dashboard" subtitle="PCC to wing split and outgoing analytics" blocks={4} />;
 
-    if (selectedItem.key === "busduct") return <DistributionDashboard item={selectedItem} title="Busduct Analytical Dashboard" subtitle="Busduct phase and load analytics" />;
+//     if (selectedItem.key === "raising") return <DistributionDashboard item={selectedItem} title="Raising Main Analytical Dashboard" subtitle="Floor-wise rising main consumption analytics" blocks={10} />;
 
-    if (selectedItem.key === "pcc") return <DistributionDashboard item={selectedItem} title="PCC Analytical Dashboard" subtitle="PCC to wing split and outgoing analytics" blocks={4} />;
+//     if (selectedItem.key === "wing") return <WingDashboard item={selectedItem} />;
 
-    if (selectedItem.key === "raising") return <DistributionDashboard item={selectedItem} title="Raising Main Analytical Dashboard" subtitle="Floor-wise rising main consumption analytics" blocks={10} />;
 
-    if (selectedItem.key === "wing") return <WingDashboard item={selectedItem} />;
 
+//     return null;
 
+//   };
 
-    return null;
 
-  };
 
+//   return (
 
+//     <div className="h-screen w-full overflow-hidden bg-[#F4F7FA] text-[#0B3D38]">
 
-  return (
+//       <header className="h-[58px] px-8 flex items-center justify-between bg-[#006F66] text-white">
 
-    <div className="h-screen w-full overflow-hidden bg-[#F4F7FA] text-[#0B3D38]">
+//         <div onClick={() => navigate("/")} className="flex items-center cursor-pointer">
 
-      <header className="h-[58px] px-8 flex items-center justify-between bg-[#006F66] text-white">
+//           <div>
 
-        <div onClick={() => navigate("/")} className="flex items-center cursor-pointer">
+//             <h1 className="text-[24px] font-black tracking-[0.2em] uppercase leading-none">
 
-          <div>
+//               ARCOT <span className="text-[#30E6D3]">IIOT 1.0</span>
 
-            <h1 className="text-[24px] font-black tracking-[0.2em] uppercase leading-none">
+//             </h1>
 
-              ARCOT <span className="text-[#30E6D3]">IIOT 1.0</span>
+//             <p className="mt-1.5 text-[8px] tracking-[0.42em] uppercase text-white">
 
-            </h1>
+//               Industrial Internet of Things
 
-            <p className="mt-1.5 text-[8px] tracking-[0.42em] uppercase text-white">
+//             </p>
 
-              Industrial Internet of Things
+//           </div>
 
-            </p>
 
-          </div>
 
+//           <div className="mx-5 h-[42px] border-l border-white/40" />
 
 
-          <div className="mx-5 h-[42px] border-l border-white/40" />
 
+//           <img src={prestigeLogo} alt="Prestige" className="h-[46px] w-[90px] object-contain" />
 
+//         </div>
 
-          <img src={prestigeLogo} alt="Prestige" className="h-[46px] w-[90px] object-contain" />
 
-        </div>
 
+//         <button
 
+//           onClick={() => navigate("/")}
 
-        <button
+//           className="rounded-full border border-white/70 px-7 py-2.5 text-[11px] font-black uppercase tracking-[0.16em]"
 
-          onClick={() => navigate("/")}
+//         >
 
-          className="rounded-full border border-white/70 px-7 py-2.5 text-[11px] font-black uppercase tracking-[0.16em]"
+//           Dashboard
 
-        >
+//         </button>
 
-          Dashboard
+//       </header>
 
-        </button>
 
-      </header>
 
+//       <main className="relative w-full h-[calc(100vh-58px)] overflow-hidden">
 
+//         <aside className="absolute left-0 top-0 bottom-0 w-[210px] bg-[#006F66] px-3 py-5 text-white">
 
-      <main className="relative w-full h-[calc(100vh-58px)] overflow-hidden">
+//           <div className="mb-5 px-3">
 
-        <aside className="absolute left-0 top-0 bottom-0 w-[210px] bg-[#006F66] px-3 py-5 text-white">
+//             <p className="text-[10px] font-black tracking-[0.22em] uppercase text-white/70">
 
-          <div className="mb-5 px-3">
+//               Components
 
-            <p className="text-[10px] font-black tracking-[0.22em] uppercase text-white/70">
+//             </p>
 
-              Components
+//           </div>
 
-            </p>
 
-          </div>
 
+//           <div className="flex flex-col gap-2">
 
+//             {sideItems.map((item) => (
 
-          <div className="flex flex-col gap-2">
+//               <button
 
-            {sideItems.map((item) => (
+//                 key={item.key}
 
-              <button
+//                 onClick={() => setActiveView(item.key)}
 
-                key={item.key}
+//                 className={`h-11 w-full rounded-xl flex items-center gap-3 px-3 text-left transition ${
 
-                onClick={() => setActiveView(item.key)}
+//                   activeView === item.key
 
-                className={`h-11 w-full rounded-xl flex items-center gap-3 px-3 text-left transition ${
+//                     ? "bg-white text-[#006F66] shadow-md"
 
-                  activeView === item.key
+//                     : "text-white hover:bg-white/10"
 
-                    ? "bg-white text-[#006F66] shadow-md"
+//                 }`}
 
-                    : "text-white hover:bg-white/10"
+//               >
 
-                }`}
+//                 <span
 
-              >
+//                   className={`h-7 w-7 rounded-lg flex items-center justify-center text-[12px] font-black ${
 
-                <span
+//                     activeView === item.key
 
-                  className={`h-7 w-7 rounded-lg flex items-center justify-center text-[12px] font-black ${
+//                       ? "bg-[#E8F5F2] text-[#006F66]"
 
-                    activeView === item.key
+//                       : "bg-white/10 text-white"
 
-                      ? "bg-[#E8F5F2] text-[#006F66]"
+//                   }`}
 
-                      : "bg-white/10 text-white"
+//                 >
 
-                  }`}
+//                   {item.icon}
 
-                >
+//                 </span>
 
-                  {item.icon}
 
-                </span>
 
+//                 <span className="text-[12px] font-black">{item.label}</span>
 
+//               </button>
 
-                <span className="text-[12px] font-black">{item.label}</span>
+//             ))}
 
-              </button>
+//           </div>
 
-            ))}
+//         </aside>
 
-          </div>
 
-        </aside>
 
+// <section
 
+//   className={`ml-[210px] w-[calc(100%-210px)] h-full overflow-hidden ${
 
-<section
+//     activeView === "overview" ? "px-6 py-4 bg-[#F4F7FA]" : "p-0 bg-[#061A2D]"
 
-  className={`ml-[210px] w-[calc(100%-210px)] h-full overflow-hidden ${
+//   }`}
 
-    activeView === "overview" ? "px-6 py-4 bg-[#F4F7FA]" : "p-0 bg-[#061A2D]"
+// >          {activeView === "overview" ? <AllOverview /> : <ComponentDetail />}
 
-  }`}
+//         </section>
 
->          {activeView === "overview" ? <AllOverview /> : <ComponentDetail />}
+//       </main>
 
-        </section>
+//     </div>
 
-      </main>
+//   );
 
-    </div>
-
-  );
-
-}
+// }

@@ -31,6 +31,10 @@ import FloorOverview from "./pages/FloorOverview";
 import ClientOverview from "./pages/ClientOverview";
 import OverviewPage from "./pages/OverviewPage";
 import AuthPage from "./pages/AuthPage";
+import SuperAdmin from "./SuperAdmin";
+import ClientAdmin from "./AdminDashboard";
+import AdminLogin from "./AdminLogin";
+import AdminDashboard from "./AdminDashboard";
 
 function ProtectedRoute({ children }) {
   const isLoggedIn = localStorage.getItem("bmsLoggedIn") === "true";
@@ -87,6 +91,11 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+ 
+<Route path="/admin/superadmin" element={<SuperAdmin />} />
+<Route path="/admin/login" element={<AdminLogin />} />
+<Route path="/admin/dashboard" element={<AdminDashboard />} />
 
       </Routes>
     </BrowserRouter>

@@ -2,11 +2,8 @@
 // import { Link } from "react-router-dom";
 // import { Zap, Gauge, Activity, Cpu, ArrowDown, ShieldAlert, ChevronDown, ChevronUp } from "lucide-react";
 // import aiLogo from "../assets/AI LOGO.png";
-
-
 // export default function MainOverview() {
 //   const [transformersExpanded, setTransformersExpanded] = useState(false);
-
 //   const outgoing = [
 //     { name: "OG-1", transformer: "TR-1" },
 //     { name: "OG-2", transformer: "TR-2" },
@@ -15,7 +12,6 @@
 //     { name: "OG-5", transformer: "TR-5" },
 //     { name: "OG-6", transformer: "TR-6" },
 //   ];
-
 //   const transformers = [
 //     { id: "TR-1", oilTemp: "54°C", windingTemp: "61°C", buchholz: "Healthy", load: "68%" },
 //     { id: "TR-2", oilTemp: "52°C", windingTemp: "59°C", buchholz: "Healthy", load: "62%" },
@@ -24,7 +20,6 @@
 //     { id: "TR-5", oilTemp: "56°C", windingTemp: "63°C", buchholz: "Healthy", load: "74%" },
 //     { id: "TR-6", oilTemp: "51°C", windingTemp: "57°C", buchholz: "Healthy", load: "60%" },
 //   ];
-
 //   // Helper component for animated vertical lines
 //   const VerticalConnector = ({ height = "h-12", label = "" }) => (
 //     <div className="flex flex-col items-center w-full">
@@ -38,7 +33,6 @@
 //       )}
 //     </div>
 //   );
-
 //   // Helper component for busbar equipment blocks
 //   const BusbarBlock = ({ name, voltage }) => (
 //     <div className="w-full max-w-4xl mx-auto my-4 busbar-glow-bg border-2 border-[#004AAD] p-4 text-center rounded shadow-lg relative">
@@ -55,10 +49,8 @@
 //       </div>
 //     </div>
 //   );
-
 //   const [kiosksExpanded, setKiosksExpanded] = useState(false);
 //   const [busbarsExpanded, setBusbarsExpanded] = useState(false);
-
 //   // Helper component for building tower UI
 //   const BuildingTower = ({ id, name, floors, clients }) => (
 //     <Link
@@ -71,10 +63,8 @@
 //         <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-6 bg-[#004AAD]">
 //           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-emerald-400" />
 //         </div>
-
 //         {/* Helipad glow */}
 //         <div className="h-[2px] w-full bg-[#004AAD] shadow-[0_0_10px_#00E5FF]" />
-
 //         {/* Windows layout representing 20 floors */}
 //         <div className="grid grid-cols-4 gap-1.5 h-44 overflow-hidden py-1">
 //           {Array.from({ length: 48 }).map((_, idx) => (
@@ -84,11 +74,9 @@
 //             />
 //           ))}
 //         </div>
-
 //         {/* Tower Base */}
 //         <div className="h-2 w-full bg-[#004AAD]" />
 //       </div>
-
 //       {/* Info details */}
 //       <div className="flex-1 text-center md:text-left">
 //         <span className="text-[10px] font-300 tracking-widest text-blue-300 uppercase">
@@ -116,10 +104,8 @@
 //       </div>
 //     </Link>
 //   );
-
 //   return (
 //     <main className="min-h-screen bg-white text-[#081F5C] flex flex-col font-sans">
-
 //       {/* SCADA Top Navigation Bar */}
 //       {/* <header className="sticky top-0 z-50 bg-[#081F5C] border-b-4 border-[#004AAD] px-6 py-4 text-white shadow-md">
 //         <div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -144,8 +130,6 @@
 //           </div>
 //         </div>
 //       </header> */}
-
-
 // <header className="sticky top-0 z-50 h-[72px] bg-[#081F5C] border-b-4 border-[#004AAD] px-4 text-white shadow-md">
 //   <div className="h-full mx-auto max-w-7xl flex justify-between items-center">
 
@@ -170,13 +154,9 @@
 
 //   </div>
 // </header>
-
-
-
 //       {/* Main Single Line Diagram Console */}
 //       <section className="flex-1 w-full max-w-7xl mx-auto px-6 py-8">
 //         <div className="bg-slate-50 border border-slate-200 p-6 md:p-10 shadow-inner rounded-lg">
-
 //           {/* Section Heading */}
 //           <div className="mb-8 border-b-2 border-slate-200 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
 //             <div>
@@ -189,7 +169,6 @@
 //             </div>
 //             <strong className="text-xs bg-[#081F5C] text-white px-3 py-1 font-bold">33kV / 433V GRID</strong>
 //           </div>
-
 //           {/* 1. SOURCE SECTION */}
 //           <div className="max-w-3xl mx-auto bg-[#081F5C] border-2 border-[#004AAD] p-6 text-white shadow-lg relative panel-active-glow rounded-md">
 //             <div className="absolute top-3 right-3 flex gap-2">
@@ -198,13 +177,11 @@
 //                 ONLINE
 //               </span>
 //             </div>
-
 //             <div className="text-center pb-4 mb-4 border-b border-blue-900/60">
 //               <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] block uppercase">CENTRAL CONTROL PANEL</span>
 //               <h3 className="text-2xl font-black mt-1 text-white tracking-widest">33kV SOURCE PANELS</h3>
 //               <p className="text-xs text-blue-200 mt-1 font-semibold">Dual high-tension grid utility connection monitoring node</p>
 //             </div>
-
 //             <div className="grid gap-4 md:grid-cols-2">
 //               {/* Feeder 1 */}
 //               <div className="bg-[#05143C] border border-[#004AAD] p-4 rounded relative">
@@ -222,7 +199,6 @@
 //                   </div>
 //                 </div>
 //               </div>
-
 //               {/* Feeder 2 */}
 //               <div className="bg-[#05143C] border border-[#004AAD] p-4 rounded relative opacity-90">
 //                 <div className="flex justify-between items-start">
@@ -241,7 +217,6 @@
 //               </div>
 //             </div>
 //           </div>
-
 //           {/* SVG Animated Split Lines (Source -> Incomings) */}
 //           <div className="w-full max-w-4xl mx-auto h-16 relative">
 //             <svg className="w-full h-full overflow-visible" viewBox="0 0 800 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -258,7 +233,6 @@
 //               <path d="M 400 0 V 32 H 600 V 64" stroke="#00E5FF" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="flow-path-right" markerEnd="url(#arrow-cyan)" />
 //             </svg>
 //           </div>
-
 //           {/* 2. INCOMING SECTION (Side-by-Side) */}
 //           <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
 //             {/* Incoming 1 */}
@@ -268,7 +242,6 @@
 //               </div>
 //               <span className="text-[9px] font-black text-blue-300 tracking-wider block uppercase">FEEDER BREAKER 1</span>
 //               <h4 className="text-lg font-black mt-1 text-white">Incoming 1</h4>
-
 //               <div className="mt-4 grid grid-cols-2 gap-2 bg-[#05143C] p-3 border border-blue-900">
 //                 <div>
 //                   <span className="text-[9px] text-blue-300 font-bold block">VOLTAGE</span>
@@ -280,7 +253,6 @@
 //                 </div>
 //               </div>
 //             </div>
-
 //             {/* Incoming 2 */}
 //             <div className="bg-[#081F5C] border-2 border-[#004AAD] p-5 text-white shadow-md relative panel-active-glow rounded-md">
 //               <div className="absolute top-2 right-2">
@@ -288,7 +260,6 @@
 //               </div>
 //               <span className="text-[9px] font-black text-blue-300 tracking-wider block uppercase">FEEDER BREAKER 2</span>
 //               <h4 className="text-lg font-black mt-1 text-white">Incoming 2</h4>
-
 //               <div className="mt-4 grid grid-cols-2 gap-2 bg-[#05143C] p-3 border border-blue-900">
 //                 <div>
 //                   <span className="text-[9px] text-blue-300 font-bold block">VOLTAGE</span>
@@ -301,7 +272,6 @@
 //               </div>
 //             </div>
 //           </div>
-
 //           {/* SVG Animated Merge Lines (Incomings -> Outgoing) */}
 //           <div className="w-full max-w-4xl mx-auto h-16 relative">
 //             <svg className="w-full h-full overflow-visible" viewBox="0 0 800 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -313,7 +283,6 @@
 //               <path d="M 600 0 V 32 H 400 V 64" stroke="#00E5FF" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="flow-path-right" markerEnd="url(#arrow-cyan)" />
 //             </svg>
 //           </div>
-
 //           {/* 3. 33kV OUTGOING PANEL */}
 //           <div className="w-full max-w-4xl mx-auto my-2 busbar-glow-bg border-2 border-[#004AAD] p-5 text-center rounded shadow-lg relative panel-active-glow">
 //             <div className="busbar-glow-element" />
@@ -333,16 +302,13 @@
 //               </div>
 //             </div>
 //           </div>
-
 //           <VerticalConnector height="h-10" label="Feeder Bus Connection" />
-
 //           {/* 4. 33kV FEEDER PANEL */}
 //           <div className="w-full max-w-5xl mx-auto my-4 bg-[#081F5C] border-2 border-[#004AAD] p-6 text-white shadow-lg relative panel-active-glow rounded-md">
 //             <div className="text-center pb-4 mb-4 border-b border-blue-900/60">
 //               <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] block uppercase">FEEDER SWITCHGEAR PANEL</span>
 //               <h3 className="text-xl font-black text-white tracking-widest mt-1">33kV FEEDER PANEL</h3>
 //             </div>
-
 //             {/* 1. INCOMING FEEDER Section */}
 //             <div className="mb-4">
 //               <div className="max-w-xs mx-auto bg-[#05143C] border border-[#004AAD] p-4 text-center rounded relative">
@@ -354,7 +320,6 @@
 //                 </div>
 //               </div>
 //             </div>
-
 //             {/* Animated Split SVG Flow Lines inside the panel */}
 //             <div className="w-full h-12 relative my-2">
 //               <svg className="w-full h-full overflow-visible" viewBox="0 0 960 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -364,8 +329,7 @@
 //                   </marker>
 //                 </defs>
 //                 {/* Background line bus split */}
-//                 <path d="M 480 0 V 16 H 80 V 48 M 80 16 H 240 V 48 M 240 16 H 400 V 48 M 400 16 H 560 V 48 M 560 16 H 720 V 48 M 720 16 H 880 V 48" stroke="#004AAD" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                
+//                 <path d="M 480 0 V 16 H 80 V 48 M 80 16 H 240 V 48 M 240 16 H 400 V 48 M 400 16 H 560 V 48 M 560 16 H 720 V 48 M 720 16 H 880 V 48" stroke="#004AAD" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />   
 //                 {/* Animated Flow Lines */}
 //                 <path d="M 480 0 V 16 H 80 V 48" stroke="#00E5FF" strokeWidth="2.5" className="flow-path-left" markerEnd="url(#arrow-cyan-small)" />
 //                 <path d="M 480 0 V 16 H 240 V 48" stroke="#00E5FF" strokeWidth="2.5" className="flow-path-left" markerEnd="url(#arrow-cyan-small)" />
@@ -375,7 +339,6 @@
 //                 <path d="M 480 0 V 16 H 880 V 48" stroke="#00E5FF" strokeWidth="2.5" className="flow-path-right" markerEnd="url(#arrow-cyan-small)" />
 //               </svg>
 //             </div>
-
 //             {/* 2. OUTGOING FEEDERS Section (Grid of 6) */}
 //             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6 mt-2">
 //               {outgoing.map((item) => (
@@ -394,12 +357,10 @@
 //               ))}
 //             </div>
 //           </div>
-
 //           {/* Connectors to Transformers (Collapsed/Header Feed) */}
 //           {!transformersExpanded && (
 //             <VerticalConnector height="h-10" label="Transformer Feed" />
 //           )}
-
 //           {/* 6. 33/0.433kV TRANSFORMERS CENTRAL CARD */}
 //  <div className="flex justify-center w-full my-3">
 //   <div
@@ -407,7 +368,6 @@
 //     className="w-[90%] md:w-[70%] lg:w-[45%] h-32 max-w-xl bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-lg rounded-md cursor-pointer hover:bg-[#0A276E] transition-colors"
 //   >
 //     <div className="h-full flex flex-col items-center justify-center text-center">
-
 //       {/* Transformer Icon */}
 //       <svg
 //         className="w-16 h-10 text-blue-300 mb-2"
@@ -429,20 +389,16 @@
 //           strokeWidth="2.5"
 //         />
 //       </svg>
-
 //       {/* Text */}
 //       <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">
 //         STEP-DOWN SUBSTATION
 //       </span>
-
 //       <h3 className="text-lg font-black text-white tracking-wider mt-1">
 //         33 / 0.433kV TRANSFORMERS
 //       </h3>
-
 //     </div>
 //   </div>
 // </div>
-
 //           {/* Expanded details container */}
 //         <div
 //   className={`transition-all duration-500 ease-in-out overflow-hidden ${
@@ -457,25 +413,20 @@
 //       <div className="flow-pulse-vertical" />
 //     </div>
 //   </div>
-
 //   {/* Transformer row */}
 //   <div className="max-w-7xl mx-auto px-4">
-
 //     {/* Horizontal bus without extra left/right line */}
 //     <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden">
 //       <div className="flow-pulse-horizontal" />
 //     </div>
-
 //     {/* 6 Transformers in same line */}
 //     <div className="grid grid-cols-6 gap-4">
 //       {transformers.map((tf) => (
 //         <div key={tf.id} className="flex flex-col items-center">
-
 //           {/* Vertical drop line */}
 //           <div className="flow-line-vertical h-8">
 //             <div className="flow-pulse-vertical" />
 //           </div>
-
 //           {/* Transformer Card */}
 //           <div className="w-full bg-[#081F5C] border-2 border-[#004AAD] p-4 text-white shadow-md flex flex-col justify-between rounded relative panel-active-glow min-h-[200px]">
 //             <div>
@@ -501,16 +452,13 @@
 //                   />
 //                 </svg>
 //               </div>
-
 //               <strong className="text-base font-black block text-center tracking-widest">
 //                 {tf.id}
 //               </strong>
-
 //               <span className="text-[9px] font-bold text-blue-300 text-center block uppercase">
 //                 33kV / 433V TX
 //               </span>
 //             </div>
-
 //             <div className="mt-4 space-y-2 border-t border-blue-900 pt-3">
 //               <div className="flex justify-between items-center text-[10px]">
 //                 <span className="text-blue-200">Oil Temp:</span>
@@ -518,21 +466,18 @@
 //                   {tf.oilTemp}
 //                 </span>
 //               </div>
-
 //               <div className="flex justify-between items-center text-[10px]">
 //                 <span className="text-blue-200">Wind Temp:</span>
 //                 <span className="font-extrabold text-white">
 //                   {tf.windingTemp}
 //                 </span>
 //               </div>
-
 //               <div className="flex justify-between items-center text-[10px]">
 //                 <span className="text-blue-200">Relay:</span>
 //                 <span className="font-extrabold text-emerald-400">
 //                   {tf.buchholz}
 //                 </span>
 //               </div>
-
 //               <div className="flex justify-between items-center text-[10px]">
 //                 <span className="text-blue-200">Load:</span>
 //                 <span className="font-extrabold text-white">
@@ -541,13 +486,11 @@
 //               </div>
 //             </div>
 //           </div>
-
 //         </div>
 //       ))}
 //     </div>
 //   </div>
 // </div>
-
 //           {/* Stepped-Down Feed to LT Kiosk */}
 //           {transformersExpanded ? (
 //             <div className="w-full max-w-4xl mx-auto grid grid-cols-6 h-12 px-4">
@@ -562,7 +505,6 @@
 //           ) : (
 //             <VerticalConnector height="h-10" label="Stepped-Down Feed" />
 //           )}
-
 //           {/* 7. COMMON LT KIOSK */}
 //           {/* <div className="max-w-4xl mx-auto bg-[#081F5C] border-2 border-[#004AAD] p-6 text-white shadow-xl">
 //             <div className="text-center">
@@ -570,7 +512,6 @@
 //               <h3 className="text-2xl font-black tracking-widest text-white mt-1"> LT KIOSK</h3>
 //               <p className="text-xs text-blue-200 mt-1 font-semibold">Collects stepped-down 433V lines from all 6 transformers</p>
 //             </div>
-
 //             <div className="mt-6 grid grid-cols-3 gap-4 border-t border-blue-900 pt-4">
 //               <div className="bg-[#05143C] border border-blue-900 p-4 text-center">
 //                 <span className="text-[10px] text-blue-200 block font-bold">BUSBAR VOLTAGE</span>
@@ -586,7 +527,6 @@
 //               </div>
 //             </div>
 //           </div> */}
-
 //           <div className="flex justify-center w-full my-3">
 //   <div
 //     onClick={() => setKiosksExpanded(!kiosksExpanded)}
@@ -596,14 +536,12 @@
 //       <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">
 //         STEP-DOWN COMBINER PANEL
 //       </span>
-
 //       <h3 className="text-lg font-black text-white tracking-wider mt-1">
 //         LT KIOSK
 //       </h3>
 //     </div>
 //   </div>
 // </div>
-
 // <div
 //   className={`transition-all duration-500 ease-in-out overflow-hidden ${
 //     kiosksExpanded
@@ -616,28 +554,23 @@
 //       <div className="flow-pulse-vertical" />
 //     </div>
 //   </div>
-
 //   <div className="max-w-7xl mx-auto px-4">
 //     <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden">
 //       <div className="flow-pulse-horizontal" />
 //     </div>
-
 //     <div className="grid grid-cols-6 gap-4">
 //       {Array.from({ length: 6 }).map((_, index) => (
 //         <div key={index} className="flex flex-col items-center">
 //           <div className="flow-line-vertical h-8">
 //             <div className="flow-pulse-vertical" />
 //           </div>
-
 //           <div className="w-full bg-[#081F5C] border-2 border-[#004AAD] p-4 text-white shadow-md rounded relative panel-active-glow min-h-[200px] flex flex-col items-center justify-center text-center">
 //             <span className="text-[10px] font-black text-blue-300 uppercase tracking-wider">
 //               LT KIOSK
 //             </span>
-
 //             <strong className="text-xl font-black tracking-widest mt-2">
 //               KIOSK-{index + 1}
 //             </strong>
-
 //             <span className="text-[9px] font-bold text-blue-300 uppercase mt-1">
 //               433V PANEL
 //             </span>
@@ -647,37 +580,28 @@
 //     </div>
 //   </div>
 // </div>
-
 //           <VerticalConnector height="h-10" />
-
 //           {/* 8. LT BUSBAR */}
 //           {/* <BusbarBlock name="COMMON LT BUSBAR (433V)" voltage="433V" />
-
 //           <VerticalConnector height="h-14" label="Building Distribution Lines" /> */}
-
 // <div className="flex justify-center w-full my-3">
 //   <div
 //     onClick={() => setBusbarsExpanded(!busbarsExpanded)}
 //     className="w-[90%] md:w-[70%] lg:w-[45%] h-32 max-w-xl bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-lg rounded-md cursor-pointer hover:bg-[#0A276E] transition-colors"
 //   >
 //     <div className="h-full flex flex-col items-center justify-center text-center">
-
 //       <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">
 //         POWER DISTRIBUTION
 //       </span>
-
 //       <h3 className="text-lg font-black text-white tracking-wider mt-1">
 //          LT BUSBAR
 //       </h3>
-
 //       <span className="text-xs text-blue-300 mt-1">
 //         433V
 //       </span>
-
 //     </div>
 //   </div>
 // </div>
-
 // <div
 //   className={`transition-all duration-500 ease-in-out overflow-hidden ${
 //     busbarsExpanded
@@ -685,74 +609,53 @@
 //       : "max-h-0 opacity-0 pointer-events-none"
 //   }`}
 // >
-
 //   {/* Flow */}
 //   <div className="flex justify-center h-10">
 //     <div className="flow-line-vertical h-full">
 //       <div className="flow-pulse-vertical" />
 //     </div>
 //   </div>
-
 //   <div className="max-w-7xl mx-auto px-4">
-
 //     {/* Horizontal Bus */}
 //     <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden">
 //       <div className="flow-pulse-horizontal" />
 //     </div>
-
 //    {/* 6 LT Busbars */}
 // <div className="grid grid-cols-6 gap-4">
 //   {Array.from({ length: 6 }).map((_, index) => (
 //     <div key={index} className="flex flex-col items-center">
-
 //       <div className="flow-line-vertical h-8">
 //         <div className="flow-pulse-vertical" />
 //       </div>
-
 //       <div className="w-full bg-[#081F5C] border-2 border-[#004AAD] p-4 text-white shadow-md rounded relative panel-active-glow min-h-[200px] flex flex-col items-center justify-center">
 //         <span className="text-[10px] font-black text-blue-300 uppercase tracking-wider">
 //           LT BUSBAR
 //         </span>
-
 //         <strong className="text-xl font-black tracking-widest mt-2">
 //           BUS-{index + 1}
 //         </strong>
-
 //         <span className="text-[9px] font-bold text-blue-300 uppercase mt-1">
 //           433V
 //         </span>
 //       </div>
-
 //     </div>
 //   ))}
 // </div>
-
 //   </div>
-
 // </div>
-
 // {/* Flow below all 6 busbars like LT Kiosk */}
 // <div className="flex justify-center h-14">
 //   <div className="flow-line-vertical h-full">
 //     <div className="flow-pulse-vertical" />
 //   </div>
 // </div>
-
-
-
 //           {/* 9. SKY-1 / SKY-2 BUILDINGS */}
 //           <div className="grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
 //             <BuildingTower id="sky-1" name="WING-A BUILDING" floors={20} clients={40} />
 //             <BuildingTower id="sky-2" name="WING-B BUILDING" floors={20} clients={40} />
 //           </div>
-
 //         </div>
 //       </section>
-
-
-
-
-
 //       {/* Footer System Diagnostics */}
 //       <footer className="bg-slate-100 border-t border-slate-200 py-6 px-6 text-slate-500 text-xs">
 //         <div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between items-center gap-4 font-semibold">
@@ -763,7 +666,6 @@
 //           </div>
 //         </div>
 //       </footer>
-
 //     </main>
 //   );
 // }
@@ -775,12 +677,4379 @@
 
 
 
-import React, { useState } from "react";
+
+// import React, { useEffect, useMemo, useState } from "react";
+// import { Link } from "react-router-dom";
+// import { Activity, ArrowLeft, Gauge, Maximize2, Radio, ShieldAlert, X, Zap } from "lucide-react";
+// import aiLogo from "../assets/AI LOGO.png";
+// import { useNavigate } from "react-router-dom";
+// import prestigeLogo from "../assets/ser-removebg.png";
+// import {
+//   Area,
+//   AreaChart,
+//   Bar,
+//   BarChart,
+//   CartesianGrid,
+//   Cell,
+//   LabelList,
+//   Line,
+//   LineChart,
+//   PolarAngleAxis,
+//   RadialBar,
+//   RadialBarChart,
+//   ReferenceLine,
+//   ResponsiveContainer,
+//   Tooltip,
+//   XAxis,
+//   YAxis,
+// } from "recharts";
+
+// export default function MainOverview() {
+//   const [activePopup, setActivePopup] = useState(null);
+//   const [transformersExpanded, setTransformersExpanded] = useState(true);
+//   const [kiosksExpanded, setKiosksExpanded] = useState(true);
+//   const [busbarsExpanded, setBusbarsExpanded] = useState(true);
+
+// const [openedBusbars, setOpenedBusbars] = useState([]);
+// const navigate = useNavigate();
+
+//   const outgoing = [
+//     { name: "OG-1", transformer: "TR-1" },
+//     { name: "OG-2", transformer: "TR-2" },
+//     { name: "OG-3", transformer: "TR-3" },
+//     { name: "OG-4", transformer: "TR-4" },
+//     { name: "OG-5", transformer: "TR-5" },
+//     { name: "OG-6", transformer: "TR-6" },
+//   ];
+
+//   const transformers = [
+//     { id: "TR-1", oilTemp: "54°C", windingTemp: "61°C", buchholz: "Healthy", load: "68%" },
+//     { id: "TR-2", oilTemp: "52°C", windingTemp: "59°C", buchholz: "Healthy", load: "62%" },
+//     { id: "TR-3", oilTemp: "55°C", windingTemp: "60°C", buchholz: "Healthy", load: "71%" },
+//     { id: "TR-4", oilTemp: "53°C", windingTemp: "58°C", buchholz: "Healthy", load: "65%" },
+//     { id: "TR-5", oilTemp: "56°C", windingTemp: "63°C", buchholz: "Healthy", load: "74%" },
+//     { id: "TR-6", oilTemp: "51°C", windingTemp: "57°C", buchholz: "Healthy", load: "60%" },
+//   ];
+
+
+// const OverviewBox = ({
+//   title,
+//   subtitle,
+//   onClick,
+//   liveStatus = {
+//     on: true,
+//     healthy: true,
+//     off: false,
+//   },
+// }) => {
+//   const conditions = [
+//     {
+//       key: "on",
+//       label: "ON",
+//       value: liveStatus.on ? "Active" : "Inactive",
+//       active: liveStatus.on,
+//       color: "emerald",
+//     },
+//     {
+//       key: "healthy",
+//       label: "HEALTHY",
+//       value: liveStatus.healthy ? "Normal" : "Warning",
+//       active: liveStatus.healthy,
+//       color: "yellow",
+//     },
+//     {
+//       key: "off",
+//       label: "OFF",
+//       value: liveStatus.off ? "Stopped" : "No Fault",
+//       active: liveStatus.off,
+//       color: "red",
+//     },
+//   ];
+
+//   const colorClasses = {
+//     emerald: {
+//       dot: "bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)]",
+//       text: "text-emerald-400",
+//     },
+//     yellow: {
+//       dot: "bg-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.9)]",
+//       text: "text-yellow-400",
+//     },
+//     red: {
+//       dot: "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.9)]",
+//       text: "text-red-500",
+//     },
+//   };
+
+//   return (
+//     <div
+//       onClick={onClick}
+//       className="h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white rounded-[10px] shadow-xl panel-active-glow flex flex-col text-center cursor-pointer overflow-hidden"
+//     >
+//      <div className="flex-1 flex flex-col items-center justify-center px-4">
+//   <h4 className="text-xl font-bold uppercase tracking-[0.05em] text-white">
+//     {title}
+//   </h4>
+
+//   <span className="mt-1 text-[11px] text-slate-300 font-medium">
+//     {subtitle}
+//   </span>
+// </div>
+
+//       <div className="grid grid-cols-3 border-t border-[#004AAD]/60 bg-[#061746]">
+//         {conditions.map((item) => {
+//           const c = colorClasses[item.color];
+
+//           return (
+//             <div
+//               key={item.key}
+//               className="py-2 flex flex-col items-center justify-center border-r last:border-r-0 border-[#004AAD]/40"
+//             >
+//               <div className="flex items-center gap-1.5">
+//                 <span
+//                   className={`h-2.5 w-2.5 rounded-full ${
+//                     item.active ? c.dot : "bg-slate-600 opacity-40"
+//                   }`}
+//                 />
+//                 <span
+//                   className={`text-[10px] font-black uppercase ${
+//                     item.active ? c.text : "text-slate-500"
+//                   }`}
+//                 >
+//                   {item.label}
+//                 </span>
+//               </div>
+
+//               <span className="mt-1 text-[8px] font-semibold text-slate-300 uppercase tracking-wide">
+//                 {item.value}
+//               </span>
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// const FlowLineH = () => (
+//   <div className="h-[4px] w-full bg-cyan-400 relative overflow-hidden">
+//     <div className="flow-pulse-horizontal" />
+//   </div>
+// );
+
+// const FlowLineV = () => (
+//   <div className="w-[4px] h-full bg-cyan-400 relative overflow-hidden">
+//     <div className="flow-pulse-vertical" />
+//   </div>
+// );
+
+//  const PopupShell = ({ title, children, onBack }) => (
+//   <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
+// <div className="w-full max-w-7xl h-[calc(100vh-110px)] overflow-y-auto bg-slate-50 border-2 border-[#004AAD] rounded-xl shadow-2xl p-6 relative">      <div className="sticky top-0 z-20 bg-slate-50 border-b border-slate-200 pb-4 mb-6 flex items-center justify-between">
+//         <div>
+//           <span className="text-[10px] font-black tracking-[0.25em] uppercase text-[#004AAD]">
+//             BMS Detail View
+//           </span>
+//           <h2 className="text-xl font-black text-[#081F5C] uppercase mt-1">
+//             {title}
+//           </h2>
+//         </div>
+
+//         <div className="flex items-center gap-2">
+//           {onBack && (
+//             <button
+//               type="button"
+//               onClick={onBack}
+//               className="h-9 w-9 rounded bg-[#004AAD] text-white flex items-center justify-center hover:bg-[#003A86] transition-colors"
+//             >
+//               ←
+//             </button>
+//           )}
+
+//           <button
+//             type="button"
+//             onClick={() => setActivePopup(null)}
+//             className="h-9 w-9 rounded bg-[#081F5C] text-white flex items-center justify-center hover:bg-[#0A276E] transition-colors"
+//           >
+//             <X className="h-5 w-5" />
+//           </button>
+//         </div>
+//       </div>
+
+//       {children}
+//     </div>
+//   </div>
+// );
+
+// const sourceAnalytics = {
+//   inc1Analytics: {
+//     title: "INC1 Incoming Feeder",
+//     subtitle: "Primary Incoming Supply",
+//     kwh: "1,280",
+//     kvh: "1,195",
+//     current: "420 A",
+//     voltage: "33.0 kV",
+//     pf: "0.98",
+//     load: 78,
+//     health: 94,
+//     status: "Stable",
+//   },
+
+//   outAnalytics: {
+//     title: "Outgoing Busbar",
+//     subtitle: "Outgoing Distribution Supply",
+//     kwh: "1,560",
+//     kvh: "1,430",
+//     current: "460 A",
+//     voltage: "33.0 kV",
+//     pf: "0.99",
+//     load: 86,
+//     health: 96,
+//     status: "Stable",
+//   },
+
+//   inc2Analytics: {
+//     title: "INC2 Incoming Feeder",
+//     subtitle: "Secondary Incoming Supply",
+//     kwh: "1,110",
+//     kvh: "1,020",
+//     current: "390 A",
+//     voltage: "33.0 kV",
+//     pf: "0.97",
+//     load: 72,
+//     health: 92,
+//     status: "Stable",
+//   },
+
+//   meterAnalytics: {
+//     title: "Metering Unit",
+//     subtitle: "33kV Energy Monitoring Meter",
+//     kwh: "1,420",
+//     kvh: "1,300",
+//     current: "435 A",
+//     voltage: "33.0 kV",
+//     pf: "0.98",
+//     load: 81,
+//     health: 95,
+//     status: "Stable",
+//   },
+
+//   feederAnalytics: {
+//     title: "33kV Feeder",
+//     subtitle: "Feeder Switchgear Panel",
+//     kwh: "1,385",
+//     kvh: "1,260",
+//     current: "410 A",
+//     voltage: "33.0 kV",
+//     pf: "0.97",
+//     load: 76,
+//     health: 93,
+//     status: "Stable",
+//   },
+// };
+
+// const numberFrom = (value, fallback = 0) => {
+//   const parsed = Number(String(value ?? "").replace(/[^\d.-]/g, ""));
+//   return Number.isFinite(parsed) ? parsed : fallback;
+// };
+
+// const clampValue = (value, min, max) =>
+//   Math.min(Math.max(value, min), max);
+
+// const analyticsTooltipStyle = {
+//   background: "#061737",
+//   border: "1px solid rgba(56,189,248,0.35)",
+//   borderRadius: "8px",
+//   color: "#ffffff",
+//   boxShadow: "0 14px 35px rgba(0,0,0,0.35)",
+// };
+
+// const MetricAnalyticsCard = ({
+//   number,
+//   icon,
+//   title,
+//   subtitle,
+//   value,
+//   unit,
+//   change,
+//   children,
+//   footer,
+//   className = "",
+// }) => (
+//   <article
+//     className={`relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] shadow-[0_18px_45px_rgba(0,0,0,0.24)] ${className}`}
+//   >
+//     <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
+
+//     <div className="flex h-full min-h-0 flex-col p-4">
+//       <div className="flex items-start justify-between gap-3">
+//         <div className="flex min-w-0 items-center gap-3">
+//           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cyan-400/60 bg-cyan-400/[0.06] text-cyan-300">
+//             {icon}
+//           </div>
+
+//           <div className="min-w-0">
+//             <div className="flex items-center gap-2">
+//               <span className="flex h-6 w-6 items-center justify-center rounded bg-[#06316E] text-[11px] font-black text-cyan-300">
+//                 {number}
+//               </span>
+
+//               <h3 className="truncate text-[14px] font-black uppercase tracking-[0.06em] text-white">
+//                 {title}
+//               </h3>
+//             </div>
+
+//             <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.12em] text-sky-400">
+//               {subtitle}
+//             </p>
+//           </div>
+//         </div>
+
+//         <div className="shrink-0 rounded-md border border-emerald-400/25 bg-emerald-400/[0.06] px-2.5 py-1.5 text-right">
+//           <p className="text-[11px] font-black text-emerald-400">
+//             ↑ {change}
+//           </p>
+//           <p className="text-[8px] text-slate-400">vs yesterday</p>
+//         </div>
+//       </div>
+
+//       <div className="mt-2 pl-[52px]">
+//         <div className="flex items-end gap-2">
+//           <strong className="text-[25px] font-semibold leading-none tracking-tight text-white">
+//             {value}
+//           </strong>
+
+//           {unit && (
+//             <span className="pb-0.5 text-[14px] font-semibold text-slate-200">
+//               {unit}
+//             </span>
+//           )}
+//         </div>
+//       </div>
+
+//       <div className="mt-2 min-h-0 flex-1">{children}</div>
+
+//       <div className="mt-2 grid grid-cols-3 overflow-hidden rounded-lg border border-[#153B69] bg-[#061737]">
+//         {footer.map((item, index) => (
+//           <div
+//             key={item.label}
+//             className={`px-3 py-2 ${
+//               index !== footer.length - 1
+//                 ? "border-r border-[#153B69]"
+//                 : ""
+//             }`}
+//           >
+//             <p className="text-[8px] font-bold uppercase tracking-[0.08em] text-sky-400">
+//               {item.label}
+//             </p>
+//             <p className="mt-0.5 truncate text-[11px] font-bold text-white">
+//               {item.value}
+//             </p>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   </article>
+// );
+
+// const createElectricalAnalytics = (data) => {
+//   const kwh = numberFrom(data.kwh, 1280);
+//   const kvh = numberFrom(data.kvh, 1195);
+//   const current = numberFrom(data.current, 420);
+//   const voltage = numberFrom(data.voltage, 33);
+//   const isHighVoltage = /kv/i.test(String(data.voltage));
+//   const voltageUnit = isHighVoltage ? "kV" : "V";
+
+//   const kwhTrend = [
+//     80, 235, 390, 525, 650, 780, 920, 1050, 1130, 1110, 1275, 1310, kwh,
+//   ].map((value, index) => ({
+//     time: `${String(index * 2).padStart(2, "0")}:00`,
+//     value,
+//   }));
+
+//   const currentWave = Array.from({ length: 42 }, (_, index) => ({
+//     time: `${Math.round((index / 41) * 100)}ms`,
+//     value:
+//       Math.sin(index * 0.68) * current * 1.28 +
+//       Math.sin(index * 1.84) * current * 0.06,
+//   }));
+
+//   const baseVoltage = voltage;
+//   const voltageSpread = isHighVoltage ? 0.55 : 7;
+//   const voltageTrend = Array.from({ length: 38 }, (_, index) => ({
+//     time:
+//       index % 7 === 0
+//         ? `13:${String(27 + Math.floor(index / 7)).padStart(2, "0")}`
+//         : "",
+//     phaseR:
+//       baseVoltage +
+//       Math.sin(index * 0.36) * voltageSpread +
+//       Math.sin(index * 0.12) * voltageSpread * 0.45,
+//     phaseY:
+//       baseVoltage -
+//       voltageSpread * 0.2 +
+//       Math.sin(index * 0.41 + 1.1) * voltageSpread * 0.72,
+//     phaseB:
+//       baseVoltage +
+//       voltageSpread * 0.12 +
+//       Math.sin(index * 0.47 + 2.2) * voltageSpread * 0.64,
+//   }));
+
+//   return {
+//     ...data,
+//     kwh,
+//     kvh,
+//     current,
+//     voltage,
+//     voltageUnit,
+//     isHighVoltage,
+//     kwhTrend,
+//     kvhComparison: [
+//       { label: "Today", value: kvh },
+//       { label: "Yesterday", value: Math.round(kvh * 0.904) },
+//     ],
+//     kvhMonthlyTrend: [
+//       { day: "1", current: 4.2, previous: 2.1 },
+//       { day: "4", current: 7.1, previous: 6.9 },
+//       { day: "7", current: 8.1, previous: 12.4 },
+//       { day: "10", current: 16.8, previous: 13.3 },
+//       { day: "13", current: 9.4, previous: 10.2 },
+//       { day: "16", current: 10.1, previous: 4.3 },
+//       { day: "19", current: 6.5, previous: 3.0 },
+//       { day: "22", current: 14.2, previous: 1.2 },
+//       { day: "25", current: 18.4, previous: 4.5 },
+//       { day: "28", current: 13.1, previous: 7.6 },
+//     ],
+//     currentWave,
+//     voltageTrend,
+//   };
+// };
+
+// const IndividualSourceAnalytics = ({ type, onBack }) => {
+//   const sourceData = sourceAnalytics[type];
+
+//   const initialAnalytics = useMemo(
+//     () => (sourceData ? createElectricalAnalytics(sourceData) : null),
+//     [type]
+//   );
+
+//   const [analytics, setAnalytics] = useState(initialAnalytics);
+//   const [isFullscreen, setIsFullscreen] = useState(false);
+//   const [lastUpdated, setLastUpdated] = useState(new Date());
+
+//   useEffect(() => {
+//     setAnalytics(initialAnalytics);
+//   }, [initialAnalytics]);
+
+//   useEffect(() => {
+//     if (!analytics) return undefined;
+
+//     const timer = window.setInterval(() => {
+//       setAnalytics((previous) => {
+//         if (!previous) return previous;
+
+//         const now = Date.now();
+//         const currentPoint = {
+//           time: `${now % 1000}ms`,
+//           value:
+//             Math.sin(now / 170) * previous.current * 1.28 +
+//             Math.sin(now / 61) * previous.current * 0.06,
+//         };
+
+//         const lastVoltage =
+//           previous.voltageTrend[previous.voltageTrend.length - 1];
+
+//         const step = previous.isHighVoltage ? 0.12 : 1.4;
+//         const minVoltage = previous.isHighVoltage
+//           ? previous.voltage * 0.9
+//           : previous.voltage * 0.88;
+//         const maxVoltage = previous.isHighVoltage
+//           ? previous.voltage * 1.1
+//           : previous.voltage * 1.12;
+
+//         const voltagePoint = {
+//           time: new Date().toLocaleTimeString([], {
+//             hour: "2-digit",
+//             minute: "2-digit",
+//           }),
+//           phaseR: clampValue(
+//             lastVoltage.phaseR + (Math.random() - 0.5) * step,
+//             minVoltage,
+//             maxVoltage
+//           ),
+//           phaseY: clampValue(
+//             lastVoltage.phaseY + (Math.random() - 0.5) * step,
+//             minVoltage,
+//             maxVoltage
+//           ),
+//           phaseB: clampValue(
+//             lastVoltage.phaseB + (Math.random() - 0.5) * step,
+//             minVoltage,
+//             maxVoltage
+//           ),
+//         };
+
+//         return {
+//           ...previous,
+//           currentWave: [...previous.currentWave.slice(1), currentPoint],
+//           voltageTrend: [...previous.voltageTrend.slice(1), voltagePoint],
+//         };
+//       });
+
+//       setLastUpdated(new Date());
+//     }, 1400);
+
+//     return () => window.clearInterval(timer);
+//   }, [Boolean(analytics)]);
+
+//   if (!sourceData || !analytics) {
+//     return (
+//       <div className="fixed inset-x-0 bottom-0 top-[72px] z-[999] flex items-center justify-center bg-[#020B24] text-white">
+//         <div className="rounded-xl border border-cyan-400/35 bg-[#071633] p-7 text-center">
+//           <h2 className="text-xl font-semibold">Analytics data not found</h2>
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="mt-4 rounded-md border border-cyan-400/40 px-5 py-2 text-cyan-300 hover:bg-cyan-400/10"
+//           >
+//             ← Back
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   const pf = clampValue(numberFrom(analytics.pf, 0.98), 0, 1);
+//   const voltageMin = analytics.isHighVoltage
+//     ? Math.floor(analytics.voltage * 0.88)
+//     : Math.floor(analytics.voltage * 0.85);
+//   const voltageMax = analytics.isHighVoltage
+//     ? Math.ceil(analytics.voltage * 1.12)
+//     : Math.ceil(analytics.voltage * 1.15);
+//   const warningLow = analytics.voltage * 0.95;
+//   const warningHigh = analytics.voltage * 1.05;
+
+//   return (
+//     <div
+//       className={`fixed inset-x-0 bottom-0 z-[1100] overflow-hidden bg-[#020B24] text-white ${
+//         isFullscreen ? "top-0" : "top-[72px]"
+//       }`}
+//     >
+//       <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.24),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_26%),linear-gradient(180deg,#020B24_0%,#020817_100%)]">
+//         <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 px-5 py-3 backdrop-blur-xl">
+//           <div className="mx-auto flex max-w-[1600px] items-center gap-4">
+//             <button
+//               type="button"
+//               onClick={onBack}
+//               className="flex h-[58px] shrink-0 items-center gap-2 rounded-lg border border-[#1B4D83] bg-[#061737] px-4 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/60 hover:bg-[#092452]"
+//             >
+//               <ArrowLeft className="h-4 w-4 text-cyan-300" />
+//               Back to Source
+//             </button>
+
+//             <div className="min-w-0 flex-1">
+//               <h2 className="truncate text-[25px] font-semibold tracking-tight text-white">
+//                 {analytics.title}
+//               </h2>
+//               <p className="mt-0.5 text-[13px] font-medium text-cyan-300">
+//                 {analytics.subtitle}
+//               </p>
+//             </div>
+
+//             <div className="hidden items-center gap-3 md:flex">
+//               <div className="rounded-lg border border-[#174575] bg-[#061737] px-4 py-2">
+//                 <div className="flex items-center gap-2 text-[13px] font-semibold text-emerald-400">
+//                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.9)]" />
+//                   Live
+//                 </div>
+//                 <p className="mt-1 text-[9px] text-slate-400">
+//                   Updated {lastUpdated.toLocaleTimeString()}
+//                 </p>
+//               </div>
+
+//               <button
+//                 type="button"
+//                 onClick={() => setIsFullscreen((value) => !value)}
+//                 className="flex h-[46px] w-[46px] items-center justify-center rounded-lg border border-[#1B4D83] bg-[#061737] text-cyan-300 transition hover:border-cyan-300 hover:bg-[#092452]"
+//                 aria-label="Toggle fullscreen analytics"
+//               >
+//                 <Maximize2 className="h-5 w-5" />
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+
+//         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 2xl:overflow-hidden">
+//           <div className="mx-auto grid min-h-[840px] max-w-[1600px] grid-cols-1 gap-4 lg:h-full lg:min-h-0 lg:grid-cols-6 lg:grid-rows-2">
+//             <MetricAnalyticsCard
+//               number="1"
+//               icon={<Zap className="h-5 w-5" />}
+//               title="kWh"
+//               subtitle="Active energy"
+//               value={analytics.kwh.toLocaleString()}
+//               unit="kWh"
+//               change="12.4%"
+//               className="lg:col-span-2"
+//               footer={[
+//                 // { label: "Today", value: `${analytics.kwh.toLocaleString()} kWh` },
+//                 // { label: "Yesterday", value: `${Math.round(analytics.kwh * 0.89).toLocaleString()} kWh` },
+//                 // { label: "This month", value: `${Math.round(analytics.kwh * 30.02).toLocaleString()} kWh` },
+//               ]}
+//             >
+//               <ResponsiveContainer width="100%" height="100%">
+//                 <AreaChart
+//                   data={analytics.kwhTrend}
+//                   margin={{ top: 12, right: 4, left: -24, bottom: -4 }}
+//                 >
+//                   <defs>
+//                     <linearGradient id={`kwhFill-${type}`} x1="0" y1="0" x2="0" y2="1">
+//                       <stop offset="0%" stopColor="#1D9BF0" stopOpacity={0.92} />
+//                       <stop offset="100%" stopColor="#0876DE" stopOpacity={0.03} />
+//                     </linearGradient>
+//                   </defs>
+//                   <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" strokeDasharray="3 3" />
+//                   <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} interval={1} />
+//                   <YAxis axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
+//                   <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value) => [`${Math.round(value)} kWh`, "Energy"]} />
+//                   <Area type="monotone" dataKey="value" stroke="#38BDF8" strokeWidth={2} fill={`url(#kwhFill-${type})`} />
+//                 </AreaChart>
+//               </ResponsiveContainer>
+//             </MetricAnalyticsCard>
+
+//             <MetricAnalyticsCard
+//               number="2"
+//               icon={<Activity className="h-5 w-5" />}
+//               title="kVh"
+//               subtitle="Monthly apparent energy comparison"
+//               value={analytics.kvh.toLocaleString()}
+//               unit="kVh"
+//               change="10.7%"
+//               className="lg:col-span-2"
+//               footer={[
+//                 // { label: "Current month", value: `${Math.round(analytics.kvh * 30).toLocaleString()} kVh` },
+//                 // { label: "Last month", value: `${Math.round(analytics.kvh * 27.2).toLocaleString()} kVh` },
+//                 // { label: "Difference", value: "+10.7%" },
+//               ]}
+//             >
+//               <div className="relative h-full min-h-[155px]">
+//                 <div className="absolute left-2 top-0 z-10 flex items-center gap-5 text-[9px] font-semibold text-slate-300">
+//                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-violet-400" />Current Month</span>
+//                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-cyan-400" />Last Month</span>
+//                 </div>
+
+//                 <ResponsiveContainer width="100%" height="100%">
+//                   <AreaChart
+//                     data={analytics.kvhMonthlyTrend}
+//                     margin={{ top: 24, right: 8, left: -18, bottom: -4 }}
+//                   >
+//                     <defs>
+//                       <linearGradient id={`kvhCurrentArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+//                         <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.34} />
+//                         <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.02} />
+//                       </linearGradient>
+//                       <linearGradient id={`kvhPreviousArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+//                         <stop offset="0%" stopColor="#22D3EE" stopOpacity={0.28} />
+//                         <stop offset="100%" stopColor="#22D3EE" stopOpacity={0.02} />
+//                       </linearGradient>
+//                     </defs>
+//                     <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" />
+//                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
+//                     <YAxis domain={[0, 20]} ticks={[0, 5, 10, 15, 20]} axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} tickFormatter={(value) => `${value}k`} />
+//                     <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value, name) => [`${value}k kVh`, name === "current" ? "Current Month" : "Last Month"]} />
+//                     <Area type="monotone" dataKey="previous" stroke="#22D3EE" strokeWidth={2.2} fill={`url(#kvhPreviousArea-${type})`} dot={{ r: 2.8, fill: "#22D3EE", stroke: "#CFFAFE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+//                     <Area type="monotone" dataKey="current" stroke="#8B5CF6" strokeWidth={2.2} fill={`url(#kvhCurrentArea-${type})`} dot={{ r: 2.8, fill: "#8B5CF6", stroke: "#EDE9FE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+//                   </AreaChart>
+//                 </ResponsiveContainer>
+//               </div>
+//             </MetricAnalyticsCard>
+
+//             <MetricAnalyticsCard
+//               number="3"
+//               icon={<Radio className="h-5 w-5" />}
+//               title="Current"
+//               subtitle="Live current waveform"
+//               value={analytics.current.toLocaleString()}
+//               unit="A"
+//               change="5.3%"
+//               className="lg:col-span-2"
+//               footer={[
+//                 // { label: "Average", value: `${analytics.current} A` },
+//                 // { label: "Maximum", value: `${Math.round(analytics.current * 1.46)} A` },
+//                 // { label: "Minimum", value: `${Math.round(analytics.current * 0.54)} A` },
+//               ]}
+//             >
+//               <ResponsiveContainer width="100%" height="100%">
+//                 <LineChart
+//                   data={analytics.currentWave}
+//                   margin={{ top: 8, right: 4, left: -25, bottom: -4 }}
+//                 >
+//                   <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" strokeDasharray="3 3" />
+//                   <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} interval={8} />
+//                   <YAxis
+//                     domain={[-analytics.current * 1.7, analytics.current * 1.7]}
+//                     axisLine={false}
+//                     tickLine={false}
+//                     tick={{ fill: "#8EA6C4", fontSize: 8 }}
+//                   />
+//                   <ReferenceLine y={0} stroke="rgba(148,163,184,0.34)" />
+//                   <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value) => [`${Math.round(value)} A`, "Current"]} />
+//                   <Line type="monotone" dataKey="value" stroke="#22D3EE" strokeWidth={1.8} dot={false} isAnimationActive={false} />
+//                 </LineChart>
+//               </ResponsiveContainer>
+//             </MetricAnalyticsCard>
+
+//             <article className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] shadow-[0_18px_45px_rgba(0,0,0,0.24)] lg:col-span-4">
+//               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-300/80 to-transparent" />
+
+//               <div className="flex h-full min-h-0 flex-col p-4">
+//                 <div className="flex items-start justify-between gap-3">
+//                   <div className="flex min-w-0 items-center gap-3">
+//                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-yellow-400/80 bg-yellow-400/[0.06] text-[15px] font-black text-yellow-300">
+//                       PF
+//                     </div>
+
+//                     <div className="min-w-0">
+//                       <div className="flex items-center gap-2">
+//                         <span className="flex h-6 w-6 items-center justify-center rounded bg-yellow-400/15 text-[11px] font-black text-yellow-300">
+//                           4
+//                         </span>
+
+//                         <h3 className="truncate text-[14px] font-black uppercase tracking-[0.06em] text-white">
+//                           Power Factor
+//                         </h3>
+//                       </div>
+
+//                       <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.12em] text-sky-400">
+//                         Real-time power efficiency
+//                       </p>
+//                     </div>
+//                   </div>
+
+//                   <div className="shrink-0 rounded-md border border-emerald-400/25 bg-emerald-400/[0.06] px-2.5 py-1.5 text-right">
+//                     <p className="text-[11px] font-black text-emerald-400">
+//                       ↑ 0.02
+//                     </p>
+//                     <p className="text-[8px] text-slate-400">vs yesterday</p>
+//                   </div>
+//                 </div>
+
+//                 <div className="mt-3 grid min-h-0 flex-1 grid-cols-[1.08fr_0.92fr] gap-3">
+//                   <div className="relative min-h-[190px]">
+//                     <svg
+//                       viewBox="0 0 300 230"
+//                       className="h-full w-full overflow-visible"
+//                       role="img"
+//                       aria-label={`Power factor ${pf.toFixed(2)}`}
+//                     >
+//                       <defs>
+//                         <linearGradient
+//                           id={`pfPowerArc-${type}`}
+//                           x1="0%"
+//                           y1="100%"
+//                           x2="100%"
+//                           y2="0%"
+//                         >
+//                           <stop offset="0%" stopColor="#60A5FA" />
+//                           <stop offset="55%" stopColor="#93C5FD" />
+//                           <stop offset="100%" stopColor="#FFFFFF" />
+//                         </linearGradient>
+//                       </defs>
+
+//                       <path
+//                         d="M 58 190 A 100 100 0 1 1 242 190"
+//                         fill="none"
+//                         stroke="rgba(255,255,255,0.13)"
+//                         strokeWidth="17"
+//                         strokeLinecap="round"
+//                       />
+
+//                       <path
+//                         d="M 58 190 A 100 100 0 1 1 242 190"
+//                         fill="none"
+//                         stroke={`url(#pfPowerArc-${type})`}
+//                         strokeWidth="17"
+//                         strokeLinecap="round"
+//                         pathLength="100"
+//                         strokeDasharray={`${Math.max(4, pf * 100)} 100`}
+//                       />
+
+//                       <g
+//                         stroke="#6B9BCB"
+//                         strokeWidth="1.5"
+//                         strokeLinecap="round"
+//                         opacity="0.75"
+//                       >
+//                         <line x1="45" y1="191" x2="35" y2="196" />
+//                         <line x1="50" y1="129" x2="39" y2="125" />
+//                         <line x1="83" y1="77" x2="76" y2="67" />
+//                         <line x1="150" y1="55" x2="150" y2="42" />
+//                         <line x1="217" y1="77" x2="224" y2="67" />
+//                         <line x1="250" y1="129" x2="261" y2="125" />
+//                         <line x1="255" y1="191" x2="265" y2="196" />
+//                       </g>
+
+//                       <g
+//                         fill="#E2E8F0"
+//                         fontSize="13"
+//                         fontWeight="600"
+//                         textAnchor="middle"
+//                       >
+//                         <text x="37" y="211">0</text>
+//                         <text x="24" y="133">0.2</text>
+//                         <text x="74" y="58">0.4</text>
+//                         <text x="150" y="31">0.6</text>
+//                         <text x="227" y="58">0.8</text>
+//                         <text x="276" y="133">1.0</text>
+//                       </g>
+
+//                       <text
+//                         x="150"
+//                         y="144"
+//                         fill="#FFFFFF"
+//                         fontSize="38"
+//                         fontWeight="700"
+//                         textAnchor="middle"
+//                       >
+//                         {pf.toFixed(2)}
+//                       </text>
+
+//                       <text
+//                         x="150"
+//                         y="171"
+//                         fill="#CBD5E1"
+//                         fontSize="18"
+//                         fontWeight="600"
+//                         textAnchor="middle"
+//                       >
+//                         {Math.round(pf * 100)}%
+//                       </text>
+//                     </svg>
+//                   </div>
+
+//                   <div className="grid min-h-0 grid-cols-2 gap-2">
+//                     {[
+//                       {
+//                         label: "Gauge Value",
+//                         value: pf.toFixed(2),
+//                       },
+//                       {
+//                         label: "Capacity Percentage",
+//                         value: `${Math.round(pf * 100)}%`,
+//                       },
+//                       {
+//                         label: "Gauge Range",
+//                         value: "0 – 1.0",
+//                       },
+//                       {
+//                         label: "Avg Power (10 min)",
+//                         value: `${Math.round(analytics.current * pf)} kW`,
+//                       },
+//                     ].map((item) => (
+//                       <div
+//                         key={item.label}
+//                         className="flex min-h-[82px] flex-col justify-center rounded-xl border border-slate-300/80 bg-[linear-gradient(145deg,#FFFFFF,#E8EEF5)] px-3 py-2.5 shadow-[0_8px_20px_rgba(0,0,0,0.16)]"
+//                       >
+//                         <p className="text-[9px] font-semibold leading-tight text-slate-600">
+//                           {item.label}
+//                         </p>
+//                         <p className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none tracking-tight text-slate-950">
+//                           {item.value}
+//                         </p>
+//                       </div>
+//                     ))}
+//                   </div>
+//                 </div>
+//               </div>
+//             </article>
+
+//             <MetricAnalyticsCard
+//               number="5"
+//               icon={<Zap className="h-5 w-5" />}
+//               title="Voltage"
+//               subtitle="Three-phase voltage monitoring"
+//               value={analytics.voltage.toFixed(analytics.isHighVoltage ? 1 : 0)}
+//               unit={analytics.voltageUnit}
+//               change="1.2%"
+//               className="lg:col-span-2"
+//               footer={[
+//                 // { label: "Average", value: `${analytics.voltage.toFixed(analytics.isHighVoltage ? 1 : 0)} ${analytics.voltageUnit}` },
+//                 // { label: "Maximum", value: `${(analytics.voltage * 1.03).toFixed(analytics.isHighVoltage ? 1 : 0)} ${analytics.voltageUnit}` },
+//                 // { label: "Minimum", value: `${(analytics.voltage * 0.97).toFixed(analytics.isHighVoltage ? 1 : 0)} ${analytics.voltageUnit}` },
+//               ]}
+//             >
+//               <div className="relative h-full min-h-[155px]">
+//                 <div className="absolute right-2 top-0 z-10 flex items-center gap-4 text-[8px] font-semibold text-slate-300">
+//                   <span className="flex items-center gap-1"><span className="h-[2px] w-4 bg-red-400" />Phase R</span>
+//                   <span className="flex items-center gap-1"><span className="h-[2px] w-4 bg-blue-400" />Phase Y</span>
+//                   <span className="flex items-center gap-1"><span className="h-[2px] w-4 bg-green-400" />Phase B</span>
+//                 </div>
+//                 <ResponsiveContainer width="100%" height="100%">
+//                 <LineChart
+//                   data={analytics.voltageTrend}
+//                   margin={{ top: 8, right: 55, left: -16, bottom: -4 }}
+//                 >
+//                   <CartesianGrid stroke="rgba(148,163,184,0.15)" strokeDasharray="3 3" />
+//                   <XAxis dataKey="time" axisLine={{ stroke: "rgba(148,163,184,0.3)" }} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
+//                   <YAxis domain={[voltageMin, voltageMax]} axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} width={42} />
+//                   <Tooltip
+//                     contentStyle={analyticsTooltipStyle}
+//                     formatter={(value, name) => [
+//                       `${Number(value).toFixed(analytics.isHighVoltage ? 2 : 1)} ${analytics.voltageUnit}`,
+//                       name,
+//                     ]}
+//                   />
+//                   <ReferenceLine
+//                     y={warningHigh}
+//                     stroke="#EF4444"
+//                     strokeWidth={1.2}
+//                     label={{ value: `Upper ${warningHigh.toFixed(analytics.isHighVoltage ? 1 : 0)}`, position: "right", fill: "#FFFFFF", fontSize: 8 }}
+//                   />
+//                   <ReferenceLine
+//                     y={warningLow}
+//                     stroke="#FACC15"
+//                     strokeWidth={1.2}
+//                     label={{ value: `Lower ${warningLow.toFixed(analytics.isHighVoltage ? 1 : 0)}`, position: "right", fill: "#FFFFFF", fontSize: 8 }}
+//                   />
+//                   <Line name="Phase R" type="monotone" dataKey="phaseR" stroke="#EF5547" strokeWidth={1.45} dot={false} isAnimationActive={false} />
+//                   <Line name="Phase Y" type="monotone" dataKey="phaseY" stroke="#4C96E8" strokeWidth={1.45} dot={false} isAnimationActive={false} />
+//                   <Line name="Phase B" type="monotone" dataKey="phaseB" stroke="#65A657" strokeWidth={1.45} dot={false} isAnimationActive={false} />
+//                 </LineChart>
+//               </ResponsiveContainer>
+//               </div>
+//             </MetricAnalyticsCard>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const SourceBox = ({
+//   id,
+//   title,
+//   subtitle,
+//   icon,
+//   hoverMonitor = false,
+//   openedBoxes,
+//   setOpenedBoxes,
+//   onClick,
+// }) => {
+//   const monitorData = [
+//     ["kWh", "1,280"],
+//     ["kVh", "1,195"],
+//     ["PF", "0.98"],
+//     ["Voltage", "33.0 kV"],
+//     ["Current", "420 A"],
+//   ];
+
+//   const showMonitor = hoverMonitor && openedBoxes.includes(id);
+
+//   const handleHover = () => {
+//     if (!hoverMonitor) return;
+//     setOpenedBoxes((prev) => (prev.includes(id) ? prev : [...prev, id]));
+//   };
+
+//   const handleClick = (event) => {
+//     event.stopPropagation();
+//     if (onClick) onClick();
+//   };
+
+//   return (
+//     <div
+//       onMouseEnter={handleHover}
+//       onClick={handleClick}
+//       className="relative h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-xl panel-active-glow overflow-hidden cursor-pointer"
+//     >
+//       {!showMonitor ? (
+//         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+//           {icon && (
+//             <div className="bg-[#05143C] p-2 border border-blue-900 mb-2">
+//               <Zap className="h-4 w-4 text-emerald-400" />
+//             </div>
+//           )}
+
+//           <h4 className="text-[16px] font-bold uppercase tracking-[0.05em] leading-none">
+//             {title}
+//           </h4>
+
+//           <span className="mt-2 text-[8px] font-black text-blue-300 tracking-[0.18em] uppercase leading-none">
+//             {subtitle}
+//           </span>
+//         </div>
+//       ) : (
+//         <div
+//           onClick={handleClick}
+//           className="absolute inset-0 z-20 bg-[#081F5C] px-5 py-2.5"
+//         >
+//           <div className="text-center border-b border-[#2B5DA8] pb-1.5 mb-1.5">
+//             <h4 className="text-[11px] font-black text-white uppercase tracking-[0.14em] leading-none">
+//               {title}
+//             </h4>
+//           </div>
+
+//           <div className="flex items-center justify-between mb-1.5">
+//             <span className="text-[7px] font-bold text-blue-300 uppercase">
+//               {subtitle}
+//             </span>
+
+//             <span className="flex items-center gap-1 text-[7px] font-bold text-emerald-400 uppercase">
+//               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+//               Live
+//             </span>
+//           </div>
+
+//           <div className="px-2 space-y-[2px]">
+//             {monitorData.map(([label, value]) => (
+//               <div
+//                 key={label}
+//                 className="flex items-center justify-between px-2"
+//               >
+//                 <span className="text-[9px] font-medium text-slate-300 tracking-wide">
+//                   {label}
+//                 </span>
+
+//                 <span className="text-[10px] font-bold text-white tabular-nums tracking-wide">
+//                   {value}
+//                 </span>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// const SourcePopup = () => {
+//   const [openedBoxes, setOpenedBoxes] = React.useState([]);
+//   const [activeSourceAnalytics, setActiveSourceAnalytics] =
+//     React.useState(null);
+
+//   return (
+//     <>
+//       <PopupShell title="33kV Source → 2 Incoming / 1 Outgoing">
+//         <div className="max-w-6xl mx-auto pt-2 pb-4">
+//           <div className="flex justify-center">
+//             <div className="w-[320px]">
+//               <SourceBox
+//                 id="source"
+//                 title="33kV SOURCE"
+//                 subtitle="CENTRAL CONTROL PANEL"
+//                 icon
+//                 openedBoxes={openedBoxes}
+//                 setOpenedBoxes={setOpenedBoxes}
+//               />
+//             </div>
+//           </div>
+
+//           <div className="flex justify-center h-8">
+//             <div className="flow-line-vertical h-full">
+//               <div className="flow-pulse-vertical" />
+//             </div>
+//           </div>
+
+//           <div className="relative h-[4px] w-[760px] mx-auto bg-cyan-400 overflow-hidden">
+//             <div className="flow-pulse-horizontal" />
+//           </div>
+
+//           <div className="relative h-10 w-[760px] mx-auto">
+//             <div className="absolute left-0 top-0 h-full">
+//               <div className="flow-line-vertical h-full">
+//                 <div className="flow-pulse-vertical" />
+//               </div>
+//             </div>
+
+//             <div className="absolute right-0 top-0 h-full">
+//               <div className="flow-line-vertical h-full">
+//                 <div className="flow-pulse-vertical" />
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="grid grid-cols-[300px_55px_300px_55px_300px] items-center justify-center mx-auto">
+//             <SourceBox
+//               id="inc1"
+//               title="INC1"
+//               subtitle="FEEDER BREAKER"
+//               hoverMonitor
+//               openedBoxes={openedBoxes}
+//               setOpenedBoxes={setOpenedBoxes}
+//               onClick={() => setActiveSourceAnalytics("inc1Analytics")}
+//             />
+
+//             <div className="h-[4px] w-full bg-cyan-400 relative overflow-hidden">
+//               <div className="flow-pulse-horizontal" />
+//             </div>
+
+//             <SourceBox
+//               id="out"
+//               title="OUT"
+//               subtitle="OUTGOING BUSBAR"
+//               hoverMonitor
+//               openedBoxes={openedBoxes}
+//               setOpenedBoxes={setOpenedBoxes}
+//               onClick={() => setActiveSourceAnalytics("outAnalytics")}
+//             />
+
+//             <div className="h-[4px] w-full bg-cyan-400 relative overflow-hidden">
+//               <div className="flow-pulse-horizontal" />
+//             </div>
+
+//             <SourceBox
+//               id="inc2"
+//               title="INC2"
+//               subtitle="FEEDER BREAKER"
+//               hoverMonitor
+//               openedBoxes={openedBoxes}
+//               setOpenedBoxes={setOpenedBoxes}
+//               onClick={() => setActiveSourceAnalytics("inc2Analytics")}
+//             />
+//           </div>
+
+//           <div className="flex justify-center h-8">
+//             <div className="flow-line-vertical h-full">
+//               <div className="flow-pulse-vertical" />
+//             </div>
+//           </div>
+
+//           <div className="flex justify-center">
+//             <div className="w-[320px]">
+//             <SourceBox
+//   id="meter"
+//   title="METER"
+//   subtitle="METERING UNIT"
+//   hoverMonitor
+//   openedBoxes={openedBoxes}
+//   setOpenedBoxes={setOpenedBoxes}
+//   onClick={() => setActiveSourceAnalytics("meterAnalytics")}
+// />
+//             </div>
+//           </div>
+
+//           <div className="flex justify-center h-8">
+//             <div className="flow-line-vertical h-full">
+//               <div className="flow-pulse-vertical" />
+//             </div>
+//           </div>
+
+//           <div className="flex justify-center">
+//             <div className="w-[320px]">
+//              <SourceBox
+//   id="feeder"
+//   title="33kV FEEDER"
+//   subtitle="FEEDER SWITCHGEAR PANEL"
+//   hoverMonitor
+//   openedBoxes={openedBoxes}
+//   setOpenedBoxes={setOpenedBoxes}
+//   onClick={() => setActiveSourceAnalytics("feederAnalytics")}
+// />
+//             </div>
+//           </div>
+
+          
+//         </div>
+//       </PopupShell>
+
+//       {activeSourceAnalytics && (
+//         <IndividualSourceAnalytics
+//           type={activeSourceAnalytics}
+//           onBack={() => setActiveSourceAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+
+// const feederAnalytics = {
+//   incomingFeederAnalytics: {
+//     title: "Incoming Feeder 1",
+//     subtitle: "33kV Incoming Feeder Supply",
+//     kwh: "1,480",
+//     kvh: "1,360",
+//     current: "430 A",
+//     voltage: "33.0 kV",
+//     pf: "0.98",
+//     load: 82,
+//     health: 95,
+//     status: "Stable",
+//   },
+
+//   og1Analytics: {
+//     title: "OG 1 Feeder",
+//     subtitle: "Outgoing Feeder to Transformer",
+//     kwh: "980",
+//     kvh: "910",
+//     current: "280 A",
+//     voltage: "33.0 kV",
+//     pf: "0.97",
+//     load: 68,
+//     health: 92,
+//     status: "ON",
+//   },
+
+//   og2Analytics: {
+//     title: "OG 2 Feeder",
+//     subtitle: "Outgoing Feeder to Transformer",
+//     kwh: "1,020",
+//     kvh: "960",
+//     current: "295 A",
+//     voltage: "33.0 kV",
+//     pf: "0.98",
+//     load: 72,
+//     health: 94,
+//     status: "ON",
+//   },
+
+//   og3Analytics: {
+//     title: "OG 3 Feeder",
+//     subtitle: "Outgoing Feeder to Transformer",
+//     kwh: "1,120",
+//     kvh: "1,040",
+//     current: "310 A",
+//     voltage: "33.0 kV",
+//     pf: "0.98",
+//     load: 76,
+//     health: 95,
+//     status: "ON",
+//   },
+
+//   og4Analytics: {
+//     title: "OG 4 Feeder",
+//     subtitle: "Outgoing Feeder to Transformer",
+//     kwh: "940",
+//     kvh: "870",
+//     current: "265 A",
+//     voltage: "33.0 kV",
+//     pf: "0.96",
+//     load: 64,
+//     health: 91,
+//     status: "ON",
+//   },
+
+//   og5Analytics: {
+//     title: "OG 5 Feeder",
+//     subtitle: "Outgoing Feeder to Transformer",
+//     kwh: "1,080",
+//     kvh: "990",
+//     current: "300 A",
+//     voltage: "33.0 kV",
+//     pf: "0.98",
+//     load: 74,
+//     health: 93,
+//     status: "ON",
+//   },
+
+//   og6Analytics: {
+//     title: "OG 6 Feeder",
+//     subtitle: "Outgoing Feeder to Transformer",
+//     kwh: "1,150",
+//     kvh: "1,080",
+//     current: "325 A",
+//     voltage: "33.0 kV",
+//     pf: "0.99",
+//     load: 79,
+//     health: 96,
+//     status: "ON",
+//   },
+// };
+
+// const FeederAnalyticsView = ({ type, data, onBack }) => {
+//   const analyticsData = data || feederAnalytics[type];
+
+//   if (!analyticsData) {
+//     return (
+//       <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white flex items-center justify-center">
+//         <div className="bg-[#081F5C] border border-cyan-400/40 p-6 text-center">
+//           <h2 className="text-xl font-semibold">Feeder analytics not found</h2>
+
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="mt-4 px-5 py-2 border border-cyan-400/40 text-cyan-300"
+//           >
+//             ← Back
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   const graphValues = [
+//     45,
+//     52,
+//     59,
+//     64,
+//     70,
+//     analyticsData.load,
+//     75,
+//     79,
+//     76,
+//     analyticsData.load,
+//   ];
+
+//   const avg = Math.round(
+//     graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+//   );
+
+//   return (
+//     <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+//       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
+//         <div className="max-w-7xl mx-auto">
+//           <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+//             <div className="flex items-stretch gap-4">
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
+//           >
+//             ← Back to Feeder Panel
+//           </button>
+
+//           <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
+//             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
+
+//             <div className="flex items-center justify-between">
+//               <div>
+//                 <h2 className="mt-2 text-3xl font-normal tracking-wide">
+//                   {analyticsData.title}
+//                 </h2>
+
+//                 <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
+//                   {analyticsData.subtitle}
+//                 </p>
+//               </div>
+
+//               <div className="text-right">
+//                 <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
+//                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
+//                   {analyticsData.status}
+//                 </span>
+
+//                 <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
+//                   Status: {analyticsData.status}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//             </div>
+//           </div>
+
+//           <div className="grid grid-cols-5 gap-3 mt-3">
+//             {[
+//               ["Energy", analyticsData.kwh, "kWh"],
+//               ["Reactive", analyticsData.kvh, "kVh"],
+//               ["Current", analyticsData.current, ""],
+//               ["Voltage", analyticsData.voltage, ""],
+//               ["Power Factor", analyticsData.pf, ""],
+//             ].map(([label, value, unit]) => (
+//               <div
+//                 key={label}
+//                 className="bg-white/7 border border-white/10 p-3 shadow-none"
+//               >
+//                 <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
+//                   {label}
+//                 </p>
+
+//                 <div className="mt-1 flex items-end gap-2">
+//                   <span className="text-[13px] font-normal text-slate-300">
+//                     {value}
+//                   </span>
+
+//                   {unit && (
+//                     <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
+//                       {unit}
+//                     </span>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <div className="flex items-center justify-between mb-6">
+//                 <h3 className="text-[15px] font-semibold tracking-wide">
+//                   Power Flow Graph
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[12px] text-slate-400">Average</p>
+
+//                   <h4 className="text-lg font-semibold text-cyan-300">
+//                     {avg}%
+//                   </h4>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
+//                 {graphValues.map((value, index) => (
+//                   <div key={index} className="flex-1 flex flex-col justify-end">
+//                     <div
+//                       className="bg-cyan-400/90 shadow-none"
+//                       style={{ height: `${value * 2.5}px` }}
+//                     />
+
+//                     <span className="text-[8px] text-center mt-2 text-blue-200">
+//                       {index + 1}
+//                     </span>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               <div className="grid grid-cols-3 gap-3 mt-5">
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Peak Load</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.max(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Minimum</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.min(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Status</p>
+
+//                   <h4 className="text-[13px] font-semibold text-emerald-200">
+//                     {analyticsData.status}
+//                   </h4>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
+//                 Live Flow Status
+//               </h3>
+
+//               <div className="flex justify-center">
+//                 <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
+//                   <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+
+//                   <div className="text-center">
+//                     <span className="block text-[30px] font-normal">
+//                       {analyticsData.load}%
+//                     </span>
+
+//                     <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
+//                       Flow Load
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-8 space-y-5">
+//                 {[
+//                   ["Load", analyticsData.load],
+//                   ["Power Factor", Number(analyticsData.pf) * 100],
+//                   ["Feeder Health", analyticsData.health],
+//                 ].map(([label, value]) => (
+//                   <div key={label}>
+//                     <div className="flex justify-between text-[12px] mb-2">
+//                       <span className="text-blue-100 font-medium">
+//                         {label}
+//                       </span>
+
+//                       <span className="text-cyan-300 font-semibold text-[12px]">
+//                         {Math.round(value)}%
+//                       </span>
+//                     </div>
+
+//                     <div className="h-2 bg-white/10 overflow-hidden">
+//                       <div
+//                         className="h-full bg-cyan-400 shadow-none"
+//                         style={{ width: `${Math.min(value, 100)}%` }}
+//                       />
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+
+           
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const FeederPopup = () => {
+//   const [activeFeederAnalytics, setActiveFeederAnalytics] =
+//     React.useState(null);
+
+//   return (
+//     <>
+//       <PopupShell title="33kV Feeder Panel">
+//         <div className="w-full max-w-5xl mx-auto my-4 bg-[#081F5C] border-2 border-[#004AAD] p-6 text-white shadow-lg relative panel-active-glow rounded-md">
+//           <div className="text-center pb-4 mb-4 border-b border-blue-900/60">
+//             <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] block uppercase">
+//               FEEDER SWITCHGEAR PANEL
+//             </span>
+
+//             <h3 className="text-xl font-black text-white tracking-widest mt-1">
+//               33kV FEEDER PANEL
+//             </h3>
+//           </div>
+
+//           <div className="mb-4">
+//             <div
+//               onClick={() =>
+//                 setActiveFeederAnalytics("incomingFeederAnalytics")
+//               }
+//               className="max-w-xs mx-auto bg-[#05143C] border border-[#004AAD] p-4 text-center rounded relative cursor-pointer hover:bg-[#07205A] transition"
+//             >
+//               <span className="text-[9px] font-black text-blue-300 tracking-wider block uppercase">
+//                 INCOMING FEEDER
+//               </span>
+
+//               <strong className="text-sm font-black text-white mt-1 block">
+//                 INCOMING FEEDER 1
+//               </strong>
+
+//               <div className="mt-2 flex items-center justify-center gap-1.5 text-emerald-400 text-xs font-bold">
+//                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+//                 CONNECTED / ACTIVE
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="w-full h-12 relative my-2">
+//             <svg
+//               className="w-full h-full overflow-visible"
+//               viewBox="0 0 960 48"
+//               fill="none"
+//               xmlns="http://www.w3.org/2000/svg"
+//             >
+//               <defs>
+//                 <marker
+//                   id="arrow-cyan-small-popup"
+//                   viewBox="0 0 10 10"
+//                   refX="6"
+//                   refY="5"
+//                   markerWidth="5"
+//                   markerHeight="5"
+//                   orient="auto-start-reverse"
+//                 >
+//                   <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
+//                 </marker>
+//               </defs>
+
+//               <path
+//                 d="M 480 0 V 16 H 80 V 48 M 80 16 H 240 V 48 M 240 16 H 400 V 48 M 400 16 H 560 V 48 M 560 16 H 720 V 48 M 720 16 H 880 V 48"
+//                 stroke="#004AAD"
+//                 strokeWidth="2.5"
+//                 strokeLinecap="round"
+//                 strokeLinejoin="round"
+//               />
+
+//               {[80, 240, 400, 560, 720, 880].map((x, i) => (
+//                 <path
+//                   key={x}
+//                   d={`M 480 0 V 16 H ${x} V 48`}
+//                   stroke="#00E5FF"
+//                   strokeWidth="2.5"
+//                   className={i < 3 ? "flow-path-left" : "flow-path-right"}
+//                   markerEnd="url(#arrow-cyan-small-popup)"
+//                 />
+//               ))}
+//             </svg>
+//           </div>
+
+//           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6 mt-2">
+//             {outgoing.map((item, index) => (
+//               <div
+//                 key={item.name}
+//                 onClick={() =>
+//                   setActiveFeederAnalytics(`og${index + 1}Analytics`)
+//                 }
+//                 className="bg-[#05143C] border border-[#004AAD] p-4 text-center text-white shadow rounded cursor-pointer hover:bg-[#07205A] transition"
+//               >
+//                 <span className="text-[9px] font-bold text-blue-300 block">
+//                   FEEDER
+//                 </span>
+
+//                 <strong className="text-lg font-black block tracking-wider mt-1">
+//                   {item.name}
+//                 </strong>
+
+//                 <p className="text-[10px] text-blue-100 font-bold mt-1">
+//                   To {item.transformer}
+//                 </p>
+
+//                 <div className="mt-3 flex items-center justify-center gap-1.5 text-emerald-400">
+//                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_4px_#34d399]" />
+
+//                   <span className="text-xs font-black">ON</span>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       </PopupShell>
+
+//       {activeFeederAnalytics && (
+//         <FeederAnalyticsView
+//           type={activeFeederAnalytics}
+//           onBack={() => setActiveFeederAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+//  const TransformerAnalyticsView = ({ data, onBack }) => {
+//   if (!data) return null;
+
+//   const loadNumber = Number(String(data.load).replace("%", "")) || 0;
+//   const oilTemp = Number(String(data.oilTemp).replace("°C", "")) || 0;
+//   const windingTemp = Number(String(data.windingTemp).replace("°C", "")) || 0;
+
+//   const graphValues = [
+//     42,
+//     48,
+//     54,
+//     61,
+//     66,
+//     loadNumber,
+//     72,
+//     76,
+//     74,
+//     loadNumber,
+//   ];
+
+//   const avg = Math.round(
+//     graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+//   );
+
+//   return (
+//     <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+//       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
+//         <div className="max-w-7xl mx-auto">
+//           <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+//             <div className="flex items-stretch gap-4">
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
+//           >
+//             ← Back to Transformers
+//           </button>
+
+//           <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
+//             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
+
+//             <div className="flex items-center justify-between">
+//               <div>
+//                 <h2 className="mt-2 text-3xl font-normal tracking-wide">
+//                   {data.id} Transformer Analytics
+//                 </h2>
+
+//                 <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
+//                   33kV / 433V Step-Down Transformer Live Performance
+//                 </p>
+//               </div>
+
+//               <div className="text-right">
+//                 <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
+//                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
+//                   {data.buchholz}
+//                 </span>
+
+//                 <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
+//                   Relay Status: {data.buchholz}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//             </div>
+//           </div>
+
+//           <div className="grid grid-cols-5 gap-3 mt-3">
+//             {[
+//               ["Oil Temp", data.oilTemp, ""],
+//               ["Winding Temp", data.windingTemp, ""],
+//               ["Load", data.load, ""],
+//               ["Relay", data.buchholz, ""],
+//               ["Voltage", "433", "V"],
+//             ].map(([label, value, unit]) => (
+//               <div
+//                 key={label}
+//                 className="bg-white/7 border border-white/10 p-3 shadow-none"
+//               >
+//                 <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
+//                   {label}
+//                 </p>
+
+//                 <div className="mt-1 flex items-end gap-2">
+//                   <span className="text-[13px] font-normal text-slate-300">
+//                     {value}
+//                   </span>
+
+//                   {unit && (
+//                     <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
+//                       {unit}
+//                     </span>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <div className="flex items-center justify-between mb-6">
+//                 <h3 className="text-[15px] font-semibold tracking-wide">
+//                   Transformer Load Graph
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[12px] text-slate-400">Average</p>
+
+//                   <h4 className="text-lg font-semibold text-cyan-300">
+//                     {avg}%
+//                   </h4>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
+//                 {graphValues.map((value, index) => (
+//                   <div key={index} className="flex-1 flex flex-col justify-end">
+//                     <div
+//                       className="bg-cyan-400/90 shadow-none"
+//                       style={{ height: `${value * 2.5}px` }}
+//                     />
+
+//                     <span className="text-[8px] text-center mt-2 text-blue-200">
+//                       {index + 1}
+//                     </span>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               <div className="grid grid-cols-3 gap-3 mt-5">
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Peak Load</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.max(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Minimum</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.min(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Relay</p>
+
+//                   <h4 className="text-[13px] font-semibold text-emerald-200">
+//                     {data.buchholz}
+//                   </h4>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
+//                 Live Transformer Status
+//               </h3>
+
+//               <div className="flex justify-center">
+//                 <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
+//                   <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+
+//                   <div className="text-center">
+//                     <span className="block text-[30px] font-normal">
+//                       {loadNumber}%
+//                     </span>
+
+//                     <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
+//                       TX Load
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-8 space-y-5">
+//                 {[
+//                   ["Load", loadNumber],
+//                   ["Oil Temperature", oilTemp],
+//                   ["Winding Temperature", windingTemp],
+//                 ].map(([label, value]) => (
+//                   <div key={label}>
+//                     <div className="flex justify-between text-[12px] mb-2">
+//                       <span className="text-blue-100 font-medium">
+//                         {label}
+//                       </span>
+
+//                       <span className="text-cyan-300 font-semibold text-[12px]">
+//                         {Math.round(value)}%
+//                       </span>
+//                     </div>
+
+//                     <div className="h-2 bg-white/10 overflow-hidden">
+//                       <div
+//                         className="h-full bg-cyan-400 shadow-none"
+//                         style={{ width: `${Math.min(value, 100)}%` }}
+//                       />
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+
+              
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const TransformersPopup = () => {
+//   const [activeTransformerAnalytics, setActiveTransformerAnalytics] =
+//     React.useState(null);
+
+//   return (
+//     <>
+//       <PopupShell title="33 / 0.433kV Transformers">
+//         <div className="flex justify-center w-full my-3">
+//           <div
+//             onClick={() => setTransformersExpanded(!transformersExpanded)}
+//             className="w-[90%] md:w-[70%] lg:w-[45%] h-32 max-w-xl bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-lg rounded-md cursor-pointer hover:bg-[#0A276E] transition-colors"
+//           >
+//             <div className="h-full flex flex-col items-center justify-center text-center">
+//               <svg className="w-16 h-10 text-blue-300" viewBox="0 0 80 40" fill="none">
+//                 <circle cx="30" cy="20" r="12" stroke="currentColor" strokeWidth="2.5" />
+//                 <circle cx="46" cy="20" r="8" stroke="currentColor" strokeWidth="2.5" />
+//               </svg>
+
+//               <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">
+//                 STEP-DOWN SUBSTATION
+//               </span>
+
+//               <h3 className="text-lg font-black text-white tracking-wider mt-1">
+//                 33 / 0.433kV TRANSFORMERS
+//               </h3>
+//             </div>
+//           </div>
+//         </div>
+
+//         {transformersExpanded && (
+//           <>
+//             <div className="flex justify-center h-10">
+//               <div className="flow-line-vertical h-full">
+//                 <div className="flow-pulse-vertical" />
+//               </div>
+//             </div>
+
+//             <div className="max-w-7xl mx-auto px-4">
+//               <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden">
+//                 <div className="flow-pulse-horizontal" />
+//               </div>
+
+//               <div className="grid grid-cols-6 gap-4">
+//                 {transformers.map((tf) => (
+//                   <div key={tf.id} className="flex flex-col items-center">
+//                     <div className="flow-line-vertical h-8">
+//                       <div className="flow-pulse-vertical" />
+//                     </div>
+
+//                     <div
+//                       onClick={() => setActiveTransformerAnalytics(tf)}
+//                       className="w-full bg-[#081F5C] border-2 border-[#004AAD] p-4 text-white shadow-md flex flex-col justify-between rounded relative panel-active-glow min-h-[200px] cursor-pointer hover:bg-[#0A276E] transition-colors"
+//                     >
+//                       <div>
+//                         <div className="mb-3 flex justify-center items-center">
+//                           <svg className="w-16 h-10 text-blue-300" viewBox="0 0 80 40" fill="none">
+//                             <circle cx="30" cy="20" r="12" stroke="currentColor" strokeWidth="2.5" />
+//                             <circle cx="46" cy="20" r="8" stroke="currentColor" strokeWidth="2.5" />
+//                           </svg>
+//                         </div>
+
+//                         <strong className="text-base font-black block text-center tracking-widest">
+//                           {tf.id}
+//                         </strong>
+
+//                         <span className="text-[9px] font-bold text-blue-300 text-center block uppercase">
+//                           33kV / 433V TX
+//                         </span>
+//                       </div>
+
+//                       <div className="mt-4 space-y-2 border-t border-blue-900 pt-3">
+//                         <div className="flex justify-between items-center text-[10px]">
+//                           <span className="text-blue-200">Oil Temp:</span>
+//                           <span className="font-extrabold text-white">
+//                             {tf.oilTemp}
+//                           </span>
+//                         </div>
+
+//                         <div className="flex justify-between items-center text-[10px]">
+//                           <span className="text-blue-200">Wind Temp:</span>
+//                           <span className="font-extrabold text-white">
+//                             {tf.windingTemp}
+//                           </span>
+//                         </div>
+
+//                         <div className="flex justify-between items-center text-[10px]">
+//                           <span className="text-blue-200">Relay:</span>
+//                           <span className="font-extrabold text-emerald-400">
+//                             {tf.buchholz}
+//                           </span>
+//                         </div>
+
+//                         <div className="flex justify-between items-center text-[10px]">
+//                           <span className="text-blue-200">Load:</span>
+//                           <span className="font-extrabold text-white">
+//                             {tf.load}
+//                           </span>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           </>
+//         )}
+//       </PopupShell>
+
+//       {activeTransformerAnalytics && (
+//         <TransformerAnalyticsView
+//           data={activeTransformerAnalytics}
+//           onBack={() => setActiveTransformerAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+ 
+
+// const KioskAnalyticsView = ({ data, onBack }) => {
+//   if (!data) return null;
+
+//   const loadNumber = Number(String(data.load).replace("%", "")) || 0;
+
+//   const graphValues = [
+//     42,
+//     48,
+//     54,
+//     60,
+//     66,
+//     loadNumber,
+//     72,
+//     76,
+//     74,
+//     loadNumber,
+//   ];
+
+//   const avg = Math.round(
+//     graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+//   );
+
+//   return (
+//     <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+//       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
+//         <div className="max-w-7xl mx-auto">
+//           <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+//             <div className="flex items-stretch gap-4">
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
+//           >
+//             ← Back to LT Kiosk
+//           </button>
+
+//           <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
+//             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
+
+//             <div className="flex items-center justify-between">
+//               <div>
+//                 <h2 className="mt-2 text-3xl font-normal tracking-wide">
+//                   {data.title} Analytics
+//                 </h2>
+
+//                 <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
+//                   433V LT Kiosk Live Electrical Performance
+//                 </p>
+//               </div>
+
+//               <div className="text-right">
+//                 <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
+//                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
+//                   {data.status}
+//                 </span>
+
+//                 <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
+//                   Status: {data.status}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//             </div>
+//           </div>
+
+//           <div className="grid grid-cols-5 gap-3 mt-3">
+//             {[
+//               ["Energy", data.kwh, "kWh"],
+//               ["Reactive", data.kvh, "kVh"],
+//               ["Current", data.current, ""],
+//               ["Voltage", data.voltage, ""],
+//               ["Power Factor", data.pf, ""],
+//             ].map(([label, value, unit]) => (
+//               <div
+//                 key={label}
+//                 className="bg-white/7 border border-white/10 p-3 shadow-none"
+//               >
+//                 <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
+//                   {label}
+//                 </p>
+
+//                 <div className="mt-1 flex items-end gap-2">
+//                   <span className="text-[13px] font-normal text-slate-300">
+//                     {value}
+//                   </span>
+
+//                   {unit && (
+//                     <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
+//                       {unit}
+//                     </span>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <div className="flex items-center justify-between mb-6">
+//                 <h3 className="text-[15px] font-semibold tracking-wide">
+//                   Kiosk Load Graph
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[12px] text-slate-400">Average</p>
+
+//                   <h4 className="text-lg font-semibold text-cyan-300">
+//                     {avg}%
+//                   </h4>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
+//                 {graphValues.map((value, index) => (
+//                   <div key={index} className="flex-1 flex flex-col justify-end">
+//                     <div
+//                       className="bg-cyan-400/90 shadow-none"
+//                       style={{ height: `${value * 2.5}px` }}
+//                     />
+
+//                     <span className="text-[8px] text-center mt-2 text-blue-200">
+//                       {index + 1}
+//                     </span>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               <div className="grid grid-cols-3 gap-3 mt-5">
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Peak Load</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.max(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Minimum</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.min(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Status</p>
+
+//                   <h4 className="text-[13px] font-semibold text-emerald-200">
+//                     {data.status}
+//                   </h4>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
+//                 Live Kiosk Status
+//               </h3>
+
+//               <div className="flex justify-center">
+//                 <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
+//                   <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+
+//                   <div className="text-center">
+//                     <span className="block text-[30px] font-normal">
+//                       {loadNumber}%
+//                     </span>
+
+//                     <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
+//                       Kiosk Load
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-8 space-y-5">
+//                 {[
+//                   ["Load", loadNumber],
+//                   ["Power Factor", Number(data.pf) * 100],
+//                   ["Kiosk Health", data.health],
+//                 ].map(([label, value]) => (
+//                   <div key={label}>
+//                     <div className="flex justify-between text-[12px] mb-2">
+//                       <span className="text-blue-100 font-medium">
+//                         {label}
+//                       </span>
+
+//                       <span className="text-cyan-300 font-semibold text-[12px]">
+//                         {Math.round(value)}%
+//                       </span>
+//                     </div>
+
+//                     <div className="h-2 bg-white/10 overflow-hidden">
+//                       <div
+//                         className="h-full bg-cyan-400 shadow-none"
+//                         style={{ width: `${Math.min(value, 100)}%` }}
+//                       />
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+
+              
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const KioskMonitorBox = ({
+//   id,
+//   title,
+//   subtitle,
+//   openedKiosks,
+//   setOpenedKiosks,
+//   onClick,
+// }) => {
+//   const monitorData = [
+//     ["kWh", "1,280"],
+//     ["kVh", "1,195"],
+//     ["PF", "0.98"],
+//     ["AMPS", "420 A"],
+//     ["Voltage", "433 V"],
+//   ];
+
+//   const showMonitor = openedKiosks.includes(id);
+
+//   const handleHover = () => {
+//     setOpenedKiosks((prev) => {
+//       if (prev.includes(id)) return prev;
+//       return [...prev, id];
+//     });
+//   };
+
+//   const handleClick = (event) => {
+//     event.stopPropagation();
+//     if (onClick) onClick();
+//   };
+
+//   return (
+//     <div
+//       onMouseEnter={handleHover}
+//       onClick={handleClick}
+//       className="w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-md rounded relative panel-active-glow h-[175px] overflow-hidden cursor-pointer"
+//     >
+//       {!showMonitor ? (
+//         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3">
+//           <span className="text-[9px] font-black text-blue-300 uppercase tracking-wider">
+//             LT KIOSK
+//           </span>
+
+//           <strong className="text-[18px] font-black tracking-widest mt-2">
+//             {title}
+//           </strong>
+
+//           <span className="text-[8px] font-bold text-blue-300 uppercase mt-1">
+//             {subtitle}
+//           </span>
+//         </div>
+//       ) : (
+//         <div
+//           onClick={handleClick}
+//           className="absolute inset-0 z-20 bg-[#081F5C] px-4 py-3"
+//         >
+//           <div className="text-center border-b border-[#2B5DA8] pb-2 mb-2">
+//             <h4 className="text-[12px] font-black text-white uppercase tracking-[0.12em] leading-none">
+//               {title}
+//             </h4>
+
+//             <span className="block mt-1 text-[7px] font-black tracking-[0.15em] text-blue-300 uppercase">
+//               Monitoring
+//             </span>
+//           </div>
+
+//           <div className="flex items-center justify-between mb-2">
+//             <span className="text-[7px] font-bold text-blue-300 uppercase">
+//               {subtitle}
+//             </span>
+
+//             <span className="flex items-center gap-1 text-[7px] font-bold text-emerald-400 uppercase">
+//               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+//               Live
+//             </span>
+//           </div>
+
+//           <div className="px-2 space-y-[4px]">
+//             {monitorData.map(([label, value]) => (
+//               <div
+//                 key={label}
+//                 className="flex items-center justify-between px-1"
+//               >
+//                 <span className="text-[10px] font-medium text-slate-300">
+//                   {label}
+//                 </span>
+
+//                 <span className="text-[11px] font-bold text-white tabular-nums">
+//                   {value}
+//                 </span>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// const KioskPopup = () => {
+//   const [openedKiosks, setOpenedKiosks] = React.useState([]);
+//   const [activeKioskAnalytics, setActiveKioskAnalytics] =
+//     React.useState(null);
+
+//   return (
+//     <>
+//       <PopupShell title="LT Kiosk">
+//         <div className="flex justify-center w-full my-3">
+//           <div
+//             onClick={() => setKiosksExpanded(!kiosksExpanded)}
+//             className="w-[90%] md:w-[70%] lg:w-[45%] h-32 max-w-xl bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-lg rounded-md cursor-pointer hover:bg-[#0A276E] transition-colors"
+//           >
+//             <div className="h-full flex flex-col items-center justify-center text-center">
+//               <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">
+//                 STEP-DOWN COMBINER PANEL
+//               </span>
+
+//               <h3 className="text-lg font-black text-white tracking-wider mt-1">
+//                 LT KIOSK
+//               </h3>
+//             </div>
+//           </div>
+//         </div>
+
+//         {kiosksExpanded && (
+//           <>
+//             <div className="flex justify-center h-10">
+//               <div className="flow-line-vertical h-full">
+//                 <div className="flow-pulse-vertical" />
+//               </div>
+//             </div>
+
+//             <div className="max-w-7xl mx-auto px-4">
+//               <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden">
+//                 <div className="flow-pulse-horizontal" />
+//               </div>
+
+//               <div className="grid grid-cols-6 gap-4">
+//                 {Array.from({ length: 6 }).map((_, index) => {
+//                   const kioskData = {
+//                     id: `kiosk-${index + 1}`,
+//                     title: `KIOSK-${index + 1}`,
+//                     subtitle: "433V PANEL",
+//                     kwh: `${1280 + index * 60}`,
+//                     kvh: `${1195 + index * 55}`,
+//                     current: `${420 + index * 8} A`,
+//                     voltage: "433 V",
+//                     pf: index % 2 === 0 ? "0.98" : "0.97",
+//                     load: 70 + index * 3,
+//                     health: 92 + index,
+//                     status: "Stable",
+//                   };
+
+//                   return (
+//                     <div key={kioskData.id} className="flex flex-col items-center">
+//                       <div className="flow-line-vertical h-8">
+//                         <div className="flow-pulse-vertical" />
+//                       </div>
+
+//                       <KioskMonitorBox
+//                         id={kioskData.id}
+//                         title={kioskData.title}
+//                         subtitle={kioskData.subtitle}
+//                         openedKiosks={openedKiosks}
+//                         setOpenedKiosks={setOpenedKiosks}
+//                         onClick={() => setActiveKioskAnalytics(kioskData)}
+//                       />
+//                     </div>
+//                   );
+//                 })}
+//               </div>
+//             </div>
+//           </>
+//         )}
+//       </PopupShell>
+
+//       {activeKioskAnalytics && (
+//         <KioskAnalyticsView
+//           data={activeKioskAnalytics}
+//           onBack={() => setActiveKioskAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+
+ 
+
+// const BusbarAnalyticsView = ({ data, onBack }) => {
+//   if (!data) return null;
+
+//   const tempNumber = Number(String(data.temp).replace("°C", "")) || 0;
+//   const loadNumber = Number(data.load) || 0;
+
+//   const graphValues = [
+//     40,
+//     46,
+//     52,
+//     58,
+//     64,
+//     loadNumber,
+//     70,
+//     74,
+//     72,
+//     loadNumber,
+//   ];
+
+//   const avg = Math.round(
+//     graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+//   );
+
+//   return (
+//     <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+//       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
+//         <div className="max-w-7xl mx-auto">
+//           <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+//             <div className="flex items-stretch gap-4">
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
+//           >
+//             ← Back to Busbar
+//           </button>
+
+//           <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
+//             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
+
+//             <div className="flex items-center justify-between">
+//               <div>
+//                 <h2 className="mt-2 text-3xl font-normal tracking-wide">
+//                   {data.title} Analytics
+//                 </h2>
+
+//                 <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
+//                   433V LT Busduct / Busbar Health Monitoring
+//                 </p>
+//               </div>
+
+//               <div className="text-right">
+//                 <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
+//                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
+//                   {data.health}
+//                 </span>
+
+//                 <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
+//                   Status: {data.health}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//             </div>
+//           </div>
+
+//           <div className="grid grid-cols-5 gap-3 mt-3">
+//             {[
+//               ["Temperature", data.temp, ""],
+//               ["Vibration", data.vibration, ""],
+//               ["Health", data.health, ""],
+//               ["Voltage", data.voltage, ""],
+//               ["Load", `${data.load}%`, ""],
+//             ].map(([label, value, unit]) => (
+//               <div
+//                 key={label}
+//                 className="bg-white/7 border border-white/10 p-3 shadow-none"
+//               >
+//                 <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
+//                   {label}
+//                 </p>
+
+//                 <div className="mt-1 flex items-end gap-2">
+//                   <span className="text-[13px] font-normal text-slate-300">
+//                     {value}
+//                   </span>
+
+//                   {unit && (
+//                     <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
+//                       {unit}
+//                     </span>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <div className="flex items-center justify-between mb-6">
+//                 <h3 className="text-[15px] font-semibold tracking-wide">
+//                   Busbar Load Graph
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[12px] text-slate-400">Average</p>
+
+//                   <h4 className="text-lg font-semibold text-cyan-300">
+//                     {avg}%
+//                   </h4>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
+//                 {graphValues.map((value, index) => (
+//                   <div key={index} className="flex-1 flex flex-col justify-end">
+//                     <div
+//                       className="bg-cyan-400/90 shadow-none"
+//                       style={{ height: `${value * 2.5}px` }}
+//                     />
+
+//                     <span className="text-[8px] text-center mt-2 text-blue-200">
+//                       {index + 1}
+//                     </span>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               <div className="grid grid-cols-3 gap-3 mt-5">
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Peak Load</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.max(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Temperature</p>
+
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {tempNumber}°C
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Health</p>
+
+//                   <h4 className="text-[13px] font-semibold text-emerald-200">
+//                     {data.health}
+//                   </h4>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
+//                 Live Busbar Status
+//               </h3>
+
+//               <div className="flex justify-center">
+//                 <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
+//                   <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+
+//                   <div className="text-center">
+//                     <span className="block text-[30px] font-normal">
+//                       {loadNumber}%
+//                     </span>
+
+//                     <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
+//                       Bus Load
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-8 space-y-5">
+//                 {[
+//                   ["Load", loadNumber],
+//                   ["Temperature", tempNumber],
+//                   ["Busbar Health", data.health === "ON" ? 96 : 70],
+//                 ].map(([label, value]) => (
+//                   <div key={label}>
+//                     <div className="flex justify-between text-[12px] mb-2">
+//                       <span className="text-blue-100 font-medium">
+//                         {label}
+//                       </span>
+
+//                       <span className="text-cyan-300 font-semibold text-[12px]">
+//                         {typeof value === "number" ? `${Math.round(value)}%` : value}
+//                       </span>
+//                     </div>
+
+//                     <div className="h-2 bg-white/10 overflow-hidden">
+//                       <div
+//                         className="h-full bg-cyan-400 shadow-none"
+//                         style={{
+//                           width: `${
+//                             typeof value === "number"
+//                               ? Math.min(value, 100)
+//                               : 96
+//                           }%`,
+//                         }}
+//                       />
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+
+              
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const BusbarMonitorBox = ({
+//   id,
+//   title,
+//   openedBusbars,
+//   setOpenedBusbars,
+//   onClick,
+// }) => {
+//   const monitorData = [
+//     ["Temp", "42°C"],
+//     ["Vibration", "Normal"],
+//     ["Health", "ON"],
+//   ];
+
+//   const showMonitor = openedBusbars.includes(id);
+
+//   const handleHover = () => {
+//     setOpenedBusbars((prev) => (prev.includes(id) ? prev : [...prev, id]));
+//   };
+
+//   const handleClick = (event) => {
+//     event.stopPropagation();
+//     if (onClick) onClick();
+//   };
+
+//   return (
+//     <div
+//       onMouseEnter={handleHover}
+//       onClick={handleClick}
+//       className="w-full h-[165px] bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-md rounded relative panel-active-glow overflow-hidden cursor-pointer"
+//     >
+//       {!showMonitor ? (
+//         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3">
+//           <span className="text-[9px] font-black text-blue-300 uppercase tracking-wider">
+//             LT BUSBAR
+//           </span>
+
+//           <strong className="text-[18px] font-black tracking-widest mt-2">
+//             {title}
+//           </strong>
+
+//           <span className="text-[8px] font-bold text-blue-300 uppercase mt-1">
+//             433V
+//           </span>
+//         </div>
+//       ) : (
+//         <div
+//           onClick={handleClick}
+//           className="absolute inset-0 z-20 bg-[#081F5C] px-4 py-3"
+//         >
+//           <div className="text-center border-b border-[#2B5DA8] pb-2 mb-2">
+//             <h4 className="text-[12px] font-black text-white uppercase tracking-[0.12em] leading-none">
+//               {title}
+//             </h4>
+
+//             <span className="block mt-1 text-[7px] font-black tracking-[0.15em] text-blue-300 uppercase">
+//               Busbar Status
+//             </span>
+//           </div>
+
+//           <div className="flex items-center justify-between mb-2">
+//             <span className="text-[7px] font-bold text-blue-300 uppercase">
+//               Monitoring
+//             </span>
+
+//             <span className="flex items-center gap-1 text-[7px] font-bold text-emerald-400 uppercase">
+//               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+//               Live
+//             </span>
+//           </div>
+
+//           <div className="px-2 space-y-[6px]">
+//             {monitorData.map(([label, value]) => {
+//               const healthyValue = value === "ON" || value === "Normal";
+
+//               return (
+//                 <div
+//                   key={label}
+//                   className="flex items-center justify-between px-1"
+//                 >
+//                   <span className="text-[10px] font-medium text-slate-300">
+//                     {label}
+//                   </span>
+
+//                   <span
+//                     className={`text-[11px] font-bold tabular-nums ${
+//                       healthyValue ? "text-emerald-400" : "text-white"
+//                     }`}
+//                   >
+//                     {value}
+//                   </span>
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// const BusbarPopup = () => {
+//   const [openedBusbars, setOpenedBusbars] = React.useState([]);
+//   const [activeBusbarAnalytics, setActiveBusbarAnalytics] =
+//     React.useState(null);
+
+//   return (
+//     <>
+//       <PopupShell title="LT Busduct / Busbar">
+//         <div className="flex justify-center w-full my-3">
+//           <div
+//             onClick={() => setBusbarsExpanded(!busbarsExpanded)}
+//             className="w-[90%] md:w-[70%] lg:w-[45%] h-32 max-w-xl bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-lg rounded-md cursor-pointer hover:bg-[#0A276E] transition-colors"
+//           >
+//             <div className="h-full flex flex-col items-center justify-center text-center">
+//               <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">
+//                 POWER DISTRIBUTION
+//               </span>
+
+//               <h3 className="text-lg font-black text-white tracking-wider mt-1">
+//                 LT BUSDUCT / BUSBAR
+//               </h3>
+
+//               <span className="text-xs text-blue-300 mt-1">433V</span>
+//             </div>
+//           </div>
+//         </div>
+
+//         {busbarsExpanded && (
+//           <>
+//             <div className="flex justify-center h-10">
+//               <div className="flow-line-vertical h-full">
+//                 <div className="flow-pulse-vertical" />
+//               </div>
+//             </div>
+
+//             <div className="max-w-7xl mx-auto px-4">
+//               <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden">
+//                 <div className="flow-pulse-horizontal" />
+//               </div>
+
+//               <div className="grid grid-cols-6 gap-4">
+//                 {Array.from({ length: 6 }).map((_, index) => {
+//                   const busbarData = {
+//                     id: `bus-${index + 1}`,
+//                     title: `BUS-${index + 1}`,
+//                     temp: `${42 + index}°C`,
+//                     vibration: "Normal",
+//                     health: "ON",
+//                     voltage: "433 V",
+//                     load: 68 + index * 3,
+//                   };
+
+//                   return (
+//                     <div key={busbarData.id} className="flex flex-col items-center">
+//                       <div className="flow-line-vertical h-8">
+//                         <div className="flow-pulse-vertical" />
+//                       </div>
+
+//                       <BusbarMonitorBox
+//                         id={busbarData.id}
+//                         title={busbarData.title}
+//                         openedBusbars={openedBusbars}
+//                         setOpenedBusbars={setOpenedBusbars}
+//                         onClick={() => setActiveBusbarAnalytics(busbarData)}
+//                       />
+//                     </div>
+//                   );
+//                 })}
+//               </div>
+//             </div>
+//           </>
+//         )}
+//       </PopupShell>
+
+//       {activeBusbarAnalytics && (
+//         <BusbarAnalyticsView
+//           data={activeBusbarAnalytics}
+//           onBack={() => setActiveBusbarAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+
+// const PccPanelAnalyticsView = ({ data, onBack }) => {
+//   if (!data) return null;
+
+//   const graphValues = [42, 48, 55, 61, 66, data.load, 72, 76, 74, data.load];
+
+//   const avg = Math.round(
+//     graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+//   );
+
+//   return (
+//     <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+//       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
+//         <div className="max-w-7xl mx-auto">
+//           <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+//             <div className="flex items-stretch gap-4">
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
+//           >
+//             ← Back to PCC Panel
+//           </button>
+
+//           <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
+//             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
+
+//             <div className="flex items-center justify-between">
+//               <div>
+//                 <h2 className="mt-2 text-3xl font-normal tracking-wide">
+//                   {data.title}
+//                 </h2>
+
+//                 <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
+//                   {data.subtitle}
+//                 </p>
+//               </div>
+
+//               <div className="text-right">
+//                 <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
+//                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
+//                   {data.status}
+//                 </span>
+
+//                 <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
+//                   Status: {data.status}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//             </div>
+//           </div>
+
+//           <div className="grid grid-cols-5 gap-3 mt-3">
+//             {[
+//               ["Energy", data.kwh, "kWh"],
+//               ["Reactive", data.kvh, "kVh"],
+//               ["Current", data.current, ""],
+//               ["Voltage", data.voltage, ""],
+//               ["Power Factor", data.pf, ""],
+//             ].map(([label, value, unit]) => (
+//               <div
+//                 key={label}
+//                 className="bg-white/7 border border-white/10 p-3 shadow-none"
+//               >
+//                 <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
+//                   {label}
+//                 </p>
+
+//                 <div className="mt-1 flex items-end gap-2">
+//                   <span className="text-[13px] font-normal text-slate-300">
+//                     {value}
+//                   </span>
+
+//                   {unit && (
+//                     <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
+//                       {unit}
+//                     </span>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <div className="flex items-center justify-between mb-6">
+//                 <h3 className="text-[15px] font-semibold tracking-wide">
+//                   PCC Load Graph
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[12px] text-slate-400">Average</p>
+
+//                   <h4 className="text-lg font-semibold text-cyan-300">
+//                     {avg}%
+//                   </h4>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
+//                 {graphValues.map((value, index) => (
+//                   <div key={index} className="flex-1 flex flex-col justify-end">
+//                     <div
+//                       className="bg-cyan-400/90 shadow-none"
+//                       style={{ height: `${value * 2.5}px` }}
+//                     />
+
+//                     <span className="text-[8px] text-center mt-2 text-blue-200">
+//                       {index + 1}
+//                     </span>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               <div className="grid grid-cols-3 gap-3 mt-5">
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Peak Load</p>
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.max(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Minimum</p>
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.min(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Status</p>
+//                   <h4 className="text-[13px] font-semibold text-emerald-200">
+//                     {data.status}
+//                   </h4>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
+//                 Live PCC Status
+//               </h3>
+
+//               <div className="flex justify-center">
+//                 <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
+//                   <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+
+//                   <div className="text-center">
+//                     <span className="block text-[30px] font-normal">
+//                       {data.load}%
+//                     </span>
+
+//                     <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
+//                       PCC Load
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-8 space-y-5">
+//                 {[
+//                   ["Load", data.load],
+//                   ["Power Factor", Number(data.pf) * 100],
+//                   ["Panel Health", data.health],
+//                 ].map(([label, value]) => (
+//                   <div key={label}>
+//                     <div className="flex justify-between text-[12px] mb-2">
+//                       <span className="text-blue-100 font-medium">
+//                         {label}
+//                       </span>
+
+//                       <span className="text-cyan-300 font-semibold text-[12px]">
+//                         {Math.round(value)}%
+//                       </span>
+//                     </div>
+
+//                     <div className="h-2 bg-white/10 overflow-hidden">
+//                       <div
+//                         className="h-full bg-cyan-400 shadow-none"
+//                         style={{ width: `${Math.min(value, 100)}%` }}
+//                       />
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+
+              
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const createPccAnalyticsData = (title, panel, index) => ({
+//   title: `${title} - ${panel.name.replace(/\n/g, " ")}`,
+//   subtitle: "LT Distribution Panel Live Analytics",
+//   kwh: `${1245 + index * 18}`,
+//   kvh: `${1180 + index * 15}`,
+//   voltage: "433 V",
+//   current: `${210 + index * 4} A`,
+//   pf: index % 2 === 0 ? "0.98" : "0.97",
+//   load: 70 + (index % 8),
+//   health: 92 + (index % 5),
+//   status: "Stable",
+// });
+
+// const Pcc1Popup = () => {
+//   const [openedPanels, setOpenedPanels] = React.useState([]);
+//   const [activePccAnalytics, setActivePccAnalytics] = React.useState(null);
+
+//   const pcc1Panels = [
+//     { name: "LT6\nIN", arrow: "down" },
+//     { name: "DG1234\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 1", arrow: "up" },
+//     { name: "Spare 1", arrow: "up" },
+//     { name: "Bus\nCoupler\nB/C", arrow: "both" },
+//     { name: "LT5", arrow: "down" },
+//     { name: "DG 1234", arrow: "down" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 2", arrow: "up" },
+//     { name: "Spare 2", arrow: "up" },
+//   ];
+
+//   const pcc2Panels = [
+//     { name: "LT1\nIN", arrow: "down" },
+//     { name: "DG1234\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 1", arrow: "up" },
+//     { name: "Spare 1", arrow: "up" },
+//     { name: "Bus\nCoupler\nB/C", arrow: "both" },
+//     { name: "LT2", arrow: "down" },
+//     { name: "DG 1234", arrow: "down" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 2", arrow: "up" },
+//     { name: "Spare 2", arrow: "up" },
+//   ];
+
+//   const FlowArrow = ({ type, id }) => (
+//     <svg
+//       className="absolute left-0 -top-[48px] w-full h-12 overflow-visible pointer-events-none"
+//       viewBox="0 0 100 48"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//     >
+//       <defs>
+//         <marker
+//           id={`arrow-wing-${id}`}
+//           viewBox="0 0 10 10"
+//           refX="4"
+//           refY="5"
+//           markerWidth="8"
+//           markerHeight="8"
+//           orient="auto-start-reverse"
+//         >
+//           <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
+//         </marker>
+//       </defs>
+
+//       {type === "down" && (
+//         <>
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "up" && (
+//         <>
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "both" && (
+//         <>
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//           <path
+//             d="M 82 24 H 18"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//         </>
+//       )}
+//     </svg>
+//   );
+
+//   const PanelFeatures = ({ heading }) => (
+//     <div className="absolute inset-0 z-30 bg-[#081F5C] px-2 py-2">
+//       <div className="text-center text-[9px] font-black text-blue-300 uppercase tracking-wide leading-tight border-b border-[#2B5DA8] pb-1 mb-1 whitespace-pre-line">
+//         {heading}
+//       </div>
+
+//       {[
+//         ["kWh", "1245"],
+//         ["kVh", "1180"],
+//         ["V", "433V"],
+//         ["PF", "0.98"],
+//         ["Amps", "210A"],
+//       ].map(([label, value]) => (
+//         <div key={label} className="flex justify-between text-[9px] leading-[15px]">
+//           <span className="text-blue-200">{label}</span>
+//           <span className="text-white">{value}</span>
+//         </div>
+//       ))}
+//     </div>
+//   );
+
+//   const PCCRow = ({ title, top, rowPanels }) => (
+//     <div className={`absolute left-0 ${top} w-full h-[210px]`}>
+//       <div className="absolute left-[10px] top-[-34px] text-[#081F5C] text-base font-semibold">
+//         {title}
+//       </div>
+
+//       <div className="absolute left-0 top-[45px] w-full h-[150px] flex items-stretch z-20">
+//         {rowPanels.map((panel, index) => {
+//           const panelId = `${title}-${index}`;
+//           const isOpened = openedPanels.includes(panelId);
+
+//           return (
+//             <div
+//               key={`${title}-${panel.name}-${index}`}
+//               onMouseEnter={() =>
+//                 setOpenedPanels((prev) =>
+//                   prev.includes(panelId) ? prev : [...prev, panelId]
+//                 )
+//               }
+//               onClick={() =>
+//                 setActivePccAnalytics(
+//                   createPccAnalyticsData(title, panel, index)
+//                 )
+//               }
+//               className="relative h-full flex-1 min-w-0 bg-[#081F5C] border-2 border-[#004AAD] border-r-0 last:border-r-2 text-white cursor-pointer"
+//             >
+//               <FlowArrow
+//                 type={panel.arrow}
+//                 id={`${title.replace(/\s/g, "")}-${index}`}
+//               />
+
+//               {isOpened ? (
+//                 <PanelFeatures heading={panel.name} />
+//               ) : (
+//                 <div className="absolute inset-0 z-20 flex items-center justify-center px-1">
+//                   <span className="text-[14px] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
+//                     {panel.name}
+//                   </span>
+//                 </div>
+//               )}
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <>
+//       <PopupShell
+//         title="Wing 1 LT Distribution Flow"
+//         onBack={() => setActivePopup("pccMain")}
+//       >
+//         <div className="w-full max-w-[1600px] mx-auto px-4 py-6 overflow-visible">
+//           <div className="relative w-full h-[520px] overflow-visible">
+//             <PCCRow title="PCC 1" top="top-[25px]" rowPanels={pcc1Panels} />
+//             <PCCRow title="PCC 2" top="top-[285px]" rowPanels={pcc2Panels} />
+//           </div>
+//         </div>
+//       </PopupShell>
+
+//       {activePccAnalytics && (
+//         <PccPanelAnalyticsView
+//           data={activePccAnalytics}
+//           onBack={() => setActivePccAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+// const Pcc2Popup = () => {
+//   const [openedPanels, setOpenedPanels] = React.useState([]);
+//   const [activePccAnalytics, setActivePccAnalytics] = React.useState(null);
+
+//   const pcc3Panels = [
+//     { name: "LT4\nIN", arrow: "down" },
+//     { name: "DG567\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "OG 2", arrow: "up" },
+//     { name: "OG 3", arrow: "up" },
+//     { name: "OG 4", arrow: "up" },
+//     { name: "OG 5", arrow: "up" },
+//     { name: "OG 6", arrow: "up" },
+//     { name: "OG 7", arrow: "up" },
+//     { name: "OG 8", arrow: "up" },
+//     { name: "OG 9", arrow: "up" },
+//     { name: "OG 10", arrow: "up" },
+//   ];
+
+//   const pcc4Panels = [
+//     { name: "LT3\nIN", arrow: "down" },
+//     { name: "DG567\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "OG 2", arrow: "up" },
+//     { name: "OG 3", arrow: "up" },
+//     { name: "OG 4", arrow: "up" },
+//     { name: "OG 5", arrow: "up" },
+//     { name: "OG 6", arrow: "up" },
+//     { name: "OG 7", arrow: "up" },
+//     { name: "OG 8", arrow: "up" },
+//     { name: "OG 9", arrow: "up" },
+//     { name: "OG 10", arrow: "up" },
+//   ];
+
+//   const FlowArrow = ({ type, id }) => (
+//     <svg
+//       className="absolute left-0 -top-[48px] w-full h-12 overflow-visible pointer-events-none"
+//       viewBox="0 0 100 48"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//     >
+//       <defs>
+//         <marker
+//           id={`arrow-wing2-${id}`}
+//           viewBox="0 0 10 10"
+//           refX="4"
+//           refY="5"
+//           markerWidth="8"
+//           markerHeight="8"
+//           orient="auto-start-reverse"
+//         >
+//           <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
+//         </marker>
+//       </defs>
+
+//       {type === "down" && (
+//         <>
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "up" && (
+//         <>
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "both" && (
+//         <>
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//           <path
+//             d="M 82 24 H 18"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//         </>
+//       )}
+//     </svg>
+//   );
+
+//   const PanelFeatures = ({ heading }) => (
+//     <div className="absolute inset-0 z-30 bg-[#081F5C] px-2 py-2">
+//       <div className="text-center text-[9px] font-black text-blue-300 uppercase tracking-wide leading-tight border-b border-[#2B5DA8] pb-1 mb-1 whitespace-pre-line">
+//         {heading}
+//       </div>
+
+//       {[
+//         ["kWh", "1245"],
+//         ["kVh", "1180"],
+//         ["V", "433V"],
+//         ["PF", "0.98"],
+//         ["Amps", "210A"],
+//       ].map(([label, value]) => (
+//         <div key={label} className="flex justify-between text-[9px] leading-[15px]">
+//           <span className="text-blue-200">{label}</span>
+//           <span className="text-white">{value}</span>
+//         </div>
+//       ))}
+//     </div>
+//   );
+
+//   const PCCRow = ({ title, top, rowPanels }) => (
+//     <div className={`absolute left-0 ${top} w-full h-[210px]`}>
+//       <div className="absolute left-[10px] top-[-34px] text-[#081F5C] text-base font-semibold">
+//         {title}
+//       </div>
+
+//       <div className="absolute left-0 top-[45px] w-full h-[150px] flex items-stretch z-20">
+//         {rowPanels.map((panel, index) => {
+//           const panelId = `${title}-${index}`;
+//           const isOpened = openedPanels.includes(panelId);
+
+//           return (
+//             <div
+//               key={`${title}-${panel.name}-${index}`}
+//               onMouseEnter={() =>
+//                 setOpenedPanels((prev) =>
+//                   prev.includes(panelId) ? prev : [...prev, panelId]
+//                 )
+//               }
+//               onClick={() =>
+//                 setActivePccAnalytics(
+//                   createPccAnalyticsData(title, panel, index)
+//                 )
+//               }
+//               className="relative h-full flex-1 min-w-0 bg-[#081F5C] border-2 border-[#004AAD] border-r-0 last:border-r-2 text-white cursor-pointer"
+//             >
+//               <FlowArrow
+//                 type={panel.arrow}
+//                 id={`${title.replace(/\s/g, "")}-${index}`}
+//               />
+
+//               {isOpened ? (
+//                 <PanelFeatures heading={panel.name} />
+//               ) : (
+//                 <div className="absolute inset-0 flex items-center justify-center px-1">
+//                   <span className="text-[14px] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
+//                     {panel.name}
+//                   </span>
+//                 </div>
+//               )}
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <>
+//       <PopupShell
+//         title="Wing 2 LT Distribution Flow"
+//         onBack={() => setActivePopup("pccMain")}
+//       >
+//         <div className="w-full max-w-7xl mx-auto px-4 py-6 overflow-visible">
+//           <div className="relative w-full h-[520px] overflow-visible">
+//             <PCCRow title="PCC 3" top="top-[25px]" rowPanels={pcc3Panels} />
+//             <PCCRow title="PCC 4" top="top-[285px]" rowPanels={pcc4Panels} />
+//           </div>
+//         </div>
+//       </PopupShell>
+
+//       {activePccAnalytics && (
+//         <PccPanelAnalyticsView
+//           data={activePccAnalytics}
+//           onBack={() => setActivePccAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+// const PCCSimpleBox = ({ title, subtitle, onClick }) => (
+//   <div
+//     onClick={onClick}
+//     className="h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-xl panel-active-glow flex flex-col items-center justify-center text-center cursor-pointer overflow-hidden px-4"
+//   >
+//     <h4 className="text-xl font-bold uppercase tracking-[0.05em] text-white">
+//       {title}
+//     </h4>
+
+//     <span className="mt-1 text-[14px] text-slate-300 font-medium">
+//       {subtitle}
+//     </span>
+//   </div>
+// );
+
+// const PCCMainPopup = () => (
+//   <PopupShell title="PCC Main Overview">
+//     <div className="w-full max-w-6xl mx-auto px-6 py-10 overflow-hidden">
+//       <div className="relative w-full h-[360px]">
+//         <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[280px]">
+//           <PCCSimpleBox title="PCC" subtitle="Main LT Distribution" />
+//         </div>
+
+//         <svg
+//           className="absolute left-0 top-[145px] w-full h-[120px] overflow-visible pointer-events-none"
+//           viewBox="0 0 1000 120"
+//           fill="none"
+//         >
+//           <defs>
+//             <marker
+//               id="pcc-wing-arrow"
+//               viewBox="0 0 12 12"
+//               refX="5"
+//               refY="5"
+//               markerWidth="8"
+//               markerHeight="8"
+//               orient="auto"
+//             >
+//               <path d="M0 2 L6 5 L0 8 Z" fill="#00E5FF" />
+//             </marker>
+//           </defs>
+
+//           <path
+//             d="M500 0 V45 H250 V95"
+//             stroke="#004AAD"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           />
+
+//           <path
+//             d="M500 45 H750 V95"
+//             stroke="#004AAD"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           />
+
+//           <path
+//             d="M500 0 V45 H250 V95"
+//             stroke="#00E5FF"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             className="flow-path-left"
+//             markerEnd="url(#pcc-wing-arrow)"
+//           />
+
+//           <path
+//             d="M500 45 H750 V95"
+//             stroke="#00E5FF"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             className="flow-path-right"
+//             markerEnd="url(#pcc-wing-arrow)"
+//           />
+//         </svg>
+
+//         <div className="absolute left-[8%] top-[240px] w-[36%]">
+//           <PCCSimpleBox
+//             title="PCC 1 / PCC 2"
+//             subtitle="Wing A"
+//             onClick={() => setActivePopup("wing1")}
+//           />
+//         </div>
+
+//         <div className="absolute right-[8%] top-[240px] w-[36%]">
+//           <PCCSimpleBox
+//             title="PCC 3 / PCC 4"
+//             subtitle="Wing B"
+//             onClick={() => setActivePopup("wing2")}
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   </PopupShell>
+// );
+
+
+// const RaisingMainAnalyticsView = ({ data, onBack }) => {
+//   if (!data) return null;
+
+//   const graphValues = [42, 48, 55, 61, 66, data.load, 72, 76, 74, data.load];
+
+//   const avg = Math.round(
+//     graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+//   );
+
+//   return (
+//     <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+//       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
+//         <div className="max-w-7xl mx-auto">
+//           <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+//             <div className="flex items-stretch gap-4">
+//           <button
+//             type="button"
+//             onClick={onBack}
+//             className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
+//           >
+//             ← Back to Raising Main
+//           </button>
+
+//           <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
+//             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
+
+//             <div className="flex items-center justify-between">
+//               <div>
+//                 <h2 className="mt-2 text-3xl font-normal tracking-wide">
+//                   {data.title} Analytics
+//                 </h2>
+
+//                 <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
+//                   {data.subtitle}
+//                 </p>
+//               </div>
+
+//               <div className="text-right">
+//                 <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
+//                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
+//                   {data.status}
+//                 </span>
+
+//                 <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
+//                   Status: {data.status}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//             </div>
+//           </div>
+
+//           <div className="grid grid-cols-5 gap-3 mt-3">
+//             {[
+//               ["Energy", data.kwh, "kWh"],
+//               ["Reactive", data.kvh, "kVh"],
+//               ["Current", data.current, ""],
+//               ["Voltage", data.voltage, ""],
+//               ["Power Factor", data.pf, ""],
+//             ].map(([label, value, unit]) => (
+//               <div
+//                 key={label}
+//                 className="bg-white/7 border border-white/10 p-3 shadow-none"
+//               >
+//                 <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
+//                   {label}
+//                 </p>
+
+//                 <div className="mt-1 flex items-end gap-2">
+//                   <span className="text-[13px] font-normal text-slate-300">
+//                     {value}
+//                   </span>
+
+//                   {unit && (
+//                     <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
+//                       {unit}
+//                     </span>
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <div className="flex items-center justify-between mb-6">
+//                 <h3 className="text-[15px] font-semibold tracking-wide">
+//                   Raising Main Load Graph
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[12px] text-slate-400">Average</p>
+//                   <h4 className="text-lg font-semibold text-cyan-300">
+//                     {avg}%
+//                   </h4>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
+//                 {graphValues.map((value, index) => (
+//                   <div key={index} className="flex-1 flex flex-col justify-end">
+//                     <div
+//                       className="bg-cyan-400/90 shadow-none"
+//                       style={{ height: `${value * 2.5}px` }}
+//                     />
+
+//                     <span className="text-[8px] text-center mt-2 text-blue-200">
+//                       {index + 1}
+//                     </span>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               <div className="grid grid-cols-3 gap-3 mt-5">
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Peak Load</p>
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.max(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Minimum</p>
+//                   <h4 className="text-[13px] font-semibold text-slate-400">
+//                     {Math.min(...graphValues)}%
+//                   </h4>
+//                 </div>
+
+//                 <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
+//                   <p className="text-[14px] font-medium">Status</p>
+//                   <h4 className="text-[13px] font-semibold text-emerald-200">
+//                     {data.status}
+//                   </h4>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white/7 border border-white/10 p-5 shadow-none">
+//               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
+//                 Live Raising Main Status
+//               </h3>
+
+//               <div className="flex justify-center">
+//                 <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
+//                   <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+
+//                   <div className="text-center">
+//                     <span className="block text-[30px] font-normal">
+//                       {data.load}%
+//                     </span>
+
+//                     <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
+//                       RM Load
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-8 space-y-5">
+//                 {[
+//                   ["Load", data.load],
+//                   ["Power Factor", Number(data.pf) * 100],
+//                   ["RM Health", data.health],
+//                 ].map(([label, value]) => (
+//                   <div key={label}>
+//                     <div className="flex justify-between text-[12px] mb-2">
+//                       <span className="text-blue-100 font-medium">
+//                         {label}
+//                       </span>
+
+//                       <span className="text-cyan-300 font-semibold text-[12px]">
+//                         {Math.round(value)}%
+//                       </span>
+//                     </div>
+
+//                     <div className="h-2 bg-white/10 overflow-hidden">
+//                       <div
+//                         className="h-full bg-cyan-400 shadow-none"
+//                         style={{ width: `${Math.min(value, 100)}%` }}
+//                       />
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+
+             
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const RaisingMainPopup = () => {
+//   const [openedBoxes, setOpenedBoxes] = React.useState([]);
+//   const [activeRmAnalytics, setActiveRmAnalytics] = React.useState(null);
+
+//   const createRmData = (id, title, subtitle, index = 0) => ({
+//     id,
+//     title,
+//     subtitle: subtitle || "433V Raising Main Distribution",
+//     kwh: `${1245 + index * 65}`,
+//     kvh: `${1180 + index * 58}`,
+//     voltage: "433 V",
+//     current: `${210 + index * 12} A`,
+//     pf: index % 2 === 0 ? "0.98" : "0.97",
+//     load: 72 + index * 4,
+//     health: 94 + index,
+//     status: "Stable",
+//   });
+
+//   const RMBox = ({
+//     id,
+//     title,
+//     subtitle,
+//     hover = false,
+//     tall = false,
+//     onClick,
+//   }) => {
+//     const isOpened = openedBoxes.includes(id);
+
+//     const monitorData = [
+//       ["kWh", "1245"],
+//       ["kVh", "1180"],
+//       ["V", "433V"],
+//       ["PF", "0.98"],
+//       ["Amps", "210A"],
+//     ];
+
+//     const handleHover = () => {
+//       if (!hover) return;
+
+//       setOpenedBoxes((prev) => (prev.includes(id) ? prev : [...prev, id]));
+//     };
+
+//     const handleClick = (event) => {
+//       event.stopPropagation();
+//       if (onClick) onClick();
+//     };
+
+//     return (
+//       <div
+//         onMouseEnter={handleHover}
+//         onClick={handleClick}
+//         className={`relative ${
+//           tall ? "h-[150px]" : "h-[95px]"
+//         } w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-xl panel-active-glow flex flex-col items-center justify-center text-center cursor-pointer overflow-hidden px-3`}
+//       >
+//         {hover && isOpened ? (
+//           <div
+//             onClick={handleClick}
+//             className="absolute inset-0 z-20 bg-[#081F5C] px-4 py-3"
+//           >
+//             <div className="text-center text-[9px] font-black text-blue-300 uppercase tracking-wide border-b border-[#2B5DA8] pb-1 mb-2">
+//               {title}
+//             </div>
+
+//             {monitorData.map(([label, value]) => (
+//               <div
+//                 key={label}
+//                 className="flex justify-between text-[11px] leading-[20px]"
+//               >
+//                 <span className="text-blue-200">{label}</span>
+//                 <span className="text-white">{value}</span>
+//               </div>
+//             ))}
+//           </div>
+//         ) : (
+//           <>
+//             <h4 className="text-base font-bold uppercase tracking-[0.05em]">
+//               {title}
+//             </h4>
+
+//             <span className="mt-1 text-[10px] text-slate-300 font-medium">
+//               {subtitle}
+//             </span>
+//           </>
+//         )}
+//       </div>
+//     );
+//   };
+
+//   return (
+//     <>
+//       <PopupShell
+//         title="Raising Main Distribution"
+//         onBack={() => setActivePopup(null)}
+//       >
+//         <div className="w-full max-w-6xl mx-auto px-6 py-6 overflow-visible">
+//           <div className="relative w-full h-[520px] overflow-visible">
+//             <div className="absolute left-1/2 top-[-15px] -translate-x-1/2 w-[280px]">
+//               <RMBox
+//                 id="main-rm"
+//                 title="Raising Main"
+//                 subtitle="Main Vertical Distribution"
+//                 onClick={() =>
+//                   setActiveRmAnalytics(
+//                     createRmData(
+//                       "main-rm",
+//                       "Raising Main",
+//                       "Main Vertical Distribution",
+//                       0
+//                     )
+//                   )
+//                 }
+//               />
+//             </div>
+
+//             <svg
+//               className="absolute left-0 top-[80px] w-full h-[110px] overflow-visible pointer-events-none"
+//               viewBox="0 0 1000 110"
+//               fill="none"
+//             >
+//               <defs>
+//                 <marker
+//                   id="rm-arrow-1"
+//                   viewBox="0 0 10 10"
+//                   refX="4"
+//                   refY="5"
+//                   markerWidth="8"
+//                   markerHeight="8"
+//                   orient="auto"
+//                 >
+//                   <path d="M0 2 L6 5 L0 8 Z" fill="#00E5FF" />
+//                 </marker>
+//               </defs>
+
+//               {["M500 0 V32 H250 V82", "M500 32 H750 V82"].map(
+//                 (d, i) => (
+//                   <React.Fragment key={i}>
+//                     <path
+//                       d={d}
+//                       stroke="#004AAD"
+//                       strokeWidth="4"
+//                       strokeLinecap="round"
+//                       strokeLinejoin="round"
+//                     />
+//                     <path
+//                       d={d}
+//                       stroke="#00E5FF"
+//                       strokeWidth="4"
+//                       strokeLinecap="round"
+//                       strokeLinejoin="round"
+//                       className={i === 0 ? "flow-path-left" : "flow-path-right"}
+//                       markerEnd="url(#rm-arrow-1)"
+//                     />
+//                   </React.Fragment>
+//                 )
+//               )}
+//             </svg>
+
+//             <div className="absolute left-[9%] top-[175px] w-[34%]">
+//               <RMBox
+//                 id="wing-a"
+//                 title="Wing A"
+//                 subtitle="RM Feed A"
+//                 onClick={() =>
+//                   setActiveRmAnalytics(
+//                     createRmData("wing-a", "Wing A", "Raising Main Feed A", 1)
+//                   )
+//                 }
+//               />
+//             </div>
+
+//             <div className="absolute right-[9%] top-[175px] w-[34%]">
+//               <RMBox
+//                 id="wing-b"
+//                 title="Wing B"
+//                 subtitle="RM Feed B"
+//                 onClick={() =>
+//                   setActiveRmAnalytics(
+//                     createRmData("wing-b", "Wing B", "Raising Main Feed B", 2)
+//                   )
+//                 }
+//               />
+//             </div>
+
+//             <svg
+//               className="absolute left-0 top-[270px] w-full h-[95px] overflow-visible pointer-events-none"
+//               viewBox="0 0 1000 95"
+//               fill="none"
+//             >
+//               <defs>
+//                 <marker
+//                   id="rm-arrow-2"
+//                   viewBox="0 0 10 10"
+//                   refX="4"
+//                   refY="5"
+//                   markerWidth="8"
+//                   markerHeight="8"
+//                   orient="auto"
+//                 >
+//                   <path d="M0 2 L6 5 L0 8 Z" fill="#00E5FF" />
+//                 </marker>
+//               </defs>
+
+//               {[
+//                 "M250 0 V32 H140 V76",
+//                 "M250 0 V32 H360 V76",
+//                 "M750 0 V32 H640 V76",
+//                 "M750 0 V32 H860 V76",
+//               ].map((d, i) => (
+//                 <React.Fragment key={i}>
+//                   <path
+//                     d={d}
+//                     stroke="#004AAD"
+//                     strokeWidth="4"
+//                     strokeLinecap="round"
+//                     strokeLinejoin="round"
+//                   />
+//                   <path
+//                     d={d}
+//                     stroke="#00E5FF"
+//                     strokeWidth="4"
+//                     strokeLinecap="round"
+//                     strokeLinejoin="round"
+//                     className="flow-path-right"
+//                     markerEnd="url(#rm-arrow-2)"
+//                   />
+//                 </React.Fragment>
+//               ))}
+//             </svg>
+
+//             <div className="absolute left-[6%] top-[350px] w-[18%]">
+//               <RMBox
+//                 id="rm-a1"
+//                 title="Raising Main 1"
+//                 subtitle="Wing A Vertical Bus"
+//                 hover
+//                 tall
+//                 onClick={() =>
+//                   setActiveRmAnalytics(
+//                     createRmData(
+//                       "rm-a1",
+//                       "Raising Main 1",
+//                       "Wing A Vertical Bus",
+//                       3
+//                     )
+//                   )
+//                 }
+//               />
+//             </div>
+
+//             <div className="absolute left-[30%] top-[350px] w-[18%]">
+//               <RMBox
+//                 id="rm-a2"
+//                 title="Raising Main 2"
+//                 subtitle="Wing A Vertical Bus"
+//                 hover
+//                 tall
+//                 onClick={() =>
+//                   setActiveRmAnalytics(
+//                     createRmData(
+//                       "rm-a2",
+//                       "Raising Main 2",
+//                       "Wing A Vertical Bus",
+//                       4
+//                     )
+//                   )
+//                 }
+//               />
+//             </div>
+
+//             <div className="absolute right-[30%] top-[350px] w-[18%]">
+//               <RMBox
+//                 id="rm-b1"
+//                 title="Raising Main 3"
+//                 subtitle="Wing B Vertical Bus"
+//                 hover
+//                 tall
+//                 onClick={() =>
+//                   setActiveRmAnalytics(
+//                     createRmData(
+//                       "rm-b1",
+//                       "Raising Main 3",
+//                       "Wing B Vertical Bus",
+//                       5
+//                     )
+//                   )
+//                 }
+//               />
+//             </div>
+
+//             <div className="absolute right-[6%] top-[350px] w-[18%]">
+//               <RMBox
+//                 id="rm-b2"
+//                 title="Raising Main 4"
+//                 subtitle="Wing B Vertical Bus"
+//                 hover
+//                 tall
+//                 onClick={() =>
+//                   setActiveRmAnalytics(
+//                     createRmData(
+//                       "rm-b2",
+//                       "Raising Main 4",
+//                       "Wing B Vertical Bus",
+//                       6
+//                     )
+//                   )
+//                 }
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       </PopupShell>
+
+//       {activeRmAnalytics && (
+//         <RaisingMainAnalyticsView
+//           data={activeRmAnalytics}
+//           onBack={() => setActiveRmAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+
+// const BuildingsPopup = () => {
+//  const BuildingBox = ({ title, subtitle, onClick, showIcon = false }) => (
+//   <div
+//     onClick={onClick}
+//     className="h-[125px] w-full bg-gradient-to-br from-[#081F5C] to-[#061746] border border-[#1F6FEB] text-white shadow-[0_12px_30px_rgba(8,31,92,0.25)] flex items-center justify-center text-center cursor-pointer px-5 overflow-hidden"
+//   >
+//     {showIcon && (
+//       <div className="w-[62px] h-[92px] border border-[#1F6FEB] bg-[#05143C] p-2 flex flex-col justify-between shrink-0 mr-5">
+//         <div className="h-[3px] w-full bg-[#00E5FF]" />
+
+//         <div className="grid grid-cols-4 gap-[4px]">
+//           {Array.from({ length: 24 }).map((_, i) => (
+//             <span
+//               key={i}
+//               className="w-[6px] h-[6px] rounded-[2px] bg-slate-400/60"
+//             />
+//           ))}
+//         </div>
+
+//         <div className="h-[8px] w-full bg-[#004AAD]" />
+//       </div>
+//     )}
+
+//     <div className="flex flex-col items-center justify-center">
+//       <h4 className="text-lg font-bold uppercase tracking-[0.08em]">
+//         {title}
+//       </h4>
+
+//       <span className="mt-2 text-[11px] text-blue-200 font-semibold">
+//         {subtitle}
+//       </span>
+//     </div>
+//   </div>
+// );
+
+//   return (
+//     <PopupShell
+//       title="Buildings Distribution"
+//       onBack={() => setActivePopup(null)}
+//     >
+//       <div className="w-full max-w-5xl mx-auto px-6 py-8 overflow-visible">
+//         <div className="relative h-[420px] overflow-visible">
+//           <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[300px]">
+//             <BuildingBox
+//               title="Buildings"
+//               subtitle="Main Building Distribution"
+//             />
+//           </div>
+
+//           <svg
+//             className="absolute left-0 top-[130px] w-full h-[140px] overflow-visible pointer-events-none"
+//             viewBox="0 0 1000 140"
+//             fill="none"
+//           >
+//             <defs>
+//               <marker
+//                 id="building-arrow"
+//                 viewBox="0 0 10 10"
+//                 refX="4"
+//                 refY="5"
+//                 markerWidth="8"
+//                 markerHeight="8"
+//                 orient="auto"
+//               >
+//                 <path d="M0 2 L6 5 L0 8 Z" fill="#00E5FF" />
+//               </marker>
+//             </defs>
+
+//             <path
+//               d="M500 0 V45 H250 V105"
+//               stroke="#004AAD"
+//               strokeWidth="4"
+//               strokeLinecap="round"
+//               strokeLinejoin="round"
+//             />
+
+//             <path
+//               d="M500 45 H750 V105"
+//               stroke="#004AAD"
+//               strokeWidth="4"
+//               strokeLinecap="round"
+//               strokeLinejoin="round"
+//             />
+
+//             <path
+//               d="M500 0 V45 H250 V105"
+//               stroke="#00E5FF"
+//               strokeWidth="4"
+//               strokeLinecap="round"
+//               strokeLinejoin="round"
+//               className="flow-path-left"
+//               markerEnd="url(#building-arrow)"
+//             />
+
+//             <path
+//               d="M500 45 H750 V105"
+//               stroke="#00E5FF"
+//               strokeWidth="4"
+//               strokeLinecap="round"
+//               strokeLinejoin="round"
+//               className="flow-path-right"
+//               markerEnd="url(#building-arrow)"
+//             />
+//           </svg>
+
+// <div className="absolute left-[12%] top-[240px] w-[30%]">
+//   <Link to="/building/wing-a">
+//     <BuildingBox
+//       title="Wing A"
+//       subtitle="20 Floors / 40 Zones"
+//       showIcon
+//     />
+//   </Link>
+// </div>
+
+// <div className="absolute right-[12%] top-[240px] w-[30%]">
+//   <Link to="/building/wing-b">
+//     <BuildingBox
+//       title="Wing B"
+//       subtitle="20 Floors / 40 Zones"
+//       showIcon
+//     />
+//   </Link>
+// </div>
+//         </div>
+//       </div>
+//     </PopupShell>
+//   );
+// };
+
+
+
+//   return (
+
+//     <main className="min-h-screen bg-white text-[#081F5C] flex flex-col font-sans">
+  
+
+// <header className="sticky top-0 z-[1000] h-[72px] bg-[#081F5C] border-b-4 border-[#004AAD] px-4 text-white shadow-md">
+//   <div className="h-full mx-auto max-w-7xl flex justify-between items-center">
+
+
+//     {/* LEFT */}
+// <div
+//   onClick={() => setActivePopup(null)}
+//   className="ml-1 flex items-center cursor-pointer"
+// >
+//   <div className="flex flex-col justify-center">
+//     <h1 className="text-[26px] font-semibold tracking-[0.18em] text-white leading-none uppercase">
+//       ARCOT
+//       <span className="text-[#67E8F9] ml-2">
+//         IIoT 1.0
+//       </span>
+//     </h1>
+
+//     <span className="mt-1 text-[9px] uppercase tracking-[0.35em] text-blue-300 font-medium">
+//       Industrial Internet of Things
+//     </span>
+//   </div>
+
+//   <div className="h-[58px] border-l border-[#004AAD] ml-5"></div>
+
+//   <img
+//   src={prestigeLogo}
+//   alt="Prestige Group"
+//   className="h-[60px] w-[110px] object-cover"
+// />
+ 
+
+// </div>
+
+
+
+//     {/* RIGHT */}
+//   <div className="flex items-center gap-3">
+//   <button
+//     onClick={() => navigate("/overview")}
+//     className="h-[32px] px-4 bg-[#004AAD] border border-cyan-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-[#0058d6]"
+//   >
+//     Overview
+//   </button>
+
+//   <div className="flex items-center gap-2 bg-[#05143C] border border-[#004AAD] px-3 py-1.5 rounded-sm">
+//     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+//     <span className="text-[10px] font-bold tracking-[0.15em]">
+//       BLE CONNECTED
+//     </span>
+//   </div>
+
+//   <button
+//     onClick={() => {
+//       localStorage.removeItem("bmsLoggedIn");
+//       navigate("/auth");
+//     }}
+//     className="h-[32px] px-4 bg-red-600 border border-red-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-red-700"
+//   >
+//     Logout
+//   </button>
+// </div>
+//   </div>
+// </header>
+      
+
+// <section className="w-full h-[calc(100vh-72px)] bg-slate-50 px-8 pt-2 pb-4 overflow-hidden">
+//   <div className="w-full h-full flex flex-col justify-start">
+
+//     {/* ROW 1: SOURCE → FEEDERS → TRANSFORMER → LT KIOSK */}
+//     <div className="grid grid-cols-[1fr_70px_1fr_70px_1fr_70px_1fr] items-center">
+//      <OverviewBox
+//   title="33kV Source"
+//   subtitle="2 Incoming / 1 Outgoing"
+//   liveStatus={{ on: true, healthy: true, off: false }}
+//   onClick={() => setActivePopup("source")}
+// />
+
+//       <FlowLineH />
+
+//       <OverviewBox
+//         title="33kV Feeder"
+//         subtitle="1 Incoming / 6 Outgoing"
+//         onClick={() => setActivePopup("feeders")}
+//       />
+
+//       <FlowLineH />
+
+//       <OverviewBox
+//         title="Transformer"
+//         subtitle="33kV / 433V"
+//         onClick={() => setActivePopup("transformers")}
+//       />
+
+//       <FlowLineH />
+
+//       <OverviewBox
+//         title="LT Kiosk"
+//         subtitle="433V Panel"
+//         onClick={() => setActivePopup("kiosks")}
+//       />
+//     </div>
+
+//     {/* LT KIOSK → BUSDUCT */}
+//     <div className="relative h-[42px] w-full">
+//       <div className="absolute right-[12.5%] top-0 h-[21px] -translate-x-1/2">
+//         <FlowLineV />
+//       </div>
+
+//       <div className="absolute left-[7.5%] right-[12.5%] top-[20px]">
+//         <FlowLineH />
+//       </div>
+
+//       <div className="absolute left-[7.5%] top-[20px] h-[30px] -translate-x-1/2">
+//         <FlowLineV />
+//       </div>
+//     </div>
+
+//   {/* ROW 2: BUSDUCT → PCC → RAISING MAIN */}
+// <div className="relative mt-2">
+//   <div className="grid grid-cols-[1fr_70px_1fr_70px_1fr_70px_1fr] items-center">
+
+//     <OverviewBox
+//       title="Busduct"
+//       subtitle="LT Busduct Distribution"
+//       onClick={() => setActivePopup("busbars")}
+//     />
+
+//     <FlowLineH />
+
+//     <OverviewBox
+//       title="PCC"
+//       subtitle="Wing 1 + Wing 2"
+//       onClick={() => setActivePopup("pccMain")}
+//     />
+
+//     <FlowLineH />
+
+//     <OverviewBox
+//       title="Raising Main"
+//       subtitle="Vertical Distribution"
+//       onClick={() => setActivePopup("raisingMain")}
+//     />
+    
+//     <FlowLineH />
+
+//     <OverviewBox
+//       title="WING"
+//       subtitle="wing A / wing B"
+//       onClick={() => setActivePopup("buildings")}
+//     />
+//     <div />
+//     <div />
+
+//   </div>
+// </div>
+//   </div>
+// </section>
+
+//       {activePopup === "source" && <SourcePopup />}
+//       {activePopup === "feeders" && <FeederPopup />}
+//       {activePopup === "transformers" && <TransformersPopup />}
+//       {activePopup === "kiosks" && <KioskPopup />}
+//       {activePopup === "busbars" && <BusbarPopup />}
+//       {activePopup === "pccMain" && <PCCMainPopup />}
+// {activePopup === "wing1" && <Pcc1Popup />}
+// {activePopup === "wing2" && <Pcc2Popup />}
+// {activePopup === "raisingMain" && <RaisingMainPopup />}
+// {activePopup === "buildings" && <BuildingsPopup />}
+
+// {activePopup === "overview" && <OverviewPopup />}
+
+
+//       <footer className="bg-slate-100 border-t border-slate-200 py-6 px-6 text-slate-500 text-xs">
+//         <div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between items-center gap-4 font-semibold">
+//           <p>© 2026 Arcot Industries. All systems operational.</p>
+//           <div className="flex items-center gap-4">
+//             <span className="flex items-center gap-1"><ShieldAlert className="w-4 h-4 text-emerald-600" /> System Integrity: 100%</span>
+//             <span>Refreshed: Live Telemetry</span>
+//           </div>
+//         </div>
+//       </footer>
+
+      
+//     </main>
+//   );
+// }
+
+
+
+
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Zap, ShieldAlert, X } from "lucide-react";
+import { Activity, ArrowLeft, Gauge, Maximize2, Radio, ShieldAlert, X, Zap } from "lucide-react";
 import aiLogo from "../assets/AI LOGO.png";
 import { useNavigate } from "react-router-dom";
 import prestigeLogo from "../assets/ser-removebg.png";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  LabelList,
+  Line,
+  LineChart,
+  PolarAngleAxis,
+  RadialBar,
+  RadialBarChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 export default function MainOverview() {
   const [activePopup, setActivePopup] = useState(null);
@@ -809,15 +5078,6 @@ const navigate = useNavigate();
     { id: "TR-6", oilTemp: "51°C", windingTemp: "57°C", buchholz: "Healthy", load: "60%" },
   ];
 
-// const OverviewBox = ({ title, subtitle, onClick }) => (
-//   <button
-//     onClick={onClick}
-//     className="h-[160px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white rounded-1 shadow-xl hover:bg-[#0A276E] transition-colors flex flex-col items-center justify-center text-center px-6"
-//   >
-//     <h3 className="text-2xl font-400 uppercase tracking-wide">{title}</h3>
-//     <p className="text-sm text-blue-300 font-bold uppercase mt-4">{subtitle}</p>
-//   </button>
-// );
 
 const OverviewBox = ({
   title,
@@ -871,7 +5131,7 @@ const OverviewBox = ({
   return (
     <div
       onClick={onClick}
-      className="h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white rounded-none shadow-xl panel-active-glow flex flex-col text-center cursor-pointer overflow-hidden"
+      className="h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white rounded-[10px] shadow-xl panel-active-glow flex flex-col text-center cursor-pointer overflow-hidden"
     >
      <div className="flex-1 flex flex-col items-center justify-center px-4">
   <h4 className="text-xl font-bold uppercase tracking-[0.05em] text-white">
@@ -918,40 +5178,6 @@ const OverviewBox = ({
   );
 };
 
-// const WingOverviewBox = ({ title, subtitle }) => (
-//   <div className="h-[160px] w-[50%] mx-auto bg-[#081F5C] border-2 border-[#004AAD] text-white rounded-1 shadow-xl hover:bg-[#0A276E] transition-all duration-300 flex items-center justify-center gap-4 px-4">
-
-//     {/* Building Design */}
-//     <div className="w-[55px] h-[100px] bg-[#05143C] border border-[#004AAD] rounded-t-sm p-1.5 flex flex-col justify-between shrink-0">
-//       <div className="h-[2px] w-full bg-cyan-400 shadow-[0_0_8px_#00E5FF]" />
-
-//       <div className="grid grid-cols-4 gap-1">
-//         {Array.from({ length: 28 }).map((_, i) => (
-//           <span
-//             key={i}
-//             className="h-1.5 rounded-[2px] bg-white/15"
-//           />
-//         ))}
-//       </div>
-
-//       <div className="h-1.5 w-full bg-[#004AAD]" />
-//     </div>
-
-//     {/* Text Section */}
-//     <div className="text-center">
-//       <h3 className="text-lg font-semibold uppercase tracking-wide">
-//         {title}
-//       </h3>
-
-//       <p className="text-[11px] text-blue-300 font-semibold uppercase mt-2">
-//         {subtitle}
-//       </p>
-//     </div>
-
-//   </div>
-// );
-
-// 
 
 const FlowLineH = () => (
   <div className="h-[4px] w-full bg-cyan-400 relative overflow-hidden">
@@ -966,7 +5192,7 @@ const FlowLineV = () => (
 );
 
  const PopupShell = ({ title, children, onBack }) => (
-  <div className="fixed left-0 right-0 top-[72px] bottom-0 z z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
+  <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
 <div className="w-full max-w-7xl h-[calc(100vh-110px)] overflow-y-auto bg-slate-50 border-2 border-[#004AAD] rounded-xl shadow-2xl p-6 relative">      <div className="sticky top-0 z-20 bg-slate-50 border-b border-slate-200 pb-4 mb-6 flex items-center justify-between">
         <div>
           <span className="text-[10px] font-black tracking-[0.25em] uppercase text-[#004AAD]">
@@ -1002,232 +5228,6 @@ const FlowLineV = () => (
     </div>
   </div>
 );
-
-  // const SourcePopup = () => (
-  //   <PopupShell title="33kV Source → Incoming → Outgoing">
-  //     {/* 1. SOURCE SECTION */}
-  //     <div className="max-w-3xl mx-auto bg-[#081F5C] border-2 border-[#004AAD] p-6 text-white shadow-lg relative panel-active-glow rounded-md">
-  //       <div className="absolute top-3 right-3 flex gap-2">
-  //         <span className="flex items-center gap-1 bg-[#05143C] border border-emerald-500 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_8px_rgba(52,211,153,0.2)]">
-  //           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-  //           ONLINE
-  //         </span>
-  //       </div>
-
-  //       <div className="text-center pb-4 mb-4 border-b border-blue-900/60">
-  //         <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] block uppercase">CENTRAL CONTROL PANEL</span>
-  //         <h3 className="text-2xl font-black mt-1 text-white tracking-widest">33kV SOURCE PANELS</h3>
-  //         <p className="text-xs text-blue-200 mt-1 font-semibold">Dual high-tension grid utility connection monitoring node</p>
-  //       </div>
-
-  //       <div className="grid gap-4 md:grid-cols-2">
-  //         <div className="bg-[#05143C] border border-[#004AAD] p-4 rounded relative">
-  //           <div className="flex justify-between items-start">
-  //             <span className="text-[9px] font-black text-blue-300 tracking-wider uppercase">SOURCE 1 (MAINGRID)</span>
-  //             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block shadow-[0_0_6px_#34d399]" />
-  //           </div>
-  //           <div className="mt-2 flex items-center gap-3">
-  //             <div className="bg-[#081F5C] p-2 border border-blue-900 rounded">
-  //               <Zap className="h-5 w-5 text-emerald-400" />
-  //             </div>
-  //             <div>
-  //               <span className="text-xl font-black block tracking-wide text-white">33.0 kV</span>
-  //               <span className="text-[10px] font-bold text-emerald-400">ACTIVE FEEDER</span>
-  //             </div>
-  //           </div>
-  //         </div>
-
-  //         <div className="bg-[#05143C] border border-[#004AAD] p-4 rounded relative opacity-90">
-  //           <div className="flex justify-between items-start">
-  //             <span className="text-[9px] font-black text-blue-300 tracking-wider uppercase">SOURCE 2 (DG STANDBY)</span>
-  //             <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block shadow-[0_0_6px_#fbbf24]" />
-  //           </div>
-  //           <div className="mt-2 flex items-center gap-3">
-  //             <div className="bg-[#081F5C] p-2 border border-blue-900 rounded">
-  //               <Zap className="h-5 w-5 text-amber-400" />
-  //             </div>
-  //             <div>
-  //               <span className="text-xl font-black block tracking-wide text-white">33.0 kV</span>
-  //               <span className="text-[10px] font-bold text-amber-300">STANDBY MODE</span>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-
-  //     {/* SVG Animated Split Lines (Source -> Incomings) */}
-  //     <div className="w-full max-w-4xl mx-auto h-16 relative">
-  //       <svg className="w-full h-full overflow-visible" viewBox="0 0 800 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  //         <defs>
-  //           <marker id="arrow-cyan-popup" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-  //             <path d="M 0 1.5 L 7 5 L 0 8.5 z" fill="#00E5FF" />
-  //           </marker>
-  //         </defs>
-  //         <path d="M 400 0 V 32 H 200 V 64 M 400 32 H 600 V 64" stroke="#cbd5e1" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-  //         <path d="M 400 0 V 32 H 200 V 64" stroke="#00E5FF" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="flow-path-left" markerEnd="url(#arrow-cyan-popup)" />
-  //         <path d="M 400 0 V 32 H 600 V 64" stroke="#00E5FF" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="flow-path-right" markerEnd="url(#arrow-cyan-popup)" />
-  //       </svg>
-  //     </div>
-
-  //     {/* 2. INCOMING SECTION */}
-  //     <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-  //       {['Incoming 1', 'Incoming 2'].map((item, index) => (
-  //         <div key={item} className="bg-[#081F5C] border-2 border-[#004AAD] p-5 text-white shadow-md relative panel-active-glow rounded-md">
-  //           <div className="absolute top-2 right-2">
-  //             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block shadow-[0_0_6px_#34d399]" />
-  //           </div>
-  //           <span className="text-[9px] font-black text-blue-300 tracking-wider block uppercase">FEEDER BREAKER {index + 1}</span>
-  //           <h4 className="text-lg font-black mt-1 text-white">{item}</h4>
-  //           <div className="mt-4 grid grid-cols-2 gap-2 bg-[#05143C] p-3 border border-blue-900">
-  //             <div>
-  //               <span className="text-[9px] text-blue-300 font-bold block">VOLTAGE</span>
-  //               <strong className="text-sm font-extrabold text-white">33.0 kV</strong>
-  //             </div>
-  //             <div>
-  //               <span className="text-[9px] text-blue-300 font-bold block">BREAKER</span>
-  //               <strong className="text-sm font-extrabold text-emerald-400">CLOSED / ON</strong>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       ))}
-  //     </div>
-
-  //     {/* SVG Animated Merge Lines (Incomings -> Outgoing) */}
-  //     <div className="w-full max-w-4xl mx-auto h-16 relative">
-  //       <svg className="w-full h-full overflow-visible" viewBox="0 0 800 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  //         <path d="M 200 0 V 32 H 400 V 64 M 600 0 V 32 H 400" stroke="#cbd5e1" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-  //         <path d="M 200 0 V 32 H 400 V 64" stroke="#00E5FF" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="flow-path-left" markerEnd="url(#arrow-cyan-popup)" />
-  //         <path d="M 600 0 V 32 H 400 V 64" stroke="#00E5FF" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="flow-path-right" markerEnd="url(#arrow-cyan-popup)" />
-  //       </svg>
-  //     </div>
-
-  //     {/* 3. 33kV OUTGOING PANEL */}
-  //     <div className="w-full max-w-4xl mx-auto my-2 busbar-glow-bg border-2 border-[#004AAD] p-5 text-center rounded shadow-lg relative panel-active-glow">
-  //       <div className="busbar-glow-element" />
-  //       <div className="relative z-10 flex flex-col md:flex-row items-center justify-between px-6 gap-4">
-  //         <div className="flex items-center gap-2">
-  //           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-  //           <span className="text-xs font-black text-blue-200 tracking-wider">OUTGOING BUSBAR ENERGIZED</span>
-  //         </div>
-  //         <h3 className="text-xl font-black text-white tracking-widest">33kV OUTGOING</h3>
-  //         <div className="flex gap-4">
-  //           <span className="bg-[#05143C] border border-[#004AAD] text-emerald-400 text-xs font-extrabold px-3 py-1 rounded">33.0 kV</span>
-  //           <span className="bg-[#05143C] border border-[#004AAD] text-white text-xs font-extrabold px-3 py-1 rounded">50.0 Hz</span>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </PopupShell>
-  // );
-
-  
-//   const SourceBox = ({ title, subtitle, icon }) => (
-//   <div className="h-[115px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white rounded-none shadow-xl panel-active-glow flex flex-col items-center justify-center text-center px-4">
-//     {icon && (
-//       <div className="bg-[#05143C] p-2 border border-blue-900 mb-2">
-//         <Zap className="h-5 w-5 text-emerald-400" />
-//       </div>
-//     )}
-
-//     <span className="text-[9px] font-black text-blue-300 tracking-[0.2em] uppercase">
-//       {subtitle}x
-//     </span>
-
-//     <h4 className="text-lg font-semibold uppercase tracking-wide mt-1">
-//       {title}
-//     </h4>
-//   </div>
-// );
-
-// const SourcePopup = () => (
-//   <PopupShell title="33kV Source → 2 Incoming / 1 Outgoing ">
-//     <div className="max-w-5xl mx-auto">
-
-//       {/* SOURCE */}
-//       <div className="flex justify-center">
-//         <div className="w-[320px]">
-//           <SourceBox
-//             title="33kV SOURCE"
-//             subtitle="CENTRAL CONTROL PANEL"
-//             icon
-//           />
-//         </div>
-//       </div>
-
-//       {/* SOURCE DOWN TO BUS */}
-//       <div className="flex justify-center h-10">
-//         <div className="flow-line-vertical h-full">
-//           <div className="flow-pulse-vertical" />
-//         </div>
-//       </div>
-
-//       {/* BUS FLOW BELOW SOURCE */}
-//       <div className="relative h-[4px] w-[760px] mx-auto bg-cyan-400 overflow-hidden">
-//         <div className="flow-pulse-horizontal" />
-//       </div>
-
-//       {/* BUS TO INC1 / INC2 */}
-//       <div className="relative h-14 w-[760px] mx-auto">
-//         <div className="absolute left-0 top-0 h-full">
-//           <div className="flow-line-vertical h-full">
-//             <div className="flow-pulse-vertical" />
-//           </div>
-//         </div>
-
-//         <div className="absolute right-0 top-0 h-full">
-//           <div className="flow-line-vertical h-full">
-//             <div className="flow-pulse-vertical" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* INC1 - OUT - INC2 */}
-//       <div className="grid grid-cols-[320px_80px_320px_80px_320px] items-center">
-//         <SourceBox title="INC1" subtitle="FEEDER BREAKER" />
-
-//         <div className="h-[4px] bg-cyan-400 relative overflow-hidden">
-//           <div className="flow-pulse-horizontal" />
-//         </div>
-
-//         <SourceBox title="OUT" subtitle="OUTGOING BUSBAR" />
-
-//         <div className="h-[4px] bg-cyan-400 relative overflow-hidden">
-//           <div className="flow-pulse-horizontal" />
-//         </div>
-
-//         <SourceBox title="INC2" subtitle="FEEDER BREAKER" />
-//       </div>
-
-//       {/* OUT TO METER */}
-//       <div className="flex justify-center h-12">
-//         <div className="flow-line-vertical h-full">
-//           <div className="flow-pulse-vertical" />
-//         </div>
-//       </div>
-
-//       {/* METER */}
-//       <div className="flex justify-center">
-//         <div className="w-[320px]">
-//           <SourceBox title="METER" subtitle="METERING UNIT" />
-//         </div>
-//       </div>
-
-//       {/* METER TO FEEDER */}
-//       <div className="flex justify-center h-12">
-//         <div className="flow-line-vertical h-full">
-//           <div className="flow-pulse-vertical" />
-//         </div>
-//       </div>
-
-//       {/* FEEDER */}
-//       <div className="flex justify-center">
-//         <div className="w-[320px]">
-//           <SourceBox title="33kV FEEDER" subtitle="FEEDER SWITCHGEAR PANEL" />
-//         </div>
-//       </div>
-
-//     </div>
-//   </PopupShell>
-// );
 
 const sourceAnalytics = {
   inc1Analytics: {
@@ -1296,19 +5296,274 @@ const sourceAnalytics = {
   },
 };
 
-const IndividualSourceAnalytics = ({ type, onBack }) => {
-  const data = sourceAnalytics[type];
+const numberFrom = (value, fallback = 0) => {
+  const parsed = Number(String(value ?? "").replace(/[^\d.-]/g, ""));
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
 
-  if (!data) {
+const clampValue = (value, min, max) =>
+  Math.min(Math.max(value, min), max);
+
+const analyticsTooltipStyle = {
+  background: "#061737",
+  border: "1px solid rgba(56,189,248,0.35)",
+  borderRadius: "8px",
+  color: "#ffffff",
+  boxShadow: "0 14px 35px rgba(0,0,0,0.35)",
+};
+
+const MetricAnalyticsCard = ({
+  number,
+  icon,
+  title,
+  subtitle,
+  value,
+  unit,
+  change,
+  children,
+  footer,
+  className = "",
+}) => (
+  <article
+    className={`relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] shadow-[0_18px_45px_rgba(0,0,0,0.24)] ${className}`}
+  >
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
+
+    <div className="flex h-full min-h-0 flex-col p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cyan-400/60 bg-cyan-400/[0.06] text-cyan-300">
+            {icon}
+          </div>
+
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded bg-[#06316E] text-[11px] font-black text-cyan-300">
+                {number}
+              </span>
+
+              <h3 className="truncate text-[14px] font-black uppercase tracking-[0.06em] text-white">
+                {title}
+              </h3>
+            </div>
+
+            <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.12em] text-sky-400">
+              {subtitle}
+            </p>
+          </div>
+        </div>
+
+        <div className="shrink-0 rounded-md border border-emerald-400/25 bg-emerald-400/[0.06] px-2.5 py-1.5 text-right">
+          <p className="text-[11px] font-black text-emerald-400">
+            ↑ {change}
+          </p>
+          <p className="text-[8px] text-slate-400">vs yesterday</p>
+        </div>
+      </div>
+
+      <div className="mt-2 pl-[52px]">
+        <div className="flex items-end gap-2">
+          <strong className="text-[25px] font-semibold leading-none tracking-tight text-white">
+            {value}
+          </strong>
+
+          {unit && (
+            <span className="pb-0.5 text-[14px] font-semibold text-slate-200">
+              {unit}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-2 min-h-0 flex-1">{children}</div>
+
+      <div className="mt-2 grid grid-cols-3 overflow-hidden rounded-lg border border-[#153B69] bg-[#061737]">
+        {footer.map((item, index) => (
+          <div
+            key={item.label}
+            className={`px-3 py-2 ${
+              index !== footer.length - 1
+                ? "border-r border-[#153B69]"
+                : ""
+            }`}
+          >
+            <p className="text-[8px] font-bold uppercase tracking-[0.08em] text-sky-400">
+              {item.label}
+            </p>
+            <p className="mt-0.5 truncate text-[11px] font-bold text-white">
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </article>
+);
+
+const createElectricalAnalytics = (data) => {
+  const kwh = numberFrom(data.kwh, 1280);
+  const kvh = numberFrom(data.kvh, 1195);
+  const current = numberFrom(data.current, 420);
+  const voltage = numberFrom(data.voltage, 33);
+  const isHighVoltage = /kv/i.test(String(data.voltage));
+  const voltageUnit = isHighVoltage ? "kV" : "V";
+
+  const kwhTrend = [
+    80, 235, 390, 525, 650, 780, 920, 1050, 1130, 1110, 1275, 1310, kwh,
+  ].map((value, index) => ({
+    time: `${String(index * 2).padStart(2, "0")}:00`,
+    value,
+  }));
+
+  const currentWave = Array.from({ length: 42 }, (_, index) => ({
+    time: `${Math.round((index / 41) * 100)}ms`,
+    value:
+      Math.sin(index * 0.68) * current * 1.28 +
+      Math.sin(index * 1.84) * current * 0.06,
+  }));
+
+  const baseVoltage = voltage;
+  const voltageSpread = isHighVoltage ? 0.55 : 7;
+  const voltageTrend = Array.from({ length: 38 }, (_, index) => ({
+    time:
+      index % 7 === 0
+        ? `13:${String(27 + Math.floor(index / 7)).padStart(2, "0")}`
+        : "",
+    phaseR:
+      baseVoltage +
+      Math.sin(index * 0.36) * voltageSpread +
+      Math.sin(index * 0.12) * voltageSpread * 0.45,
+    phaseY:
+      baseVoltage -
+      voltageSpread * 0.2 +
+      Math.sin(index * 0.41 + 1.1) * voltageSpread * 0.72,
+    phaseB:
+      baseVoltage +
+      voltageSpread * 0.12 +
+      Math.sin(index * 0.47 + 2.2) * voltageSpread * 0.64,
+  }));
+
+  return {
+    ...data,
+    kwh,
+    kvh,
+    current,
+    voltage,
+    voltageUnit,
+    isHighVoltage,
+    kwhTrend,
+    kvhComparison: [
+      { label: "Today", value: kvh },
+      { label: "Yesterday", value: Math.round(kvh * 0.904) },
+    ],
+    kvhMonthlyTrend: [
+      { day: "1", current: 4.2, previous: 2.1 },
+      { day: "4", current: 7.1, previous: 6.9 },
+      { day: "7", current: 8.1, previous: 12.4 },
+      { day: "10", current: 16.8, previous: 13.3 },
+      { day: "13", current: 9.4, previous: 10.2 },
+      { day: "16", current: 10.1, previous: 4.3 },
+      { day: "19", current: 6.5, previous: 3.0 },
+      { day: "22", current: 14.2, previous: 1.2 },
+      { day: "25", current: 18.4, previous: 4.5 },
+      { day: "28", current: 13.1, previous: 7.6 },
+    ],
+    currentWave,
+    voltageTrend,
+  };
+};
+
+const IndividualSourceAnalytics = ({
+  type,
+  data,
+  onBack,
+  backLabel = "Back to Source",
+}) => {
+  const sourceData = data || sourceAnalytics[type];
+
+  const initialAnalytics = useMemo(
+    () => (sourceData ? createElectricalAnalytics(sourceData) : null),
+    [type]
+  );
+
+  const [analytics, setAnalytics] = useState(initialAnalytics);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  useEffect(() => {
+    setAnalytics(initialAnalytics);
+  }, [initialAnalytics]);
+
+  useEffect(() => {
+    if (!analytics) return undefined;
+
+    const timer = window.setInterval(() => {
+      setAnalytics((previous) => {
+        if (!previous) return previous;
+
+        const now = Date.now();
+        const currentPoint = {
+          time: `${now % 1000}ms`,
+          value:
+            Math.sin(now / 170) * previous.current * 1.28 +
+            Math.sin(now / 61) * previous.current * 0.06,
+        };
+
+        const lastVoltage =
+          previous.voltageTrend[previous.voltageTrend.length - 1];
+
+        const step = previous.isHighVoltage ? 0.12 : 1.4;
+        const minVoltage = previous.isHighVoltage
+          ? previous.voltage * 0.9
+          : previous.voltage * 0.88;
+        const maxVoltage = previous.isHighVoltage
+          ? previous.voltage * 1.1
+          : previous.voltage * 1.12;
+
+        const voltagePoint = {
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          phaseR: clampValue(
+            lastVoltage.phaseR + (Math.random() - 0.5) * step,
+            minVoltage,
+            maxVoltage
+          ),
+          phaseY: clampValue(
+            lastVoltage.phaseY + (Math.random() - 0.5) * step,
+            minVoltage,
+            maxVoltage
+          ),
+          phaseB: clampValue(
+            lastVoltage.phaseB + (Math.random() - 0.5) * step,
+            minVoltage,
+            maxVoltage
+          ),
+        };
+
+        return {
+          ...previous,
+          currentWave: [...previous.currentWave.slice(1), currentPoint],
+          voltageTrend: [...previous.voltageTrend.slice(1), voltagePoint],
+        };
+      });
+
+      setLastUpdated(new Date());
+    }, 1400);
+
+    return () => window.clearInterval(timer);
+  }, [Boolean(analytics)]);
+
+  if (!sourceData || !analytics) {
     return (
-      <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white flex items-center justify-center">
-        <div className="bg-[#081F5C] border border-cyan-400/40 p-6 text-center">
+      <div className="fixed inset-x-0 bottom-0 top-[72px] z-[999] flex items-center justify-center bg-[#020B24] text-white">
+        <div className="rounded-xl border border-cyan-400/35 bg-[#071633] p-7 text-center">
           <h2 className="text-xl font-semibold">Analytics data not found</h2>
-
           <button
             type="button"
             onClick={onBack}
-            className="mt-4 px-5 py-2 border border-cyan-400/40 text-cyan-300"
+            className="mt-4 rounded-md border border-cyan-400/40 px-5 py-2 text-cyan-300 hover:bg-cyan-400/10"
           >
             ← Back
           </button>
@@ -1317,189 +5572,404 @@ const IndividualSourceAnalytics = ({ type, onBack }) => {
     );
   }
 
-  const graphValues =
-    type === "outAnalytics"
-      ? [62, 69, 74, 80, 76, 86, 82, 89, 84, 86]
-      : type === "inc1Analytics"
-      ? [42, 50, 58, 61, 66, 72, 70, 76, 74, 78]
-      : [38, 44, 51, 58, 62, 66, 68, 70, 69, 72];
-
-  const avg = Math.round(
-    graphValues.reduce((a, b) => a + b, 0) / graphValues.length
-  );
+  const pf = clampValue(numberFrom(analytics.pf, 0.98), 0, 1);
+  const voltageMin = analytics.isHighVoltage
+    ? Math.floor(analytics.voltage * 0.88)
+    : Math.floor(analytics.voltage * 0.85);
+  const voltageMax = analytics.isHighVoltage
+    ? Math.ceil(analytics.voltage * 1.12)
+    : Math.ceil(analytics.voltage * 1.15);
+  const warningLow = analytics.voltage * 0.95;
+  const warningHigh = analytics.voltage * 1.05;
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white overflow-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] p-8">
-        <div className="max-w-7xl mx-auto">
-          <button
-            type="button"
-            onClick={onBack}
-            className="mb-6 px-5 py-2.5 bg-white/5 border border-cyan-400/40 text-cyan-200 text-[12px] font-medium tracking-wide hover:bg-cyan-400/10 transition shadow-none"
-          >
-            ← Back to Source
-          </button>
+    <div
+      className={`fixed inset-x-0 bottom-0 z-[1100] overflow-hidden bg-[#020B24] text-white ${
+        isFullscreen ? "top-0" : "top-[72px]"
+      }`}
+    >
+      <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.24),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_26%),linear-gradient(180deg,#020B24_0%,#020817_100%)]">
+        <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 px-5 py-3 backdrop-blur-xl">
+          <div className="mx-auto flex max-w-[1600px] items-center gap-4">
+            <button
+              type="button"
+              onClick={onBack}
+              className="flex h-[58px] shrink-0 items-center gap-2 rounded-lg border border-[#1B4D83] bg-[#061737] px-4 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/60 hover:bg-[#092452]"
+            >
+              <ArrowLeft className="h-4 w-4 text-cyan-300" />
+              {backLabel}
+            </button>
 
-          <div className="relative overflow-hidden bg-white/8 border border-white/10 shadow-none p-4">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
+            <div className="min-w-0 flex-1">
+              <h2 className="truncate text-[25px] font-semibold tracking-tight text-white">
+                {analytics.title}
+              </h2>
+              <p className="mt-0.5 text-[13px] font-medium text-cyan-300">
+                {analytics.subtitle}
+              </p>
+            </div>
 
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="mt-2 text-3xl font-normal tracking-wide">
-                  {data.title}
-                </h2>
-
-                <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
-                  {data.subtitle}
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <div className="hidden items-center gap-3 md:flex">
+              <div className="rounded-lg border border-[#174575] bg-[#061737] px-4 py-2">
+                <div className="flex items-center gap-2 text-[13px] font-semibold text-emerald-400">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.9)]" />
                   Live
-                </span>
-
-                <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
-                  Status: {data.status}
+                </div>
+                <p className="mt-1 text-[9px] text-slate-400">
+                  Updated {lastUpdated.toLocaleTimeString()}
                 </p>
               </div>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-5 gap-4 mt-3">
-            {[
-              ["Energy", data.kwh, "kWh"],
-              ["Reactive", data.kvh, "kVh"],
-              ["Current", data.current, ""],
-              ["Voltage", data.voltage, ""],
-              ["Power Factor", data.pf, ""],
-            ].map(([label, value, unit]) => (
-              <div
-                key={label}
-                className="bg-white/7 border border-white/10 p-3 shadow-none"
+              <button
+                type="button"
+                onClick={() => setIsFullscreen((value) => !value)}
+                className="flex h-[46px] w-[46px] items-center justify-center rounded-lg border border-[#1B4D83] bg-[#061737] text-cyan-300 transition hover:border-cyan-300 hover:bg-[#092452]"
+                aria-label="Toggle fullscreen analytics"
               >
-                <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
-                  {label}
-                </p>
-
-                <div className="mt-1 flex items-end gap-2">
-                  <span className="text-[13px] font-normal text-slate-300">
-                    {value}
-                  </span>
-
-                  {unit && (
-                    <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
-                      {unit}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
+                <Maximize2 className="h-5 w-5" />
+              </button>
+            </div>
           </div>
+        </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-5 mt-3">
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[15px] font-semibold tracking-wide">
-                  Load Consumption Graph
-                </h3>
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 2xl:overflow-hidden">
+          <div className="mx-auto grid min-h-[840px] max-w-[1600px] grid-cols-1 gap-4 lg:h-full lg:min-h-0 lg:grid-cols-6 lg:grid-rows-2">
+            <MetricAnalyticsCard
+              number="1"
+              icon={<Zap className="h-5 w-5" />}
+              title="kWh"
+              subtitle="Active energy"
+              value={analytics.kwh.toLocaleString()}
+              unit="kWh"
+              change="12.4%"
+              className="lg:col-span-2"
+              footer={[
+                // { label: "Today", value: `${analytics.kwh.toLocaleString()} kWh` },
+                // { label: "Yesterday", value: `${Math.round(analytics.kwh * 0.89).toLocaleString()} kWh` },
+                // { label: "This month", value: `${Math.round(analytics.kwh * 30.02).toLocaleString()} kWh` },
+              ]}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={analytics.kwhTrend}
+                  margin={{ top: 12, right: 4, left: -24, bottom: -4 }}
+                >
+                  <defs>
+                    <linearGradient id={`kwhFill-${type}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#1D9BF0" stopOpacity={0.92} />
+                      <stop offset="100%" stopColor="#0876DE" stopOpacity={0.03} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" strokeDasharray="3 3" />
+                  <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} interval={1} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
+                  <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value) => [`${Math.round(value)} kWh`, "Energy"]} />
+                  <Area type="monotone" dataKey="value" stroke="#38BDF8" strokeWidth={2} fill={`url(#kwhFill-${type})`} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </MetricAnalyticsCard>
 
-                <div className="text-right">
-                  <p className="text-[12px] text-slate-400">Average</p>
-                  <h4 className="text-lg font-semibold text-cyan-300">
-                    {avg}%
-                  </h4>
+            <MetricAnalyticsCard
+              number="2"
+              icon={<Activity className="h-5 w-5" />}
+              title="kVh"
+              subtitle="Monthly apparent energy comparison"
+              value={analytics.kvh.toLocaleString()}
+              unit="kVh"
+              change="10.7%"
+              className="lg:col-span-2"
+              footer={[
+                // { label: "Current month", value: `${Math.round(analytics.kvh * 30).toLocaleString()} kVh` },
+                // { label: "Last month", value: `${Math.round(analytics.kvh * 27.2).toLocaleString()} kVh` },
+                // { label: "Difference", value: "+10.7%" },
+              ]}
+            >
+              <div className="relative h-full min-h-[155px]">
+                <div className="absolute left-2 top-0 z-10 flex items-center gap-5 text-[9px] font-semibold text-slate-300">
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-violet-400" />Current Month</span>
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-cyan-400" />Last Month</span>
                 </div>
+
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={analytics.kvhMonthlyTrend}
+                    margin={{ top: 24, right: 8, left: -18, bottom: -4 }}
+                  >
+                    <defs>
+                      <linearGradient id={`kvhCurrentArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.34} />
+                        <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.02} />
+                      </linearGradient>
+                      <linearGradient id={`kvhPreviousArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#22D3EE" stopOpacity={0.28} />
+                        <stop offset="100%" stopColor="#22D3EE" stopOpacity={0.02} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
+                    <YAxis domain={[0, 20]} ticks={[0, 5, 10, 15, 20]} axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} tickFormatter={(value) => `${value}k`} />
+                    <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value, name) => [`${value}k kVh`, name === "current" ? "Current Month" : "Last Month"]} />
+                    <Area type="monotone" dataKey="previous" stroke="#22D3EE" strokeWidth={2.2} fill={`url(#kvhPreviousArea-${type})`} dot={{ r: 2.8, fill: "#22D3EE", stroke: "#CFFAFE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+                    <Area type="monotone" dataKey="current" stroke="#8B5CF6" strokeWidth={2.2} fill={`url(#kvhCurrentArea-${type})`} dot={{ r: 2.8, fill: "#8B5CF6", stroke: "#EDE9FE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
+            </MetricAnalyticsCard>
 
-              <div className="flex items-end gap-3 h-[280px] border-b border-white/10 pb-3">
-                {graphValues.map((v, i) => (
-                  <div key={i} className="flex-1 flex flex-col justify-end">
-                    <div
-                      className="bg-cyan-400/90 shadow-none"
-                      style={{ height: `${v * 2.5}px` }}
-                    />
+            <MetricAnalyticsCard
+              number="3"
+              icon={<Radio className="h-5 w-5" />}
+              title="Current"
+              subtitle="Live current waveform"
+              value={analytics.current.toLocaleString()}
+              unit="A"
+              change="5.3%"
+              className="lg:col-span-2"
+              footer={[
+                // { label: "Average", value: `${analytics.current} A` },
+                // { label: "Maximum", value: `${Math.round(analytics.current * 1.46)} A` },
+                // { label: "Minimum", value: `${Math.round(analytics.current * 0.54)} A` },
+              ]}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={analytics.currentWave}
+                  margin={{ top: 8, right: 4, left: -25, bottom: -4 }}
+                >
+                  <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" strokeDasharray="3 3" />
+                  <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} interval={8} />
+                  <YAxis
+                    domain={[-analytics.current * 1.7, analytics.current * 1.7]}
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: "#8EA6C4", fontSize: 8 }}
+                  />
+                  <ReferenceLine y={0} stroke="rgba(148,163,184,0.34)" />
+                  <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value) => [`${Math.round(value)} A`, "Current"]} />
+                  <Line type="monotone" dataKey="value" stroke="#22D3EE" strokeWidth={1.8} dot={false} isAnimationActive={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </MetricAnalyticsCard>
 
-                    <span className="text-[8px] text-center mt-2 text-blue-200">
-                      {i + 1}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            <article className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] shadow-[0_18px_45px_rgba(0,0,0,0.24)] lg:col-span-4">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-300/80 to-transparent" />
 
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Peak Load</p>
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.max(...graphValues)}%
-                  </h4>
-                </div>
-
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Minimum</p>
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.min(...graphValues)}%
-                  </h4>
-                </div>
-
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Status</p>
-                  <h4 className="text-[13px] font-semibold text-emerald-200">
-                    {data.status}
-                  </h4>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
-              <h3 className="text-[15px] font-semibold tracking-wide mb-6">
-                Live Load Status
-              </h3>
-
-              <div className="flex justify-center">
-                <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
-                  <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
-
-                  <div className="text-center">
-                    <span className="block text-[30px] font-normal">
-                      {data.load}%
-                    </span>
-
-                    <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
-                      Load
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 space-y-5">
-                {[
-                  ["Load", data.load],
-                  ["Power Factor", Number(data.pf) * 100],
-                  ["System Health", data.health],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="flex justify-between text-xs mb-2">
-                      <span className="text-blue-100 font-medium">
-                        {label}
-                      </span>
-
-                      <span className="text-cyan-300 font-semibold">
-                        {Math.round(value)}%
-                      </span>
+              <div className="flex h-full min-h-0 flex-col p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-yellow-400/80 bg-yellow-400/[0.06] text-[15px] font-black text-yellow-300">
+                      PF
                     </div>
 
-                    <div className="h-2 bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full bg-cyan-400 shadow-none"
-                        style={{ width: `${Math.min(value, 100)}%` }}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="flex h-6 w-6 items-center justify-center rounded bg-yellow-400/15 text-[11px] font-black text-yellow-300">
+                          4
+                        </span>
+
+                        <h3 className="truncate text-[14px] font-black uppercase tracking-[0.06em] text-white">
+                          Power Factor
+                        </h3>
+                      </div>
+
+                      <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.12em] text-sky-400">
+                        Real-time power efficiency
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="shrink-0 rounded-md border border-emerald-400/25 bg-emerald-400/[0.06] px-2.5 py-1.5 text-right">
+                    <p className="text-[11px] font-black text-emerald-400">
+                      ↑ 0.02
+                    </p>
+                    <p className="text-[8px] text-slate-400">vs yesterday</p>
+                  </div>
+                </div>
+
+                <div className="mt-3 grid min-h-0 flex-1 grid-cols-[1.08fr_0.92fr] gap-3">
+                  <div className="relative min-h-[190px]">
+                    <svg
+                      viewBox="0 0 300 230"
+                      className="h-full w-full overflow-visible"
+                      role="img"
+                      aria-label={`Power factor ${pf.toFixed(2)}`}
+                    >
+                      <defs>
+                        <linearGradient
+                          id={`pfPowerArc-${type}`}
+                          x1="0%"
+                          y1="100%"
+                          x2="100%"
+                          y2="0%"
+                        >
+                          <stop offset="0%" stopColor="#60A5FA" />
+                          <stop offset="55%" stopColor="#93C5FD" />
+                          <stop offset="100%" stopColor="#FFFFFF" />
+                        </linearGradient>
+                      </defs>
+
+                      <path
+                        d="M 58 190 A 100 100 0 1 1 242 190"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.13)"
+                        strokeWidth="17"
+                        strokeLinecap="round"
                       />
-                    </div>
+
+                      <path
+                        d="M 58 190 A 100 100 0 1 1 242 190"
+                        fill="none"
+                        stroke={`url(#pfPowerArc-${type})`}
+                        strokeWidth="17"
+                        strokeLinecap="round"
+                        pathLength="100"
+                        strokeDasharray={`${Math.max(4, pf * 100)} 100`}
+                      />
+
+                      <g
+                        stroke="#6B9BCB"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        opacity="0.75"
+                      >
+                        <line x1="45" y1="191" x2="35" y2="196" />
+                        <line x1="50" y1="129" x2="39" y2="125" />
+                        <line x1="83" y1="77" x2="76" y2="67" />
+                        <line x1="150" y1="55" x2="150" y2="42" />
+                        <line x1="217" y1="77" x2="224" y2="67" />
+                        <line x1="250" y1="129" x2="261" y2="125" />
+                        <line x1="255" y1="191" x2="265" y2="196" />
+                      </g>
+
+                      <g
+                        fill="#E2E8F0"
+                        fontSize="13"
+                        fontWeight="600"
+                        textAnchor="middle"
+                      >
+                        <text x="37" y="211">0</text>
+                        <text x="24" y="133">0.2</text>
+                        <text x="74" y="58">0.4</text>
+                        <text x="150" y="31">0.6</text>
+                        <text x="227" y="58">0.8</text>
+                        <text x="276" y="133">1.0</text>
+                      </g>
+
+                      <text
+                        x="150"
+                        y="144"
+                        fill="#FFFFFF"
+                        fontSize="38"
+                        fontWeight="700"
+                        textAnchor="middle"
+                      >
+                        {pf.toFixed(2)}
+                      </text>
+
+                      <text
+                        x="150"
+                        y="171"
+                        fill="#CBD5E1"
+                        fontSize="18"
+                        fontWeight="600"
+                        textAnchor="middle"
+                      >
+                        {Math.round(pf * 100)}%
+                      </text>
+                    </svg>
                   </div>
-                ))}
+
+                  <div className="grid min-h-0 grid-cols-2 gap-2">
+                    {[
+                      {
+                        label: "Gauge Value",
+                        value: pf.toFixed(2),
+                      },
+                      {
+                        label: "Capacity Percentage",
+                        value: `${Math.round(pf * 100)}%`,
+                      },
+                      {
+                        label: "Gauge Range",
+                        value: "0 – 1.0",
+                      },
+                      {
+                        label: "Avg Power (10 min)",
+                        value: `${Math.round(analytics.current * pf)} kW`,
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className="flex min-h-[82px] flex-col justify-center rounded-xl border border-slate-300/80 bg-[linear-gradient(145deg,#FFFFFF,#E8EEF5)] px-3 py-2.5 shadow-[0_8px_20px_rgba(0,0,0,0.16)]"
+                      >
+                        <p className="text-[9px] font-semibold leading-tight text-slate-600">
+                          {item.label}
+                        </p>
+                        <p className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none tracking-tight text-slate-950">
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            </article>
+
+            <MetricAnalyticsCard
+              number="5"
+              icon={<Zap className="h-5 w-5" />}
+              title="Voltage"
+              subtitle="Three-phase voltage monitoring"
+              value={analytics.voltage.toFixed(analytics.isHighVoltage ? 1 : 0)}
+              unit={analytics.voltageUnit}
+              change="1.2%"
+              className="lg:col-span-2"
+              footer={[
+                // { label: "Average", value: `${analytics.voltage.toFixed(analytics.isHighVoltage ? 1 : 0)} ${analytics.voltageUnit}` },
+                // { label: "Maximum", value: `${(analytics.voltage * 1.03).toFixed(analytics.isHighVoltage ? 1 : 0)} ${analytics.voltageUnit}` },
+                // { label: "Minimum", value: `${(analytics.voltage * 0.97).toFixed(analytics.isHighVoltage ? 1 : 0)} ${analytics.voltageUnit}` },
+              ]}
+            >
+              <div className="relative h-full min-h-[155px]">
+                <div className="absolute right-2 top-0 z-10 flex items-center gap-4 text-[8px] font-semibold text-slate-300">
+                  <span className="flex items-center gap-1"><span className="h-[2px] w-4 bg-red-400" />Phase R</span>
+                  <span className="flex items-center gap-1"><span className="h-[2px] w-4 bg-blue-400" />Phase Y</span>
+                  <span className="flex items-center gap-1"><span className="h-[2px] w-4 bg-green-400" />Phase B</span>
+                </div>
+                <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={analytics.voltageTrend}
+                  margin={{ top: 8, right: 55, left: -16, bottom: -4 }}
+                >
+                  <CartesianGrid stroke="rgba(148,163,184,0.15)" strokeDasharray="3 3" />
+                  <XAxis dataKey="time" axisLine={{ stroke: "rgba(148,163,184,0.3)" }} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
+                  <YAxis domain={[voltageMin, voltageMax]} axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} width={42} />
+                  <Tooltip
+                    contentStyle={analyticsTooltipStyle}
+                    formatter={(value, name) => [
+                      `${Number(value).toFixed(analytics.isHighVoltage ? 2 : 1)} ${analytics.voltageUnit}`,
+                      name,
+                    ]}
+                  />
+                  <ReferenceLine
+                    y={warningHigh}
+                    stroke="#EF4444"
+                    strokeWidth={1.2}
+                    label={{ value: `Upper ${warningHigh.toFixed(analytics.isHighVoltage ? 1 : 0)}`, position: "right", fill: "#FFFFFF", fontSize: 8 }}
+                  />
+                  <ReferenceLine
+                    y={warningLow}
+                    stroke="#FACC15"
+                    strokeWidth={1.2}
+                    label={{ value: `Lower ${warningLow.toFixed(analytics.isHighVoltage ? 1 : 0)}`, position: "right", fill: "#FFFFFF", fontSize: 8 }}
+                  />
+                  <Line name="Phase R" type="monotone" dataKey="phaseR" stroke="#EF5547" strokeWidth={1.45} dot={false} isAnimationActive={false} />
+                  <Line name="Phase Y" type="monotone" dataKey="phaseY" stroke="#4C96E8" strokeWidth={1.45} dot={false} isAnimationActive={false} />
+                  <Line name="Phase B" type="monotone" dataKey="phaseB" stroke="#65A657" strokeWidth={1.45} dot={false} isAnimationActive={false} />
+                </LineChart>
+              </ResponsiveContainer>
+              </div>
+            </MetricAnalyticsCard>
           </div>
         </div>
       </div>
@@ -1541,7 +6011,7 @@ const SourceBox = ({
     <div
       onMouseEnter={handleHover}
       onClick={handleClick}
-      className="relative h-[135px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-xl panel-active-glow overflow-hidden cursor-pointer"
+      className="relative h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-xl panel-active-glow overflow-hidden cursor-pointer"
     >
       {!showMonitor ? (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
@@ -1842,221 +6312,35 @@ const FeederAnalyticsView = ({ type, data, onBack }) => {
 
   if (!analyticsData) {
     return (
-      <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white flex items-center justify-center">
-        <div className="bg-[#081F5C] border border-cyan-400/40 p-6 text-center">
-          <h2 className="text-xl font-semibold">Feeder analytics not found</h2>
+      <div className="fixed inset-x-0 bottom-0 top-[72px] z-[1100] flex items-center justify-center bg-[#020B24] text-white">
+        <div className="rounded-xl border border-cyan-400/35 bg-[#071633] p-7 text-center shadow-2xl">
+          <h2 className="text-xl font-semibold">
+            Feeder analytics not found
+          </h2>
+
+          <p className="mt-2 text-sm text-slate-400">
+            The selected outgoing feeder does not have monitoring data.
+          </p>
 
           <button
             type="button"
             onClick={onBack}
-            className="mt-4 px-5 py-2 border border-cyan-400/40 text-cyan-300"
+            className="mt-5 rounded-md border border-cyan-400/40 px-5 py-2 text-cyan-300 transition hover:bg-cyan-400/10"
           >
-            ← Back
+            ← Back to Feeder Panel
           </button>
         </div>
       </div>
     );
   }
 
-  const graphValues = [
-    45,
-    52,
-    59,
-    64,
-    70,
-    analyticsData.load,
-    75,
-    79,
-    76,
-    analyticsData.load,
-  ];
-
-  const avg = Math.round(
-    graphValues.reduce((a, b) => a + b, 0) / graphValues.length
-  );
-
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white overflow-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] p-8">
-        <div className="max-w-7xl mx-auto">
-          <button
-            type="button"
-            onClick={onBack}
-            className="mb-6 px-5 py-2.5 bg-white/5 border border-cyan-400/40 text-cyan-200 text-[12px] font-medium tracking-wide hover:bg-cyan-400/10 transition shadow-none"
-          >
-            ← Back to Feeder Panel
-          </button>
-
-          <div className="relative overflow-hidden bg-white/8 border border-white/10 shadow-none p-4">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="mt-2 text-3xl font-normal tracking-wide">
-                  {analyticsData.title}
-                </h2>
-
-                <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
-                  {analyticsData.subtitle}
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  {analyticsData.status}
-                </span>
-
-                <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
-                  Status: {analyticsData.status}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-5 gap-4 mt-3">
-            {[
-              ["Energy", analyticsData.kwh, "kWh"],
-              ["Reactive", analyticsData.kvh, "kVh"],
-              ["Current", analyticsData.current, ""],
-              ["Voltage", analyticsData.voltage, ""],
-              ["Power Factor", analyticsData.pf, ""],
-            ].map(([label, value, unit]) => (
-              <div
-                key={label}
-                className="bg-white/7 border border-white/10 p-3 shadow-none"
-              >
-                <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
-                  {label}
-                </p>
-
-                <div className="mt-1 flex items-end gap-2">
-                  <span className="text-[13px] font-normal text-slate-300">
-                    {value}
-                  </span>
-
-                  {unit && (
-                    <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
-                      {unit}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-5 mt-3">
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[15px] font-semibold tracking-wide">
-                  Power Flow Graph
-                </h3>
-
-                <div className="text-right">
-                  <p className="text-[12px] text-slate-400">Average</p>
-
-                  <h4 className="text-lg font-semibold text-cyan-300">
-                    {avg}%
-                  </h4>
-                </div>
-              </div>
-
-              <div className="flex items-end gap-3 h-[280px] border-b border-white/10 pb-3">
-                {graphValues.map((value, index) => (
-                  <div key={index} className="flex-1 flex flex-col justify-end">
-                    <div
-                      className="bg-cyan-400/90 shadow-none"
-                      style={{ height: `${value * 2.5}px` }}
-                    />
-
-                    <span className="text-[8px] text-center mt-2 text-blue-200">
-                      {index + 1}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Peak Load</p>
-
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.max(...graphValues)}%
-                  </h4>
-                </div>
-
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Minimum</p>
-
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.min(...graphValues)}%
-                  </h4>
-                </div>
-
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Status</p>
-
-                  <h4 className="text-[13px] font-semibold text-emerald-200">
-                    {analyticsData.status}
-                  </h4>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
-              <h3 className="text-[15px] font-semibold tracking-wide mb-6">
-                Live Flow Status
-              </h3>
-
-              <div className="flex justify-center">
-                <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
-                  <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
-
-                  <div className="text-center">
-                    <span className="block text-[30px] font-normal">
-                      {analyticsData.load}%
-                    </span>
-
-                    <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
-                      Flow Load
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 space-y-5">
-                {[
-                  ["Load", analyticsData.load],
-                  ["Power Factor", Number(analyticsData.pf) * 100],
-                  ["Feeder Health", analyticsData.health],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="flex justify-between text-[12px] mb-2">
-                      <span className="text-blue-100 font-medium">
-                        {label}
-                      </span>
-
-                      <span className="text-cyan-300 font-semibold text-[12px]">
-                        {Math.round(value)}%
-                      </span>
-                    </div>
-
-                    <div className="h-2 bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full bg-cyan-400 shadow-none"
-                        style={{ width: `${Math.min(value, 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-           
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <IndividualSourceAnalytics
+      type={type}
+      data={analyticsData}
+      onBack={onBack}
+      backLabel="Back to Feeder Panel"
+    />
   );
 };
 
@@ -2209,18 +6493,20 @@ const FeederPopup = () => {
   );
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white overflow-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] p-8">
+    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
         <div className="max-w-7xl mx-auto">
+          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+            <div className="flex items-stretch gap-4">
           <button
             type="button"
             onClick={onBack}
-            className="mb-6 px-5 py-2.5 bg-white/5 border border-cyan-400/40 text-cyan-200 text-[12px] font-medium tracking-wide hover:bg-cyan-400/10 transition shadow-none"
+            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
           >
             ← Back to Transformers
           </button>
 
-          <div className="relative overflow-hidden bg-white/8 border border-white/10 shadow-none p-4">
+          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
 
             <div className="flex items-center justify-between">
@@ -2246,8 +6532,10 @@ const FeederPopup = () => {
               </div>
             </div>
           </div>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-5 gap-4 mt-3">
+          <div className="grid grid-cols-5 gap-3 mt-3">
             {[
               ["Oil Temp", data.oilTemp, ""],
               ["Winding Temp", data.windingTemp, ""],
@@ -2278,8 +6566,8 @@ const FeederPopup = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-5 mt-3">
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-[15px] font-semibold tracking-wide">
                   Transformer Load Graph
@@ -2294,7 +6582,7 @@ const FeederPopup = () => {
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[280px] border-b border-white/10 pb-3">
+              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
                 {graphValues.map((value, index) => (
                   <div key={index} className="flex-1 flex flex-col justify-end">
                     <div
@@ -2336,7 +6624,7 @@ const FeederPopup = () => {
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
                 Live Transformer Status
               </h3>
@@ -2510,38 +6798,7 @@ const TransformersPopup = () => {
     </>
   );
 };
-  // const KioskPopup = () => (
-  //   <PopupShell title="LT Kiosk">
-  //     <div className="flex justify-center w-full my-3">
-  //       <div onClick={() => setKiosksExpanded(!kiosksExpanded)} className="w-[90%] md:w-[70%] lg:w-[45%] h-32 max-w-xl bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-lg rounded-md cursor-pointer hover:bg-[#0A276E] transition-colors">
-  //         <div className="h-full flex flex-col items-center justify-center text-center">
-  //           <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">STEP-DOWN COMBINER PANEL</span>
-  //           <h3 className="text-lg font-black text-white tracking-wider mt-1">LT KIOSK</h3>
-  //         </div>
-  //       </div>
-  //     </div>
-  //     {kiosksExpanded && (
-  //       <>
-  //         <div className="flex justify-center h-10"><div className="flow-line-vertical h-full"><div className="flow-pulse-vertical" /></div></div>
-  //         <div className="max-w-7xl mx-auto px-4">
-  //           <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden"><div className="flow-pulse-horizontal" /></div>
-  //           <div className="grid grid-cols-6 gap-4">
-  //             {Array.from({ length: 6 }).map((_, index) => (
-  //               <div key={index} className="flex flex-col items-center">
-  //                 <div className="flow-line-vertical h-8"><div className="flow-pulse-vertical" /></div>
-  //                 <div className="w-full bg-[#081F5C] border-2 border-[#004AAD] p-4 text-white shadow-md rounded relative panel-active-glow min-h-[200px] flex flex-col items-center justify-center text-center">
-  //                   <span className="text-[10px] font-black text-blue-300 uppercase tracking-wider">LT KIOSK</span>
-  //                   <strong className="text-xl font-black tracking-widest mt-2">KIOSK-{index + 1}</strong>
-  //                   <span className="text-[9px] font-bold text-blue-300 uppercase mt-1">433V PANEL</span>
-  //                 </div>
-  //               </div>
-  //             ))}
-  //           </div>
-  //         </div>
-  //       </>
-  //     )}
-  //   </PopupShell>
-  // );
+ 
 
 const KioskAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
@@ -2566,18 +6823,20 @@ const KioskAnalyticsView = ({ data, onBack }) => {
   );
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white overflow-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] p-8">
+    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
         <div className="max-w-7xl mx-auto">
+          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+            <div className="flex items-stretch gap-4">
           <button
             type="button"
             onClick={onBack}
-            className="mb-6 px-5 py-2.5 bg-white/5 border border-cyan-400/40 text-cyan-200 text-[12px] font-medium tracking-wide hover:bg-cyan-400/10 transition shadow-none"
+            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
           >
             ← Back to LT Kiosk
           </button>
 
-          <div className="relative overflow-hidden bg-white/8 border border-white/10 shadow-none p-4">
+          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
 
             <div className="flex items-center justify-between">
@@ -2603,8 +6862,10 @@ const KioskAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
           </div>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-5 gap-4 mt-3">
+          <div className="grid grid-cols-5 gap-3 mt-3">
             {[
               ["Energy", data.kwh, "kWh"],
               ["Reactive", data.kvh, "kVh"],
@@ -2635,8 +6896,8 @@ const KioskAnalyticsView = ({ data, onBack }) => {
             ))}
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-5 mt-3">
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-[15px] font-semibold tracking-wide">
                   Kiosk Load Graph
@@ -2651,7 +6912,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[280px] border-b border-white/10 pb-3">
+              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
                 {graphValues.map((value, index) => (
                   <div key={index} className="flex-1 flex flex-col justify-end">
                     <div
@@ -2693,7 +6954,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
                 Live Kiosk Status
               </h3>
@@ -2936,40 +7197,6 @@ const KioskPopup = () => {
 };
 
 
-  // const BusbarPopup = () => (
-  //   <PopupShell title="LT Busduct / Busbar">
-  //     <div className="flex justify-center w-full my-3">
-  //       <div onClick={() => setBusbarsExpanded(!busbarsExpanded)} className="w-[90%] md:w-[70%] lg:w-[45%] h-32 max-w-xl bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-lg rounded-md cursor-pointer hover:bg-[#0A276E] transition-colors">
-  //         <div className="h-full flex flex-col items-center justify-center text-center">
-  //           <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] uppercase">POWER DISTRIBUTION</span>
-  //           <h3 className="text-lg font-black text-white tracking-wider mt-1">LT BUSDUCT / BUSBAR</h3>
-  //           <span className="text-xs text-blue-300 mt-1">433V</span>
-  //         </div>
-  //       </div>
-  //     </div>
-  //     {busbarsExpanded && (
-  //       <>
-  //         <div className="flex justify-center h-10"><div className="flow-line-vertical h-full"><div className="flow-pulse-vertical" /></div></div>
-  //         <div className="max-w-7xl mx-auto px-4">
-  //           <div className="mx-auto w-[84%] h-[2px] bg-cyan-400 relative overflow-hidden"><div className="flow-pulse-horizontal" /></div>
-  //           <div className="grid grid-cols-6 gap-4">
-  //             {Array.from({ length: 6 }).map((_, index) => (
-  //               <div key={index} className="flex flex-col items-center">
-  //                 <div className="flow-line-vertical h-8"><div className="flow-pulse-vertical" /></div>
-  //                 <div className="w-full bg-[#081F5C] border-2 border-[#004AAD] p-4 text-white shadow-md rounded relative panel-active-glow min-h-[200px] flex flex-col items-center justify-center">
-  //                   <span className="text-[10px] font-black text-blue-300 uppercase tracking-wider">LT BUSBAR</span>
-  //                   <strong className="text-xl font-black tracking-widest mt-2">BUS-{index + 1}</strong>
-  //                   <span className="text-[9px] font-bold text-blue-300 uppercase mt-1">433V</span>
-  //                 </div>
-  //               </div>
-  //             ))}
-  //           </div>
-  //         </div>
-  //       </>
-  //     )}
-  //   </PopupShell>
-  // );
-
 const BusbarAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
 
@@ -2994,18 +7221,20 @@ const BusbarAnalyticsView = ({ data, onBack }) => {
   );
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white overflow-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] p-8">
+    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
         <div className="max-w-7xl mx-auto">
+          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+            <div className="flex items-stretch gap-4">
           <button
             type="button"
             onClick={onBack}
-            className="mb-6 px-5 py-2.5 bg-white/5 border border-cyan-400/40 text-cyan-200 text-[12px] font-medium tracking-wide hover:bg-cyan-400/10 transition shadow-none"
+            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
           >
             ← Back to Busbar
           </button>
 
-          <div className="relative overflow-hidden bg-white/8 border border-white/10 shadow-none p-4">
+          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
 
             <div className="flex items-center justify-between">
@@ -3031,8 +7260,10 @@ const BusbarAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
           </div>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-5 gap-4 mt-3">
+          <div className="grid grid-cols-5 gap-3 mt-3">
             {[
               ["Temperature", data.temp, ""],
               ["Vibration", data.vibration, ""],
@@ -3063,8 +7294,8 @@ const BusbarAnalyticsView = ({ data, onBack }) => {
             ))}
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-5 mt-3">
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-[15px] font-semibold tracking-wide">
                   Busbar Load Graph
@@ -3079,7 +7310,7 @@ const BusbarAnalyticsView = ({ data, onBack }) => {
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[280px] border-b border-white/10 pb-3">
+              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
                 {graphValues.map((value, index) => (
                   <div key={index} className="flex-1 flex flex-col justify-end">
                     <div
@@ -3121,7 +7352,7 @@ const BusbarAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
                 Live Busbar Status
               </h3>
@@ -3368,173 +7599,6 @@ const BusbarPopup = () => {
   );
 };
 
-// const Pcc1Popup = () => (
-//   <PopupShell title="Wing 1 LT Distribution Flow">
-//     <div className="relative w-full max-w-7xl mx-auto px-4 py-6 bg-white border border-slate-200 overflow-hidden">
-//       <div className="relative w-full h-[560px]">
-
-//         {/* PCC1 */}
-//         <div className="absolute left-[3%] top-[20px] w-[30%] h-[235px] bg-[#081F5C] border-2 border-[#004AAD] p-5 text-white shadow-md rounded-lg panel-active-glow z-20">
-//           <div className="text-center text-[12px] font-black text-blue-300 tracking-[0.2em] uppercase mb-4 border-b border-blue-900/60 pb-2">
-//             PCC1
-//           </div>
-
-//           <div className="grid grid-cols-2 gap-6 h-[150px]">
-//             {[
-//               { title: "LT IN", value: "06" },
-//               { title: "LT IN", value: "05" },
-//             ].map((item) => (
-//               <div
-//                 key={item.value}
-//                 className="bg-[#05143C] border-2 border-[#004AAD] rounded-xl flex flex-col items-center justify-center shadow-[0_0_16px_rgba(0,74,173,0.35)]"
-//               >
-//                 <span className="text-[10px] font-black text-blue-300 uppercase">
-//                   {item.title}
-//                 </span>
-//                 <strong className="text-3xl font-black mt-2">
-//                   {item.value}
-//                 </strong>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* PCC2 */}
-//         <div className="absolute left-[3%] top-[320px] w-[30%] h-[210px] bg-[#081F5C] border-2 border-[#004AAD] p-5 text-white shadow-md rounded-lg panel-active-glow z-20">
-//           <div className="text-center text-[12px] font-black text-blue-300 tracking-[0.2em] uppercase mb-4 border-b border-blue-900/60 pb-2">
-//             PCC2
-//           </div>
-
-//           <div className="grid grid-cols-2 gap-6 h-[125px]">
-//             {[
-//               { title: "LT IN", value: "01" },
-//               { title: "LT IN", value: "02" },
-//             ].map((item) => (
-//               <div
-//                 key={item.value}
-//                 className="bg-[#05143C] border-2 border-[#004AAD] rounded-xl flex flex-col items-center justify-center shadow-[0_0_16px_rgba(0,74,173,0.35)]"
-//               >
-//                 <span className="text-[10px] font-black text-blue-300 uppercase">
-//                   {item.title}
-//                 </span>
-//                 <strong className="text-3xl font-black mt-2">
-//                   {item.value}
-//                 </strong>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* DG INC */}
-//         <div className="absolute right-[3%] top-[130px] w-[39%] h-[265px] bg-[#081F5C] border-2 border-[#004AAD] p-5 text-white shadow-md rounded-lg panel-active-glow z-20">
-//           <div className="text-center text-[12px] font-black text-blue-300 tracking-[0.2em] uppercase mb-4 border-b border-blue-900/60 pb-2">
-//             DG INC
-//           </div>
-
-//           <div className="grid grid-cols-2 gap-7">
-//             {[
-//               { title: "DG 1 & 2", values: ["1", "2"] },
-//               { title: "DG 3 & 4", values: ["3", "4"] },
-//             ].map((group) => (
-//               <div
-//                 key={group.title}
-//                 className="bg-[#05143C] border-2 border-[#004AAD] p-4 rounded-xl shadow-[0_0_16px_rgba(0,74,173,0.35)]"
-//               >
-//                 <div className="text-center text-[11px] font-black text-blue-300 uppercase mb-4">
-//                   {group.title}
-//                 </div>
-
-//                 <div className="grid grid-cols-2 gap-4">
-//                   {group.values.map((value) => (
-//                     <div
-//                       key={value}
-//                       className="h-[90px] bg-[#081F5C] border-2 border-[#004AAD] rounded-xl flex items-center justify-center text-2xl font-black shadow-[0_0_14px_rgba(0,74,173,0.35)]"
-//                     >
-//                       {value}
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* FLOWS */}
-//         <svg
-//           className="absolute inset-0 w-full h-full pointer-events-none z-10"
-//           viewBox="0 0 1200 560"
-//           fill="none"
-//         >
-//           <defs>
-//             <marker
-//               id="wing-arrow"
-//               viewBox="0 0 10 10"
-//               refX="6"
-//               refY="5"
-//               markerWidth="5"
-//               markerHeight="5"
-//               orient="auto"
-//             >
-//               <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
-//             </marker>
-//           </defs>
-
-//           {/* DG 1&2 to PCC1 */}
-// <path
-//   d="M 360 105 H 820 V 250"
-//   stroke="#004AAD"
-//   strokeWidth="3"
-//   fill="none"
-// />
-
-// <path
-//   d="M 360 105 H 820 V 250"
-//   stroke="#00E5FF"
-//   strokeWidth="3"
-//   fill="none"
-//   className="flow-path-right"
-//   markerEnd="url(#wing-arrow)"
-// />
-
-//           {/* DG 1&2 to PCC2 */}
-//           <path d="M 820 245 V 455 H 360" stroke="#004AAD" strokeWidth="3" fill="none" />
-//           <path
-//             d="M 820 245 V 455 H 360"
-//             stroke="#00E5FF"
-//             strokeWidth="3"
-//             fill="none"
-//             className="flow-path-left"
-//             markerEnd="url(#wing-arrow)"
-//           />
-
-//           {/* DG 3&4 to PCC1 */}
-//           <path d="M 1020 205 V 70 H 360" stroke="#004AAD" strokeWidth="3" fill="none" />
-//           <path
-//             d="M 1020 205 V 70 H 360"
-//             stroke="#00E5FF"
-//             strokeWidth="3"
-//             fill="none"
-//             className="flow-path-left"
-//             markerEnd="url(#wing-arrow)"
-//           />
-
-//           {/* DG 3&4 to PCC2 */}
-//           <path d="M 1020 380 V 485 H 360" stroke="#004AAD" strokeWidth="3" fill="none" />
-//           <path
-//             d="M 1020 380 V 485 H 360"
-//             stroke="#00E5FF"
-//             strokeWidth="3"
-//             fill="none"
-//             className="flow-path-left"
-//             markerEnd="url(#wing-arrow)"
-//           />
-//         </svg>
-
-//       </div>
-//     </div>
-//   </PopupShell>
-// );
-
 
 const PccPanelAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
@@ -3546,18 +7610,20 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
   );
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white overflow-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] p-8">
+    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
         <div className="max-w-7xl mx-auto">
+          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+            <div className="flex items-stretch gap-4">
           <button
             type="button"
             onClick={onBack}
-            className="mb-6 px-5 py-2.5 bg-white/5 border border-cyan-400/40 text-cyan-200 text-[12px] font-medium tracking-wide hover:bg-cyan-400/10 transition shadow-none"
+            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
           >
             ← Back to PCC Panel
           </button>
 
-          <div className="relative overflow-hidden bg-white/8 border border-white/10 shadow-none p-4">
+          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
 
             <div className="flex items-center justify-between">
@@ -3583,8 +7649,10 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
           </div>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-5 gap-4 mt-3">
+          <div className="grid grid-cols-5 gap-3 mt-3">
             {[
               ["Energy", data.kwh, "kWh"],
               ["Reactive", data.kvh, "kVh"],
@@ -3615,8 +7683,8 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
             ))}
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-5 mt-3">
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-[15px] font-semibold tracking-wide">
                   PCC Load Graph
@@ -3631,7 +7699,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[280px] border-b border-white/10 pb-3">
+              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
                 {graphValues.map((value, index) => (
                   <div key={index} className="flex-1 flex flex-col justify-end">
                     <div
@@ -3670,7 +7738,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
                 Live PCC Status
               </h3>
@@ -4282,18 +8350,20 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
   );
 
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#020B24] text-white overflow-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] p-8">
+    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
         <div className="max-w-7xl mx-auto">
+          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+            <div className="flex items-stretch gap-4">
           <button
             type="button"
             onClick={onBack}
-            className="mb-6 px-5 py-2.5 bg-white/5 border border-cyan-400/40 text-cyan-200 text-[12px] font-medium tracking-wide hover:bg-cyan-400/10 transition shadow-none"
+            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
           >
             ← Back to Raising Main
           </button>
 
-          <div className="relative overflow-hidden bg-white/8 border border-white/10 shadow-none p-4">
+          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
 
             <div className="flex items-center justify-between">
@@ -4319,8 +8389,10 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
           </div>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-5 gap-4 mt-3">
+          <div className="grid grid-cols-5 gap-3 mt-3">
             {[
               ["Energy", data.kwh, "kWh"],
               ["Reactive", data.kvh, "kVh"],
@@ -4351,8 +8423,8 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
             ))}
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-5 mt-3">
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-[15px] font-semibold tracking-wide">
                   Raising Main Load Graph
@@ -4366,7 +8438,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[280px] border-b border-white/10 pb-3">
+              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
                 {graphValues.map((value, index) => (
                   <div key={index} className="flex-1 flex flex-col justify-end">
                     <div
@@ -4405,7 +8477,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-6 shadow-none">
+            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
               <h3 className="text-[15px] font-semibold tracking-wide mb-6">
                 Live Raising Main Status
               </h3>
@@ -4921,39 +8993,11 @@ const BuildingsPopup = () => {
   return (
 
     <main className="min-h-screen bg-white text-[#081F5C] flex flex-col font-sans">
-      {/* <header className="sticky top-0 z-50 h-[72px] bg-[#081F5C] border-b-4 border-[#004AAD] px-4 text-white shadow-md">
-        <div className="h-full mx-auto max-w-7xl flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src={aiLogo} alt="AI Logo" className="h-28 w-28 object-contain -my-6" />
-            <h1 className="text-lg font-semibold tracking-tight text-white uppercase leading-none">ARCOT IIoT 1.0</h1>
-          </div>
-          <span className="flex items-center gap-2 bg-[#05143C] border border-[#004AAD] px-3 py-1 text-[10px] font-bold tracking-wider text-white">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-            BLE CONNECTED
-          </span>
-        </div>
-      </header> */}
-
+  
 
 <header className="sticky top-0 z-[1000] h-[72px] bg-[#081F5C] border-b-4 border-[#004AAD] px-4 text-white shadow-md">
   <div className="h-full mx-auto max-w-7xl flex justify-between items-center">
 
-    {/* LEFT */}
-    {/* <div
-      onClick={() => setActivePopup(null)}
-      className="ml-1 flex flex-col justify-center cursor-pointer"
-    >
-      <h1 className="text-[26px] font-semibold tracking-[0.18em] text-white leading-none uppercase">
-        ARCOT
-        <span className="text-[#67E8F9] ml-2">
-          IIoT 1.0
-        </span>
-      </h1>
-
-      <span className="mt-1 text-[9px] uppercase tracking-[0.35em] text-blue-300 font-medium">
-        Industrial Internet of Things
-      </span>
-    </div> */}
 
     {/* LEFT */}
 <div
@@ -5106,14 +9150,8 @@ const BuildingsPopup = () => {
 
   </div>
 </div>
-
-
   </div>
 </section>
-
-
-
-
 
       {activePopup === "source" && <SourcePopup />}
       {activePopup === "feeders" && <FeederPopup />}
@@ -5143,3 +9181,4 @@ const BuildingsPopup = () => {
     </main>
   );
 }
+
