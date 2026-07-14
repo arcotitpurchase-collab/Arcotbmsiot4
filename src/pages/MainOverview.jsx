@@ -5025,14 +5025,37 @@
 
 
 
+
+
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Activity, ArrowLeft, Gauge, Maximize2, Radio, ShieldAlert, X, Zap } from "lucide-react";
+import {
+  Activity,
+  ArrowLeft,
+  Bell,
+  Building2,
+  CloudSun,
+  Factory,
+  Gauge,
+  Grid2X2,
+  Leaf,
+  Maximize2,
+  Network,
+  PanelsTopLeft,
+  Radio,
+  ShieldAlert,
+  ShieldCheck,
+  TowerControl,
+  TriangleAlert,
+  UtilityPole,
+  X,
+  Zap,
+} from "lucide-react";
 import aiLogo from "../assets/AI LOGO.png";
 import { useNavigate } from "react-router-dom";
 import prestigeLogo from "../assets/ser-removebg.png";
 import {
-  Area,
+ Area,
   AreaChart,
   Bar,
   BarChart,
@@ -5082,6 +5105,8 @@ const navigate = useNavigate();
 const OverviewBox = ({
   title,
   subtitle,
+  icon,
+  accent = "#00D9FF",
   onClick,
   liveStatus = {
     on: true,
@@ -5093,95 +5118,127 @@ const OverviewBox = ({
     {
       key: "on",
       label: "ON",
-      value: liveStatus.on ? "Active" : "Inactive",
+      value: liveStatus.on ? "ACTIVE" : "INACTIVE",
       active: liveStatus.on,
-      color: "emerald",
+      dot: "#27F0A0",
+      text: "#27F0A0",
     },
     {
       key: "healthy",
       label: "HEALTHY",
-      value: liveStatus.healthy ? "Normal" : "Warning",
+      value: liveStatus.healthy ? "NORMAL" : "WARNING",
       active: liveStatus.healthy,
-      color: "yellow",
+      dot: "#FFD400",
+      text: "#FFD400",
     },
     {
       key: "off",
       label: "OFF",
-      value: liveStatus.off ? "Stopped" : "No Fault",
+      value: liveStatus.off ? "STOPPED" : "NO FAULT",
       active: liveStatus.off,
-      color: "red",
+      dot: "#7186A5",
+      text: "#D2D9E5",
     },
   ];
 
-  const colorClasses = {
-    emerald: {
-      dot: "bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)]",
-      text: "text-emerald-400",
-    },
-    yellow: {
-      dot: "bg-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.9)]",
-      text: "text-yellow-400",
-    },
-    red: {
-      dot: "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.9)]",
-      text: "text-red-500",
-    },
-  };
-
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
-      className="h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white rounded-[10px] shadow-xl panel-active-glow flex flex-col text-center cursor-pointer overflow-hidden"
+      className="
+        group relative z-10 flex h-full min-h-0 w-full flex-col overflow-hidden
+        rounded-[18px] border border-[#0E66B7]
+        bg-[radial-gradient(circle_at_50%_-6%,rgba(39,135,232,0.30),transparent_46%),linear-gradient(155deg,#0A356F_0%,#052250_48%,#03163A_100%)]
+        text-left
+        shadow-[0_20px_44px_rgba(7,45,102,0.18),0_8px_18px_rgba(3,31,73,0.12),inset_0_1px_0_rgba(255,255,255,0.11)]
+        transition-all duration-300
+        hover:-translate-y-1
+        hover:border-[#28A7F4]
+        hover:shadow-[0_24px_50px_rgba(6,56,128,0.25),0_8px_18px_rgba(3,31,73,0.14)]
+      "
     >
-     <div className="flex-1 flex flex-col items-center justify-center px-4">
-  <h4 className="text-xl font-bold uppercase tracking-[0.05em] text-white">
-    {title}
-  </h4>
+      <div
+        className="pointer-events-none absolute inset-x-8 top-0 h-[2px] rounded-full"
+        style={{
+          background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
+          boxShadow: `0 0 14px ${accent}70`,
+        }}
+      />
 
-  <span className="mt-1 text-[11px] text-slate-300 font-medium">
-    {subtitle}
-  </span>
-</div>
+      <div
+        className="pointer-events-none absolute left-1/2 top-[-64px] h-40 w-40 -translate-x-1/2 rounded-full opacity-[0.15] blur-3xl"
+        style={{ backgroundColor: accent }}
+      />
 
-      <div className="grid grid-cols-3 border-t border-[#004AAD]/60 bg-[#061746]">
-        {conditions.map((item) => {
-          const c = colorClasses[item.color];
+      <div className="relative flex min-h-0 flex-1 flex-col items-center justify-center px-4 py-3 text-center xl:px-5 xl:py-4">
+        <div
+          className="mb-3 flex h-[clamp(54px,7vh,72px)] w-[clamp(54px,7vh,72px)] shrink-0 items-center justify-center rounded-full border-2 bg-[#031A43]"
+          style={{
+            color: accent,
+            borderColor: accent,
+            boxShadow: `0 0 0 7px ${accent}12, 0 0 28px ${accent}28`,
+          }}
+        >
+          {icon}
+        </div>
 
-          return (
-            <div
-              key={item.key}
-              className="py-2 flex flex-col items-center justify-center border-r last:border-r-0 border-[#004AAD]/40"
-            >
-              <div className="flex items-center gap-1.5">
-                <span
-                  className={`h-2.5 w-2.5 rounded-full ${
-                    item.active ? c.dot : "bg-slate-600 opacity-40"
-                  }`}
-                />
-                <span
-                  className={`text-[10px] font-black uppercase ${
-                    item.active ? c.text : "text-slate-500"
-                  }`}
-                >
-                  {item.label}
-                </span>
-              </div>
+        <h4 className="max-w-full truncate text-[clamp(16px,1.35vw,21px)] font-black uppercase leading-tight tracking-[-0.025em] text-white">
+          {title}
+        </h4>
 
-              <span className="mt-1 text-[8px] font-semibold text-slate-300 uppercase tracking-wide">
-                {item.value}
-              </span>
-            </div>
-          );
-        })}
+        <span className="mt-1.5 block max-w-full truncate text-[clamp(10px,0.9vw,13px)] font-semibold text-[#D7E4F5]">
+          {subtitle}
+        </span>
       </div>
-    </div>
+
+      <div className="grid h-[clamp(68px,9vh,88px)] shrink-0 grid-cols-3 border-t border-[#1267B7] bg-[#03183F]/95">
+        {conditions.map((item, index) => (
+          <div
+            key={item.key}
+            className={`flex flex-col items-center justify-center px-1 ${
+              index !== conditions.length - 1
+                ? "border-r border-[#1267B7]"
+                : ""
+            }`}
+          >
+            <div
+              className="flex items-center gap-2 text-[11px] font-black"
+              style={{ color: item.active ? item.text : "#7186A5" }}
+            >
+              <span
+                className="h-3 w-3 rounded-full"
+                style={{
+                  backgroundColor: item.active ? item.dot : "#7186A5",
+                  boxShadow:
+                    item.active && item.key !== "off"
+                      ? `0 0 12px ${item.dot}90`
+                      : "none",
+                }}
+              />
+              {item.label}
+            </div>
+
+            <span className="mt-2 text-[9px] font-extrabold tracking-[0.04em] text-white">
+              {item.value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </button>
   );
 };
 
-
 const FlowLineH = () => (
-  <div className="h-[4px] w-full bg-cyan-400 relative overflow-hidden">
-    <div className="flow-pulse-horizontal" />
+  <div className="relative flex h-full w-full items-center justify-center px-1">
+    <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[#149ED4] shadow-[0_0_10px_rgba(20,158,212,0.30)]" />
+
+    <div className="absolute left-[8%] right-[18%] top-1/2 h-[3px] -translate-y-1/2 overflow-hidden">
+      <div className="flow-pulse-horizontal" />
+    </div>
+
+    <div className="absolute right-[2px] top-1/2 -translate-y-1/2">
+      <div className="h-0 w-0 border-y-[7px] border-l-[10px] border-y-transparent border-l-[#149ED4] drop-shadow-[0_0_6px_rgba(20,158,212,0.45)]" />
+    </div>
   </div>
 );
 
@@ -5342,7 +5399,7 @@ const MetricAnalyticsCard = ({
                 {number}
               </span>
 
-              <h3 className="truncate text-[14px] font-black uppercase tracking-[0.06em] text-white">
+              <h3 className="truncate text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
                 {title}
               </h3>
             </div>
@@ -5368,7 +5425,7 @@ const MetricAnalyticsCard = ({
           </strong>
 
           {unit && (
-            <span className="pb-0.5 text-[14px] font-semibold text-slate-200">
+            <span className="pb-0.5 text-[clamp(11px,1.5vh,14px)] font-semibold text-slate-200">
               {unit}
             </span>
           )}
@@ -5604,14 +5661,14 @@ const IndividualSourceAnalytics = ({
               <h2 className="truncate text-[25px] font-semibold tracking-tight text-white">
                 {analytics.title}
               </h2>
-              <p className="mt-0.5 text-[13px] font-medium text-cyan-300">
+              <p className="mt-0.5 text-[clamp(10px,1.4vh,13px)] font-medium text-cyan-300">
                 {analytics.subtitle}
               </p>
             </div>
 
             <div className="hidden items-center gap-3 md:flex">
               <div className="rounded-lg border border-[#174575] bg-[#061737] px-4 py-2">
-                <div className="flex items-center gap-2 text-[13px] font-semibold text-emerald-400">
+                <div className="flex items-center gap-2 text-[clamp(10px,1.4vh,13px)] font-semibold text-emerald-400">
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.9)]" />
                   Live
                 </div>
@@ -5767,7 +5824,7 @@ const IndividualSourceAnalytics = ({
                           4
                         </span>
 
-                        <h3 className="truncate text-[14px] font-black uppercase tracking-[0.06em] text-white">
+                        <h3 className="truncate text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
                           Power Factor
                         </h3>
                       </div>
@@ -6021,7 +6078,7 @@ const SourceBox = ({
             </div>
           )}
 
-          <h4 className="text-[16px] font-bold uppercase tracking-[0.05em] leading-none">
+          <h4 className="text-[clamp(13px,1.8vh,16px)] font-bold uppercase tracking-[0.05em] leading-none">
             {title}
           </h4>
 
@@ -6468,212 +6525,876 @@ const FeederPopup = () => {
   );
 };
 
- const TransformerAnalyticsView = ({ data, onBack }) => {
+const TransformerAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
 
-  const loadNumber = Number(String(data.load).replace("%", "")) || 0;
-  const oilTemp = Number(String(data.oilTemp).replace("°C", "")) || 0;
-  const windingTemp = Number(String(data.windingTemp).replace("°C", "")) || 0;
+  const loadNumber =
+    Number(String(data.load).replace("%", "")) || 0;
+
+  const oilTemp =
+    Number(String(data.oilTemp).replace("°C", "")) || 0;
+
+  const windingTemp =
+    Number(String(data.windingTemp).replace("°C", "")) || 0;
 
   const graphValues = [
-    42,
-    48,
-    54,
-    61,
-    66,
-    loadNumber,
-    72,
-    76,
-    74,
-    loadNumber,
+    {
+      time: "08:00",
+      load: Math.max(loadNumber - 18, 0),
+      oilTemp: Math.max(oilTemp - 7, 0),
+      windingTemp: Math.max(windingTemp - 9, 0),
+    },
+    {
+      time: "09:00",
+      load: Math.max(loadNumber - 14, 0),
+      oilTemp: Math.max(oilTemp - 6, 0),
+      windingTemp: Math.max(windingTemp - 7, 0),
+    },
+    {
+      time: "10:00",
+      load: Math.max(loadNumber - 10, 0),
+      oilTemp: Math.max(oilTemp - 5, 0),
+      windingTemp: Math.max(windingTemp - 6, 0),
+    },
+    {
+      time: "11:00",
+      load: Math.max(loadNumber - 5, 0),
+      oilTemp: Math.max(oilTemp - 3, 0),
+      windingTemp: Math.max(windingTemp - 4, 0),
+    },
+    {
+      time: "12:00",
+      load: Math.min(loadNumber + 2, 100),
+      oilTemp: Math.max(oilTemp - 2, 0),
+      windingTemp: Math.max(windingTemp - 2, 0),
+    },
+    {
+      time: "13:00",
+      load: Math.min(loadNumber + 7, 100),
+      oilTemp: oilTemp + 1,
+      windingTemp: windingTemp + 2,
+    },
+    {
+      time: "14:00",
+      load: Math.min(loadNumber + 10, 100),
+      oilTemp: oilTemp + 3,
+      windingTemp: windingTemp + 4,
+    },
+    {
+      time: "15:00",
+      load: Math.min(loadNumber + 6, 100),
+      oilTemp: oilTemp + 2,
+      windingTemp: windingTemp + 3,
+    },
+    {
+      time: "16:00",
+      load: Math.min(loadNumber + 3, 100),
+      oilTemp: oilTemp + 1,
+      windingTemp: windingTemp + 1,
+    },
+    {
+      time: "Now",
+      load: loadNumber,
+      oilTemp,
+      windingTemp,
+    },
   ];
 
   const avg = Math.round(
-    graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+    graphValues.reduce(
+      (total, item) => total + item.load,
+      0
+    ) / graphValues.length
   );
 
+  const oilStatus =
+    oilTemp >= 85
+      ? "Critical"
+      : oilTemp >= 75
+        ? "Warning"
+        : "Normal";
+
+  const windingStatus =
+    windingTemp >= 105
+      ? "Critical"
+      : windingTemp >= 90
+        ? "Warning"
+        : "Normal";
+
+  const loadStatus =
+    loadNumber >= 95
+      ? "Critical"
+      : loadNumber >= 80
+        ? "High"
+        : "Normal";
+
+  const relayHealthy = [
+    "healthy",
+    "normal",
+    "active",
+    "ok",
+  ].some((status) =>
+    String(data.buchholz ?? "")
+      .toLowerCase()
+      .includes(status)
+  );
+
+  /*
+   * Relay event analytics:
+   * 0 means no event.
+   * 1 means one event was detected during that interval.
+   *
+   * Replace this array later with API/IoT relay event history.
+   */
+  const relayEvents = [
+    {
+      time: "08:00",
+      gas: 0,
+      oilSurge: 0,
+      alarm: 0,
+      trip: 0,
+    },
+    {
+      time: "09:00",
+      gas: 0,
+      oilSurge: 0,
+      alarm: 0,
+      trip: 0,
+    },
+    {
+      time: "10:00",
+      gas: 0,
+      oilSurge: 0,
+      alarm: 0,
+      trip: 0,
+    },
+    {
+      time: "11:00",
+      gas: 0,
+      oilSurge: 0,
+      alarm: 0,
+      trip: 0,
+    },
+    {
+      time: "12:00",
+      gas: 0,
+      oilSurge: 0,
+      alarm: 0,
+      trip: 0,
+    },
+    {
+      time: "13:00",
+      gas: 0,
+      oilSurge: 0,
+      alarm: 0,
+      trip: 0,
+    },
+    {
+      time: "14:00",
+      gas: 0,
+      oilSurge: 0,
+      alarm: 0,
+      trip: 0,
+    },
+    {
+      time: "15:00",
+      gas: relayHealthy ? 0 : 1,
+      oilSurge: 0,
+      alarm: relayHealthy ? 0 : 1,
+      trip: 0,
+    },
+    {
+      time: "16:00",
+      gas: relayHealthy ? 0 : 1,
+      oilSurge: relayHealthy ? 0 : 1,
+      alarm: relayHealthy ? 0 : 1,
+      trip: relayHealthy ? 0 : 1,
+    },
+    {
+      time: "Now",
+      gas: relayHealthy ? 0 : 1,
+      oilSurge: relayHealthy ? 0 : 1,
+      alarm: relayHealthy ? 0 : 1,
+      trip: relayHealthy ? 0 : 1,
+    },
+  ];
+
+  const latestRelayState =
+    relayEvents[relayEvents.length - 1];
+
+  const relayActiveCount =
+    latestRelayState.gas +
+    latestRelayState.oilSurge +
+    latestRelayState.alarm +
+    latestRelayState.trip;
+
+  const relayStatusItems = [
+    {
+      label: "Gas",
+      active: latestRelayState.gas === 1,
+      activeText: "Detected",
+      normalText: "Clear",
+      activeColor: "text-amber-300",
+      activeDot: "bg-amber-400",
+    },
+    {
+      label: "Oil Surge",
+      active: latestRelayState.oilSurge === 1,
+      activeText: "Detected",
+      normalText: "Normal",
+      activeColor: "text-orange-300",
+      activeDot: "bg-orange-400",
+    },
+    {
+      label: "Alarm",
+      active: latestRelayState.alarm === 1,
+      activeText: "Active",
+      normalText: "Inactive",
+      activeColor: "text-red-300",
+      activeDot: "bg-red-400",
+    },
+    {
+      label: "Trip",
+      active: latestRelayState.trip === 1,
+      activeText: "Active",
+      normalText: "Inactive",
+      activeColor: "text-purple-300",
+      activeDot: "bg-purple-400",
+    },
+  ];
+
   return (
-    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
-        <div className="max-w-7xl mx-auto">
-          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 top-[72px] z-[1100] overflow-hidden bg-[#020B24] text-white">
+      <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.24),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_26%),linear-gradient(180deg,#020B24_0%,#020817_100%)] px-4 pb-4">
+        <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
+          <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 py-3 backdrop-blur-xl">
             <div className="flex items-stretch gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
-          >
-            ← Back to Transformers
-          </button>
-
-          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="mt-2 text-3xl font-normal tracking-wide">
-                  {data.id} Transformer Analytics
-                </h2>
-
-                <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
-                  33kV / 433V Step-Down Transformer Live Performance
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  {data.buchholz}
-                </span>
-
-                <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
-                  Relay Status: {data.buchholz}
-                </p>
-              </div>
-            </div>
-          </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-5 gap-3 mt-3">
-            {[
-              ["Oil Temp", data.oilTemp, ""],
-              ["Winding Temp", data.windingTemp, ""],
-              ["Load", data.load, ""],
-              ["Relay", data.buchholz, ""],
-              ["Voltage", "433", "V"],
-            ].map(([label, value, unit]) => (
-              <div
-                key={label}
-                className="bg-white/7 border border-white/10 p-3 shadow-none"
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex h-[64px] shrink-0 items-center justify-center rounded-lg border border-[#1B4D83] bg-[#061737] px-5 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/60 hover:bg-[#092452]"
               >
-                <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
-                  {label}
-                </p>
+                <ArrowLeft className="mr-2 h-4 w-4 text-cyan-300" />
+                Back to Transformers
+              </button>
 
-                <div className="mt-1 flex items-end gap-2">
-                  <span className="text-[13px] font-normal text-slate-300">
-                    {value}
-                  </span>
+              <div className="relative flex-1 overflow-hidden rounded-lg border border-[#1B4D83] bg-[#071633] px-4 py-3">
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
 
-                  {unit && (
-                    <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
-                      {unit}
+                <div className="flex h-full items-center justify-between">
+                  <div>
+                    <h2 className="text-[23px] font-semibold tracking-tight text-white">
+                      {data.id} Transformer Analytics
+                    </h2>
+
+                    <p className="mt-1 text-[12px] font-medium text-cyan-300">
+                      Oil Temperature, Winding Temperature,
+                      Buchholz Relay and Load
+                    </p>
+                  </div>
+
+                  <div
+                    className={`rounded-md border px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] ${
+                      relayHealthy
+                        ? "border-emerald-400/30 bg-emerald-400/[0.08] text-emerald-300"
+                        : "border-red-400/30 bg-red-400/[0.08] text-red-300"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span
+                        className={`h-2.5 w-2.5 rounded-full ${
+                          relayHealthy
+                            ? "bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]"
+                            : "bg-red-400 shadow-[0_0_10px_rgba(248,113,113,0.8)]"
+                        }`}
+                      />
+
+                      {data.buchholz}
                     </span>
-                  )}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[15px] font-semibold tracking-wide">
-                  Transformer Load Graph
+          <div className="mt-3 grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-2 lg:grid-rows-2">
+            {/* OIL TEMPERATURE */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Oil Temperature
                 </h3>
 
                 <div className="text-right">
-                  <p className="text-[12px] text-slate-400">Average</p>
+                  <p className="text-[22px] font-semibold leading-none text-white">
+                    {oilTemp}°C
+                  </p>
 
-                  <h4 className="text-lg font-semibold text-cyan-300">
-                    {avg}%
-                  </h4>
+                  <span
+                    className={`mt-1 inline-block text-[9px] font-bold uppercase ${
+                      oilStatus === "Critical"
+                        ? "text-red-300"
+                        : oilStatus === "Warning"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {oilStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
-                {graphValues.map((value, index) => (
-                  <div key={index} className="flex-1 flex flex-col justify-end">
-                    <div
-                      className="bg-cyan-400/90 shadow-none"
-                      style={{ height: `${value * 2.5}px` }}
+              <div className="mt-2 h-[calc(100%-40px)] min-h-[165px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={graphValues}
+                    margin={{
+                      top: 12,
+                      right: 12,
+                      left: -20,
+                      bottom: 0,
+                    }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id={`transformerOil-${data.id}`}
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.75}
+                        />
+
+                        <stop
+                          offset="100%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.03}
+                        />
+                      </linearGradient>
+                    </defs>
+
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.14)"
+                      strokeDasharray="3 3"
                     />
 
-                    <span className="text-[8px] text-center mt-2 text-blue-200">
-                      {index + 1}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
 
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Peak Load</p>
+                    <YAxis
+                      domain={[30, 95]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
 
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.max(...graphValues)}%
-                  </h4>
-                </div>
+                    <ReferenceLine
+                      y={75}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Warning",
+                        position: "insideTopRight",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
 
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Minimum</p>
+                    <ReferenceLine
+                      y={85}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Critical",
+                        position: "insideTopRight",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
 
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.min(...graphValues)}%
-                  </h4>
-                </div>
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toFixed(1)}°C`,
+                        "Oil Temperature",
+                      ]}
+                    />
 
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Relay</p>
-
-                  <h4 className="text-[13px] font-semibold text-emerald-200">
-                    {data.buchholz}
-                  </h4>
-                </div>
+                    <Area
+                      type="monotone"
+                      dataKey="oilTemp"
+                      stroke="#22D3EE"
+                      strokeWidth={2.2}
+                      fill={`url(#transformerOil-${data.id})`}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <h3 className="text-[15px] font-semibold tracking-wide mb-6">
-                Live Transformer Status
-              </h3>
+            {/* WINDING TEMPERATURE */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
 
-              <div className="flex justify-center">
-                <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
-                  <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Winding Temperature
+                </h3>
 
-                  <div className="text-center">
-                    <span className="block text-[30px] font-normal">
-                      {loadNumber}%
-                    </span>
+                <div className="text-right">
+                  <p className="text-[22px] font-semibold leading-none text-white">
+                    {windingTemp}°C
+                  </p>
 
-                    <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
-                      TX Load
-                    </span>
-                  </div>
+                  <span
+                    className={`mt-1 inline-block text-[9px] font-bold uppercase ${
+                      windingStatus === "Critical"
+                        ? "text-red-300"
+                        : windingStatus === "Warning"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {windingStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-8 space-y-5">
-                {[
-                  ["Load", loadNumber],
-                  ["Oil Temperature", oilTemp],
-                  ["Winding Temperature", windingTemp],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="flex justify-between text-[12px] mb-2">
-                      <span className="text-blue-100 font-medium">
-                        {label}
-                      </span>
+              <div className="mt-2 h-[calc(100%-40px)] min-h-[165px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={graphValues}
+                    margin={{
+                      top: 12,
+                      right: 12,
+                      left: -20,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.14)"
+                      strokeDasharray="3 3"
+                    />
 
-                      <span className="text-cyan-300 font-semibold text-[12px]">
-                        {Math.round(value)}%
-                      </span>
-                    </div>
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
 
-                    <div className="h-2 bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full bg-cyan-400 shadow-none"
-                        style={{ width: `${Math.min(value, 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                    <YAxis
+                      domain={[35, 120]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={90}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Warning",
+                        position: "insideTopRight",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={105}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Critical",
+                        position: "insideTopRight",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toFixed(1)}°C`,
+                        "Winding Temperature",
+                      ]}
+                    />
+
+                    <Line
+                      type="monotone"
+                      dataKey="windingTemp"
+                      stroke="#C084FC"
+                      strokeWidth={2.3}
+                      dot={{
+                        r: 3,
+                        fill: "#C084FC",
+                        stroke: "#F3E8FF",
+                        strokeWidth: 1,
+                      }}
+                      activeDot={{ r: 5 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* TRANSFORMER LOAD */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Transformer Load
+                </h3>
+
+                <div className="text-right">
+                  <p className="text-[22px] font-semibold leading-none text-white">
+                    {loadNumber}%
+                  </p>
+
+                  <span
+                    className={`mt-1 inline-block text-[9px] font-bold uppercase ${
+                      loadStatus === "Critical"
+                        ? "text-red-300"
+                        : loadStatus === "High"
+                          ? "text-amber-300"
+                          : "text-cyan-300"
+                    }`}
+                  >
+                    {loadStatus}
+                  </span>
+                </div>
               </div>
 
-              
+              <div className="mt-2 h-[calc(100%-40px)] min-h-[165px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={graphValues}
+                    margin={{
+                      top: 12,
+                      right: 12,
+                      left: -20,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.14)"
+                      strokeDasharray="3 3"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      domain={[0, 100]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={80}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "High",
+                        position: "insideTopRight",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={95}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Critical",
+                        position: "insideTopRight",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Math.round(value)}%`,
+                        "Load",
+                      ]}
+                    />
+
+                    <Bar
+                      dataKey="load"
+                      radius={[5, 5, 0, 0]}
+                    >
+                      {graphValues.map((item, index) => (
+                        <Cell
+                          key={`${item.time}-${index}`}
+                          fill={
+                            item.load >= 95
+                              ? "#F87171"
+                              : item.load >= 80
+                                ? "#FBBF24"
+                                : "#22D3EE"
+                          }
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="pointer-events-none absolute bottom-3 right-4 rounded border border-cyan-400/20 bg-[#061737]/90 px-3 py-2">
+                <p className="text-[8px] uppercase tracking-[0.1em] text-slate-500">
+                  Average
+                </p>
+
+                <p className="mt-1 text-[clamp(11px,1.5vh,14px)] font-semibold text-cyan-300">
+                  {avg}%
+                </p>
+              </div>
             </div>
+
+            {/* BUCHHOLZ RELAY ANALYTICS */}
+          {/* BUCHHOLZ RELAY ANALYTICS */}
+<div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+
+  <div className="flex items-start justify-between gap-3">
+    <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+      Buchholz Relay Analytics
+    </h3>
+
+    <div className="text-right">
+      <p
+        className={`text-[clamp(10px,1.4vh,13px)] font-semibold ${
+          relayHealthy ? "text-emerald-300" : "text-red-300"
+        }`}
+      >
+        {data.buchholz}
+      </p>
+
+      <p className="mt-1 text-[8px] uppercase tracking-[0.1em] text-slate-500">
+        Relay Health
+      </p>
+    </div>
+  </div>
+
+  <div className="relative mt-3 h-[calc(100%-42px)] min-h-[170px] rounded-lg border border-[#153B69] bg-[#061737]/55 p-3">
+    <div className="absolute left-4 top-3 z-10">
+      <p className="text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-300">
+        Relay Health Trend
+      </p>
+    </div>
+
+    <div className="absolute right-4 top-3 z-10 text-right">
+      <p className="text-[8px] uppercase tracking-[0.08em] text-slate-500">
+        Current Health
+      </p>
+
+      <p
+        className={`mt-1 text-[18px] font-semibold ${
+          relayHealthy ? "text-emerald-300" : "text-red-300"
+        }`}
+      >
+        {relayHealthy ? "99%" : "42%"}
+      </p>
+    </div>
+
+    <div className="h-full pt-7">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          data={[
+            {
+              time: "08:00",
+              health: 97,
+            },
+            {
+              time: "09:00",
+              health: 98,
+            },
+            {
+              time: "10:00",
+              health: 97,
+            },
+            {
+              time: "11:00",
+              health: 99,
+            },
+            {
+              time: "12:00",
+              health: 98,
+            },
+            {
+              time: "13:00",
+              health: 97,
+            },
+            {
+              time: "14:00",
+              health: 98,
+            },
+            {
+              time: "15:00",
+              health: relayHealthy ? 99 : 76,
+            },
+            {
+              time: "16:00",
+              health: relayHealthy ? 98 : 58,
+            },
+            {
+              time: "Now",
+              health: relayHealthy ? 99 : 42,
+            },
+          ]}
+          margin={{
+            top: 10,
+            right: 14,
+            left: -16,
+            bottom: 0,
+          }}
+        >
+          <defs>
+            <linearGradient
+              id={`relayHealthFill-${data.id}`}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop
+                offset="0%"
+                stopColor={relayHealthy ? "#34D399" : "#F87171"}
+                stopOpacity={0.72}
+              />
+
+              <stop
+                offset="100%"
+                stopColor={relayHealthy ? "#34D399" : "#F87171"}
+                stopOpacity={0.03}
+              />
+            </linearGradient>
+          </defs>
+
+          <CartesianGrid
+            vertical={false}
+            stroke="rgba(148,163,184,0.14)"
+            strokeDasharray="3 3"
+          />
+
+          <XAxis
+            dataKey="time"
+            axisLine={false}
+            tickLine={false}
+            tick={{
+              fill: "#8EA6C4",
+              fontSize: 8,
+            }}
+          />
+
+          <YAxis
+            domain={[0, 100]}
+            ticks={[0, 25, 50, 75, 100]}
+            axisLine={false}
+            tickLine={false}
+            tick={{
+              fill: "#8EA6C4",
+              fontSize: 8,
+            }}
+            tickFormatter={(value) => `${value}%`}
+          />
+
+          <ReferenceLine
+            y={80}
+            stroke="#FBBF24"
+            strokeDasharray="4 4"
+            label={{
+              value: "Warning",
+              position: "insideTopRight",
+              fill: "#FBBF24",
+              fontSize: 8,
+            }}
+          />
+
+          <ReferenceLine
+            y={60}
+            stroke="#F87171"
+            strokeDasharray="4 4"
+            label={{
+              value: "Critical",
+              position: "insideTopRight",
+              fill: "#F87171",
+              fontSize: 8,
+            }}
+          />
+
+          <Tooltip
+            contentStyle={analyticsTooltipStyle}
+            formatter={(value) => [
+              `${Math.round(value)}%`,
+              "Relay Health",
+            ]}
+          />
+
+          <Area
+            type="monotone"
+            dataKey="health"
+            stroke={relayHealthy ? "#34D399" : "#F87171"}
+            strokeWidth={2.3}
+            fill={`url(#relayHealthFill-${data.id})`}
+            dot={{
+              r: 3,
+              fill: relayHealthy ? "#34D399" : "#F87171",
+              stroke: "#FFFFFF",
+              strokeWidth: 1,
+            }}
+            activeDot={{
+              r: 5,
+            }}
+            isAnimationActive={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </div>
@@ -6803,206 +7524,617 @@ const TransformersPopup = () => {
 const KioskAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
 
-  const loadNumber = Number(String(data.load).replace("%", "")) || 0;
+  const loadNumber =
+    Number(String(data.load).replace("%", "")) || 0;
+
+  const kwhNumber =
+    Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
+
+  const kvhNumber =
+    Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+
+  const currentNumber =
+    Number(String(data.current).replace(/[^\d.-]/g, "")) || 0;
+
+  const voltageNumber =
+    Number(String(data.voltage).replace(/[^\d.-]/g, "")) || 0;
+
+  const pfNumber =
+    Number(String(data.pf).replace(/[^\d.-]/g, "")) || 0;
 
   const graphValues = [
-    42,
-    48,
-    54,
-    60,
-    66,
-    loadNumber,
-    72,
-    76,
-    74,
-    loadNumber,
+    {
+      time: "08:00",
+      kwh: Math.max(kwhNumber - 420, 0),
+      kvh: Math.max(kvhNumber - 390, 0),
+      amps: Math.max(currentNumber - 22, 0),
+      voltage: voltageNumber - 5,
+      pf: Math.max(pfNumber - 0.04, 0),
+    },
+    {
+      time: "09:00",
+      kwh: Math.max(kwhNumber - 375, 0),
+      kvh: Math.max(kvhNumber - 345, 0),
+      amps: Math.max(currentNumber - 17, 0),
+      voltage: voltageNumber - 3,
+      pf: Math.max(pfNumber - 0.03, 0),
+    },
+    {
+      time: "10:00",
+      kwh: Math.max(kwhNumber - 325, 0),
+      kvh: Math.max(kvhNumber - 300, 0),
+      amps: Math.max(currentNumber - 12, 0),
+      voltage: voltageNumber - 1,
+      pf: Math.max(pfNumber - 0.02, 0),
+    },
+    {
+      time: "11:00",
+      kwh: Math.max(kwhNumber - 275, 0),
+      kvh: Math.max(kvhNumber - 250, 0),
+      amps: Math.max(currentNumber - 7, 0),
+      voltage: voltageNumber + 1,
+      pf: Math.max(pfNumber - 0.01, 0),
+    },
+    {
+      time: "12:00",
+      kwh: Math.max(kwhNumber - 225, 0),
+      kvh: Math.max(kvhNumber - 205, 0),
+      amps: currentNumber + 3,
+      voltage: voltageNumber + 2,
+      pf: Math.min(pfNumber + 0.005, 1),
+    },
+    {
+      time: "13:00",
+      kwh: Math.max(kwhNumber - 175, 0),
+      kvh: Math.max(kvhNumber - 160, 0),
+      amps: currentNumber + 9,
+      voltage: voltageNumber + 3,
+      pf: Math.min(pfNumber + 0.01, 1),
+    },
+    {
+      time: "14:00",
+      kwh: Math.max(kwhNumber - 125, 0),
+      kvh: Math.max(kvhNumber - 115, 0),
+      amps: currentNumber + 15,
+      voltage: voltageNumber + 2,
+      pf: Math.min(pfNumber + 0.015, 1),
+    },
+    {
+      time: "15:00",
+      kwh: Math.max(kwhNumber - 80, 0),
+      kvh: Math.max(kvhNumber - 70, 0),
+      amps: currentNumber + 8,
+      voltage: voltageNumber,
+      pf: Math.min(pfNumber + 0.01, 1),
+    },
+    {
+      time: "16:00",
+      kwh: Math.max(kwhNumber - 35, 0),
+      kvh: Math.max(kvhNumber - 30, 0),
+      amps: currentNumber + 4,
+      voltage: voltageNumber - 1,
+      pf: pfNumber,
+    },
+    {
+      time: "Now",
+      kwh: kwhNumber,
+      kvh: kvhNumber,
+      amps: currentNumber,
+      voltage: voltageNumber,
+      pf: pfNumber,
+    },
   ];
 
   const avg = Math.round(
-    graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+    graphValues.reduce(
+      (total, item) => total + item.amps,
+      0
+    ) / graphValues.length
   );
 
+  const pfStatus =
+    pfNumber < 0.85
+      ? "Critical"
+      : pfNumber < 0.95
+        ? "Low"
+        : "Good";
+
+  const voltageStatus =
+    voltageNumber < 400
+      ? "Low"
+      : voltageNumber > 450
+        ? "High"
+        : "Stable";
+
+  const currentStatus =
+    currentNumber >= 350
+      ? "Critical"
+      : currentNumber >= 280
+        ? "High"
+        : "Normal";
+
+  const pfGaugeData = [
+    {
+      name: "Power Factor",
+      value: Math.min(Math.max(pfNumber * 100, 0), 100),
+      fill:
+        pfNumber < 0.85
+          ? "#F87171"
+          : pfNumber < 0.95
+            ? "#FBBF24"
+            : "#34D399",
+    },
+  ];
+
   return (
-    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
-        <div className="max-w-7xl mx-auto">
-          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 top-[72px] z-[1100] overflow-hidden bg-[#020B24] text-white">
+      <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.24),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_26%),linear-gradient(180deg,#020B24_0%,#020817_100%)] px-4 pb-4">
+        <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
+          <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 py-3 backdrop-blur-xl">
             <div className="flex items-stretch gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
-          >
-            ← Back to LT Kiosk
-          </button>
-
-          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="mt-2 text-3xl font-normal tracking-wide">
-                  {data.title} Analytics
-                </h2>
-
-                <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
-                  433V LT Kiosk Live Electrical Performance
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  {data.status}
-                </span>
-
-                <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
-                  Status: {data.status}
-                </p>
-              </div>
-            </div>
-          </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-5 gap-3 mt-3">
-            {[
-              ["Energy", data.kwh, "kWh"],
-              ["Reactive", data.kvh, "kVh"],
-              ["Current", data.current, ""],
-              ["Voltage", data.voltage, ""],
-              ["Power Factor", data.pf, ""],
-            ].map(([label, value, unit]) => (
-              <div
-                key={label}
-                className="bg-white/7 border border-white/10 p-3 shadow-none"
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex h-[64px] shrink-0 items-center justify-center rounded-lg border border-[#1B4D83] bg-[#061737] px-5 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/60 hover:bg-[#092452]"
               >
-                <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
-                  {label}
-                </p>
+                <ArrowLeft className="mr-2 h-4 w-4 text-cyan-300" />
+                Back to LT Kiosk
+              </button>
 
-                <div className="mt-1 flex items-end gap-2">
-                  <span className="text-[13px] font-normal text-slate-300">
-                    {value}
-                  </span>
+              <div className="relative flex-1 overflow-hidden rounded-lg border border-[#1B4D83] bg-[#071633] px-4 py-3">
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
 
-                  {unit && (
-                    <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
-                      {unit}
+                <div className="flex h-full items-center justify-between">
+                  <h2 className="text-[23px] font-semibold tracking-tight text-white">
+                    {data.title} Analytics
+                  </h2>
+
+                  <div className="rounded-md border border-emerald-400/30 bg-emerald-400/[0.08] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-emerald-300">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                      {data.status}
                     </span>
-                  )}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[15px] font-semibold tracking-wide">
-                  Kiosk Load Graph
+          <div className="mt-3 grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-6 lg:grid-rows-2">
+            {/* kWh ANALYTICS */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 lg:col-span-2">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  kWh Analytics
+                </h3>
+
+                <p className="text-[19px] font-semibold text-cyan-300">
+                  {kwhNumber.toLocaleString()} kWh
+                </p>
+              </div>
+
+              <div className="mt-2 h-[calc(100%-34px)] min-h-[160px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={graphValues}
+                    margin={{
+                      top: 12,
+                      right: 12,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id={`kioskKwh-${data.title}`}
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.72}
+                        />
+
+                        <stop
+                          offset="100%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.03}
+                        />
+                      </linearGradient>
+                    </defs>
+
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.14)"
+                      strokeDasharray="3 3"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toLocaleString()} kWh`,
+                        "Energy",
+                      ]}
+                    />
+
+                    <Area
+                      type="monotone"
+                      dataKey="kwh"
+                      stroke="#22D3EE"
+                      strokeWidth={2.3}
+                      fill={`url(#kioskKwh-${data.title})`}
+                      dot={false}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* kVh ANALYTICS */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 lg:col-span-2">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  kVh Analytics
+                </h3>
+
+                <p className="text-[19px] font-semibold text-purple-300">
+                  {kvhNumber.toLocaleString()} kVh
+                </p>
+              </div>
+
+              <div className="mt-2 h-[calc(100%-34px)] min-h-[160px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={graphValues}
+                    margin={{
+                      top: 12,
+                      right: 12,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.14)"
+                      strokeDasharray="3 3"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toLocaleString()} kVh`,
+                        "Apparent Energy",
+                      ]}
+                    />
+
+                    <Bar
+                      dataKey="kvh"
+                      fill="#A78BFA"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={26}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* POWER FACTOR ANALYTICS */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 lg:col-span-2">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Power Factor Analytics
+                </h3>
+
+                <span
+                  className={`text-[11px] font-bold uppercase ${
+                    pfStatus === "Critical"
+                      ? "text-red-300"
+                      : pfStatus === "Low"
+                        ? "text-amber-300"
+                        : "text-emerald-300"
+                  }`}
+                >
+                  {pfStatus}
+                </span>
+              </div>
+
+              <div className="relative mt-2 h-[calc(100%-34px)] min-h-[160px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadialBarChart
+                    innerRadius="62%"
+                    outerRadius="92%"
+                    data={pfGaugeData}
+                    startAngle={210}
+                    endAngle={-30}
+                  >
+                    <PolarAngleAxis
+                      type="number"
+                      domain={[0, 100]}
+                      angleAxisId={0}
+                      tick={false}
+                    />
+
+                    <RadialBar
+                      background={{
+                        fill: "rgba(255,255,255,0.08)",
+                      }}
+                      dataKey="value"
+                      cornerRadius={12}
+                    />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+
+                <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-5">
+                  <span className="text-[32px] font-semibold text-white">
+                    {pfNumber.toFixed(2)}
+                  </span>
+
+                  <span
+                    className={`mt-1 text-[9px] font-bold uppercase ${
+                      pfStatus === "Critical"
+                        ? "text-red-300"
+                        : pfStatus === "Low"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {pfStatus}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* AMPS ANALYTICS */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 lg:col-span-3">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Amps Analytics
                 </h3>
 
                 <div className="text-right">
-                  <p className="text-[12px] text-slate-400">Average</p>
+                  <p className="text-[20px] font-semibold text-white">
+                    {currentNumber} A
+                  </p>
 
-                  <h4 className="text-lg font-semibold text-cyan-300">
-                    {avg}%
-                  </h4>
+                  <span
+                    className={`text-[9px] font-bold uppercase ${
+                      currentStatus === "Critical"
+                        ? "text-red-300"
+                        : currentStatus === "High"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {currentStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
-                {graphValues.map((value, index) => (
-                  <div key={index} className="flex-1 flex flex-col justify-end">
-                    <div
-                      className="bg-cyan-400/90 shadow-none"
-                      style={{ height: `${value * 2.5}px` }}
+              <div className="mt-2 h-[calc(100%-40px)] min-h-[160px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={graphValues}
+                    margin={{
+                      top: 12,
+                      right: 12,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.14)"
+                      strokeDasharray="3 3"
                     />
 
-                    <span className="text-[8px] text-center mt-2 text-blue-200">
-                      {index + 1}
-                    </span>
-                  </div>
-                ))}
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Math.round(value)} A`,
+                        "Current",
+                      ]}
+                    />
+
+                    <Bar
+                      dataKey="amps"
+                      fill="#FBBF24"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={30}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Peak Load</p>
+              <div className="pointer-events-none absolute bottom-3 right-4 rounded border border-amber-400/20 bg-[#061737]/90 px-3 py-2">
+                <p className="text-[8px] uppercase text-slate-500">
+                  Average
+                </p>
 
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.max(...graphValues)}%
-                  </h4>
-                </div>
-
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Minimum</p>
-
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.min(...graphValues)}%
-                  </h4>
-                </div>
-
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Status</p>
-
-                  <h4 className="text-[13px] font-semibold text-emerald-200">
-                    {data.status}
-                  </h4>
-                </div>
+                <p className="mt-1 text-[clamp(10px,1.4vh,13px)] font-semibold text-amber-300">
+                  {avg} A
+                </p>
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <h3 className="text-[15px] font-semibold tracking-wide mb-6">
-                Live Kiosk Status
-              </h3>
+            {/* VOLTAGE ANALYTICS */}
+            <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 lg:col-span-3">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent" />
 
-              <div className="flex justify-center">
-                <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
-                  <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Voltage Analytics
+                </h3>
 
-                  <div className="text-center">
-                    <span className="block text-[30px] font-normal">
-                      {loadNumber}%
-                    </span>
+                <div className="text-right">
+                  <p className="text-[20px] font-semibold text-white">
+                    {voltageNumber} V
+                  </p>
 
-                    <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
-                      Kiosk Load
-                    </span>
-                  </div>
+                  <span
+                    className={`text-[9px] font-bold uppercase ${
+                      voltageStatus === "Stable"
+                        ? "text-emerald-300"
+                        : "text-amber-300"
+                    }`}
+                  >
+                    {voltageStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-8 space-y-5">
-                {[
-                  ["Load", loadNumber],
-                  ["Power Factor", Number(data.pf) * 100],
-                  ["Kiosk Health", data.health],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="flex justify-between text-[12px] mb-2">
-                      <span className="text-blue-100 font-medium">
-                        {label}
-                      </span>
+              <div className="mt-2 h-[calc(100%-40px)] min-h-[160px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={graphValues}
+                    margin={{
+                      top: 12,
+                      right: 42,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.14)"
+                      strokeDasharray="3 3"
+                    />
 
-                      <span className="text-cyan-300 font-semibold text-[12px]">
-                        {Math.round(value)}%
-                      </span>
-                    </div>
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
 
-                    <div className="h-2 bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full bg-cyan-400 shadow-none"
-                        style={{ width: `${Math.min(value, 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                    <YAxis
+                      domain={[380, 460]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={440}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Upper",
+                        position: "right",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={400}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Lower",
+                        position: "right",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toFixed(1)} V`,
+                        "Voltage",
+                      ]}
+                    />
+
+                    <Line
+                      type="monotone"
+                      dataKey="voltage"
+                      stroke="#60A5FA"
+                      strokeWidth={2.3}
+                      dot={{
+                        r: 3,
+                        fill: "#60A5FA",
+                        stroke: "#DBEAFE",
+                        strokeWidth: 1,
+                      }}
+                      activeDot={{ r: 5 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
-
-              
             </div>
           </div>
         </div>
@@ -7200,213 +8332,687 @@ const KioskPopup = () => {
 const BusbarAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
 
-  const tempNumber = Number(String(data.temp).replace("°C", "")) || 0;
+  const tempNumber =
+    Number(String(data.temp).replace("°C", "")) || 0;
+
   const loadNumber = Number(data.load) || 0;
 
-  const graphValues = [
-    40,
-    46,
-    52,
-    58,
-    64,
-    loadNumber,
-    70,
-    74,
-    72,
-    loadNumber,
-  ];
+  const vibrationNumber =
+    Number(
+      String(data.vibration).replace(/[^\d.-]/g, "")
+    ) || 0;
+
+  const healthText = String(data.health ?? "Unknown");
+
+  const healthNormal = [
+    "on",
+    "healthy",
+    "normal",
+    "active",
+    "good",
+    "ok",
+  ].some((status) =>
+    healthText.toLowerCase().includes(status)
+  );
+
+  const healthNumber =
+    Number(
+      String(data.healthValue ?? "").replace(/[^\d.-]/g, "")
+    ) || (healthNormal ? 96 : 62);
+
+  /*
+   * Realtime-ready data structure.
+   *
+   * Backend can later provide:
+   *
+   * data.temperatureHistory
+   * data.vibrationHistory
+   * data.healthHistory
+   *
+   * Format:
+   * [{ time: "12:30", value: 42 }]
+   */
+
+  const graphValues = Array.from({ length: 10 }, (_, index) => {
+    const labels = [
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "Now",
+    ];
+
+    const temperatureFallback = [
+      Math.max(tempNumber - 8, 0),
+      Math.max(tempNumber - 7, 0),
+      Math.max(tempNumber - 6, 0),
+      Math.max(tempNumber - 4, 0),
+      Math.max(tempNumber - 3, 0),
+      tempNumber + 1,
+      tempNumber + 4,
+      tempNumber + 3,
+      tempNumber + 2,
+      tempNumber,
+    ];
+
+    const vibrationFallback = [
+      Math.max(vibrationNumber - 0.24, 0),
+      Math.max(vibrationNumber - 0.18, 0),
+      Math.max(vibrationNumber - 0.12, 0),
+      Math.max(vibrationNumber - 0.08, 0),
+      Math.max(vibrationNumber - 0.03, 0),
+      vibrationNumber + 0.05,
+      vibrationNumber + 0.13,
+      vibrationNumber + 0.09,
+      vibrationNumber + 0.04,
+      vibrationNumber,
+    ];
+
+    const healthFallback = healthNormal
+      ? [95, 96, 96, 97, 96, 97, 95, 96, 96, healthNumber]
+      : [78, 75, 72, 69, 67, 65, 61, 60, 59, healthNumber];
+
+    return {
+      time:
+        data.temperatureHistory?.[index]?.time ||
+        data.vibrationHistory?.[index]?.time ||
+        data.healthHistory?.[index]?.time ||
+        labels[index],
+
+      temp:
+        Number(data.temperatureHistory?.[index]?.value) ||
+        temperatureFallback[index],
+
+      vibration:
+        Number(data.vibrationHistory?.[index]?.value) ||
+        vibrationFallback[index],
+
+      health:
+        Number(data.healthHistory?.[index]?.value) ||
+        healthFallback[index],
+    };
+  });
 
   const avg = Math.round(
-    graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+    graphValues.reduce(
+      (total, item) => total + item.health,
+      0
+    ) / graphValues.length
+  );
+
+  const tempStatus =
+    tempNumber >= 90
+      ? "Critical"
+      : tempNumber >= 75
+        ? "Warning"
+        : "Normal";
+
+  const vibrationStatus =
+    vibrationNumber >= 7
+      ? "Critical"
+      : vibrationNumber >= 4.5
+        ? "Warning"
+        : "Normal";
+
+  const healthStatus =
+    healthNumber >= 85
+      ? "Healthy"
+      : healthNumber >= 65
+        ? "Warning"
+        : "Critical";
+
+  const healthGaugeData = [
+    {
+      name: "Health",
+      value: Math.min(Math.max(healthNumber, 0), 100),
+      fill:
+        healthNumber >= 85
+          ? "#34D399"
+          : healthNumber >= 65
+            ? "#FBBF24"
+            : "#F87171",
+    },
+  ];
+
+  const chartId = String(data.title || "busbar").replace(
+    /[^a-zA-Z0-9]/g,
+    "-"
   );
 
   return (
-    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
-        <div className="max-w-7xl mx-auto">
-          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 top-[72px] z-[1100] overflow-hidden bg-[#020817] text-white">
+      <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.2),transparent_30%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_25%),linear-gradient(180deg,#020B24_0%,#020817_100%)] px-4 pb-4">
+        <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
+          {/* HEADER */}
+          <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 py-3 backdrop-blur-xl">
             <div className="flex items-stretch gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
-          >
-            ← Back to Busbar
-          </button>
-
-          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="mt-2 text-3xl font-normal tracking-wide">
-                  {data.title} Analytics
-                </h2>
-
-                <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
-                  433V LT Busduct / Busbar Health Monitoring
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  {data.health}
-                </span>
-
-                <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
-                  Status: {data.health}
-                </p>
-              </div>
-            </div>
-          </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-5 gap-3 mt-3">
-            {[
-              ["Temperature", data.temp, ""],
-              ["Vibration", data.vibration, ""],
-              ["Health", data.health, ""],
-              ["Voltage", data.voltage, ""],
-              ["Load", `${data.load}%`, ""],
-            ].map(([label, value, unit]) => (
-              <div
-                key={label}
-                className="bg-white/7 border border-white/10 p-3 shadow-none"
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex h-[62px] shrink-0 items-center justify-center rounded-xl border border-[#1B4D83] bg-[#061737] px-5 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/70 hover:bg-[#092452]"
               >
-                <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
-                  {label}
-                </p>
+                <ArrowLeft className="mr-2 h-4 w-4 text-cyan-300" />
 
-                <div className="mt-1 flex items-end gap-2">
-                  <span className="text-[13px] font-normal text-slate-300">
-                    {value}
-                  </span>
+                Back to Busbar
+              </button>
 
-                  {unit && (
-                    <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
-                      {unit}
+              <div className="relative flex-1 overflow-hidden rounded-xl border border-[#1B4D83] bg-[#071633] px-5 py-3">
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400" />
+
+                <div className="flex h-full items-center justify-between">
+                  <h2 className="text-[23px] font-semibold tracking-tight text-white">
+                    {data.title} Analytics
+                  </h2>
+
+                  <div
+                    className={`rounded-lg border px-4 py-2 text-[11px] font-semibold ${
+                      healthStatus === "Healthy"
+                        ? "border-emerald-400/30 bg-emerald-400/[0.08] text-emerald-300"
+                        : healthStatus === "Warning"
+                          ? "border-amber-400/30 bg-amber-400/[0.08] text-amber-300"
+                          : "border-red-400/30 bg-red-400/[0.08] text-red-300"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span
+                        className={`h-2.5 w-2.5 rounded-full ${
+                          healthStatus === "Healthy"
+                            ? "bg-emerald-400"
+                            : healthStatus === "Warning"
+                              ? "bg-amber-400"
+                              : "bg-red-400"
+                        }`}
+                      />
+
+                      {data.health}
                     </span>
-                  )}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[15px] font-semibold tracking-wide">
-                  Busbar Load Graph
+          {/* THREE ANALYTICS */}
+          <div className="mt-3 grid min-h-0 flex-1 grid-cols-3 gap-3">
+            {/* TEMPERATURE */}
+            <div className="relative flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
+
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Temperature Analytics
                 </h3>
 
                 <div className="text-right">
-                  <p className="text-[12px] text-slate-400">Average</p>
+                  <p className="text-[24px] font-semibold leading-none text-white">
+                    {tempNumber}°C
+                  </p>
 
-                  <h4 className="text-lg font-semibold text-cyan-300">
-                    {avg}%
-                  </h4>
+                  <span
+                    className={`mt-1 inline-block text-[9px] font-bold uppercase ${
+                      tempStatus === "Critical"
+                        ? "text-red-300"
+                        : tempStatus === "Warning"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {tempStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
-                {graphValues.map((value, index) => (
-                  <div key={index} className="flex-1 flex flex-col justify-end">
-                    <div
-                      className="bg-cyan-400/90 shadow-none"
-                      style={{ height: `${value * 2.5}px` }}
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id={`busbarTemp-${chartId}`}
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.72}
+                        />
+
+                        <stop
+                          offset="100%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.03}
+                        />
+                      </linearGradient>
+                    </defs>
+
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
                     />
 
-                    <span className="text-[8px] text-center mt-2 text-blue-200">
-                      {index + 1}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      interval={1}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
 
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Peak Load</p>
+                    <YAxis
+                      domain={[30, 110]}
+                      ticks={[30, 50, 70, 90, 110]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                      tickFormatter={(value) => `${value}°`}
+                    />
 
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.max(...graphValues)}%
-                  </h4>
-                </div>
+                    <ReferenceLine
+                      y={75}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Warning",
+                        position: "insideTopRight",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
 
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Temperature</p>
+                    <ReferenceLine
+                      y={90}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Critical",
+                        position: "insideTopRight",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
 
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {tempNumber}°C
-                  </h4>
-                </div>
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toFixed(1)}°C`,
+                        "Temperature",
+                      ]}
+                    />
 
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Health</p>
-
-                  <h4 className="text-[13px] font-semibold text-emerald-200">
-                    {data.health}
-                  </h4>
-                </div>
+                    <Area
+                      type="monotone"
+                      dataKey="temp"
+                      stroke="#22D3EE"
+                      strokeWidth={2.4}
+                      fill={`url(#busbarTemp-${chartId})`}
+                      dot={{
+                        r: 3,
+                        fill: "#22D3EE",
+                        stroke: "#FFFFFF",
+                        strokeWidth: 1,
+                      }}
+                      activeDot={{ r: 5 }}
+                      isAnimationActive={false}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <h3 className="text-[15px] font-semibold tracking-wide mb-6">
-                Live Busbar Status
-              </h3>
+            {/* VIBRATION */}
+            <div className="relative flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
 
-              <div className="flex justify-center">
-                <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
-                  <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Vibration Analytics
+                </h3>
 
-                  <div className="text-center">
-                    <span className="block text-[30px] font-normal">
-                      {loadNumber}%
-                    </span>
+                <div className="text-right">
+                  <p className="text-[24px] font-semibold leading-none text-white">
+                    {vibrationNumber.toFixed(2)}
+                  </p>
 
-                    <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
-                      Bus Load
-                    </span>
-                  </div>
+                  <span
+                    className={`mt-1 block text-[9px] font-bold uppercase ${
+                      vibrationStatus === "Critical"
+                        ? "text-red-300"
+                        : vibrationStatus === "Warning"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {vibrationStatus}
+                  </span>
+
+                  <span className="text-[8px] text-slate-500">
+                    mm/s
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-8 space-y-5">
-                {[
-                  ["Load", loadNumber],
-                  ["Temperature", tempNumber],
-                  ["Busbar Health", data.health === "ON" ? 96 : 70],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="flex justify-between text-[12px] mb-2">
-                      <span className="text-blue-100 font-medium">
-                        {label}
-                      </span>
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id={`busbarVibration-${chartId}`}
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#C084FC"
+                          stopOpacity={0.72}
+                        />
 
-                      <span className="text-cyan-300 font-semibold text-[12px]">
-                        {typeof value === "number" ? `${Math.round(value)}%` : value}
-                      </span>
-                    </div>
+                        <stop
+                          offset="100%"
+                          stopColor="#C084FC"
+                          stopOpacity={0.03}
+                        />
+                      </linearGradient>
+                    </defs>
 
-                    <div className="h-2 bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full bg-cyan-400 shadow-none"
-                        style={{
-                          width: `${
-                            typeof value === "number"
-                              ? Math.min(value, 100)
-                              : 96
-                          }%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      interval={1}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      domain={[0, 10]}
+                      ticks={[0, 2.5, 5, 7.5, 10]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={4.5}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Warning",
+                        position: "insideTopRight",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={7}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Critical",
+                        position: "insideTopRight",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toFixed(2)} mm/s`,
+                        "Vibration",
+                      ]}
+                    />
+
+                    <Area
+                      type="monotone"
+                      dataKey="vibration"
+                      stroke="#C084FC"
+                      strokeWidth={2.4}
+                      fill={`url(#busbarVibration-${chartId})`}
+                      dot={{
+                        r: 3,
+                        fill: "#C084FC",
+                        stroke: "#FFFFFF",
+                        strokeWidth: 1,
+                      }}
+                      activeDot={{ r: 5 }}
+                      isAnimationActive={false}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* HEALTH */}
+            <div className="relative flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Health Analytics
+                </h3>
+
+                <div className="text-right">
+                  <p
+                    className={`text-[clamp(11px,1.5vh,14px)] font-semibold ${
+                      healthStatus === "Healthy"
+                        ? "text-emerald-300"
+                        : healthStatus === "Warning"
+                          ? "text-amber-300"
+                          : "text-red-300"
+                    }`}
+                  >
+                    {healthStatus}
+                  </p>
+
+                  <p className="mt-1 text-[9px] text-slate-500">
+                    {avg}% average
+                  </p>
+                </div>
               </div>
 
-              
+              <div className="mt-3 grid min-h-0 flex-1 grid-rows-[0.9fr_1.1fr] gap-3">
+                <div className="relative min-h-0 rounded-xl border border-[#174575] bg-[#061737]/55">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadialBarChart
+                      innerRadius="64%"
+                      outerRadius="92%"
+                      data={healthGaugeData}
+                      startAngle={210}
+                      endAngle={-30}
+                    >
+                      <PolarAngleAxis
+                        type="number"
+                        domain={[0, 100]}
+                        angleAxisId={0}
+                        tick={false}
+                      />
+
+                      <RadialBar
+                        background={{
+                          fill: "rgba(255,255,255,0.08)",
+                        }}
+                        dataKey="value"
+                        cornerRadius={12}
+                        isAnimationActive={false}
+                      />
+                    </RadialBarChart>
+                  </ResponsiveContainer>
+
+                  <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-5">
+                    <span className="text-[38px] font-semibold text-white">
+                      {healthNumber}%
+                    </span>
+
+                    <span
+                      className={`mt-1 text-[9px] font-bold uppercase ${
+                        healthStatus === "Healthy"
+                          ? "text-emerald-300"
+                          : healthStatus === "Warning"
+                            ? "text-amber-300"
+                            : "text-red-300"
+                      }`}
+                    >
+                      {healthStatus}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="min-h-0 rounded-xl border border-[#174575] bg-[#061737]/55 p-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                      data={graphValues}
+                      margin={{
+                        top: 10,
+                        right: 10,
+                        left: -18,
+                        bottom: 0,
+                      }}
+                    >
+                      <defs>
+                        <linearGradient
+                          id={`busbarHealth-${chartId}`}
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor={
+                              healthNumber >= 85
+                                ? "#34D399"
+                                : healthNumber >= 65
+                                  ? "#FBBF24"
+                                  : "#F87171"
+                            }
+                            stopOpacity={0.68}
+                          />
+
+                          <stop
+                            offset="100%"
+                            stopColor={
+                              healthNumber >= 85
+                                ? "#34D399"
+                                : healthNumber >= 65
+                                  ? "#FBBF24"
+                                  : "#F87171"
+                            }
+                            stopOpacity={0.03}
+                          />
+                        </linearGradient>
+                      </defs>
+
+                      <CartesianGrid
+                        vertical={false}
+                        stroke="rgba(148,163,184,0.13)"
+                        strokeDasharray="4 4"
+                      />
+
+                      <XAxis
+                        dataKey="time"
+                        axisLine={false}
+                        tickLine={false}
+                        interval={1}
+                        tick={{
+                          fill: "#8EA6C4",
+                          fontSize: 8,
+                        }}
+                      />
+
+                      <YAxis
+                        domain={[0, 100]}
+                        ticks={[0, 25, 50, 75, 100]}
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{
+                          fill: "#8EA6C4",
+                          fontSize: 8,
+                        }}
+                      />
+
+                      <ReferenceLine
+                        y={85}
+                        stroke="#34D399"
+                        strokeDasharray="4 4"
+                      />
+
+                      <ReferenceLine
+                        y={65}
+                        stroke="#FBBF24"
+                        strokeDasharray="4 4"
+                      />
+
+                      <Tooltip
+                        contentStyle={analyticsTooltipStyle}
+                        formatter={(value) => [
+                          `${Math.round(value)}%`,
+                          "Health",
+                        ]}
+                      />
+
+                      <Area
+                        type="monotone"
+                        dataKey="health"
+                        stroke={
+                          healthNumber >= 85
+                            ? "#34D399"
+                            : healthNumber >= 65
+                              ? "#FBBF24"
+                              : "#F87171"
+                        }
+                        strokeWidth={2.3}
+                        fill={`url(#busbarHealth-${chartId})`}
+                        dot={false}
+                        isAnimationActive={false}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -7603,190 +9209,635 @@ const BusbarPopup = () => {
 const PccPanelAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
 
-  const graphValues = [42, 48, 55, 61, 66, data.load, 72, 76, 74, data.load];
+  const loadNumber =
+    Number(String(data.load).replace(/[^\d.-]/g, "")) || 0;
+
+  const kwhNumber =
+    Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
+
+  const kvhNumber =
+    Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+
+  const currentNumber =
+    Number(String(data.current).replace(/[^\d.-]/g, "")) || 0;
+
+  const voltageNumber =
+    Number(String(data.voltage).replace(/[^\d.-]/g, "")) || 0;
+
+  const pfNumber =
+    Number(String(data.pf).replace(/[^\d.-]/g, "")) || 0;
+
+  const graphValues = [
+    {
+      time: "08:00",
+      kwh: Math.max(kwhNumber - 420, 0),
+      kvh: Math.max(kvhNumber - 390, 0),
+      current: Math.max(currentNumber - 24, 0),
+      voltage: voltageNumber - 5,
+      pf: Math.max(pfNumber - 0.04, 0),
+    },
+    {
+      time: "09:00",
+      kwh: Math.max(kwhNumber - 375, 0),
+      kvh: Math.max(kvhNumber - 345, 0),
+      current: Math.max(currentNumber - 18, 0),
+      voltage: voltageNumber - 3,
+      pf: Math.max(pfNumber - 0.03, 0),
+    },
+    {
+      time: "10:00",
+      kwh: Math.max(kwhNumber - 325, 0),
+      kvh: Math.max(kvhNumber - 300, 0),
+      current: Math.max(currentNumber - 12, 0),
+      voltage: voltageNumber - 1,
+      pf: Math.max(pfNumber - 0.02, 0),
+    },
+    {
+      time: "11:00",
+      kwh: Math.max(kwhNumber - 275, 0),
+      kvh: Math.max(kvhNumber - 250, 0),
+      current: Math.max(currentNumber - 6, 0),
+      voltage: voltageNumber + 1,
+      pf: Math.max(pfNumber - 0.01, 0),
+    },
+    {
+      time: "12:00",
+      kwh: Math.max(kwhNumber - 225, 0),
+      kvh: Math.max(kvhNumber - 205, 0),
+      current: currentNumber + 4,
+      voltage: voltageNumber + 2,
+      pf: Math.min(pfNumber + 0.005, 1),
+    },
+    {
+      time: "13:00",
+      kwh: Math.max(kwhNumber - 175, 0),
+      kvh: Math.max(kvhNumber - 160, 0),
+      current: currentNumber + 10,
+      voltage: voltageNumber + 3,
+      pf: Math.min(pfNumber + 0.01, 1),
+    },
+    {
+      time: "14:00",
+      kwh: Math.max(kwhNumber - 125, 0),
+      kvh: Math.max(kvhNumber - 115, 0),
+      current: currentNumber + 16,
+      voltage: voltageNumber + 2,
+      pf: Math.min(pfNumber + 0.015, 1),
+    },
+    {
+      time: "15:00",
+      kwh: Math.max(kwhNumber - 80, 0),
+      kvh: Math.max(kvhNumber - 70, 0),
+      current: currentNumber + 9,
+      voltage: voltageNumber,
+      pf: Math.min(pfNumber + 0.01, 1),
+    },
+    {
+      time: "16:00",
+      kwh: Math.max(kwhNumber - 35, 0),
+      kvh: Math.max(kvhNumber - 30, 0),
+      current: currentNumber + 4,
+      voltage: voltageNumber - 1,
+      pf: pfNumber,
+    },
+    {
+      time: "Now",
+      kwh: kwhNumber,
+      kvh: kvhNumber,
+      current: currentNumber,
+      voltage: voltageNumber,
+      pf: pfNumber,
+    },
+  ];
 
   const avg = Math.round(
-    graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+    graphValues.reduce(
+      (total, item) => total + item.current,
+      0
+    ) / graphValues.length
+  );
+
+  const currentStatus =
+    currentNumber >= 350
+      ? "Critical"
+      : currentNumber >= 280
+        ? "High"
+        : "Normal";
+
+  const voltageStatus =
+    voltageNumber < 400
+      ? "Low"
+      : voltageNumber > 450
+        ? "High"
+        : "Stable";
+
+  const pfStatus =
+    pfNumber < 0.85
+      ? "Critical"
+      : pfNumber < 0.95
+        ? "Low"
+        : "Good";
+
+  const pfGaugeData = [
+    {
+      name: "Power Factor",
+      value: Math.min(Math.max(pfNumber * 100, 0), 100),
+      fill:
+        pfNumber < 0.85
+          ? "#F87171"
+          : pfNumber < 0.95
+            ? "#FBBF24"
+            : "#34D399",
+    },
+  ];
+
+  const chartId = String(data.title || "pcc").replace(
+    /[^a-zA-Z0-9]/g,
+    "-"
   );
 
   return (
-    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
-        <div className="max-w-7xl mx-auto">
-          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 top-[72px] z-[1100] overflow-hidden bg-[#020817] text-white">
+      <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.2),transparent_30%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_25%),linear-gradient(180deg,#020B24_0%,#020817_100%)] px-4 pb-4">
+        <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
+          <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 py-3 backdrop-blur-xl">
             <div className="flex items-stretch gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
-          >
-            ← Back to PCC Panel
-          </button>
-
-          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="mt-2 text-3xl font-normal tracking-wide">
-                  {data.title}
-                </h2>
-
-                <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
-                  {data.subtitle}
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  {data.status}
-                </span>
-
-                <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
-                  Status: {data.status}
-                </p>
-              </div>
-            </div>
-          </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-5 gap-3 mt-3">
-            {[
-              ["Energy", data.kwh, "kWh"],
-              ["Reactive", data.kvh, "kVh"],
-              ["Current", data.current, ""],
-              ["Voltage", data.voltage, ""],
-              ["Power Factor", data.pf, ""],
-            ].map(([label, value, unit]) => (
-              <div
-                key={label}
-                className="bg-white/7 border border-white/10 p-3 shadow-none"
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex h-[62px] shrink-0 items-center justify-center rounded-xl border border-[#1B4D83] bg-[#061737] px-5 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/70 hover:bg-[#092452]"
               >
-                <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
-                  {label}
-                </p>
+                <ArrowLeft className="mr-2 h-4 w-4 text-cyan-300" />
+                Back to PCC Panel
+              </button>
 
-                <div className="mt-1 flex items-end gap-2">
-                  <span className="text-[13px] font-normal text-slate-300">
-                    {value}
-                  </span>
+              <div className="relative flex-1 overflow-hidden rounded-xl border border-[#1B4D83] bg-[#071633] px-5 py-3">
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
 
-                  {unit && (
-                    <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
-                      {unit}
+                <div className="flex h-full items-center justify-between">
+                  <div>
+                    <h2 className="text-[23px] font-semibold tracking-tight text-white">
+                      {data.title}
+                    </h2>
+
+                    <p className="mt-1 text-[10px] text-slate-400">
+                      {data.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="rounded-lg border border-emerald-400/30 bg-emerald-400/[0.08] px-4 py-2 text-[11px] font-semibold text-emerald-300">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                      {data.status}
                     </span>
-                  )}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[15px] font-semibold tracking-wide">
-                  PCC Load Graph
+          <div className="mt-3 grid min-h-0 flex-1 grid-cols-6 grid-rows-2 gap-3">
+            {/* KWH */}
+            <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  kWh Analytics
+                </h3>
+
+                <p className="text-[19px] font-semibold text-cyan-300">
+                  {kwhNumber.toLocaleString()} kWh
+                </p>
+              </div>
+
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id={`pccKwh-${chartId}`}
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.72}
+                        />
+
+                        <stop
+                          offset="100%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.03}
+                        />
+                      </linearGradient>
+                    </defs>
+
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      interval={1}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toLocaleString()} kWh`,
+                        "Energy",
+                      ]}
+                    />
+
+                    <Area
+                      type="monotone"
+                      dataKey="kwh"
+                      stroke="#22D3EE"
+                      strokeWidth={2.3}
+                      fill={`url(#pccKwh-${chartId})`}
+                      dot={false}
+                      isAnimationActive={false}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* KVH */}
+            <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  kVh Analytics
+                </h3>
+
+                <p className="text-[19px] font-semibold text-purple-300">
+                  {kvhNumber.toLocaleString()} kVh
+                </p>
+              </div>
+
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      interval={1}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toLocaleString()} kVh`,
+                        "Apparent Energy",
+                      ]}
+                    />
+
+                    <Bar
+                      dataKey="kvh"
+                      fill="#A78BFA"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={26}
+                      isAnimationActive={false}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* POWER FACTOR */}
+            <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Power Factor
+                </h3>
+
+                <span
+                  className={`text-[10px] font-bold uppercase ${
+                    pfStatus === "Critical"
+                      ? "text-red-300"
+                      : pfStatus === "Low"
+                        ? "text-amber-300"
+                        : "text-emerald-300"
+                  }`}
+                >
+                  {pfStatus}
+                </span>
+              </div>
+
+              <div className="relative mt-2 min-h-0 flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadialBarChart
+                    innerRadius="62%"
+                    outerRadius="92%"
+                    data={pfGaugeData}
+                    startAngle={210}
+                    endAngle={-30}
+                  >
+                    <PolarAngleAxis
+                      type="number"
+                      domain={[0, 100]}
+                      angleAxisId={0}
+                      tick={false}
+                    />
+
+                    <RadialBar
+                      background={{
+                        fill: "rgba(255,255,255,0.08)",
+                      }}
+                      dataKey="value"
+                      cornerRadius={12}
+                      isAnimationActive={false}
+                    />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+
+                <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-5">
+                  <span className="text-[34px] font-semibold text-white">
+                    {pfNumber.toFixed(2)}
+                  </span>
+
+                  <span
+                    className={`mt-1 text-[9px] font-bold uppercase ${
+                      pfStatus === "Critical"
+                        ? "text-red-300"
+                        : pfStatus === "Low"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {pfStatus}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* CURRENT */}
+            <div className="relative col-span-3 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
+
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Current Analytics
                 </h3>
 
                 <div className="text-right">
-                  <p className="text-[12px] text-slate-400">Average</p>
+                  <p className="text-[20px] font-semibold text-white">
+                    {currentNumber} A
+                  </p>
 
-                  <h4 className="text-lg font-semibold text-cyan-300">
-                    {avg}%
-                  </h4>
+                  <span
+                    className={`text-[9px] font-bold uppercase ${
+                      currentStatus === "Critical"
+                        ? "text-red-300"
+                        : currentStatus === "High"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {currentStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
-                {graphValues.map((value, index) => (
-                  <div key={index} className="flex-1 flex flex-col justify-end">
-                    <div
-                      className="bg-cyan-400/90 shadow-none"
-                      style={{ height: `${value * 2.5}px` }}
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
                     />
 
-                    <span className="text-[8px] text-center mt-2 text-blue-200">
-                      {index + 1}
-                    </span>
-                  </div>
-                ))}
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Math.round(value)} A`,
+                        "Current",
+                      ]}
+                    />
+
+                    <Bar
+                      dataKey="current"
+                      fill="#FBBF24"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={28}
+                      isAnimationActive={false}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Peak Load</p>
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.max(...graphValues)}%
-                  </h4>
-                </div>
+              <div className="pointer-events-none absolute bottom-3 right-4 rounded-lg border border-amber-400/20 bg-[#061737]/90 px-3 py-2">
+                <p className="text-[8px] uppercase text-slate-500">
+                  Average
+                </p>
 
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Minimum</p>
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.min(...graphValues)}%
-                  </h4>
-                </div>
-
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Status</p>
-                  <h4 className="text-[13px] font-semibold text-emerald-200">
-                    {data.status}
-                  </h4>
-                </div>
+                <p className="mt-1 text-[clamp(10px,1.4vh,13px)] font-semibold text-amber-300">
+                  {avg} A
+                </p>
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <h3 className="text-[15px] font-semibold tracking-wide mb-6">
-                Live PCC Status
-              </h3>
+            {/* VOLTAGE */}
+            <div className="relative col-span-3 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent" />
 
-              <div className="flex justify-center">
-                <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
-                  <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Voltage Analytics
+                </h3>
 
-                  <div className="text-center">
-                    <span className="block text-[30px] font-normal">
-                      {data.load}%
-                    </span>
+                <div className="text-right">
+                  <p className="text-[20px] font-semibold text-white">
+                    {voltageNumber} V
+                  </p>
 
-                    <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
-                      PCC Load
-                    </span>
-                  </div>
+                  <span
+                    className={`text-[9px] font-bold uppercase ${
+                      voltageStatus === "Stable"
+                        ? "text-emerald-300"
+                        : "text-amber-300"
+                    }`}
+                  >
+                    {voltageStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-8 space-y-5">
-                {[
-                  ["Load", data.load],
-                  ["Power Factor", Number(data.pf) * 100],
-                  ["Panel Health", data.health],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="flex justify-between text-[12px] mb-2">
-                      <span className="text-blue-100 font-medium">
-                        {label}
-                      </span>
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 42,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
+                    />
 
-                      <span className="text-cyan-300 font-semibold text-[12px]">
-                        {Math.round(value)}%
-                      </span>
-                    </div>
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
 
-                    <div className="h-2 bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full bg-cyan-400 shadow-none"
-                        style={{ width: `${Math.min(value, 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                    <YAxis
+                      domain={[380, 460]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={440}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Upper",
+                        position: "right",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={400}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Lower",
+                        position: "right",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={analyticsTooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toFixed(1)} V`,
+                        "Voltage",
+                      ]}
+                    />
+
+                    <Line
+                      type="monotone"
+                      dataKey="voltage"
+                      stroke="#60A5FA"
+                      strokeWidth={2.3}
+                      dot={{
+                        r: 3,
+                        fill: "#60A5FA",
+                        stroke: "#DBEAFE",
+                        strokeWidth: 1,
+                      }}
+                      activeDot={{ r: 5 }}
+                      isAnimationActive={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
-
-              
             </div>
           </div>
         </div>
@@ -7794,7 +9845,6 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     </div>
   );
 };
-
 const createPccAnalyticsData = (title, panel, index) => ({
   title: `${title} - ${panel.name.replace(/\n/g, " ")}`,
   subtitle: "LT Distribution Panel Live Analytics",
@@ -7990,7 +10040,7 @@ const Pcc1Popup = () => {
                 <PanelFeatures heading={panel.name} />
               ) : (
                 <div className="absolute inset-0 z-20 flex items-center justify-center px-1">
-                  <span className="text-[14px] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
+                  <span className="text-[clamp(11px,1.5vh,14px)] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
                     {panel.name}
                   </span>
                 </div>
@@ -8204,7 +10254,7 @@ const Pcc2Popup = () => {
                 <PanelFeatures heading={panel.name} />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center px-1">
-                  <span className="text-[14px] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
+                  <span className="text-[clamp(11px,1.5vh,14px)] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
                     {panel.name}
                   </span>
                 </div>
@@ -8249,7 +10299,7 @@ const PCCSimpleBox = ({ title, subtitle, onClick }) => (
       {title}
     </h4>
 
-    <span className="mt-1 text-[14px] text-slate-300 font-medium">
+    <span className="mt-1 text-[clamp(11px,1.5vh,14px)] text-slate-300 font-medium">
       {subtitle}
     </span>
   </div>
@@ -8343,189 +10393,761 @@ const PCCMainPopup = () => (
 const RaisingMainAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
 
-  const graphValues = [42, 48, 55, 61, 66, data.load, 72, 76, 74, data.load];
+  const kwhNumber =
+    Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
+
+  const kvhNumber =
+    Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+
+  const voltageNumber =
+    Number(String(data.voltage).replace(/[^\d.-]/g, "")) || 0;
+
+  const pfNumber =
+    Number(String(data.pf).replace(/[^\d.-]/g, "")) || 0;
+
+  const currentNumber =
+    Number(String(data.current).replace(/[^\d.-]/g, "")) || 0;
+
+  const graphValues = [
+    {
+      time: "08:00",
+      kwh: Math.max(kwhNumber - 420, 0),
+      kvh: Math.max(kvhNumber - 390, 0),
+      voltage: voltageNumber - 6,
+      pf: Math.max(pfNumber - 0.04, 0),
+      amps: Math.max(currentNumber - 24, 0),
+    },
+    {
+      time: "09:00",
+      kwh: Math.max(kwhNumber - 375, 0),
+      kvh: Math.max(kvhNumber - 345, 0),
+      voltage: voltageNumber - 4,
+      pf: Math.max(pfNumber - 0.03, 0),
+      amps: Math.max(currentNumber - 18, 0),
+    },
+    {
+      time: "10:00",
+      kwh: Math.max(kwhNumber - 325, 0),
+      kvh: Math.max(kvhNumber - 300, 0),
+      voltage: voltageNumber - 2,
+      pf: Math.max(pfNumber - 0.02, 0),
+      amps: Math.max(currentNumber - 12, 0),
+    },
+    {
+      time: "11:00",
+      kwh: Math.max(kwhNumber - 275, 0),
+      kvh: Math.max(kvhNumber - 250, 0),
+      voltage: voltageNumber,
+      pf: Math.max(pfNumber - 0.01, 0),
+      amps: Math.max(currentNumber - 6, 0),
+    },
+    {
+      time: "12:00",
+      kwh: Math.max(kwhNumber - 225, 0),
+      kvh: Math.max(kvhNumber - 205, 0),
+      voltage: voltageNumber + 2,
+      pf: Math.min(pfNumber + 0.005, 1),
+      amps: currentNumber + 4,
+    },
+    {
+      time: "13:00",
+      kwh: Math.max(kwhNumber - 175, 0),
+      kvh: Math.max(kvhNumber - 160, 0),
+      voltage: voltageNumber + 3,
+      pf: Math.min(pfNumber + 0.01, 1),
+      amps: currentNumber + 10,
+    },
+    {
+      time: "14:00",
+      kwh: Math.max(kwhNumber - 125, 0),
+      kvh: Math.max(kvhNumber - 115, 0),
+      voltage: voltageNumber + 2,
+      pf: Math.min(pfNumber + 0.015, 1),
+      amps: currentNumber + 16,
+    },
+    {
+      time: "15:00",
+      kwh: Math.max(kwhNumber - 80, 0),
+      kvh: Math.max(kvhNumber - 70, 0),
+      voltage: voltageNumber + 1,
+      pf: Math.min(pfNumber + 0.01, 1),
+      amps: currentNumber + 9,
+    },
+    {
+      time: "16:00",
+      kwh: Math.max(kwhNumber - 35, 0),
+      kvh: Math.max(kvhNumber - 30, 0),
+      voltage: voltageNumber - 1,
+      pf: pfNumber,
+      amps: currentNumber + 4,
+    },
+    {
+      time: "Now",
+      kwh: kwhNumber,
+      kvh: kvhNumber,
+      voltage: voltageNumber,
+      pf: pfNumber,
+      amps: currentNumber,
+    },
+  ];
 
   const avg = Math.round(
-    graphValues.reduce((a, b) => a + b, 0) / graphValues.length
+    graphValues.reduce(
+      (total, item) => total + item.amps,
+      0
+    ) / graphValues.length
   );
 
+  const currentStatus =
+    currentNumber >= 350
+      ? "Critical"
+      : currentNumber >= 280
+        ? "High"
+        : "Normal";
+
+  const voltageStatus =
+    voltageNumber < 400
+      ? "Low"
+      : voltageNumber > 450
+        ? "High"
+        : "Stable";
+
+  const pfStatus =
+    pfNumber < 0.85
+      ? "Critical"
+      : pfNumber < 0.95
+        ? "Low"
+        : "Good";
+
+  const pfGaugeData = [
+    {
+      name: "Power Factor",
+      value: Math.min(
+        Math.max(pfNumber * 100, 0),
+        100
+      ),
+      fill:
+        pfNumber < 0.85
+          ? "#F87171"
+          : pfNumber < 0.95
+            ? "#FBBF24"
+            : "#34D399",
+    },
+  ];
+
+  const voltageLowLimit = 400;
+  const voltageHighLimit = 440;
+
+  const chartId = String(
+    data.title || "raising-main"
+  ).replace(/[^a-zA-Z0-9]/g, "-");
+
+  const tooltipStyle = {
+    backgroundColor: "#020B24",
+    border: "1px solid #1B4D83",
+    borderRadius: "10px",
+    color: "#FFFFFF",
+    fontSize: "11px",
+    boxShadow: "0 14px 35px rgba(0,0,0,0.35)",
+  };
+
   return (
-    <div className="fixed left-0 right-0 top-[72px] bottom-0 z-[999] bg-[#020B24] text-white overflow-y-auto">
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_30%)] px-6 pb-6 pt-0">
-        <div className="max-w-7xl mx-auto">
-          <div className="sticky top-0 z-50 mb-4 bg-[#020B24]/95 border-b border-white/10 py-3 backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 top-[72px] z-[1100] overflow-hidden bg-[#020817] text-white">
+      <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_26%),linear-gradient(180deg,#020B24_0%,#020817_100%)] px-4 pb-4">
+        <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
+          {/* HEADER */}
+          <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 py-3 backdrop-blur-xl">
             <div className="flex items-stretch gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="h-[82px] shrink-0 px-5 bg-[#06184A]/90 border border-cyan-400/40 text-cyan-200 text-[12px] font-semibold tracking-wide hover:bg-cyan-400/10 transition shadow-none backdrop-blur flex items-center justify-center"
-          >
-            ← Back to Raising Main
-          </button>
-
-          <div className="flex-1 relative overflow-hidden bg-[#0B1738]/95 border border-white/10 shadow-none p-4 backdrop-blur">
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-cyan-400" />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="mt-2 text-3xl font-normal tracking-wide">
-                  {data.title} Analytics
-                </h2>
-
-                <p className="mt-1 text-[13px] font-medium text-blue-300 tracking-wide">
-                  {data.subtitle}
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold tracking-wide">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  {data.status}
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex h-[62px] shrink-0 items-center justify-center rounded-xl border border-[#1B4D83] bg-[#061737] px-5 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/70 hover:bg-[#092452]"
+              >
+                <span className="mr-2 text-[17px] text-cyan-300">
+                  ←
                 </span>
 
-                <p className="mt-3 text-[10px] text-slate-400 tracking-wide">
-                  Status: {data.status}
-                </p>
-              </div>
-            </div>
-          </div>
-            </div>
-          </div>
+                Back to Raising Main
+              </button>
 
-          <div className="grid grid-cols-5 gap-3 mt-3">
-            {[
-              ["Energy", data.kwh, "kWh"],
-              ["Reactive", data.kvh, "kVh"],
-              ["Current", data.current, ""],
-              ["Voltage", data.voltage, ""],
-              ["Power Factor", data.pf, ""],
-            ].map(([label, value, unit]) => (
-              <div
-                key={label}
-                className="bg-white/7 border border-white/10 p-3 shadow-none"
-              >
-                <p className="text-[15px] font-bold uppercase tracking-[0.12em] text-white">
-                  {label}
-                </p>
+              <div className="relative flex-1 overflow-hidden rounded-xl border border-[#1B4D83] bg-[#071633] px-5 py-3 shadow-[0_16px_40px_rgba(0,0,0,0.2)]">
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
 
-                <div className="mt-1 flex items-end gap-2">
-                  <span className="text-[13px] font-normal text-slate-300">
-                    {value}
-                  </span>
+                <div className="flex h-full items-center justify-between">
+                  <div>
+                    <h2 className="text-[23px] font-semibold tracking-tight text-white">
+                      {data.title} Analytics
+                    </h2>
 
-                  {unit && (
-                    <span className="pb-[2px] text-[10px] font-medium uppercase tracking-[0.08em] text-cyan-300">
-                      {unit}
+                    {data.subtitle && (
+                      <p className="mt-1 text-[10px] font-medium text-slate-400">
+                        {data.subtitle}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="rounded-lg border border-emerald-400/30 bg-emerald-400/[0.08] px-4 py-2 text-[11px] font-semibold text-emerald-300">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.75)]" />
+
+                      {data.status}
                     </span>
-                  )}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 mt-3">
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[15px] font-semibold tracking-wide">
-                  Raising Main Load Graph
+          {/* ANALYTICS GRID */}
+          <div className="mt-3 grid min-h-0 flex-1 grid-cols-6 grid-rows-2 gap-3">
+            {/* KWH ANALYTICS */}
+            <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
+
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  kWh Analytics
                 </h3>
 
                 <div className="text-right">
-                  <p className="text-[12px] text-slate-400">Average</p>
-                  <h4 className="text-lg font-semibold text-cyan-300">
-                    {avg}%
-                  </h4>
+                  <p className="text-[19px] font-semibold leading-none text-cyan-300">
+                    {kwhNumber.toLocaleString()}
+                  </p>
+
+                  <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    kWh
+                  </span>
                 </div>
               </div>
 
-              <div className="flex items-end gap-3 h-[245px] border-b border-white/10 pb-3">
-                {graphValues.map((value, index) => (
-                  <div key={index} className="flex-1 flex flex-col justify-end">
-                    <div
-                      className="bg-cyan-400/90 shadow-none"
-                      style={{ height: `${value * 2.5}px` }}
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <AreaChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id={`raisingMainKwh-${chartId}`}
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.75}
+                        />
+
+                        <stop
+                          offset="100%"
+                          stopColor="#22D3EE"
+                          stopOpacity={0.03}
+                        />
+                      </linearGradient>
+                    </defs>
+
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
                     />
 
-                    <span className="text-[8px] text-center mt-2 text-blue-200">
-                      {index + 1}
-                    </span>
-                  </div>
-                ))}
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      interval={1}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={tooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toLocaleString()} kWh`,
+                        "Energy",
+                      ]}
+                    />
+
+                    <Area
+                      type="monotone"
+                      dataKey="kwh"
+                      stroke="#22D3EE"
+                      strokeWidth={2.4}
+                      fill={`url(#raisingMainKwh-${chartId})`}
+                      dot={false}
+                      activeDot={{
+                        r: 4,
+                        fill: "#22D3EE",
+                        stroke: "#FFFFFF",
+                        strokeWidth: 1,
+                      }}
+                      isAnimationActive={false}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* KVH ANALYTICS */}
+            <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
+
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  kVh Analytics
+                </h3>
+
+                <div className="text-right">
+                  <p className="text-[19px] font-semibold leading-none text-purple-300">
+                    {kvhNumber.toLocaleString()}
+                  </p>
+
+                  <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    kVh
+                  </span>
+                </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Peak Load</p>
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.max(...graphValues)}%
-                  </h4>
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <BarChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      interval={1}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={tooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toLocaleString()} kVh`,
+                        "Apparent Energy",
+                      ]}
+                    />
+
+                    <Bar
+                      dataKey="kvh"
+                      fill="#A78BFA"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={26}
+                      isAnimationActive={false}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* POWER FACTOR ANALYTICS */}
+            <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Power Factor Analytics
+                </h3>
+
+                <span
+                  className={`rounded-md border px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.08em] ${
+                    pfStatus === "Critical"
+                      ? "border-red-400/30 bg-red-400/[0.08] text-red-300"
+                      : pfStatus === "Low"
+                        ? "border-amber-400/30 bg-amber-400/[0.08] text-amber-300"
+                        : "border-emerald-400/30 bg-emerald-400/[0.08] text-emerald-300"
+                  }`}
+                >
+                  {pfStatus}
+                </span>
+              </div>
+
+              <div className="relative mt-2 min-h-0 flex-1">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <RadialBarChart
+                    innerRadius="64%"
+                    outerRadius="92%"
+                    data={pfGaugeData}
+                    startAngle={210}
+                    endAngle={-30}
+                  >
+                    <PolarAngleAxis
+                      type="number"
+                      domain={[0, 100]}
+                      angleAxisId={0}
+                      tick={false}
+                    />
+
+                    <RadialBar
+                      background={{
+                        fill: "rgba(255,255,255,0.08)",
+                      }}
+                      dataKey="value"
+                      cornerRadius={12}
+                      isAnimationActive={false}
+                    />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+
+                <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-5">
+                  <span className="text-[38px] font-semibold tracking-tight text-white">
+                    {pfNumber.toFixed(2)}
+                  </span>
+
+                  <span
+                    className={`mt-1 text-[9px] font-bold uppercase tracking-[0.1em] ${
+                      pfStatus === "Critical"
+                        ? "text-red-300"
+                        : pfStatus === "Low"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {pfStatus}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-2 grid shrink-0 grid-cols-3 overflow-hidden rounded-lg border border-[#174575] bg-[#061737]/70">
+                <div className="border-r border-[#174575] px-2 py-2 text-center">
+                  <p className="text-[8px] uppercase text-slate-500">
+                    Poor
+                  </p>
+
+                  <p className="mt-1 text-[10px] font-semibold text-red-300">
+                    &lt; 0.85
+                  </p>
                 </div>
 
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Minimum</p>
-                  <h4 className="text-[13px] font-semibold text-slate-400">
-                    {Math.min(...graphValues)}%
-                  </h4>
+                <div className="border-r border-[#174575] px-2 py-2 text-center">
+                  <p className="text-[8px] uppercase text-slate-500">
+                    Low
+                  </p>
+
+                  <p className="mt-1 text-[10px] font-semibold text-amber-300">
+                    0.85–0.94
+                  </p>
                 </div>
 
-                <div className="bg-[#06184A]/70 border border-white/10 p-4 shadow-none">
-                  <p className="text-[14px] font-medium">Status</p>
-                  <h4 className="text-[13px] font-semibold text-emerald-200">
-                    {data.status}
-                  </h4>
+                <div className="px-2 py-2 text-center">
+                  <p className="text-[8px] uppercase text-slate-500">
+                    Good
+                  </p>
+
+                  <p className="mt-1 text-[10px] font-semibold text-emerald-300">
+                    ≥ 0.95
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/7 border border-white/10 p-5 shadow-none">
-              <h3 className="text-[15px] font-semibold tracking-wide mb-6">
-                Live Raising Main Status
-              </h3>
+            {/* AMPS ANALYTICS */}
+            <div className="relative col-span-3 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
 
-              <div className="flex justify-center">
-                <div className="relative h-48 w-48 rounded-full border-[18px] border-white/10 flex items-center justify-center shadow-none">
-                  <div className="absolute inset-[-18px] rounded-full border-[18px] border-cyan-400 border-r-transparent border-b-transparent rotate-45" />
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Amps Analytics
+                </h3>
 
-                  <div className="text-center">
-                    <span className="block text-[30px] font-normal">
-                      {data.load}%
-                    </span>
+                <div className="text-right">
+                  <p className="text-[clamp(17px,2.2vh,21px)] font-semibold leading-none text-white">
+                    {currentNumber} A
+                  </p>
 
-                    <span className="text-[13px] font-medium text-cyan-300 tracking-wide">
-                      RM Load
-                    </span>
-                  </div>
+                  <span
+                    className={`mt-1 inline-block text-[9px] font-bold uppercase ${
+                      currentStatus === "Critical"
+                        ? "text-red-300"
+                        : currentStatus === "High"
+                          ? "text-amber-300"
+                          : "text-emerald-300"
+                    }`}
+                  >
+                    {currentStatus}
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-8 space-y-5">
-                {[
-                  ["Load", data.load],
-                  ["Power Factor", Number(data.pf) * 100],
-                  ["RM Health", data.health],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="flex justify-between text-[12px] mb-2">
-                      <span className="text-blue-100 font-medium">
-                        {label}
-                      </span>
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <BarChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
+                    />
 
-                      <span className="text-cyan-300 font-semibold text-[12px]">
-                        {Math.round(value)}%
-                      </span>
-                    </div>
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
 
-                    <div className="h-2 bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full bg-cyan-400 shadow-none"
-                        style={{ width: `${Math.min(value, 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={280}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "High",
+                        position: "insideTopRight",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={350}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Critical",
+                        position: "insideTopRight",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={tooltipStyle}
+                      formatter={(value) => [
+                        `${Math.round(value)} A`,
+                        "Current",
+                      ]}
+                    />
+
+                    <Bar
+                      dataKey="amps"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={30}
+                      isAnimationActive={false}
+                    >
+                      {graphValues.map((item, index) => (
+                        <Cell
+                          key={`${item.time}-${index}`}
+                          fill={
+                            item.amps >= 350
+                              ? "#F87171"
+                              : item.amps >= 280
+                                ? "#FBBF24"
+                                : "#22D3EE"
+                          }
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
 
-             
+              <div className="pointer-events-none absolute bottom-3 right-4 rounded-lg border border-amber-400/20 bg-[#061737]/90 px-3 py-2">
+                <p className="text-[8px] uppercase tracking-[0.08em] text-slate-500">
+                  Average
+                </p>
+
+                <p className="mt-1 text-[clamp(11px,1.5vh,14px)] font-semibold text-amber-300">
+                  {avg} A
+                </p>
+              </div>
+            </div>
+
+            {/* VOLTAGE ANALYTICS */}
+            <div className="relative col-span-3 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent" />
+
+              <div className="flex shrink-0 items-start justify-between gap-3">
+                <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+                  Voltage Analytics
+                </h3>
+
+                <div className="text-right">
+                  <p className="text-[clamp(17px,2.2vh,21px)] font-semibold leading-none text-white">
+                    {voltageNumber} V
+                  </p>
+
+                  <span
+                    className={`mt-1 inline-block text-[9px] font-bold uppercase ${
+                      voltageStatus === "Stable"
+                        ? "text-emerald-300"
+                        : voltageStatus === "Low"
+                          ? "text-amber-300"
+                          : "text-red-300"
+                    }`}
+                  >
+                    {voltageStatus}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-3 min-h-0 flex-1">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <LineChart
+                    data={graphValues}
+                    margin={{
+                      top: 10,
+                      right: 44,
+                      left: -16,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="rgba(148,163,184,0.13)"
+                      strokeDasharray="4 4"
+                    />
+
+                    <XAxis
+                      dataKey="time"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <YAxis
+                      domain={[380, 460]}
+                      ticks={[380, 400, 420, 440, 460]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{
+                        fill: "#8EA6C4",
+                        fontSize: 8,
+                      }}
+                      tickFormatter={(value) => `${value}V`}
+                    />
+
+                    <ReferenceLine
+                      y={voltageHighLimit}
+                      stroke="#F87171"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Upper",
+                        position: "right",
+                        fill: "#F87171",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <ReferenceLine
+                      y={voltageLowLimit}
+                      stroke="#FBBF24"
+                      strokeDasharray="4 4"
+                      label={{
+                        value: "Lower",
+                        position: "right",
+                        fill: "#FBBF24",
+                        fontSize: 8,
+                      }}
+                    />
+
+                    <Tooltip
+                      contentStyle={tooltipStyle}
+                      formatter={(value) => [
+                        `${Number(value).toFixed(1)} V`,
+                        "Voltage",
+                      ]}
+                    />
+
+                    <Line
+                      type="monotone"
+                      dataKey="voltage"
+                      stroke="#60A5FA"
+                      strokeWidth={2.4}
+                      dot={{
+                        r: 3,
+                        fill: "#60A5FA",
+                        stroke: "#DBEAFE",
+                        strokeWidth: 1,
+                      }}
+                      activeDot={{
+                        r: 5,
+                      }}
+                      isAnimationActive={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         </div>
@@ -9060,23 +11682,43 @@ const BuildingsPopup = () => {
 </header>
       
 
-<section className="w-full h-[calc(100vh-72px)] bg-slate-50 px-8 pt-2 pb-4 overflow-hidden">
-  <div className="w-full h-full flex flex-col justify-start">
+<section className="relative h-[calc(100dvh-72px)] w-screen overflow-hidden bg-[#F4F8FC] px-4 py-3 lg:px-5 xl:px-6">
+  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(28,169,224,0.07),transparent_40%),linear-gradient(180deg,#F8FBFE_0%,#F1F6FB_100%)]" />
 
-    {/* ROW 1: SOURCE → FEEDERS → TRANSFORMER → LT KIOSK */}
-    <div className="grid grid-cols-[1fr_70px_1fr_70px_1fr_70px_1fr] items-center">
-     <OverviewBox
-  title="33kV Source"
-  subtitle="2 Incoming / 1 Outgoing"
-  liveStatus={{ on: true, healthy: true, off: false }}
-  onClick={() => setActivePopup("source")}
-/>
+  <div className="relative z-10 grid h-full w-full grid-rows-[24px_minmax(0,1fr)_52px_24px_minmax(0,1fr)_84px] gap-y-2">
+
+    {/* PRIMARY FLOW LABEL */}
+    <div className="flex items-center justify-between px-1">
+      <div className="flex items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#0C3A72]">
+          Primary Power Flow
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2 text-[10px] font-semibold text-[#4B6280]">
+        <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]" />
+        Live Distribution
+      </div>
+    </div>
+
+    {/* TOP FLOW */}
+    <div className="grid min-h-0 grid-cols-[minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)] items-stretch">
+      <OverviewBox
+        title="33kV Source"
+        subtitle="2 Incoming / 1 Outgoing"
+        icon={<UtilityPole className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#00D9FF"
+        onClick={() => setActivePopup("source")}
+      />
 
       <FlowLineH />
 
       <OverviewBox
         title="33kV Feeder"
         subtitle="1 Incoming / 6 Outgoing"
+        icon={<Network className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#FFD000"
         onClick={() => setActivePopup("feeders")}
       />
 
@@ -9085,6 +11727,8 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="Transformer"
         subtitle="33kV / 433V"
+        icon={<Factory className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#A56AF2"
         onClick={() => setActivePopup("transformers")}
       />
 
@@ -9093,63 +11737,150 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="LT Kiosk"
         subtitle="433V Panel"
+        icon={<PanelsTopLeft className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#00D9FF"
         onClick={() => setActivePopup("kiosks")}
       />
     </div>
 
-    {/* LT KIOSK → BUSDUCT */}
-    <div className="relative h-[42px] w-full">
-      <div className="absolute right-[12.5%] top-0 h-[21px] -translate-x-1/2">
-        <FlowLineV />
+    {/* LT KIOSK → BUSDUCT ONLY */}
+    <div className="relative min-h-0">
+      <div
+        className="absolute top-0 h-[24px] w-[3px] rounded-b-full bg-[#149ED4] shadow-[0_0_9px_rgba(20,158,212,0.32)]"
+        style={{
+          right: "calc((100% - 192px) / 8)",
+          transform: "translateX(50%)",
+        }}
+      />
+
+      <div
+        className="absolute top-[22px] h-[3px] rounded-full bg-[#149ED4] shadow-[0_0_9px_rgba(20,158,212,0.32)]"
+        style={{
+          left: "calc((100% - 192px) / 8)",
+          right: "calc((100% - 192px) / 8)",
+        }}
+      >
+        <div className="flow-pulse-horizontal" />
       </div>
 
-      <div className="absolute left-[7.5%] right-[12.5%] top-[20px]">
-        <FlowLineH />
-      </div>
+      <div
+        className="absolute bottom-0 top-[22px] w-[3px] bg-[#149ED4]"
+        style={{
+          left: "calc((100% - 192px) / 8)",
+          transform: "translateX(-50%)",
+        }}
+      />
 
-      <div className="absolute left-[7.5%] top-[20px] h-[30px] -translate-x-1/2">
-        <FlowLineV />
-      </div>
+      <div
+        className="absolute bottom-[-1px] h-0 w-0 border-x-[7px] border-t-[10px] border-x-transparent border-t-[#149ED4] drop-shadow-[0_0_6px_rgba(20,158,212,0.35)]"
+        style={{
+          left: "calc((100% - 192px) / 8)",
+          transform: "translateX(-50%)",
+        }}
+      />
     </div>
 
-  {/* ROW 2: BUSDUCT → PCC → RAISING MAIN */}
-<div className="relative mt-2">
-  <div className="grid grid-cols-[1fr_70px_1fr_70px_1fr_70px_1fr] items-center">
+    {/* SECONDARY FLOW LABEL */}
+    <div className="flex items-center gap-2 px-1">
+      <span className="h-2 w-2 rounded-full bg-fuchsia-400 shadow-[0_0_10px_rgba(232,121,249,0.7)]" />
+      <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#0C3A72]">
+        LT Distribution Flow
+      </span>
+    </div>
 
-    <OverviewBox
-      title="Busduct"
-      subtitle="LT Busduct Distribution"
-      onClick={() => setActivePopup("busbars")}
-    />
+    {/* LOWER FLOW */}
+    <div className="grid min-h-0 grid-cols-[minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)] items-stretch">
+      <OverviewBox
+        title="Busduct"
+        subtitle="LT Busduct Distribution"
+        icon={<Grid2X2 className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#FF3BA5"
+        onClick={() => setActivePopup("busbars")}
+      />
 
-    <FlowLineH />
+      <FlowLineH />
 
-    <OverviewBox
-      title="PCC"
-      subtitle="Wing 1 + Wing 2"
-      onClick={() => setActivePopup("pccMain")}
-    />
+      <OverviewBox
+        title="PCC"
+        subtitle="Wing 1 + Wing 2"
+        icon={<PanelsTopLeft className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#FF9800"
+        onClick={() => setActivePopup("pccMain")}
+      />
 
-    <FlowLineH />
+      <FlowLineH />
 
-    <OverviewBox
-      title="Raising Main"
-      subtitle="Vertical Distribution"
-      onClick={() => setActivePopup("raisingMain")}
-    />
-    
-    <FlowLineH />
+      <OverviewBox
+        title="Raising Main"
+        subtitle="Vertical Distribution"
+        icon={<TowerControl className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#1CA8FF"
+        onClick={() => setActivePopup("raisingMain")}
+      />
 
-    <OverviewBox
-      title="WING"
-      subtitle="wing A / wing B"
-      onClick={() => setActivePopup("buildings")}
-    />
-    <div />
-    <div />
+      <FlowLineH />
 
-  </div>
-</div>
+      <OverviewBox
+        title="Wing"
+        subtitle="Wing A / Wing B"
+        icon={<Building2 className="h-9 w-9" strokeWidth={1.8} />}
+        accent="#34E978"
+        onClick={() => setActivePopup("buildings")}
+      />
+    </div>
+
+    {/* STATUS BAR */}
+    <div className="grid min-h-0 grid-cols-[1.12fr_1fr_1fr_1fr_1fr_0.95fr] overflow-hidden rounded-[12px] border border-[#C8D8EA] bg-white shadow-[0_10px_28px_rgba(13,52,104,0.10)]">
+      <div className="flex min-w-0 items-center gap-3 px-4">
+        <ShieldCheck className="h-8 w-8 shrink-0 text-[#16B45B]" strokeWidth={1.8} />
+        <div className="min-w-0">
+          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">System Status</p>
+          <p className="mt-1 truncate text-[12px] font-medium text-[#16A34A]">All Systems Normal</p>
+        </div>
+      </div>
+
+      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
+        <Bell className="h-8 w-8 shrink-0 text-[#FF3737]" fill="currentColor" strokeWidth={1.5} />
+        <div>
+          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">Active Alarms</p>
+          <p className="mt-1 text-[15px] font-semibold text-[#FF2727]">02</p>
+        </div>
+      </div>
+
+      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
+        <TriangleAlert className="h-8 w-8 shrink-0 text-[#F4A900]" strokeWidth={1.8} />
+        <div>
+          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">Unacknowledged</p>
+          <p className="mt-1 text-[15px] font-semibold text-[#F4A900]">01</p>
+        </div>
+      </div>
+
+      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
+        <Zap className="h-8 w-8 shrink-0 text-[#0878F5]" strokeWidth={1.8} />
+        <div>
+          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">Energy Today</p>
+          <p className="mt-1 whitespace-nowrap text-[13px] font-semibold text-[#0878F5]">1524.8 MWh</p>
+        </div>
+      </div>
+
+      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
+        <Leaf className="h-8 w-8 shrink-0 text-[#36AE47]" fill="currentColor" strokeWidth={1.2} />
+        <div>
+          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">
+            CO<sub>2</sub> Savings
+          </p>
+          <p className="mt-1 whitespace-nowrap text-[13px] font-semibold text-[#21A63B]">12.6 Ton</p>
+        </div>
+      </div>
+
+      <div className="flex min-w-0 items-center justify-center gap-3 border-l border-[#B9CAE0] px-3">
+        <CloudSun className="h-8 w-8 shrink-0 text-[#123B8C]" strokeWidth={1.7} />
+        <div>
+          <p className="text-[18px] font-semibold leading-none text-[#102653]">27°C</p>
+          <p className="mt-1.5 whitespace-nowrap text-[10px] font-medium text-[#102653]">Partly Cloudy</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -9167,18 +11898,12 @@ const BuildingsPopup = () => {
 {activePopup === "overview" && <OverviewPopup />}
 
 
-      <footer className="bg-slate-100 border-t border-slate-200 py-6 px-6 text-slate-500 text-xs">
-        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between items-center gap-4 font-semibold">
-          <p>© 2026 Arcot Industries. All systems operational.</p>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1"><ShieldAlert className="w-4 h-4 text-emerald-600" /> System Integrity: 100%</span>
-            <span>Refreshed: Live Telemetry</span>
-          </div>
-        </div>
-      </footer>
+
 
       
     </main>
   );
 }
+
+
 

@@ -159,7 +159,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { clients } from "../data/bmsData";
-
+import prestigeLogo from "../assets/ser-removebg.png";
 export default function FloorOverview() {
   const { buildingId, floorId } = useParams();
 
@@ -237,7 +237,7 @@ export default function FloorOverview() {
 
   return (
     <main className="min-h-screen bg-white text-[#081F5C] flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-[#081F5C] border-b-4 border-[#004AAD] px-4 sm:px-6 py-4 text-white shadow-md">
+      {/* <header className="sticky top-0 z-50 bg-[#081F5C] border-b-4 border-[#004AAD] px-4 sm:px-6 py-4 text-white shadow-md">
         <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
             <Link
@@ -262,7 +262,80 @@ export default function FloorOverview() {
             REALTIME ACTIVE
           </span>
         </div>
-      </header>
+      </header> */}
+
+<header className="sticky top-0 z-[1000] h-[72px] bg-[#081F5C] border-b-4 border-[#004AAD] px-4 text-white shadow-md">
+  <div className="h-full mx-auto max-w-7xl flex justify-between items-center">
+
+    {/* LEFT */}
+    <Link
+      to="/"
+      className="ml-1 flex items-center cursor-pointer no-underline"
+    >
+      <div className="flex flex-col justify-center">
+        <h1 className="text-[26px] font-semibold tracking-[0.18em] text-white leading-none uppercase">
+          ARCOT
+          <span className="text-[#67E8F9] ml-2">
+            IIoT 1.0
+          </span>
+        </h1>
+
+        <span className="mt-1 text-[9px] uppercase tracking-[0.35em] text-blue-300 font-medium">
+          Industrial Internet of Things
+        </span>
+      </div>
+
+      <div className="h-[58px] border-l border-[#004AAD] ml-5" />
+
+      <img
+        src={prestigeLogo}
+        alt="Prestige Group"
+        className="h-[60px] w-[110px] object-cover"
+      />
+    </Link>
+
+    {/* CENTER */}
+    <div className="hidden lg:flex flex-col items-center">
+      <span className="text-[8px] uppercase tracking-[0.28em] text-cyan-300 font-bold">
+        FLOOR MONITORING CONSOLE
+      </span>
+
+      <h2 className="mt-1 text-[18px] font-black uppercase tracking-[0.08em] text-white">
+        {buildingId.toUpperCase()} • FLOOR {floorId}
+      </h2>
+    </div>
+
+    {/* RIGHT */}
+    <div className="flex items-center gap-3">
+
+      <Link
+        to={`/building/${buildingId}`}
+        className="h-[32px] px-4 flex items-center bg-[#004AAD] border border-cyan-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-[#0058d6]"
+      >
+        Back
+      </Link>
+
+      <div className="flex items-center gap-2 bg-[#05143C] border border-[#004AAD] px-3 py-1.5 rounded-sm">
+        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+        <span className="text-[10px] font-bold tracking-[0.15em]">
+          REALTIME ACTIVE
+        </span>
+      </div>
+
+      <button
+        onClick={() => {
+          localStorage.removeItem("bmsLoggedIn");
+          window.location.href = "/auth";
+        }}
+        className="h-[32px] px-4 bg-red-600 border border-red-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-red-700"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</header>
 
       <section className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="bg-slate-50 border border-slate-200 p-5 rounded-lg mb-8">

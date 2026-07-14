@@ -294,7 +294,7 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Fan, Lightbulb, Gauge, Cpu, Activity } from "lucide-react";
 import { buildings, systemSummary } from "../data/bmsData";
-
+import prestigeLogo from "../assets/ser-removebg.png";
 function MetricRow({ label, value }) {
   return (
     <div className="flex items-center justify-between gap-3 border-b border-blue-900/20 py-1.5 text-[11px]">
@@ -345,7 +345,9 @@ export default function BuildingOverview() {
 
   if (!building) {
     return (
+      
       <main className="min-h-screen bg-white px-6 py-10 flex flex-col justify-center items-center">
+       
         <div className="bg-[#081F5C] border-2 border-[#004AAD] p-8 text-center text-white max-w-md shadow-2xl rounded">
           <h2 className="text-2xl font-black mb-2">
             Building Console Offline
@@ -376,7 +378,7 @@ export default function BuildingOverview() {
   return (
     <main className="min-h-screen bg-white text-[#081F5C] flex flex-col font-sans">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#081F5C] border-b-4 border-[#004AAD] px-5 py-3 text-white shadow-md">
+      {/* <header className="sticky top-0 z-50 bg-[#081F5C] border-b-4 border-[#004AAD] px-5 py-3 text-white shadow-md">
         <div className="mx-auto max-w-[1500px] flex flex-col sm:flex-row items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
             <Link
@@ -405,7 +407,70 @@ export default function BuildingOverview() {
             </span>
           </div>
         </div>
-      </header>
+      </header> */}
+
+      {/* Header */}
+<header className="sticky top-0 z-[1000] h-[72px] bg-[#081F5C] border-b-4 border-[#004AAD] px-4 text-white shadow-md">
+  <div className="h-full mx-auto max-w-7xl flex justify-between items-center">
+
+    {/* LEFT */}
+    <Link
+      to="/"
+      className="ml-1 flex items-center cursor-pointer no-underline"
+    >
+      <div className="flex flex-col justify-center">
+        <h1 className="text-[26px] font-semibold tracking-[0.18em] text-white leading-none uppercase">
+          ARCOT
+          <span className="text-[#67E8F9] ml-2">
+            IIoT 1.0
+          </span>
+        </h1>
+
+        <span className="mt-1 text-[9px] uppercase tracking-[0.35em] text-blue-300 font-medium">
+          Industrial Internet of Things
+        </span>
+      </div>
+
+      <div className="h-[58px] border-l border-[#004AAD] ml-5"></div>
+
+      <img
+        src={prestigeLogo}
+        alt="Prestige Group"
+        className="h-[60px] w-[110px] object-cover"
+      />
+    </Link>
+
+    {/* RIGHT */}
+    <div className="flex items-center gap-3">
+
+      <button
+        onClick={() => window.history.back()}
+        className="h-[32px] px-4 bg-[#004AAD] border border-cyan-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-[#0058d6]"
+      >
+        Back
+      </button>
+
+      <div className="flex items-center gap-2 bg-[#05143C] border border-[#004AAD] px-3 py-1.5 rounded-sm">
+        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+        <span className="text-[10px] font-bold tracking-[0.15em]">
+          BLE CONNECTED
+        </span>
+      </div>
+
+      <button
+        onClick={() => {
+          localStorage.removeItem("bmsLoggedIn");
+          window.location.href = "/auth";
+        }}
+        className="h-[32px] px-4 bg-red-600 border border-red-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-red-700"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</header>
 
       {/* Main Layout */}
       <section className="flex-1 w-full max-w-[1500px] mx-auto px-4 py-5">
