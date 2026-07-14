@@ -5025,14 +5025,14 @@
 
 
 
-
-
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Activity,
   ArrowLeft,
   Bell,
+  Bluetooth,
+  BluetoothOff,
   Building2,
   CloudSun,
   Factory,
@@ -5120,24 +5120,24 @@ const OverviewBox = ({
       label: "ON",
       value: liveStatus.on ? "ACTIVE" : "INACTIVE",
       active: liveStatus.on,
-      dot: "#27F0A0",
-      text: "#27F0A0",
+      dot: "#2CE8A3",
+      text: "#2CE8A3",
     },
     {
       key: "healthy",
       label: "HEALTHY",
       value: liveStatus.healthy ? "NORMAL" : "WARNING",
       active: liveStatus.healthy,
-      dot: "#FFD400",
-      text: "#FFD400",
+      dot: "#FFD33D",
+      text: "#FFD33D",
     },
     {
       key: "off",
       label: "OFF",
       value: liveStatus.off ? "STOPPED" : "NO FAULT",
       active: liveStatus.off,
-      dot: "#7186A5",
-      text: "#D2D9E5",
+      dot: "#6F84A2",
+      text: "#D3DCE9",
     },
   ];
 
@@ -5147,78 +5147,62 @@ const OverviewBox = ({
       onClick={onClick}
       className="
         group relative z-10 flex h-full min-h-0 w-full flex-col overflow-hidden
-        rounded-[18px] border border-[#0E66B7]
-        bg-[radial-gradient(circle_at_50%_-6%,rgba(39,135,232,0.30),transparent_46%),linear-gradient(155deg,#0A356F_0%,#052250_48%,#03163A_100%)]
+        rounded-[16px] border border-[#1B5F9F]
+        bg-[linear-gradient(155deg,#0A326B_0%,#06224F_52%,#04163A_100%)]
         text-left
-        shadow-[0_20px_44px_rgba(7,45,102,0.18),0_8px_18px_rgba(3,31,73,0.12),inset_0_1px_0_rgba(255,255,255,0.11)]
+        shadow-[0_14px_30px_rgba(3,42,98,0.14),inset_0_1px_0_rgba(255,255,255,0.08)]
         transition-all duration-300
         hover:-translate-y-1
-        hover:border-[#28A7F4]
-        hover:shadow-[0_24px_50px_rgba(6,56,128,0.25),0_8px_18px_rgba(3,31,73,0.14)]
+        hover:border-[#2D9BE8]
+        hover:shadow-[0_18px_38px_rgba(3,49,113,0.20)]
+        focus:outline-none focus:ring-2 focus:ring-cyan-400/40
       "
     >
-      <div
-        className="pointer-events-none absolute inset-x-8 top-0 h-[2px] rounded-full"
-        style={{
-          background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
-          boxShadow: `0 0 14px ${accent}70`,
-        }}
-      />
 
-      <div
-        className="pointer-events-none absolute left-1/2 top-[-64px] h-40 w-40 -translate-x-1/2 rounded-full opacity-[0.15] blur-3xl"
-        style={{ backgroundColor: accent }}
-      />
-
-      <div className="relative flex min-h-0 flex-1 flex-col items-center justify-center px-4 py-3 text-center xl:px-5 xl:py-4">
+      <div className="relative flex min-h-0 flex-1 flex-col items-center justify-center px-4 py-1 text-center">
         <div
-          className="mb-3 flex h-[clamp(54px,7vh,72px)] w-[clamp(54px,7vh,72px)] shrink-0 items-center justify-center rounded-full border-2 bg-[#031A43]"
+          className="mb-1.5 flex h-[clamp(44px,5vh,54px)] w-[clamp(44px,5vh,54px)] shrink-0 items-center justify-center rounded-[10px] border-2 bg-[#031A43]"
           style={{
             color: accent,
             borderColor: accent,
-            boxShadow: `0 0 0 7px ${accent}12, 0 0 28px ${accent}28`,
           }}
         >
           {icon}
         </div>
 
-        <h4 className="max-w-full truncate text-[clamp(16px,1.35vw,21px)] font-black uppercase leading-tight tracking-[-0.025em] text-white">
+        <h4 className="max-w-full truncate text-[clamp(15px,1.28vw,20px)] font-black uppercase leading-tight tracking-[-0.025em] text-white">
           {title}
         </h4>
 
-        <span className="mt-1.5 block max-w-full truncate text-[clamp(10px,0.9vw,13px)] font-semibold text-[#D7E4F5]">
+        <p className="mt-1 max-w-full truncate text-[clamp(9px,0.78vw,12px)] font-semibold text-[#D7E4F5]">
           {subtitle}
-        </span>
+        </p>
       </div>
 
-      <div className="grid h-[clamp(68px,9vh,88px)] shrink-0 grid-cols-3 border-t border-[#1267B7] bg-[#03183F]/95">
+      <div className="grid h-[clamp(50px,5.8vh,58px)] shrink-0 grid-cols-3 border-t border-[#1267B7] bg-[#03183F]/96">
         {conditions.map((item, index) => (
           <div
             key={item.key}
-            className={`flex flex-col items-center justify-center px-1 ${
-              index !== conditions.length - 1
-                ? "border-r border-[#1267B7]"
-                : ""
-            }`}
+            className="flex flex-col items-center justify-center px-1"
           >
             <div
-              className="flex items-center gap-2 text-[11px] font-black"
+              className="flex items-center gap-1.5 text-[9px] font-black xl:text-[10px]"
               style={{ color: item.active ? item.text : "#7186A5" }}
             >
               <span
-                className="h-3 w-3 rounded-full"
+                className="h-2 w-2 rounded-full"
                 style={{
                   backgroundColor: item.active ? item.dot : "#7186A5",
                   boxShadow:
                     item.active && item.key !== "off"
-                      ? `0 0 12px ${item.dot}90`
+                      ? `0 0 9px ${item.dot}80`
                       : "none",
                 }}
               />
               {item.label}
             </div>
 
-            <span className="mt-2 text-[9px] font-extrabold tracking-[0.04em] text-white">
+            <span className="mt-1 text-[8px] font-bold tracking-[0.04em] text-white">
               {item.value}
             </span>
           </div>
@@ -5229,15 +5213,10 @@ const OverviewBox = ({
 };
 
 const FlowLineH = () => (
-  <div className="relative flex h-full w-full items-center justify-center px-1">
-    <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[#149ED4] shadow-[0_0_10px_rgba(20,158,212,0.30)]" />
-
-    <div className="absolute left-[8%] right-[18%] top-1/2 h-[3px] -translate-y-1/2 overflow-hidden">
-      <div className="flow-pulse-horizontal" />
-    </div>
-
-    <div className="absolute right-[2px] top-1/2 -translate-y-1/2">
-      <div className="h-0 w-0 border-y-[7px] border-l-[10px] border-y-transparent border-l-[#149ED4] drop-shadow-[0_0_6px_rgba(20,158,212,0.45)]" />
+  <div className="relative flex h-full w-full items-center">
+    <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[#17A8DB] shadow-[0_0_8px_rgba(23,168,219,0.25)]" />
+    <div className="absolute right-0 top-1/2 -translate-y-1/2">
+      <div className="h-0 w-0 border-y-[6px] border-l-[9px] border-y-transparent border-l-[#17A8DB]" />
     </div>
   </div>
 );
@@ -6400,115 +6379,334 @@ const FeederAnalyticsView = ({ type, data, onBack }) => {
     />
   );
 };
+const FeederMonitorBox = ({
+  id,
+  title,
+  subtitle,
+  transformer,
+  openedFeeders,
+  setOpenedFeeders,
+  onClick,
+  monitorData,
+}) => {
+  const showMonitor = openedFeeders.includes(id);
+
+  const handleHover = () => {
+    setOpenedFeeders((previous) => {
+      if (previous.includes(id)) return previous;
+      return [...previous, id];
+    });
+  };
+
+  const handleClick = (event) => {
+    event.stopPropagation();
+    onClick?.();
+  };
+
+  return (
+    <div
+      onMouseEnter={handleHover}
+      onClick={handleClick}
+      className="
+        relative h-[175px] w-full cursor-pointer overflow-hidden
+        rounded border-2 border-[#004AAD]
+        bg-[#081F5C] text-white
+        shadow-md panel-active-glow
+      "
+    >
+      {!showMonitor ? (
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-3 text-center">
+          <span className="text-[9px] font-black uppercase tracking-wider text-blue-300">
+            Outgoing Feeder
+          </span>
+
+          <strong className="mt-2 text-[18px] font-black tracking-widest">
+            {title}
+          </strong>
+
+          <span className="mt-1 text-[8px] font-bold uppercase text-blue-300">
+            {subtitle}
+          </span>
+
+          <span className="mt-2 text-[9px] font-semibold text-slate-300">
+            To {transformer}
+          </span>
+
+          <div className="mt-3 flex items-center gap-1.5 text-[9px] font-bold uppercase text-emerald-400">
+            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            Active
+          </div>
+        </div>
+      ) : (
+        <div className="absolute inset-0 z-20 bg-[#081F5C] px-4 py-3">
+          <div className="mb-2 border-b border-[#2B5DA8] pb-2 text-center">
+            <h4 className="text-[12px] font-black uppercase leading-none tracking-[0.12em] text-white">
+              {title}
+            </h4>
+
+            <span className="mt-1 block text-[7px] font-black uppercase tracking-[0.15em] text-blue-300">
+              Monitoring
+            </span>
+          </div>
+
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-[7px] font-bold uppercase text-blue-300">
+              {subtitle}
+            </span>
+
+            <span className="flex items-center gap-1 text-[7px] font-bold uppercase text-emerald-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Live
+            </span>
+          </div>
+
+          <div className="space-y-[4px] px-2">
+            {monitorData.map(([label, value]) => (
+              <div
+                key={label}
+                className="flex items-center justify-between px-1"
+              >
+                <span className="text-[10px] font-medium text-slate-300">
+                  {label}
+                </span>
+
+                <span className="text-[11px] font-bold tabular-nums text-white">
+                  {value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const IncomingFeederMonitorBox = ({
+  opened,
+  setOpened,
+  onClick,
+}) => {
+  const monitorData = [
+    ["kWh", "1,480"],
+    ["kVh", "1,360"],
+    ["PF", "0.98"],
+    ["AMPS", "430 A"],
+    ["Voltage", "33.0 kV"],
+  ];
+
+  const handleClick = (event) => {
+    event.stopPropagation();
+    onClick?.();
+  };
+
+  return (
+    <div
+      onMouseEnter={() => setOpened(true)}
+      onMouseLeave={() => setOpened(false)}
+      onClick={handleClick}
+      className="
+        relative h-[175px] w-full max-w-[250px] cursor-pointer overflow-hidden
+        rounded border-2 border-[#004AAD]
+        bg-[#081F5C] text-white
+        shadow-md panel-active-glow
+      "
+    >
+      {!opened ? (
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-3 text-center">
+          <span className="text-[9px] font-black uppercase tracking-wider text-blue-300">
+            Incoming Feeder
+          </span>
+
+          <strong className="mt-2 text-[18px] font-black tracking-widest">
+            INCOMING FEEDER 1
+          </strong>
+
+          <span className="mt-1 text-[8px] font-bold uppercase text-blue-300">
+            33kV Supply
+          </span>
+
+          <span className="mt-2 text-[9px] font-semibold text-slate-300">
+            Main Incoming
+          </span>
+
+          <div className="mt-3 flex items-center gap-1.5 text-[9px] font-bold uppercase text-emerald-400">
+            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            Active
+          </div>
+        </div>
+      ) : (
+        <div className="absolute inset-0 z-20 bg-[#081F5C] px-4 py-3">
+          <div className="mb-2 border-b border-[#2B5DA8] pb-2 text-center">
+            <h4 className="text-[12px] font-black uppercase leading-none tracking-[0.12em] text-white">
+              INCOMING FEEDER 1
+            </h4>
+
+            <span className="mt-1 block text-[7px] font-black uppercase tracking-[0.15em] text-blue-300">
+              Monitoring
+            </span>
+          </div>
+
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-[7px] font-bold uppercase text-blue-300">
+              33kV Supply
+            </span>
+
+            <span className="flex items-center gap-1 text-[7px] font-bold uppercase text-emerald-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Live
+            </span>
+          </div>
+
+          <div className="space-y-[4px] px-2">
+            {monitorData.map(([label, value]) => (
+              <div
+                key={label}
+                className="flex items-center justify-between px-1"
+              >
+                <span className="text-[10px] font-medium text-slate-300">
+                  {label}
+                </span>
+
+                <span className="text-[11px] font-bold tabular-nums text-white">
+                  {value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const FeederPopup = () => {
+  const [openedFeeders, setOpenedFeeders] = React.useState([]);
   const [activeFeederAnalytics, setActiveFeederAnalytics] =
     React.useState(null);
+
+  const incomingFeeder = {
+    id: "incoming-feeder-1",
+    title: "INCOMING FEEDER 1",
+    subtitle: "33kV SUPPLY",
+    transformer: "MAIN INCOMING",
+
+    monitorData: [
+      ["kWh", "1,480"],
+      ["kVh", "1,360"],
+      ["PF", "0.98"],
+      ["AMPS", "430 A"],
+      ["Voltage", "33.0 kV"],
+    ],
+  };
+
+  const feederCards = outgoing.map((item, index) => ({
+    id: `feeder-${index + 1}`,
+    title: item.name,
+    subtitle: "33kV FEEDER",
+    transformer: item.transformer,
+
+    monitorData: [
+      ["kWh", `${980 + index * 40}`],
+      ["kVh", `${910 + index * 35}`],
+      ["PF", index % 2 === 0 ? "0.98" : "0.97"],
+      ["AMPS", `${280 + index * 15} A`],
+      ["Voltage", "33.0 kV"],
+    ],
+  }));
 
   return (
     <>
       <PopupShell title="33kV Feeder Panel">
-        <div className="w-full max-w-5xl mx-auto my-4 bg-[#081F5C] border-2 border-[#004AAD] p-6 text-white shadow-lg relative panel-active-glow rounded-md">
-          <div className="text-center pb-4 mb-4 border-b border-blue-900/60">
-            <span className="text-[10px] font-black text-blue-300 tracking-[0.2em] block uppercase">
-              FEEDER SWITCHGEAR PANEL
-            </span>
-
-            <h3 className="text-xl font-black text-white tracking-widest mt-1">
-              33kV FEEDER PANEL
-            </h3>
-          </div>
-
-          <div className="mb-4">
-            <div
-              onClick={() =>
-                setActiveFeederAnalytics("incomingFeederAnalytics")
-              }
-              className="max-w-xs mx-auto bg-[#05143C] border border-[#004AAD] p-4 text-center rounded relative cursor-pointer hover:bg-[#07205A] transition"
-            >
-              <span className="text-[9px] font-black text-blue-300 tracking-wider block uppercase">
-                INCOMING FEEDER
+        {/* MAIN FEEDER PANEL */}
+        <div className="my-3 flex w-full justify-center">
+          <div
+            className="
+              h-32 w-[90%] max-w-xl
+              rounded-md border-2 border-[#004AAD]
+              bg-[#081F5C] text-white shadow-lg
+              md:w-[70%] lg:w-[45%]
+            "
+          >
+            <div className="flex h-full flex-col items-center justify-center text-center">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300">
+                Feeder Switchgear Panel
               </span>
 
-              <strong className="text-sm font-black text-white mt-1 block">
-                INCOMING FEEDER 1
-              </strong>
-
-              <div className="mt-2 flex items-center justify-center gap-1.5 text-emerald-400 text-xs font-bold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                CONNECTED / ACTIVE
-              </div>
+              <h3 className="mt-1 text-lg font-black tracking-wider text-white">
+                33kV FEEDER PANEL
+              </h3>
             </div>
           </div>
+        </div>
 
-          <div className="w-full h-12 relative my-2">
-            <svg
-              className="w-full h-full overflow-visible"
-              viewBox="0 0 960 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <marker
-                  id="arrow-cyan-small-popup"
-                  viewBox="0 0 10 10"
-                  refX="6"
-                  refY="5"
-                  markerWidth="5"
-                  markerHeight="5"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
-                </marker>
-              </defs>
+        {/* MAIN PANEL → INCOMING */}
+        <div className="flex h-9 justify-center">
+          <div className="flow-line-vertical h-full">
+            <div className="flow-pulse-vertical" />
+          </div>
+        </div>
 
-              <path
-                d="M 480 0 V 16 H 80 V 48 M 80 16 H 240 V 48 M 240 16 H 400 V 48 M 400 16 H 560 V 48 M 560 16 H 720 V 48 M 720 16 H 880 V 48"
-                stroke="#004AAD"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+        {/* INCOMING FEEDER — SAME CARD AS OG */}
+        <div className="flex justify-center">
+          <div className="w-full max-w-[210px]">
+            <FeederMonitorBox
+              id={incomingFeeder.id}
+              title={incomingFeeder.title}
+              subtitle={incomingFeeder.subtitle}
+              transformer={incomingFeeder.transformer}
+              monitorData={incomingFeeder.monitorData}
+              openedFeeders={openedFeeders}
+              setOpenedFeeders={setOpenedFeeders}
+              onClick={() =>
+                setActiveFeederAnalytics(
+                  "incomingFeederAnalytics"
+                )
+              }
+            />
+          </div>
+        </div>
 
-              {[80, 240, 400, 560, 720, 880].map((x, i) => (
-                <path
-                  key={x}
-                  d={`M 480 0 V 16 H ${x} V 48`}
-                  stroke="#00E5FF"
-                  strokeWidth="2.5"
-                  className={i < 3 ? "flow-path-left" : "flow-path-right"}
-                  markerEnd="url(#arrow-cyan-small-popup)"
-                />
-              ))}
-            </svg>
+        {/* INCOMING → BUS */}
+        <div className="flex h-9 justify-center">
+          <div className="flow-line-vertical h-full">
+            <div className="flow-pulse-vertical" />
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-7xl px-4">
+          {/* HORIZONTAL BUS */}
+          <div className="relative mx-auto h-[2px] w-[84%] overflow-hidden bg-cyan-400">
+            <div className="flow-pulse-horizontal" />
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6 mt-2">
-            {outgoing.map((item, index) => (
+          {/* CONNECTORS AND OUTGOING FEEDERS */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {feederCards.map((feeder, index) => (
               <div
-                key={item.name}
-                onClick={() =>
-                  setActiveFeederAnalytics(`og${index + 1}Analytics`)
-                }
-                className="bg-[#05143C] border border-[#004AAD] p-4 text-center text-white shadow rounded cursor-pointer hover:bg-[#07205A] transition"
+                key={feeder.id}
+                className="flex min-w-0 flex-col items-center"
               >
-                <span className="text-[9px] font-bold text-blue-300 block">
-                  FEEDER
-                </span>
-
-                <strong className="text-lg font-black block tracking-wider mt-1">
-                  {item.name}
-                </strong>
-
-                <p className="text-[10px] text-blue-100 font-bold mt-1">
-                  To {item.transformer}
-                </p>
-
-                <div className="mt-3 flex items-center justify-center gap-1.5 text-emerald-400">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_4px_#34d399]" />
-
-                  <span className="text-xs font-black">ON</span>
+                <div className="flex h-8 justify-center">
+                  <div className="flow-line-vertical h-full">
+                    <div className="flow-pulse-vertical" />
+                  </div>
                 </div>
+
+                <FeederMonitorBox
+                  id={feeder.id}
+                  title={feeder.title}
+                  subtitle={feeder.subtitle}
+                  transformer={feeder.transformer}
+                  monitorData={feeder.monitorData}
+                  openedFeeders={openedFeeders}
+                  setOpenedFeeders={setOpenedFeeders}
+                  onClick={() =>
+                    setActiveFeederAnalytics(
+                      `og${index + 1}Analytics`
+                    )
+                  }
+                />
               </div>
             ))}
           </div>
@@ -11617,97 +11815,84 @@ const BuildingsPopup = () => {
     <main className="min-h-screen bg-white text-[#081F5C] flex flex-col font-sans">
   
 
-<header className="sticky top-0 z-[1000] h-[72px] bg-[#081F5C] border-b-4 border-[#004AAD] px-4 text-white shadow-md">
-  <div className="h-full mx-auto max-w-7xl flex justify-between items-center">
+<header className="sticky top-0 z-[1000] h-[72px] border-b-[3px] border-[#0B64B8] bg-[linear-gradient(90deg,#08285F_0%,#061D4B_48%,#04163B_100%)] px-5 text-white shadow-[0_8px_24px_rgba(2,24,59,0.22)]">
+  <div className="flex h-full w-full items-center justify-between">
+    {/* BRAND */}
+    <div
+      onClick={() => setActivePopup(null)}
+      className="flex min-w-0 cursor-pointer items-center"
+    >
+      <div className="flex min-w-0 flex-col justify-center">
+        <h1 className="truncate text-[clamp(20px,2vw,28px)] font-semibold uppercase leading-none tracking-[0.17em] text-white">
+          ARCOT
+          <span className="ml-2 text-[#43D6F5]">IIoT 1.0</span>
+        </h1>
 
+        <span className="mt-1 truncate text-[8px] font-medium uppercase tracking-[0.34em] text-[#B7D4F3] xl:text-[9px]">
+          Industrial Internet of Things
+        </span>
+      </div>
 
-    {/* LEFT */}
-<div
-  onClick={() => setActivePopup(null)}
-  className="ml-1 flex items-center cursor-pointer"
->
-  <div className="flex flex-col justify-center">
-    <h1 className="text-[26px] font-semibold tracking-[0.18em] text-white leading-none uppercase">
-      ARCOT
-      <span className="text-[#67E8F9] ml-2">
-        IIoT 1.0
-      </span>
-    </h1>
+      <div className="mx-5 h-[50px] border-l border-[#1B65AD]" />
 
-    <span className="mt-1 text-[9px] uppercase tracking-[0.35em] text-blue-300 font-medium">
-      Industrial Internet of Things
-    </span>
-  </div>
+      <img
+        src={prestigeLogo}
+        alt="Prestige Group"
+        className="h-[54px] w-[96px] object-contain"
+      />
+    </div>
 
-  <div className="h-[58px] border-l border-[#004AAD] ml-5"></div>
+    {/* ACTIONS — SAME HEIGHT AND SAME WIDTH */}
+    <div className="grid shrink-0 grid-cols-4 gap-3">
+      <button
+        type="button"
+        onClick={() => navigate("/overview")}
+        className="flex h-[44px] w-[168px] items-center justify-center rounded-[4px] border border-[#1CC8F0] bg-[#0750A3] px-4 text-[11px] font-black uppercase tracking-[0.13em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_5px_12px_rgba(0,0,0,0.16)] transition hover:bg-[#0862C4]"
+      >
+        Overview
+      </button>
 
-  <img
-  src={prestigeLogo}
-  alt="Prestige Group"
-  className="h-[60px] w-[110px] object-cover"
-/>
- 
+      <div className="flex h-[44px] w-[168px] items-center justify-center gap-2 rounded-[4px] border border-[#176BB7] bg-[#04183D] px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]">
+        <Bluetooth className="h-4 w-4 text-emerald-400" strokeWidth={2.2} />
+        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_9px_rgba(52,211,153,0.85)]" />
+        <span className="whitespace-nowrap text-[10px] font-black uppercase tracking-[0.1em]">
+          BLE Connected
+        </span>
+      </div>
 
-</div>
+      <div className="flex h-[44px] w-[168px] items-center justify-center gap-2 rounded-[4px] border border-[#A64040] bg-[#2A1320] px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+        <BluetoothOff className="h-4 w-4 text-red-400" strokeWidth={2.2} />
+        <span className="h-2.5 w-2.5 rounded-full bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.60)]" />
+        <span className="whitespace-nowrap text-[10px] font-black uppercase tracking-[0.08em] text-red-100">
+          BLE Not Connected
+        </span>
+      </div>
 
-
-
-    {/* RIGHT */}
-  <div className="flex items-center gap-3">
-  <button
-    onClick={() => navigate("/overview")}
-    className="h-[32px] px-4 bg-[#004AAD] border border-cyan-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-[#0058d6]"
-  >
-    Overview
-  </button>
-
-  <div className="flex items-center gap-2 bg-[#05143C] border border-[#004AAD] px-3 py-1.5 rounded-sm">
-    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-    <span className="text-[10px] font-bold tracking-[0.15em]">
-      BLE CONNECTED
-    </span>
-  </div>
-
-  <button
-    onClick={() => {
-      localStorage.removeItem("bmsLoggedIn");
-      navigate("/auth");
-    }}
-    className="h-[32px] px-4 bg-red-600 border border-red-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-red-700"
-  >
-    Logout
-  </button>
-</div>
+      <button
+        type="button"
+        onClick={() => {
+          localStorage.removeItem("bmsLoggedIn");
+          navigate("/auth");
+        }}
+        className="flex h-[44px] w-[168px] items-center justify-center rounded-[4px] border border-[#FF625D] bg-[#CF2222] px-4 text-[11px] font-black uppercase tracking-[0.13em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_5px_12px_rgba(101,0,0,0.20)] transition hover:bg-[#E12B2B]"
+      >
+        Logout
+      </button>
+    </div>
   </div>
 </header>
       
 
-<section className="relative h-[calc(100dvh-72px)] w-screen overflow-hidden bg-[#F4F8FC] px-4 py-3 lg:px-5 xl:px-6">
-  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(28,169,224,0.07),transparent_40%),linear-gradient(180deg,#F8FBFE_0%,#F1F6FB_100%)]" />
+<section className="relative h-[calc(100dvh-72px)] w-full overflow-hidden bg-[#F4F8FC] px-3 py-2.5">
+  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(23,168,219,0.06),transparent_42%),linear-gradient(180deg,#F9FBFE_0%,#F1F6FB_100%)]" />
 
-  <div className="relative z-10 grid h-full w-full grid-rows-[24px_minmax(0,1fr)_52px_24px_minmax(0,1fr)_84px] gap-y-2">
-
-    {/* PRIMARY FLOW LABEL */}
-    <div className="flex items-center justify-between px-1">
-      <div className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
-        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#0C3A72]">
-          Primary Power Flow
-        </span>
-      </div>
-
-      <div className="flex items-center gap-2 text-[10px] font-semibold text-[#4B6280]">
-        <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]" />
-        Live Distribution
-      </div>
-    </div>
-
+  <div className="relative z-10 grid h-full min-h-0 w-full grid-rows-[minmax(190px,1fr)_28px_minmax(190px,1fr)_16px_78px_68px] gap-y-2">
     {/* TOP FLOW */}
-    <div className="grid min-h-0 grid-cols-[minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)] items-stretch">
+    <div className="grid h-[200px] w-full grid-cols-[minmax(0,1fr)_32px_minmax(0,1fr)_32px_minmax(0,1fr)_32px_minmax(0,1fr)] items-stretch">
       <OverviewBox
         title="33kV Source"
         subtitle="2 Incoming / 1 Outgoing"
-        icon={<UtilityPole className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<UtilityPole className="h-7 w-7" strokeWidth={1.8} />}
         accent="#00D9FF"
         onClick={() => setActivePopup("source")}
       />
@@ -11717,7 +11902,7 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="33kV Feeder"
         subtitle="1 Incoming / 6 Outgoing"
-        icon={<Network className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<Network className="h-7 w-7" strokeWidth={1.8} />}
         accent="#FFD000"
         onClick={() => setActivePopup("feeders")}
       />
@@ -11727,7 +11912,7 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="Transformer"
         subtitle="33kV / 433V"
-        icon={<Factory className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<Factory className="h-7 w-7" strokeWidth={1.8} />}
         accent="#A56AF2"
         onClick={() => setActivePopup("transformers")}
       />
@@ -11737,63 +11922,54 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="LT Kiosk"
         subtitle="433V Panel"
-        icon={<PanelsTopLeft className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<PanelsTopLeft className="h-7 w-7" strokeWidth={1.8} />}
         accent="#00D9FF"
         onClick={() => setActivePopup("kiosks")}
       />
     </div>
 
-    {/* LT KIOSK → BUSDUCT ONLY */}
-    <div className="relative min-h-0">
-      <div
-        className="absolute top-0 h-[24px] w-[3px] rounded-b-full bg-[#149ED4] shadow-[0_0_9px_rgba(20,158,212,0.32)]"
-        style={{
-          right: "calc((100% - 192px) / 8)",
-          transform: "translateX(50%)",
-        }}
-      />
-
-      <div
-        className="absolute top-[22px] h-[3px] rounded-full bg-[#149ED4] shadow-[0_0_9px_rgba(20,158,212,0.32)]"
-        style={{
-          left: "calc((100% - 192px) / 8)",
-          right: "calc((100% - 192px) / 8)",
-        }}
+    {/* LT KIOSK → BUSDUCT */}
+{/* LT KIOSK → BUSDUCT */}
+<div className="relative h-full min-h-0 w-full">
+  <svg
+    className="absolute inset-0 h-full w-full overflow-visible"
+    viewBox="0 0 1000 28"
+    preserveAspectRatio="none"
+    fill="none"
+    aria-hidden="true"
+  >
+    <defs>
+      <marker
+        id="kioskToBusductPremiumArrow"
+        viewBox="0 0 10 10"
+        refX="8"
+        refY="5"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto"
       >
-        <div className="flow-pulse-horizontal" />
-      </div>
+        <path d="M0 1 L9 5 L0 9 Z" fill="#17A8DB" />
+      </marker>
+    </defs>
 
-      <div
-        className="absolute bottom-0 top-[22px] w-[3px] bg-[#149ED4]"
-        style={{
-          left: "calc((100% - 192px) / 8)",
-          transform: "translateX(-50%)",
-        }}
-      />
-
-      <div
-        className="absolute bottom-[-1px] h-0 w-0 border-x-[7px] border-t-[10px] border-x-transparent border-t-[#149ED4] drop-shadow-[0_0_6px_rgba(20,158,212,0.35)]"
-        style={{
-          left: "calc((100% - 192px) / 8)",
-          transform: "translateX(-50%)",
-        }}
-      />
-    </div>
-
-    {/* SECONDARY FLOW LABEL */}
-    <div className="flex items-center gap-2 px-1">
-      <span className="h-2 w-2 rounded-full bg-fuchsia-400 shadow-[0_0_10px_rgba(232,121,249,0.7)]" />
-      <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#0C3A72]">
-        LT Distribution Flow
-      </span>
-    </div>
+    <path
+      d="M875 -37 V1 H120 V27"
+      stroke="#17A8DB"
+      strokeWidth="2.5"
+      vectorEffect="non-scaling-stroke"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      markerEnd="url(#kioskToBusductPremiumArrow)"
+    />
+  </svg>
+</div>
 
     {/* LOWER FLOW */}
-    <div className="grid min-h-0 grid-cols-[minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)_clamp(34px,4vw,64px)_minmax(0,1fr)] items-stretch">
+    <div className="grid h-[200px] w-full grid-cols-[minmax(0,1fr)_32px_minmax(0,1fr)_32px_minmax(0,1fr)_32px_minmax(0,1fr)] items-stretch">
       <OverviewBox
         title="Busduct"
         subtitle="LT Busduct Distribution"
-        icon={<Grid2X2 className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<Grid2X2 className="h-7 w-7" strokeWidth={1.8} />}
         accent="#FF3BA5"
         onClick={() => setActivePopup("busbars")}
       />
@@ -11803,7 +11979,7 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="PCC"
         subtitle="Wing 1 + Wing 2"
-        icon={<PanelsTopLeft className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<PanelsTopLeft className="h-7 w-7" strokeWidth={1.8} />}
         accent="#FF9800"
         onClick={() => setActivePopup("pccMain")}
       />
@@ -11813,7 +11989,7 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="Raising Main"
         subtitle="Vertical Distribution"
-        icon={<TowerControl className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<TowerControl className="h-7 w-7" strokeWidth={1.8} />}
         accent="#1CA8FF"
         onClick={() => setActivePopup("raisingMain")}
       />
@@ -11823,63 +11999,114 @@ const BuildingsPopup = () => {
       <OverviewBox
         title="Wing"
         subtitle="Wing A / Wing B"
-        icon={<Building2 className="h-9 w-9" strokeWidth={1.8} />}
+        icon={<Building2 className="h-7 w-7" strokeWidth={1.8} />}
         accent="#34E978"
         onClick={() => setActivePopup("buildings")}
       />
     </div>
 
-    {/* STATUS BAR */}
-    <div className="grid min-h-0 grid-cols-[1.12fr_1fr_1fr_1fr_1fr_0.95fr] overflow-hidden rounded-[12px] border border-[#C8D8EA] bg-white shadow-[0_10px_28px_rgba(13,52,104,0.10)]">
-      <div className="flex min-w-0 items-center gap-3 px-4">
-        <ShieldCheck className="h-8 w-8 shrink-0 text-[#16B45B]" strokeWidth={1.8} />
-        <div className="min-w-0">
-          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">System Status</p>
-          <p className="mt-1 truncate text-[12px] font-medium text-[#16A34A]">All Systems Normal</p>
-        </div>
-      </div>
+    {/* CONTROLLED GAP ABOVE STATUS ROW 1 */}
+    <div aria-hidden="true" />
 
-      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
-        <Bell className="h-8 w-8 shrink-0 text-[#FF3737]" fill="currentColor" strokeWidth={1.5} />
-        <div>
-          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">Active Alarms</p>
-          <p className="mt-1 text-[15px] font-semibold text-[#FF2727]">02</p>
-        </div>
-      </div>
+    {/* STATUS ROW 1 */}
+    <div className="relative grid h-[78px] w-full grid-cols-6 overflow-hidden rounded-[12px] border border-[#C7D7E8] bg-[linear-gradient(180deg,#FFFFFF_0%,#FBFDFF_100%)] shadow-[0_6px_18px_rgba(15,49,91,0.07)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,#19B5F1_0%,#2563EB_38%,#14B8A6_72%,#22C55E_100%)]" />
+      {[
+        {
+          label: "System Status",
+          value: "All Systems Normal",
+          valueClass: "text-[#16A34A]",
+          icon: <ShieldCheck className="h-6 w-6 text-[#16B45B]" strokeWidth={1.8} />,
+        },
+        {
+          label: "Active Alarms",
+          value: "02",
+          valueClass: "text-[#FF2727]",
+          icon: <Bell className="h-6 w-6 text-[#FF3737]" fill="currentColor" strokeWidth={1.5} />,
+        },
+        {
+          label: "Unacknowledged",
+          value: "01",
+          valueClass: "text-[#F4A900]",
+          icon: <TriangleAlert className="h-6 w-6 text-[#F4A900]" strokeWidth={1.8} />,
+        },
+        {
+          label: "Energy Today",
+          value: "1524.8 MWh",
+          valueClass: "text-[#0878F5]",
+          icon: <Zap className="h-6 w-6 text-[#0878F5]" strokeWidth={1.8} />,
+        },
+        {
+          label: "CO₂ Savings",
+          value: "12.6 Ton",
+          valueClass: "text-[#21A63B]",
+          icon: <Leaf className="h-6 w-6 text-[#36AE47]" fill="currentColor" strokeWidth={1.2} />,
+        },
+        {
+          label: "Weather",
+          value: "27°C · Partly Cloudy",
+          valueClass: "text-[#102653]",
+          icon: <CloudSun className="h-6 w-6 text-[#123B8C]" strokeWidth={1.7} />,
+        },
+      ].map((item, index) => (
+        <div
+          key={item.label}
+          className={`relative flex min-w-0 w-full items-center gap-2.5 px-3.5 ${
+            index !== 5 ? "border-r border-[#D2DCE8]" : ""
+          }`}
+        >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[#F3F7FB]">
+            {item.icon}
+          </div>
 
-      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
-        <TriangleAlert className="h-8 w-8 shrink-0 text-[#F4A900]" strokeWidth={1.8} />
-        <div>
-          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">Unacknowledged</p>
-          <p className="mt-1 text-[15px] font-semibold text-[#F4A900]">01</p>
-        </div>
-      </div>
+          <div className="min-w-0">
+            <p className="truncate text-[8px] font-extrabold uppercase tracking-[0.07em] text-[#52647E]">
+              {item.label}
+            </p>
 
-      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
-        <Zap className="h-8 w-8 shrink-0 text-[#0878F5]" strokeWidth={1.8} />
-        <div>
-          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">Energy Today</p>
-          <p className="mt-1 whitespace-nowrap text-[13px] font-semibold text-[#0878F5]">1524.8 MWh</p>
+            <p className={`mt-0.5 truncate text-[11px] font-semibold ${item.valueClass}`}>
+              {item.value}
+            </p>
+          </div>
         </div>
-      </div>
+      ))}
+    </div>
 
-      <div className="flex min-w-0 items-center gap-3 border-l border-[#B9CAE0] px-4">
-        <Leaf className="h-8 w-8 shrink-0 text-[#36AE47]" fill="currentColor" strokeWidth={1.2} />
-        <div>
-          <p className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#102653]">
-            CO<sub>2</sub> Savings
-          </p>
-          <p className="mt-1 whitespace-nowrap text-[13px] font-semibold text-[#21A63B]">12.6 Ton</p>
-        </div>
-      </div>
+    {/* STATUS ROW 2 */}
+    <div className="grid h-[68px] w-full grid-cols-6 overflow-hidden rounded-[12px] border border-[#C9D8E9] bg-white shadow-[0_5px_16px_rgba(15,49,91,0.06)]">
+      {[
+        { label: "Grid Frequency", value: "50.02 Hz", accent: "text-[#0878F5]", icon: Radio },
+        { label: "Peak Demand", value: "4.82 MW", accent: "text-[#7C3AED]", icon: Gauge },
+        { label: "Current Load", value: "68.4%", accent: "text-[#0F766E]", icon: Activity },
+        { label: "Power Factor", value: "0.98", accent: "text-[#16A34A]", icon: Zap },
+        { label: "System Uptime", value: "99.97%", accent: "text-[#B7791F]", icon: ShieldCheck },
+        { label: "Last Data Sync", value: "2 sec ago", accent: "text-[#0F4C81]", icon: Bluetooth },
+      ].map((item, index) => {
+        const StatusIcon = item.icon;
 
-      <div className="flex min-w-0 items-center justify-center gap-3 border-l border-[#B9CAE0] px-3">
-        <CloudSun className="h-8 w-8 shrink-0 text-[#123B8C]" strokeWidth={1.7} />
-        <div>
-          <p className="text-[18px] font-semibold leading-none text-[#102653]">27°C</p>
-          <p className="mt-1.5 whitespace-nowrap text-[10px] font-medium text-[#102653]">Partly Cloudy</p>
-        </div>
-      </div>
+        return (
+          <div
+            key={item.label}
+            className={`flex min-w-0 w-full items-center justify-between gap-2.5 px-3 ${
+              index !== 5 ? "border-r border-[#D2DCE8]" : ""
+            }`}
+          >
+            <div className="min-w-0">
+              <p className="truncate text-[8px] font-extrabold uppercase tracking-[0.07em] text-[#52647E]">
+                {item.label}
+              </p>
+
+              <p className={`mt-0.5 truncate text-[11px] font-semibold ${item.accent}`}>
+                {item.value}
+              </p>
+            </div>
+
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] bg-[#F3F7FB]">
+              <StatusIcon className={`h-4 w-4 ${item.accent}`} strokeWidth={1.7} />
+            </div>
+          </div>
+        );
+      })}
     </div>
   </div>
 </section>
