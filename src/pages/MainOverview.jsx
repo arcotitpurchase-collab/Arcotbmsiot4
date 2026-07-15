@@ -11864,7 +11864,7 @@ const BuildingsPopup = () => {
         <BluetoothOff className="h-4 w-4 text-red-400" strokeWidth={2.2} />
         <span className="h-2.5 w-2.5 rounded-full bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.60)]" />
         <span className="whitespace-nowrap text-[10px] font-black uppercase tracking-[0.08em] text-red-100">
-          BLE Not Connected
+          Failed
         </span>
       </div>
 
