@@ -1887,454 +1887,6 @@
 
 
 
-import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import prestigeLogo from "../assets/ser-removebg.png";
-
-export default function OverviewPage() {
-  const navigate = useNavigate();
-
-  const initialFlow = [
-    { key: "source", title: "33kV Source", short: "SRC", incoming: 1120, outgoing: 1085, today: 18420, month: 486500 },
-    { key: "feeder", title: "33kV Feeder", short: "FDR", incoming: 1085, outgoing: 1040, today: 17680, month: 462300 },
-    { key: "transformer", title: "Transformers", short: "TRF", incoming: 1040, outgoing: 980, today: 16940, month: 441900 },
-    { key: "kiosk", title: "LT Kiosk", short: "KSK", incoming: 980, outgoing: 935, today: 15720, month: 408700 },
-    { key: "busbar", title: "LT Busbar", short: "BUS", incoming: 935, outgoing: 900, today: 14980, month: 392100 },
-    { key: "pcc", title: "PCC Main", short: "PCC", incoming: 900, outgoing: 850, today: 14160, month: 366400 },
-    { key: "wing1", title: "Wing 1", short: "W1", incoming: 425, outgoing: 402, today: 7080, month: 181000 },
-    { key: "wing2", title: "Wing 2", short: "W2", incoming: 425, outgoing: 410, today: 7420, month: 190400 },
-  ];
-
-  const [flowData, setFlowData] = useState(initialFlow);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setFlowData((prev) =>
-        prev.map((item) => {
-          const incoming = Math.max(
-            40,
-            item.incoming + Math.floor(Math.random() * 15) - 7
-          );
-
-          const outgoing = Math.min(
-            incoming - 5,
-            Math.max(35, item.outgoing + Math.floor(Math.random() * 13) - 6)
-          );
-
-          return {
-            ...item,
-            incoming,
-            outgoing,
-            today: item.today + Math.floor(outgoing / 360),
-            month: item.month + Math.floor(outgoing / 180),
-          };
-        })
-      );
-
-      setLastUpdated(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const totals = useMemo(() => {
-    const incoming = flowData[0].incoming;
-    const wing1 = flowData.find((x) => x.key === "wing1")?.outgoing || 0;
-    const wing2 = flowData.find((x) => x.key === "wing2")?.outgoing || 0;
-    const outgoing = wing1 + wing2;
-    const loss = incoming - outgoing;
-    const efficiency = Math.round((outgoing / incoming) * 100);
-    const today = flowData.reduce((sum, x) => sum + x.today, 0);
-    const month = flowData.reduce((sum, x) => sum + x.month, 0);
-
-    return { incoming, outgoing, loss, efficiency, today, month, wing1, wing2 };
-  }, [flowData]);
-
-  const maxValue = Math.max(
-    ...flowData.flatMap((x) => [x.incoming, x.outgoing])
-  );
-
-  const Card = ({ children, className = "" }) => (
-    <div
-      className={`rounded-[18px] bg-[#224da3] border border-cyan-300/10 shadow-[0_10px_24px_rgba(0,0,0,0.25)] overflow-hidden ${className}`}
-    >
-      {children}
-    </div>
-  );
-
-  const Title = ({ children }) => (
-    <h3 className="text-[14px] font-bold text-blue-50 mb-2">{children}</h3>
-  );
-
-  return (
-    <div className="min-h-screen w-full bg-[#151c55] text-white">
-      <header className="sticky top-0 z-50 h-[64px] bg-[#10194b] px-6 flex items-center justify-between border-b border-cyan-400/20">
-        <div
-          onClick={() => navigate("/")}
-          className="flex items-center cursor-pointer"
-        >
-          <div>
-            <h1 className="text-[22px] font-semibold tracking-[0.18em] uppercase leading-none">
-              ARCOT <span className="text-[#67E8F9]">IIOT 1.0</span>
-            </h1>
-
-            <p className="mt-2 text-[8px] tracking-[0.35em] uppercase text-cyan-200">
-              Industrial Internet of Things
-            </p>
-          </div>
-
-          <div className="h-[46px] border-l border-cyan-300/30 mx-4" />
-
-          <img
-            src={prestigeLogo}
-            alt="Prestige"
-            className="h-[48px] w-[95px] object-contain"
-          />
-        </div>
-
-        <button
-          onClick={() => navigate("/")}
-          className="rounded-full border border-cyan-300/60 px-6 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-cyan-100"
-        >
-          Dashboard
-        </button>
-      </header>
-
-      <main className="w-full p-4">
-        <div className="grid w-full grid-cols-12 gap-4">
-          {/* LEFT */}
-          <div className="col-span-3 space-y-4">
-            <Card className="p-4 h-[140px]">
-              <div className="grid grid-cols-2 h-full">
-                <div className="flex flex-col justify-center">
-                  <h2 className="text-[34px] font-light leading-none">
-                    {totals.incoming}
-                  </h2>
-                  <p className="mt-3 text-[10px] text-cyan-300">Incoming kW</p>
-                </div>
-
-                <div className="border-l border-cyan-300/20 pl-5 flex flex-col justify-center">
-                  <h2 className="text-[34px] font-light leading-none">
-                    {totals.outgoing}
-                  </h2>
-                  <p className="mt-3 text-[10px] text-cyan-300">Outgoing kW</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4 h-[220px]">
-              <Title>Live Summary</Title>
-
-              <div className="grid h-[calc(100%-28px)] grid-cols-2 gap-4">
-                <div className="flex flex-col justify-center">
-                  <h2 className="text-[30px] font-light leading-none text-cyan-100">
-                    ↑ {totals.today.toLocaleString()}
-                  </h2>
-                  <p className="mt-3 text-[10px] text-cyan-300">
-                    Today Energy kWh
-                  </p>
-                </div>
-
-                <div className="flex flex-col justify-center">
-                  <h2 className="text-[30px] font-light leading-none text-yellow-300">
-                    ↓ {totals.loss}
-                  </h2>
-                  <p className="mt-3 text-[10px] text-cyan-300">Loss kW</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4 h-[220px]">
-              <Title>Equipment Load Bars</Title>
-
-              <div className="flex h-[calc(100%-28px)] flex-col justify-center gap-4">
-                {flowData.slice(0, 4).map((item) => (
-                  <div key={item.key}>
-                    <div className="mb-1 flex justify-between text-[10px] text-cyan-200">
-                      <span>{item.title}</span>
-                      <span>{item.outgoing} kW</span>
-                    </div>
-
-                    <div className="h-3 overflow-hidden rounded-full bg-[#173579]">
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-yellow-300"
-                        style={{ width: `${(item.outgoing / maxValue) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            <Card className="p-4 h-[260px]">
-              <Title>Day Wise Energy Report</Title>
-
-              <div className="flex h-[calc(100%-28px)] items-end justify-between gap-3">
-                {["12 AM", "04 AM", "08 AM", "12 PM", "04 PM", "08 PM"].map(
-                  (label, i) => (
-                    <div
-                      key={label}
-                      className="flex flex-1 flex-col items-center justify-end"
-                    >
-                      <div className="flex h-[165px] items-end gap-1">
-                        <div
-                          className="w-4 rounded-t bg-cyan-400"
-                          style={{ height: `${82 + (i % 3) * 16}px` }}
-                        />
-
-                        <div
-                          className="w-4 rounded-t bg-yellow-400"
-                          style={{ height: `${72 + (i % 4) * 14}px` }}
-                        />
-                      </div>
-
-                      <p className="mt-2 text-[10px] text-cyan-100">{label}</p>
-                    </div>
-                  )
-                )}
-              </div>
-            </Card>
-          </div>
-
-          {/* MIDDLE */}
-          <div className="col-span-3 space-y-4">
-            <Card className="p-4 h-[270px]">
-              <Title>System Efficiency</Title>
-
-              <div className="flex h-[calc(100%-28px)] flex-col items-center justify-center">
-                <div className="relative h-[155px] w-[155px] rounded-full bg-[conic-gradient(#35D8F5_0_65%,rgba(255,255,255,0.15)_65%_100%)]">
-                  <div className="absolute inset-[17px] rounded-full bg-[#224da3] flex items-center justify-center">
-                    <h2 className="text-[40px] font-light">
-                      {totals.efficiency}%
-                    </h2>
-                  </div>
-                </div>
-
-                <button className="mt-4 rounded-full bg-cyan-400 px-14 py-2 text-[#12306F] text-[12px] font-black">
-                  Healthy
-                </button>
-              </div>
-            </Card>
-
-            <Card className="p-4 h-[270px]">
-              <Title>Area Load Curve</Title>
-
-              <svg viewBox="0 0 330 160" className="w-full h-[210px]">
-                <polygon
-                  points="0,95 40,115 80,70 120,108 160,35 200,100 240,75 280,98 330,60 330,160 0,160"
-                  fill="#35D8F5"
-                  opacity="0.38"
-                />
-
-                <polygon
-                  points="0,125 40,85 80,145 120,75 160,150 200,82 240,140 280,95 330,120 330,160 0,160"
-                  fill="#F6B23F"
-                  opacity="0.78"
-                />
-              </svg>
-            </Card>
-
-            <Card className="p-4 h-[315px]">
-              <Title>Monthly Energy</Title>
-
-              <h2 className="text-[38px] font-light text-yellow-300 leading-none">
-                {totals.month.toLocaleString()}
-              </h2>
-
-              <p className="text-[11px] text-cyan-300 mt-2 mb-5">
-                kWh this month
-              </p>
-
-              <div className="space-y-4">
-                {[0.22, 0.25, 0.27, 0.26].map((v, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <span className="w-12 text-[10px] text-cyan-200">
-                      Week {i + 1}
-                    </span>
-
-                    <div className="flex-1 h-4 rounded-full bg-[#173579] overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-yellow-300 via-cyan-400 to-blue-300"
-                        style={{ width: `${v * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
-
-          {/* RIGHT */}
-          <div className="col-span-6 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="p-4 h-[145px]">
-                <Title>Realtime Monitoring</Title>
-
-                <div className="grid grid-cols-2">
-                  <div>
-                    <h2 className="text-[32px] font-light">{totals.outgoing}</h2>
-                    <p className="text-[10px] text-cyan-300">Live Load kW</p>
-                  </div>
-
-                  <div>
-                    <h2 className="text-[20px] font-light text-yellow-300">
-                      {lastUpdated.toLocaleTimeString()}
-                    </h2>
-                    <p className="text-[10px] text-cyan-300">Last Updated</p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="p-4 h-[145px]">
-                <Title>Power Load</Title>
-
-                <svg viewBox="0 0 330 115" className="w-full h-[95px]">
-                  <polyline
-                    points="30,70 70,80 110,52 150,90 190,30 230,72 270,55 310,82"
-                    fill="none"
-                    stroke="#F6B23F"
-                    strokeWidth="5"
-                  />
-
-                  <polyline
-                    points="30,74 70,82 110,60 150,94 190,30 230,68 270,52 310,78"
-                    fill="none"
-                    stroke="#35D8F5"
-                    strokeWidth="5"
-                  />
-                </svg>
-              </Card>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="p-4 h-[185px]">
-                <Title>Wing Distribution</Title>
-
-                <div className="flex items-center justify-around">
-                  {[
-                    ["Wing 1", totals.wing1],
-                    ["Wing 2", totals.wing2],
-                  ].map(([label, value]) => (
-                    <div key={label} className="text-center">
-                      <div className="relative h-[100px] w-[100px] rounded-full bg-[conic-gradient(#F6B23F_0_72%,#35D8F5_72%_100%)]">
-                        <div className="absolute inset-[13px] rounded-full bg-[#224da3] flex items-center justify-center">
-                          <h3 className="text-[22px] font-light">{value}</h3>
-                        </div>
-                      </div>
-
-                      <p className="mt-2 text-[11px] text-cyan-200">{label}</p>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-
-              <Card className="p-4 h-[185px]">
-                <Title>System Status</Title>
-
-                <h2 className="text-[34px] font-light text-cyan-100">HEALTHY</h2>
-
-                <p className="text-[11px] text-cyan-300 mt-2">
-                  All equipment running normally
-                </p>
-
-                <div className="mt-5 h-3 rounded-full bg-[#173579] overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-yellow-300"
-                    style={{ width: `${totals.efficiency}%` }}
-                  />
-                </div>
-              </Card>
-            </div>
-
-            <Card className="p-4 h-[250px]">
-              <Title>Power Trend Analysis</Title>
-
-              <svg viewBox="0 0 760 220" className="w-full h-[200px]">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <line
-                    key={i}
-                    x1="45"
-                    x2="720"
-                    y1={35 + i * 35}
-                    y2={35 + i * 35}
-                    stroke="rgba(255,255,255,0.12)"
-                  />
-                ))}
-
-                <polyline
-                  points={flowData
-                    .map(
-                      (d, i) =>
-                        `${60 + i * 90},${185 - (d.incoming / maxValue) * 140}`
-                    )
-                    .join(" ")}
-                  fill="none"
-                  stroke="#F6B23F"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-
-                <polyline
-                  points={flowData
-                    .map(
-                      (d, i) =>
-                        `${60 + i * 90},${185 - (d.outgoing / maxValue) * 140}`
-                    )
-                    .join(" ")}
-                  fill="none"
-                  stroke="#35D8F5"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-
-                {flowData.map((d, i) => {
-                  const x = 60 + i * 90;
-                  const y = 185 - (d.outgoing / maxValue) * 140;
-
-                  return (
-                    <g key={d.key}>
-                      <circle cx={x} cy={y} r="5" fill="#E9FFFF" />
-
-                      <text
-                        x={x}
-                        y="210"
-                        textAnchor="middle"
-                        fontSize="10"
-                        fill="#BCEEFF"
-                      >
-                        {d.short}
-                      </text>
-                    </g>
-                  );
-                })}
-              </svg>
-            </Card>
-
-            <Card className="p-4 h-[255px]">
-              <Title>Equipment Flow Overview</Title>
-
-              <div className="grid grid-cols-4 gap-3 h-[175px]">
-                {flowData.map((item) => (
-                  <div
-                    key={item.key}
-                    className="rounded-[12px] bg-[#173579] p-3 flex flex-col justify-center"
-                  >
-                    <p className="text-[10px] text-cyan-200">{item.short}</p>
-
-                    <h4 className="text-[20px] font-light">{item.outgoing}</h4>
-
-                    <p className="text-[9px] text-cyan-300">kW</p>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
 
 
 
@@ -4500,3 +4052,1068 @@ export default function OverviewPage() {
 //   );
 
 // }
+
+
+
+
+
+
+
+
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import prestigeLogo from "../assets/ser-removebg.png";
+
+
+const EQUIPMENT_OPTIONS = [
+  { key: "system", label: "Entire System" },
+  { key: "source", label: "33kV Source" },
+  { key: "feeder", label: "33kV Feeder" },
+  { key: "transformer", label: "Transformer" },
+  { key: "kiosk", label: "LT Kiosk" },
+  { key: "busbar", label: "LT Busbar" },
+  { key: "pcc", label: "PCC Main" },
+  { key: "wing-a", label: "Wing A" },
+  { key: "wing-b", label: "Wing B" },
+  { key: "chillers", label: "Chillers" },
+];
+
+const EQUIPMENT_MULTIPLIERS = {
+  system: 1,
+  source: 0.98,
+  feeder: 0.94,
+  transformer: 0.89,
+  kiosk: 0.84,
+  busbar: 0.81,
+  pcc: 0.77,
+  "wing-a": 0.30,
+  "wing-b": 0.28,
+  chillers: 0.19,
+};
+
+const formatDateKey = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const getCurrentMonth = () => {
+  const date = new Date();
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+};
+
+const generateAnalyticsData = () => {
+  const rows = [];
+  const today = new Date();
+
+  for (let dayOffset = 60; dayOffset >= 0; dayOffset -= 1) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - dayOffset);
+    const dateKey = formatDateKey(date);
+
+    EQUIPMENT_OPTIONS.forEach((equipment, equipmentIndex) => {
+      const multiplier = EQUIPMENT_MULTIPLIERS[equipment.key];
+
+      for (let hour = 0; hour < 24; hour += 1) {
+        const daylightFactor =
+          hour >= 6 && hour <= 22
+            ? 0.72 + Math.sin(((hour - 6) / 16) * Math.PI) * 0.38
+            : 0.52;
+
+        const weekdayFactor =
+          date.getDay() === 0 || date.getDay() === 6 ? 0.88 : 1;
+
+        const baseIncoming =
+          1080 *
+          multiplier *
+          daylightFactor *
+          weekdayFactor;
+
+        const dailyNoise =
+          ((dayOffset * 13 + hour * 7 + equipmentIndex * 11) % 35) - 17;
+
+        const incomingKw = Math.max(
+          30,
+          Math.round(baseIncoming + dailyNoise)
+        );
+
+        const lossRatio =
+          equipment.key === "system"
+            ? 0.085
+            : 0.025 + equipmentIndex * 0.004;
+
+        const outgoingKw = Math.max(
+          20,
+          Math.round(incomingKw * (1 - lossRatio))
+        );
+
+        const energyKwh = Number(
+          ((incomingKw + outgoingKw) / 2).toFixed(2)
+        );
+
+        const voltageBase =
+          equipment.key === "source" || equipment.key === "feeder"
+            ? 33000
+            : 433;
+
+        const voltageVariation =
+          equipment.key === "source" || equipment.key === "feeder"
+            ? ((hour + dayOffset) % 9) * 18 - 72
+            : ((hour + equipmentIndex) % 7) - 3;
+
+        const voltage = voltageBase + voltageVariation;
+        const current = Number(
+          (
+            (outgoingKw * 1000) /
+            (Math.sqrt(3) *
+              voltage *
+              (0.95 + (equipmentIndex % 3) * 0.01))
+          ).toFixed(2)
+        );
+
+        const powerFactor = Number(
+          (0.95 + ((hour + equipmentIndex) % 4) * 0.01).toFixed(2)
+        );
+
+        const timestamp = `${dateKey}T${String(hour).padStart(2, "0")}:00:00`;
+
+        rows.push({
+          timestamp,
+          equipment: equipment.key,
+          equipmentLabel: equipment.label,
+          incomingKw,
+          outgoingKw,
+          energyKwh,
+          voltage,
+          current,
+          powerFactor,
+          status:
+            outgoingKw / incomingKw < 0.88
+              ? "Attention"
+              : "Normal",
+        });
+      }
+    });
+  }
+
+  return rows;
+};
+
+const ANALYTICS_DATA = generateAnalyticsData();
+
+
+const Card = ({ children, className = "" }) => (
+  <div
+    className={`overflow-hidden rounded-[18px] border border-[#D7E4F2] bg-white shadow-[0_10px_28px_rgba(8,31,92,0.07)] ${className}`}
+  >
+    {children}
+  </div>
+);
+
+const SectionTitle = ({ title, subtitle, rightContent }) => (
+  <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
+    <div>
+      <h2 className="text-[15px] font-semibold text-[#081F5C]">
+        {title}
+      </h2>
+      {subtitle && (
+        <p className="mt-1 text-[10px] leading-relaxed text-[#6B7F99]">
+          {subtitle}
+        </p>
+      )}
+    </div>
+    {rightContent}
+  </div>
+);
+
+const MetricCard = ({
+  label,
+  value,
+  unit,
+  helper,
+  tone = "blue",
+}) => {
+  const toneMap = {
+    blue: ["text-[#2563EB]", "bg-[#2563EB]"],
+    cyan: ["text-[#0891B2]", "bg-[#22D3EE]"],
+    green: ["text-[#15805F]", "bg-[#34D399]"],
+    amber: ["text-[#B7791F]", "bg-[#FBBF24]"],
+    red: ["text-[#B42318]", "bg-[#F87171]"],
+  };
+
+  const [valueClass, accentClass] =
+    toneMap[tone] || toneMap.blue;
+
+  return (
+    <Card className="relative p-4">
+      <div className={`absolute inset-y-0 left-0 w-1 ${accentClass}`} />
+
+      <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#6B7F99]">
+        {label}
+      </p>
+
+      <div className="mt-3 flex items-end gap-2">
+        <h3 className={`text-[29px] font-semibold leading-none ${valueClass}`}>
+          {value}
+        </h3>
+        {unit && (
+          <span className="pb-1 text-[9px] font-semibold uppercase text-[#8292A8]">
+            {unit}
+          </span>
+        )}
+      </div>
+
+      <p className="mt-3 text-[9px] leading-relaxed text-[#8292A8]">
+        {helper}
+      </p>
+    </Card>
+  );
+};
+
+const TrendChart = ({ rows }) => {
+  if (!rows.length) {
+    return (
+      <div className="flex h-[260px] items-center justify-center text-[11px] text-[#6B7F99]">
+        No analytics data found for the selected filters.
+      </div>
+    );
+  }
+
+  const width = 820;
+  const height = 270;
+  const left = 58;
+  const right = 790;
+  const top = 24;
+  const bottom = 215;
+  const chartWidth = right - left;
+  const chartHeight = bottom - top;
+
+  const maxValue = Math.max(
+    ...rows.flatMap((row) => [row.incomingKw, row.outgoingKw]),
+    1
+  );
+
+  const step = Math.max(1, Math.ceil(rows.length / 24));
+  const chartRows = rows.filter(
+    (_, index) => index % step === 0 || index === rows.length - 1
+  );
+
+  const coordinates = chartRows.map((row, index) => {
+    const x =
+      chartRows.length === 1
+        ? left
+        : left + (index / (chartRows.length - 1)) * chartWidth;
+
+    return {
+      x,
+      incomingY:
+        bottom - (Number(row.incomingKw) / maxValue) * chartHeight,
+      outgoingY:
+        bottom - (Number(row.outgoingKw) / maxValue) * chartHeight,
+      row,
+    };
+  });
+
+  const incomingPoints = coordinates
+    .map((item) => `${item.x},${item.incomingY}`)
+    .join(" ");
+
+  const outgoingPoints = coordinates
+    .map((item) => `${item.x},${item.outgoingY}`)
+    .join(" ");
+
+  const labelStep = Math.max(1, Math.ceil(coordinates.length / 7));
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-[270px] w-full">
+      {[0, 1, 2, 3, 4].map((index) => {
+        const y = top + index * (chartHeight / 4);
+        const value = maxValue - index * (maxValue / 4);
+
+        return (
+          <React.Fragment key={index}>
+            <line
+              x1={left}
+              x2={right}
+              y1={y}
+              y2={y}
+              stroke="rgba(107,127,153,0.16)"
+              strokeDasharray="4 4"
+            />
+            <text
+              x={left - 8}
+              y={y + 3}
+              textAnchor="end"
+              fontSize="8"
+              fill="#8292A8"
+            >
+              {Math.round(value)}
+            </text>
+          </React.Fragment>
+        );
+      })}
+
+      <polyline
+        points={incomingPoints}
+        fill="none"
+        stroke="#F59E0B"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      <polyline
+        points={outgoingPoints}
+        fill="none"
+        stroke="#2563EB"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      {coordinates.map((item, index) => (
+        <g key={`${item.row.timestamp}-${index}`}>
+          <circle
+            cx={item.x}
+            cy={item.incomingY}
+            r="3"
+            fill="#F59E0B"
+          />
+          <circle
+            cx={item.x}
+            cy={item.outgoingY}
+            r="3"
+            fill="#2563EB"
+          />
+
+          <title>
+            {`${new Date(item.row.timestamp).toLocaleString()} | Incoming ${item.row.incomingKw} kW | Outgoing ${item.row.outgoingKw} kW`}
+          </title>
+
+          {(index % labelStep === 0 ||
+            index === coordinates.length - 1) && (
+            <text
+              x={item.x}
+              y="240"
+              textAnchor="middle"
+              fontSize="8"
+              fill="#6B7F99"
+            >
+              {new Date(item.row.timestamp).toLocaleDateString(undefined, {
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+              })}
+            </text>
+          )}
+        </g>
+      ))}
+
+      <g transform="translate(610,15)">
+        <circle cx="0" cy="0" r="4" fill="#F59E0B" />
+        <text x="10" y="3" fontSize="9" fill="#6B7F99">
+          Incoming
+        </text>
+
+        <circle cx="90" cy="0" r="4" fill="#2563EB" />
+        <text x="100" y="3" fontSize="9" fill="#6B7F99">
+          Outgoing
+        </text>
+      </g>
+    </svg>
+  );
+};
+
+const EnergyBars = ({ rows }) => {
+  if (!rows.length) {
+    return null;
+  }
+
+  const grouped = rows.reduce((accumulator, row) => {
+    const key = row.timestamp.slice(0, 13);
+    accumulator[key] =
+      (accumulator[key] || 0) + Number(row.energyKwh || 0);
+    return accumulator;
+  }, {});
+
+  const points = Object.entries(grouped).slice(-12);
+  const maxValue = Math.max(...points.map(([, value]) => value), 1);
+
+  return (
+    <div className="flex h-[190px] items-end gap-2">
+      {points.map(([label, value]) => (
+        <div
+          key={label}
+          className="flex min-w-0 flex-1 flex-col items-center justify-end"
+        >
+          <div className="mb-2 text-[8px] font-semibold text-[#2563EB]">
+            {Math.round(value)}
+          </div>
+
+          <div
+            className="w-full max-w-[28px] rounded-t bg-[#2563EB]"
+            style={{
+              height: `${Math.max(10, (value / maxValue) * 125)}px`,
+            }}
+          />
+
+          <p className="mt-2 truncate text-[7px] text-[#6B7F99]">
+            {label.slice(11, 13)}h
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const escapeCsv = (value) =>
+  `"${String(value ?? "").replace(/"/g, '""')}"`;
+
+const triggerDownload = (blob, filename) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+};
+
+export default function OverviewPage() {
+  const navigate = useNavigate();
+
+  const [selectedEquipment, setSelectedEquipment] =
+    useState("system");
+
+  const [selectedPeriod, setSelectedPeriod] =
+    useState("daily");
+
+  const [selectedDate, setSelectedDate] =
+    useState(formatDateKey(new Date()));
+
+  const [selectedMonth, setSelectedMonth] =
+    useState(getCurrentMonth());
+
+  const [fromTime, setFromTime] = useState("00:00");
+  const [toTime, setToTime] = useState("23:59");
+  const [customStart, setCustomStart] = useState("");
+  const [customEnd, setCustomEnd] = useState("");
+
+  const filteredData = useMemo(() => {
+    return ANALYTICS_DATA.filter((row) => {
+      if (row.equipment !== selectedEquipment) {
+        return false;
+      }
+
+      const timestamp = new Date(row.timestamp);
+      const rowDate = row.timestamp.slice(0, 10);
+      const rowMonth = row.timestamp.slice(0, 7);
+      const rowTime = row.timestamp.slice(11, 16);
+
+      if (selectedPeriod === "daily") {
+        return (
+          rowDate === selectedDate &&
+          rowTime >= fromTime &&
+          rowTime <= toTime
+        );
+      }
+
+      if (selectedPeriod === "weekly") {
+        const selected = new Date(`${selectedDate}T00:00:00`);
+        const weekStart = new Date(selected);
+        weekStart.setDate(selected.getDate() - selected.getDay());
+
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 7);
+
+        return timestamp >= weekStart && timestamp < weekEnd;
+      }
+
+      if (selectedPeriod === "monthly") {
+        return rowMonth === selectedMonth;
+      }
+
+      if (selectedPeriod === "custom") {
+        const start = customStart ? new Date(customStart) : null;
+        const end = customEnd ? new Date(customEnd) : null;
+
+        if (start && timestamp < start) {
+          return false;
+        }
+
+        if (end && timestamp > end) {
+          return false;
+        }
+
+        return true;
+      }
+
+      return true;
+    });
+  }, [
+    selectedEquipment,
+    selectedPeriod,
+    selectedDate,
+    selectedMonth,
+    fromTime,
+    toTime,
+    customStart,
+    customEnd,
+  ]);
+
+  const summary = useMemo(() => {
+    if (!filteredData.length) {
+      return {
+        totalEnergy: 0,
+        peakLoad: 0,
+        averageLoad: 0,
+        totalLoss: 0,
+        efficiency: 0,
+        averageVoltage: 0,
+        averageCurrent: 0,
+        averagePowerFactor: 0,
+      };
+    }
+
+    const totalEnergy = filteredData.reduce(
+      (sum, row) => sum + Number(row.energyKwh || 0),
+      0
+    );
+
+    const peakLoad = Math.max(
+      ...filteredData.map((row) => Number(row.incomingKw || 0))
+    );
+
+    const averageLoad =
+      filteredData.reduce(
+        (sum, row) => sum + Number(row.outgoingKw || 0),
+        0
+      ) / filteredData.length;
+
+    const totalIncoming = filteredData.reduce(
+      (sum, row) => sum + Number(row.incomingKw || 0),
+      0
+    );
+
+    const totalOutgoing = filteredData.reduce(
+      (sum, row) => sum + Number(row.outgoingKw || 0),
+      0
+    );
+
+    const averageVoltage =
+      filteredData.reduce(
+        (sum, row) => sum + Number(row.voltage || 0),
+        0
+      ) / filteredData.length;
+
+    const averageCurrent =
+      filteredData.reduce(
+        (sum, row) => sum + Number(row.current || 0),
+        0
+      ) / filteredData.length;
+
+    const averagePowerFactor =
+      filteredData.reduce(
+        (sum, row) => sum + Number(row.powerFactor || 0),
+        0
+      ) / filteredData.length;
+
+    return {
+      totalEnergy,
+      peakLoad,
+      averageLoad,
+      totalLoss: Math.max(0, totalIncoming - totalOutgoing),
+      efficiency:
+        totalIncoming > 0 ? (totalOutgoing / totalIncoming) * 100 : 0,
+      averageVoltage,
+      averageCurrent,
+      averagePowerFactor,
+    };
+  }, [filteredData]);
+
+  const selectedEquipmentLabel =
+    EQUIPMENT_OPTIONS.find(
+      (item) => item.key === selectedEquipment
+    )?.label || "Entire System";
+
+  const downloadCsv = () => {
+    if (!filteredData.length) return;
+
+    const headers = [
+      "Timestamp",
+      "Equipment",
+      "Incoming kW",
+      "Outgoing kW",
+      "Energy kWh",
+      "Voltage",
+      "Current",
+      "Power Factor",
+      "Status",
+    ];
+
+    const rows = filteredData.map((row) => [
+      row.timestamp,
+      row.equipmentLabel,
+      row.incomingKw,
+      row.outgoingKw,
+      row.energyKwh,
+      row.voltage,
+      row.current,
+      row.powerFactor,
+      row.status,
+    ]);
+
+    const csv = [headers, ...rows]
+      .map((row) => row.map(escapeCsv).join(","))
+      .join("\n");
+
+    triggerDownload(
+      new Blob([csv], {
+        type: "text/csv;charset=utf-8;",
+      }),
+      `power-analytics-${selectedEquipment}-${selectedPeriod}.csv`
+    );
+  };
+
+  const downloadJson = () => {
+    const report = {
+      generatedAt: new Date().toISOString(),
+      filters: {
+        equipment: selectedEquipment,
+        period: selectedPeriod,
+        selectedDate,
+        selectedMonth,
+        fromTime,
+        toTime,
+        customStart,
+        customEnd,
+      },
+      summary,
+      readings: filteredData,
+    };
+
+    triggerDownload(
+      new Blob([JSON.stringify(report, null, 2)], {
+        type: "application/json",
+      }),
+      `power-analytics-${selectedEquipment}-${selectedPeriod}.json`
+    );
+  };
+
+  const resetFilters = () => {
+    setSelectedEquipment("system");
+    setSelectedPeriod("daily");
+    setSelectedDate(formatDateKey(new Date()));
+    setSelectedMonth(getCurrentMonth());
+    setFromTime("00:00");
+    setToTime("23:59");
+    setCustomStart("");
+    setCustomEnd("");
+  };
+
+  return (
+    <div className="min-h-screen w-full bg-[#F4F8FC] text-[#081F5C]">
+      <header className="sticky top-0 z-50 flex h-[64px] items-center justify-between border-b border-[#D7E4F2] bg-white px-6 shadow-[0_4px_14px_rgba(8,31,92,0.05)]">
+        <div
+          onClick={() => navigate("/")}
+          className="flex cursor-pointer items-center"
+        >
+          <div>
+            <h1 className="text-[22px] font-semibold uppercase leading-none tracking-[0.18em] text-[#081F5C]">
+              ARCOT{" "}
+              <span className="text-[#2563EB]">
+                IIOT 1.0
+              </span>
+            </h1>
+
+            <p className="mt-2 text-[8px] uppercase tracking-[0.35em] text-[#4271AB]">
+              Industrial Internet of Things
+            </p>
+          </div>
+
+          <div className="mx-4 h-[44px] border-l border-[#D7E4F2]" />
+
+          <img
+            src={prestigeLogo}
+            alt="Prestige"
+            className="h-[46px] w-[94px] object-contain"
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="rounded-lg border border-[#2563EB] px-5 py-2 text-[9px] font-bold uppercase tracking-[0.12em] text-[#2563EB]"
+        >
+          Dashboard
+        </button>
+      </header>
+
+      <main className="mx-auto w-full max-w-[1700px] p-4">
+        <Card className="p-4">
+          <SectionTitle
+            title="Power Analytics Filters"
+            subtitle="Select equipment and time period to inspect exact consumption and operating performance."
+            rightContent={
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={downloadCsv}
+                  className="rounded-lg bg-[#2563EB] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-white"
+                >
+                  Download CSV
+                </button>
+
+                <button
+                  type="button"
+                  onClick={downloadJson}
+                  className="rounded-lg border border-[#2563EB] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-[#2563EB]"
+                >
+                  Download JSON
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="rounded-lg border border-[#D7E4F2] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-[#5D718C]"
+                >
+                  Print Report
+                </button>
+              </div>
+            }
+          />
+
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-7">
+            <select
+              value={selectedEquipment}
+              onChange={(event) =>
+                setSelectedEquipment(event.target.value)
+              }
+              className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+            >
+              {EQUIPMENT_OPTIONS.map((option) => (
+                <option key={option.key} value={option.key}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedPeriod}
+              onChange={(event) =>
+                setSelectedPeriod(event.target.value)
+              }
+              className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+            >
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="custom">Custom Range</option>
+            </select>
+
+            {(selectedPeriod === "daily" ||
+              selectedPeriod === "weekly") && (
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(event) =>
+                  setSelectedDate(event.target.value)
+                }
+                className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+              />
+            )}
+
+            {selectedPeriod === "monthly" && (
+              <input
+                type="month"
+                value={selectedMonth}
+                onChange={(event) =>
+                  setSelectedMonth(event.target.value)
+                }
+                className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+              />
+            )}
+
+            {selectedPeriod === "daily" && (
+              <>
+                <input
+                  type="time"
+                  value={fromTime}
+                  onChange={(event) =>
+                    setFromTime(event.target.value)
+                  }
+                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+                />
+
+                <input
+                  type="time"
+                  value={toTime}
+                  onChange={(event) =>
+                    setToTime(event.target.value)
+                  }
+                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+                />
+              </>
+            )}
+
+            {selectedPeriod === "custom" && (
+              <>
+                <input
+                  type="datetime-local"
+                  value={customStart}
+                  onChange={(event) =>
+                    setCustomStart(event.target.value)
+                  }
+                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+                />
+
+                <input
+                  type="datetime-local"
+                  value={customEnd}
+                  onChange={(event) =>
+                    setCustomEnd(event.target.value)
+                  }
+                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+                />
+              </>
+            )}
+
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="rounded-lg border border-[#D7E4F2] bg-[#F8FBFE] px-4 py-2.5 text-[8px] font-bold uppercase tracking-[0.1em] text-[#5D718C]"
+            >
+              Reset Filters
+            </button>
+          </div>
+        </Card>
+
+        <section className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <MetricCard
+            label="Consumed Energy"
+            value={summary.totalEnergy.toLocaleString(undefined, {
+              maximumFractionDigits: 0,
+            })}
+            unit="kWh"
+            tone="blue"
+            helper="Total energy consumed in the selected time range"
+          />
+
+          <MetricCard
+            label="Peak Load"
+            value={summary.peakLoad.toLocaleString(undefined, {
+              maximumFractionDigits: 0,
+            })}
+            unit="kW"
+            tone="amber"
+            helper="Highest incoming load recorded"
+          />
+
+          <MetricCard
+            label="Average Load"
+            value={summary.averageLoad.toLocaleString(undefined, {
+              maximumFractionDigits: 0,
+            })}
+            unit="kW"
+            tone="cyan"
+            helper="Average delivered power during the period"
+          />
+
+          <MetricCard
+            label="Distribution Loss"
+            value={summary.totalLoss.toLocaleString(undefined, {
+              maximumFractionDigits: 0,
+            })}
+            unit="kW"
+            tone="red"
+            helper="Accumulated incoming-to-outgoing difference"
+          />
+
+          <MetricCard
+            label="Efficiency"
+            value={`${summary.efficiency.toFixed(1)}%`}
+            tone="green"
+            helper="Overall delivery efficiency for selected readings"
+          />
+        </section>
+
+        <section className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-12">
+          <Card className="p-4 xl:col-span-8">
+            <SectionTitle
+              title={`${selectedEquipmentLabel} Load Trend`}
+              subtitle="Incoming and outgoing power across the selected period."
+            />
+
+            <div className="rounded-[14px] border border-[#DCE8F3] bg-[#FBFDFF] p-2">
+              <TrendChart rows={filteredData} />
+            </div>
+          </Card>
+
+          <div className="space-y-4 xl:col-span-4">
+            <Card className="p-4">
+              <SectionTitle
+                title="Electrical Quality"
+                subtitle="Average electrical conditions for the selected data."
+              />
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
+                  <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
+                    Voltage
+                  </p>
+                  <h3 className="mt-2 text-[20px] font-semibold text-[#2563EB]">
+                    {summary.averageVoltage.toFixed(1)}
+                  </h3>
+                  <p className="mt-1 text-[8px] text-[#8292A8]">V</p>
+                </div>
+
+                <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
+                  <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
+                    Current
+                  </p>
+                  <h3 className="mt-2 text-[20px] font-semibold text-[#0891B2]">
+                    {summary.averageCurrent.toFixed(1)}
+                  </h3>
+                  <p className="mt-1 text-[8px] text-[#8292A8]">A</p>
+                </div>
+
+                <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
+                  <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
+                    PF
+                  </p>
+                  <h3 className="mt-2 text-[20px] font-semibold text-[#15805F]">
+                    {summary.averagePowerFactor.toFixed(2)}
+                  </h3>
+                  <p className="mt-1 text-[8px] text-[#8292A8]">
+                    Average
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-4">
+              <SectionTitle
+                title="Hourly Consumption"
+                subtitle="Recent energy consumption blocks."
+              />
+              <EnergyBars rows={filteredData} />
+            </Card>
+          </div>
+        </section>
+
+        <section className="mt-4">
+          <Card className="p-4">
+            <SectionTitle
+              title="Detailed Analytical Readings"
+              subtitle={`${filteredData.length.toLocaleString()} readings match the selected filters.`}
+            />
+
+            <div className="max-h-[420px] overflow-auto">
+              <table className="w-full min-w-[1050px] border-collapse">
+                <thead className="sticky top-0 z-10 bg-white">
+                  <tr className="border-b border-[#DCE8F3]">
+                    {[
+                      "Timestamp",
+                      "Equipment",
+                      "Incoming",
+                      "Outgoing",
+                      "Energy",
+                      "Voltage",
+                      "Current",
+                      "Power Factor",
+                      "Loss",
+                      "Status",
+                    ].map((heading) => (
+                      <th
+                        key={heading}
+                        className="px-3 py-3 text-left text-[8px] font-bold uppercase tracking-[0.1em] text-[#8292A8]"
+                      >
+                        {heading}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {filteredData.map((row, index) => {
+                    const loss = Math.max(
+                      0,
+                      Number(row.incomingKw) -
+                        Number(row.outgoingKw)
+                    );
+
+                    return (
+                      <tr
+                        key={`${row.timestamp}-${row.equipment}-${index}`}
+                        className="border-b border-[#EDF2F7] last:border-b-0"
+                      >
+                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+                          {new Date(row.timestamp).toLocaleString()}
+                        </td>
+
+                        <td className="px-3 py-3 text-[9px] font-semibold text-[#081F5C]">
+                          {row.equipmentLabel}
+                        </td>
+
+                        <td className="px-3 py-3 text-[9px] text-[#081F5C]">
+                          {row.incomingKw} kW
+                        </td>
+
+                        <td className="px-3 py-3 text-[9px] text-[#081F5C]">
+                          {row.outgoingKw} kW
+                        </td>
+
+                        <td className="px-3 py-3 text-[9px] text-[#081F5C]">
+                          {row.energyKwh} kWh
+                        </td>
+
+                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+                          {row.voltage} V
+                        </td>
+
+                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+                          {row.current} A
+                        </td>
+
+                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+                          {row.powerFactor}
+                        </td>
+
+                        <td
+                          className={`px-3 py-3 text-[9px] font-semibold ${
+                            loss > row.incomingKw * 0.1
+                              ? "text-[#B42318]"
+                              : loss > row.incomingKw * 0.06
+                                ? "text-[#B7791F]"
+                                : "text-[#15805F]"
+                          }`}
+                        >
+                          {loss} kW
+                        </td>
+
+                        <td className="px-3 py-3">
+                          <span
+                            className={`inline-flex rounded-full border px-2.5 py-1 text-[7px] font-bold uppercase tracking-[0.08em] ${
+                              row.status === "Normal"
+                                ? "border-[#BEE8D4] bg-[#E8F5EE] text-[#15805F]"
+                                : "border-[#F4D3B2] bg-[#FFF5DD] text-[#B7791F]"
+                            }`}
+                          >
+                            {row.status}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </section>
+      </main>
+    </div>
+  );
+}

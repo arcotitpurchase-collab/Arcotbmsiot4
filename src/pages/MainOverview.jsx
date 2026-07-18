@@ -9404,6 +9404,1191 @@ const BusbarPopup = () => {
 };
 
 
+// const PccPanelAnalyticsView = ({ data, onBack }) => {
+//   if (!data) return null;
+
+//   const loadNumber =
+//     Number(String(data.load).replace(/[^\d.-]/g, "")) || 0;
+
+//   const kwhNumber =
+//     Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
+
+//   const kvhNumber =
+//     Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+
+//   const currentNumber =
+//     Number(String(data.current).replace(/[^\d.-]/g, "")) || 0;
+
+//   const voltageNumber =
+//     Number(String(data.voltage).replace(/[^\d.-]/g, "")) || 0;
+
+//   const pfNumber =
+//     Number(String(data.pf).replace(/[^\d.-]/g, "")) || 0;
+
+//   const graphValues = [
+//     {
+//       time: "08:00",
+//       kwh: Math.max(kwhNumber - 420, 0),
+//       kvh: Math.max(kvhNumber - 390, 0),
+//       current: Math.max(currentNumber - 24, 0),
+//       voltage: voltageNumber - 5,
+//       pf: Math.max(pfNumber - 0.04, 0),
+//     },
+//     {
+//       time: "09:00",
+//       kwh: Math.max(kwhNumber - 375, 0),
+//       kvh: Math.max(kvhNumber - 345, 0),
+//       current: Math.max(currentNumber - 18, 0),
+//       voltage: voltageNumber - 3,
+//       pf: Math.max(pfNumber - 0.03, 0),
+//     },
+//     {
+//       time: "10:00",
+//       kwh: Math.max(kwhNumber - 325, 0),
+//       kvh: Math.max(kvhNumber - 300, 0),
+//       current: Math.max(currentNumber - 12, 0),
+//       voltage: voltageNumber - 1,
+//       pf: Math.max(pfNumber - 0.02, 0),
+//     },
+//     {
+//       time: "11:00",
+//       kwh: Math.max(kwhNumber - 275, 0),
+//       kvh: Math.max(kvhNumber - 250, 0),
+//       current: Math.max(currentNumber - 6, 0),
+//       voltage: voltageNumber + 1,
+//       pf: Math.max(pfNumber - 0.01, 0),
+//     },
+//     {
+//       time: "12:00",
+//       kwh: Math.max(kwhNumber - 225, 0),
+//       kvh: Math.max(kvhNumber - 205, 0),
+//       current: currentNumber + 4,
+//       voltage: voltageNumber + 2,
+//       pf: Math.min(pfNumber + 0.005, 1),
+//     },
+//     {
+//       time: "13:00",
+//       kwh: Math.max(kwhNumber - 175, 0),
+//       kvh: Math.max(kvhNumber - 160, 0),
+//       current: currentNumber + 10,
+//       voltage: voltageNumber + 3,
+//       pf: Math.min(pfNumber + 0.01, 1),
+//     },
+//     {
+//       time: "14:00",
+//       kwh: Math.max(kwhNumber - 125, 0),
+//       kvh: Math.max(kvhNumber - 115, 0),
+//       current: currentNumber + 16,
+//       voltage: voltageNumber + 2,
+//       pf: Math.min(pfNumber + 0.015, 1),
+//     },
+//     {
+//       time: "15:00",
+//       kwh: Math.max(kwhNumber - 80, 0),
+//       kvh: Math.max(kvhNumber - 70, 0),
+//       current: currentNumber + 9,
+//       voltage: voltageNumber,
+//       pf: Math.min(pfNumber + 0.01, 1),
+//     },
+//     {
+//       time: "16:00",
+//       kwh: Math.max(kwhNumber - 35, 0),
+//       kvh: Math.max(kvhNumber - 30, 0),
+//       current: currentNumber + 4,
+//       voltage: voltageNumber - 1,
+//       pf: pfNumber,
+//     },
+//     {
+//       time: "Now",
+//       kwh: kwhNumber,
+//       kvh: kvhNumber,
+//       current: currentNumber,
+//       voltage: voltageNumber,
+//       pf: pfNumber,
+//     },
+//   ];
+
+//   const avg = Math.round(
+//     graphValues.reduce(
+//       (total, item) => total + item.current,
+//       0
+//     ) / graphValues.length
+//   );
+
+//   const currentStatus =
+//     currentNumber >= 350
+//       ? "Critical"
+//       : currentNumber >= 280
+//         ? "High"
+//         : "Normal";
+
+//   const voltageStatus =
+//     voltageNumber < 400
+//       ? "Low"
+//       : voltageNumber > 450
+//         ? "High"
+//         : "Stable";
+
+//   const pfStatus =
+//     pfNumber < 0.85
+//       ? "Critical"
+//       : pfNumber < 0.95
+//         ? "Low"
+//         : "Good";
+
+//   const pfGaugeData = [
+//     {
+//       name: "Power Factor",
+//       value: Math.min(Math.max(pfNumber * 100, 0), 100),
+//       fill:
+//         pfNumber < 0.85
+//           ? "#F87171"
+//           : pfNumber < 0.95
+//             ? "#FBBF24"
+//             : "#34D399",
+//     },
+//   ];
+
+//   const chartId = String(data.title || "pcc").replace(
+//     /[^a-zA-Z0-9]/g,
+//     "-"
+//   );
+
+//   return (
+//     <div className="fixed inset-x-0 bottom-0 top-[72px] z-[1100] overflow-hidden bg-[#020817] text-white">
+//       <div className="flex h-full min-h-0 flex-col bg-[radial-gradient(circle_at_top_left,rgba(0,74,173,0.2),transparent_30%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_25%),linear-gradient(180deg,#020B24_0%,#020817_100%)] px-4 pb-4">
+//         <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
+//           <div className="shrink-0 border-b border-[#174575] bg-[#020B24]/95 py-3 backdrop-blur-xl">
+//             <div className="flex items-stretch gap-4">
+//               <button
+//                 type="button"
+//                 onClick={onBack}
+//                 className="flex h-[62px] shrink-0 items-center justify-center rounded-xl border border-[#1B4D83] bg-[#061737] px-5 text-[12px] font-semibold text-slate-100 transition hover:border-cyan-400/70 hover:bg-[#092452]"
+//               >
+//                 <ArrowLeft className="mr-2 h-4 w-4 text-cyan-300" />
+//                 Back to PCC Panel
+//               </button>
+
+//               <div className="relative flex-1 overflow-hidden rounded-xl border border-[#1B4D83] bg-[#071633] px-5 py-3">
+//                 <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400" />
+
+//                 <div className="flex h-full items-center justify-between">
+//                   <div>
+//                     <h2 className="text-[23px] font-semibold tracking-tight text-white">
+//                       {data.title}
+//                     </h2>
+
+//                     <p className="mt-1 text-[10px] text-slate-400">
+//                       {data.subtitle}
+//                     </p>
+//                   </div>
+
+//                   <div className="rounded-lg border border-emerald-400/30 bg-emerald-400/[0.08] px-4 py-2 text-[11px] font-semibold text-emerald-300">
+//                     <span className="flex items-center gap-2">
+//                       <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+//                       {data.status}
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="mt-3 grid min-h-0 flex-1 grid-cols-6 grid-rows-2 gap-3">
+//             {/* KWH */}
+//             <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+//               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
+
+//               <div className="flex items-start justify-between gap-3">
+//                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+//                   kWh Analytics
+//                 </h3>
+
+//                 <p className="text-[19px] font-semibold text-cyan-300">
+//                   {kwhNumber.toLocaleString()} kWh
+//                 </p>
+//               </div>
+
+//               <div className="mt-3 min-h-0 flex-1">
+//                 <ResponsiveContainer width="100%" height="100%">
+//                   <AreaChart
+//                     data={graphValues}
+//                     margin={{
+//                       top: 10,
+//                       right: 10,
+//                       left: -16,
+//                       bottom: 0,
+//                     }}
+//                   >
+//                     <defs>
+//                       <linearGradient
+//                         id={`pccKwh-${chartId}`}
+//                         x1="0"
+//                         y1="0"
+//                         x2="0"
+//                         y2="1"
+//                       >
+//                         <stop
+//                           offset="0%"
+//                           stopColor="#22D3EE"
+//                           stopOpacity={0.72}
+//                         />
+
+//                         <stop
+//                           offset="100%"
+//                           stopColor="#22D3EE"
+//                           stopOpacity={0.03}
+//                         />
+//                       </linearGradient>
+//                     </defs>
+
+//                     <CartesianGrid
+//                       vertical={false}
+//                       stroke="rgba(148,163,184,0.13)"
+//                       strokeDasharray="4 4"
+//                     />
+
+//                     <XAxis
+//                       dataKey="time"
+//                       axisLine={false}
+//                       tickLine={false}
+//                       interval={1}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <YAxis
+//                       axisLine={false}
+//                       tickLine={false}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <Tooltip
+//                       contentStyle={analyticsTooltipStyle}
+//                       formatter={(value) => [
+//                         `${Number(value).toLocaleString()} kWh`,
+//                         "Energy",
+//                       ]}
+//                     />
+
+//                     <Area
+//                       type="monotone"
+//                       dataKey="kwh"
+//                       stroke="#22D3EE"
+//                       strokeWidth={2.3}
+//                       fill={`url(#pccKwh-${chartId})`}
+//                       dot={false}
+//                       isAnimationActive={false}
+//                     />
+//                   </AreaChart>
+//                 </ResponsiveContainer>
+//               </div>
+//             </div>
+
+//             {/* KVH */}
+//             <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+//               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
+
+//               <div className="flex items-start justify-between gap-3">
+//                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+//                   kVh Analytics
+//                 </h3>
+
+//                 <p className="text-[19px] font-semibold text-purple-300">
+//                   {kvhNumber.toLocaleString()} kVh
+//                 </p>
+//               </div>
+
+//               <div className="mt-3 min-h-0 flex-1">
+//                 <ResponsiveContainer width="100%" height="100%">
+//                   <BarChart
+//                     data={graphValues}
+//                     margin={{
+//                       top: 10,
+//                       right: 10,
+//                       left: -16,
+//                       bottom: 0,
+//                     }}
+//                   >
+//                     <CartesianGrid
+//                       vertical={false}
+//                       stroke="rgba(148,163,184,0.13)"
+//                       strokeDasharray="4 4"
+//                     />
+
+//                     <XAxis
+//                       dataKey="time"
+//                       axisLine={false}
+//                       tickLine={false}
+//                       interval={1}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <YAxis
+//                       axisLine={false}
+//                       tickLine={false}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <Tooltip
+//                       contentStyle={analyticsTooltipStyle}
+//                       formatter={(value) => [
+//                         `${Number(value).toLocaleString()} kVh`,
+//                         "Apparent Energy",
+//                       ]}
+//                     />
+
+//                     <Bar
+//                       dataKey="kvh"
+//                       fill="#A78BFA"
+//                       radius={[5, 5, 0, 0]}
+//                       maxBarSize={26}
+//                       isAnimationActive={false}
+//                     />
+//                   </BarChart>
+//                 </ResponsiveContainer>
+//               </div>
+//             </div>
+
+//             {/* POWER FACTOR */}
+//             <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+//               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+
+//               <div className="flex items-start justify-between gap-3">
+//                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+//                   Power Factor
+//                 </h3>
+
+//                 <span
+//                   className={`text-[10px] font-bold uppercase ${
+//                     pfStatus === "Critical"
+//                       ? "text-red-300"
+//                       : pfStatus === "Low"
+//                         ? "text-amber-300"
+//                         : "text-emerald-300"
+//                   }`}
+//                 >
+//                   {pfStatus}
+//                 </span>
+//               </div>
+
+//               <div className="relative mt-2 min-h-0 flex-1">
+//                 <ResponsiveContainer width="100%" height="100%">
+//                   <RadialBarChart
+//                     innerRadius="62%"
+//                     outerRadius="92%"
+//                     data={pfGaugeData}
+//                     startAngle={210}
+//                     endAngle={-30}
+//                   >
+//                     <PolarAngleAxis
+//                       type="number"
+//                       domain={[0, 100]}
+//                       angleAxisId={0}
+//                       tick={false}
+//                     />
+
+//                     <RadialBar
+//                       background={{
+//                         fill: "rgba(255,255,255,0.08)",
+//                       }}
+//                       dataKey="value"
+//                       cornerRadius={12}
+//                       isAnimationActive={false}
+//                     />
+//                   </RadialBarChart>
+//                 </ResponsiveContainer>
+
+//                 <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-5">
+//                   <span className="text-[34px] font-semibold text-white">
+//                     {pfNumber.toFixed(2)}
+//                   </span>
+
+//                   <span
+//                     className={`mt-1 text-[9px] font-bold uppercase ${
+//                       pfStatus === "Critical"
+//                         ? "text-red-300"
+//                         : pfStatus === "Low"
+//                           ? "text-amber-300"
+//                           : "text-emerald-300"
+//                     }`}
+//                   >
+//                     {pfStatus}
+//                   </span>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* CURRENT */}
+//             <div className="relative col-span-3 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+//               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
+
+//               <div className="flex items-start justify-between gap-3">
+//                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+//                   Current Analytics
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[20px] font-semibold text-white">
+//                     {currentNumber} A
+//                   </p>
+
+//                   <span
+//                     className={`text-[9px] font-bold uppercase ${
+//                       currentStatus === "Critical"
+//                         ? "text-red-300"
+//                         : currentStatus === "High"
+//                           ? "text-amber-300"
+//                           : "text-emerald-300"
+//                     }`}
+//                   >
+//                     {currentStatus}
+//                   </span>
+//                 </div>
+//               </div>
+
+//               <div className="mt-3 min-h-0 flex-1">
+//                 <ResponsiveContainer width="100%" height="100%">
+//                   <BarChart
+//                     data={graphValues}
+//                     margin={{
+//                       top: 10,
+//                       right: 10,
+//                       left: -16,
+//                       bottom: 0,
+//                     }}
+//                   >
+//                     <CartesianGrid
+//                       vertical={false}
+//                       stroke="rgba(148,163,184,0.13)"
+//                       strokeDasharray="4 4"
+//                     />
+
+//                     <XAxis
+//                       dataKey="time"
+//                       axisLine={false}
+//                       tickLine={false}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <YAxis
+//                       axisLine={false}
+//                       tickLine={false}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <Tooltip
+//                       contentStyle={analyticsTooltipStyle}
+//                       formatter={(value) => [
+//                         `${Math.round(value)} A`,
+//                         "Current",
+//                       ]}
+//                     />
+
+//                     <Bar
+//                       dataKey="current"
+//                       fill="#FBBF24"
+//                       radius={[5, 5, 0, 0]}
+//                       maxBarSize={28}
+//                       isAnimationActive={false}
+//                     />
+//                   </BarChart>
+//                 </ResponsiveContainer>
+//               </div>
+
+//               <div className="pointer-events-none absolute bottom-3 right-4 rounded-lg border border-amber-400/20 bg-[#061737]/90 px-3 py-2">
+//                 <p className="text-[8px] uppercase text-slate-500">
+//                   Average
+//                 </p>
+
+//                 <p className="mt-1 text-[clamp(10px,1.4vh,13px)] font-semibold text-amber-300">
+//                   {avg} A
+//                 </p>
+//               </div>
+//             </div>
+
+//             {/* VOLTAGE */}
+//             <div className="relative col-span-3 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
+//               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent" />
+
+//               <div className="flex items-start justify-between gap-3">
+//                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
+//                   Voltage Analytics
+//                 </h3>
+
+//                 <div className="text-right">
+//                   <p className="text-[20px] font-semibold text-white">
+//                     {voltageNumber} V
+//                   </p>
+
+//                   <span
+//                     className={`text-[9px] font-bold uppercase ${
+//                       voltageStatus === "Stable"
+//                         ? "text-emerald-300"
+//                         : "text-amber-300"
+//                     }`}
+//                   >
+//                     {voltageStatus}
+//                   </span>
+//                 </div>
+//               </div>
+
+//               <div className="mt-3 min-h-0 flex-1">
+//                 <ResponsiveContainer width="100%" height="100%">
+//                   <LineChart
+//                     data={graphValues}
+//                     margin={{
+//                       top: 10,
+//                       right: 42,
+//                       left: -16,
+//                       bottom: 0,
+//                     }}
+//                   >
+//                     <CartesianGrid
+//                       vertical={false}
+//                       stroke="rgba(148,163,184,0.13)"
+//                       strokeDasharray="4 4"
+//                     />
+
+//                     <XAxis
+//                       dataKey="time"
+//                       axisLine={false}
+//                       tickLine={false}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <YAxis
+//                       domain={[380, 460]}
+//                       axisLine={false}
+//                       tickLine={false}
+//                       tick={{
+//                         fill: "#8EA6C4",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <ReferenceLine
+//                       y={440}
+//                       stroke="#F87171"
+//                       strokeDasharray="4 4"
+//                       label={{
+//                         value: "Upper",
+//                         position: "right",
+//                         fill: "#F87171",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <ReferenceLine
+//                       y={400}
+//                       stroke="#FBBF24"
+//                       strokeDasharray="4 4"
+//                       label={{
+//                         value: "Lower",
+//                         position: "right",
+//                         fill: "#FBBF24",
+//                         fontSize: 8,
+//                       }}
+//                     />
+
+//                     <Tooltip
+//                       contentStyle={analyticsTooltipStyle}
+//                       formatter={(value) => [
+//                         `${Number(value).toFixed(1)} V`,
+//                         "Voltage",
+//                       ]}
+//                     />
+
+//                     <Line
+//                       type="monotone"
+//                       dataKey="voltage"
+//                       stroke="#60A5FA"
+//                       strokeWidth={2.3}
+//                       dot={{
+//                         r: 3,
+//                         fill: "#60A5FA",
+//                         stroke: "#DBEAFE",
+//                         strokeWidth: 1,
+//                       }}
+//                       activeDot={{ r: 5 }}
+//                       isAnimationActive={false}
+//                     />
+//                   </LineChart>
+//                 </ResponsiveContainer>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+// const createPccAnalyticsData = (title, panel, index) => ({
+//   title: `${title} - ${panel.name.replace(/\n/g, " ")}`,
+//   subtitle: "LT Distribution Panel Live Analytics",
+//   kwh: `${1245 + index * 18}`,
+//   kvh: `${1180 + index * 15}`,
+//   voltage: "433 V",
+//   current: `${210 + index * 4} A`,
+//   pf: index % 2 === 0 ? "0.98" : "0.97",
+//   load: 70 + (index % 8),
+//   health: 92 + (index % 5),
+//   status: "Stable",
+// });
+
+// const Pcc1Popup = () => {
+//   const [openedPanels, setOpenedPanels] = React.useState([]);
+//   const [activePccAnalytics, setActivePccAnalytics] = React.useState(null);
+
+//   const pcc1Panels = [
+//     { name: "LT6\nIN", arrow: "down" },
+//     { name: "DG1234\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 1", arrow: "up" },
+//     { name: "Spare 1", arrow: "up" },
+//     { name: "Bus\nCoupler\nB/C", arrow: "both" },
+//     { name: "LT5", arrow: "down" },
+//     { name: "DG 1234", arrow: "down" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 2", arrow: "up" },
+//     { name: "Spare 2", arrow: "up" },
+//   ];
+
+//   const pcc2Panels = [
+//     { name: "LT1\nIN", arrow: "down" },
+//     { name: "DG1234\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 1", arrow: "up" },
+//     { name: "Spare 1", arrow: "up" },
+//     { name: "Bus\nCoupler\nB/C", arrow: "both" },
+//     { name: "LT2", arrow: "down" },
+//     { name: "DG 1234", arrow: "down" },
+//     { name: "RM1", arrow: "up" },
+//     { name: "RM2", arrow: "up" },
+//     { name: "Utility 2", arrow: "up" },
+//     { name: "Spare 2", arrow: "up" },
+//   ];
+
+//   const FlowArrow = ({ type, id }) => (
+//     <svg
+//       className="absolute left-0 -top-[48px] w-full h-12 overflow-visible pointer-events-none"
+//       viewBox="0 0 100 48"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//     >
+//       <defs>
+//         <marker
+//           id={`arrow-wing-${id}`}
+//           viewBox="0 0 10 10"
+//           refX="4"
+//           refY="5"
+//           markerWidth="8"
+//           markerHeight="8"
+//           orient="auto-start-reverse"
+//         >
+//           <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
+//         </marker>
+//       </defs>
+
+//       {type === "down" && (
+//         <>
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "up" && (
+//         <>
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "both" && (
+//         <>
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//           <path
+//             d="M 82 24 H 18"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing-${id})`}
+//           />
+//         </>
+//       )}
+//     </svg>
+//   );
+
+//   const PanelFeatures = ({ heading }) => (
+//     <div className="absolute inset-0 z-30 bg-[#081F5C] px-2 py-2">
+//       <div className="text-center text-[9px] font-black text-blue-300 uppercase tracking-wide leading-tight border-b border-[#2B5DA8] pb-1 mb-1 whitespace-pre-line">
+//         {heading}
+//       </div>
+
+//       {[
+//         ["kWh", "1245"],
+//         ["kVh", "1180"],
+//         ["V", "433V"],
+//         ["PF", "0.98"],
+//         ["Amps", "210A"],
+//       ].map(([label, value]) => (
+//         <div key={label} className="flex justify-between text-[9px] leading-[15px]">
+//           <span className="text-blue-200">{label}</span>
+//           <span className="text-white">{value}</span>
+//         </div>
+//       ))}
+//     </div>
+//   );
+
+//   const PCCRow = ({ title, top, rowPanels }) => (
+//     <div className={`absolute left-0 ${top} w-full h-[210px]`}>
+//       <div className="absolute left-[10px] top-[-34px] text-[#081F5C] text-base font-semibold">
+//         {title}
+//       </div>
+
+//       <div className="absolute left-0 top-[45px] w-full h-[150px] flex items-stretch z-20">
+//         {rowPanels.map((panel, index) => {
+//           const panelId = `${title}-${index}`;
+//           const isOpened = openedPanels.includes(panelId);
+
+//           return (
+//             <div
+//               key={`${title}-${panel.name}-${index}`}
+//               onMouseEnter={() =>
+//                 setOpenedPanels((prev) =>
+//                   prev.includes(panelId) ? prev : [...prev, panelId]
+//                 )
+//               }
+//               onClick={() =>
+//                 setActivePccAnalytics(
+//                   createPccAnalyticsData(title, panel, index)
+//                 )
+//               }
+//               className="relative h-full flex-1 min-w-0 bg-[#081F5C] border-2 border-[#004AAD] border-r-0 last:border-r-2 text-white cursor-pointer"
+//             >
+//               <FlowArrow
+//                 type={panel.arrow}
+//                 id={`${title.replace(/\s/g, "")}-${index}`}
+//               />
+
+//               {isOpened ? (
+//                 <PanelFeatures heading={panel.name} />
+//               ) : (
+//                 <div className="absolute inset-0 z-20 flex items-center justify-center px-1">
+//                   <span className="text-[clamp(11px,1.5vh,14px)] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
+//                     {panel.name}
+//                   </span>
+//                 </div>
+//               )}
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <>
+//       <PopupShell
+//         title="Wing 1 LT Distribution Flow"
+//         onBack={() => setActivePopup("pccMain")}
+//       >
+//         <div className="w-full max-w-[1600px] mx-auto px-4 py-6 overflow-visible">
+//           <div className="relative w-full h-[520px] overflow-visible">
+//             <PCCRow title="PCC 1" top="top-[25px]" rowPanels={pcc1Panels} />
+//             <PCCRow title="PCC 2" top="top-[285px]" rowPanels={pcc2Panels} />
+//           </div>
+//         </div>
+//       </PopupShell>
+
+//       {activePccAnalytics && (
+//         <PccPanelAnalyticsView
+//           data={activePccAnalytics}
+//           onBack={() => setActivePccAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+// const Pcc2Popup = () => {
+//   const [openedPanels, setOpenedPanels] = React.useState([]);
+//   const [activePccAnalytics, setActivePccAnalytics] = React.useState(null);
+
+//   const pcc3Panels = [
+//     { name: "LT4\nIN", arrow: "down" },
+//     { name: "DG567\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "OG 2", arrow: "up" },
+//     { name: "OG 3", arrow: "up" },
+//     { name: "OG 4", arrow: "up" },
+//     { name: "OG 5", arrow: "up" },
+//     { name: "OG 6", arrow: "up" },
+//     { name: "OG 7", arrow: "up" },
+//     { name: "OG 8", arrow: "up" },
+//     { name: "OG 9", arrow: "up" },
+//     { name: "OG 10", arrow: "up" },
+//   ];
+
+//   const pcc4Panels = [
+//     { name: "LT3\nIN", arrow: "down" },
+//     { name: "DG567\nIN", arrow: "down" },
+//     { name: "OG 1", arrow: "up" },
+//     { name: "OG 2", arrow: "up" },
+//     { name: "OG 3", arrow: "up" },
+//     { name: "OG 4", arrow: "up" },
+//     { name: "OG 5", arrow: "up" },
+//     { name: "OG 6", arrow: "up" },
+//     { name: "OG 7", arrow: "up" },
+//     { name: "OG 8", arrow: "up" },
+//     { name: "OG 9", arrow: "up" },
+//     { name: "OG 10", arrow: "up" },
+//   ];
+
+//   const FlowArrow = ({ type, id }) => (
+//     <svg
+//       className="absolute left-0 -top-[48px] w-full h-12 overflow-visible pointer-events-none"
+//       viewBox="0 0 100 48"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//     >
+//       <defs>
+//         <marker
+//           id={`arrow-wing2-${id}`}
+//           viewBox="0 0 10 10"
+//           refX="4"
+//           refY="5"
+//           markerWidth="8"
+//           markerHeight="8"
+//           orient="auto-start-reverse"
+//         >
+//           <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
+//         </marker>
+//       </defs>
+
+//       {type === "down" && (
+//         <>
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 0 V 48"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "up" && (
+//         <>
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 50 48 V 0"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//         </>
+//       )}
+
+//       {type === "both" && (
+//         <>
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#004AAD"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//           />
+//           <path
+//             d="M 18 24 H 82"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-right"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//           <path
+//             d="M 82 24 H 18"
+//             stroke="#00E5FF"
+//             strokeWidth="2.5"
+//             strokeLinecap="round"
+//             className="flow-path-left"
+//             markerEnd={`url(#arrow-wing2-${id})`}
+//           />
+//         </>
+//       )}
+//     </svg>
+//   );
+
+//   const PanelFeatures = ({ heading }) => (
+//     <div className="absolute inset-0 z-30 bg-[#081F5C] px-2 py-2">
+//       <div className="text-center text-[9px] font-black text-blue-300 uppercase tracking-wide leading-tight border-b border-[#2B5DA8] pb-1 mb-1 whitespace-pre-line">
+//         {heading}
+//       </div>
+
+//       {[
+//         ["kWh", "1245"],
+//         ["kVh", "1180"],
+//         ["V", "433V"],
+//         ["PF", "0.98"],
+//         ["Amps", "210A"],
+//       ].map(([label, value]) => (
+//         <div key={label} className="flex justify-between text-[9px] leading-[15px]">
+//           <span className="text-blue-200">{label}</span>
+//           <span className="text-white">{value}</span>
+//         </div>
+//       ))}
+//     </div>
+//   );
+
+//   const PCCRow = ({ title, top, rowPanels }) => (
+//     <div className={`absolute left-0 ${top} w-full h-[210px]`}>
+//       <div className="absolute left-[10px] top-[-34px] text-[#081F5C] text-base font-semibold">
+//         {title}
+//       </div>
+
+//       <div className="absolute left-0 top-[45px] w-full h-[150px] flex items-stretch z-20">
+//         {rowPanels.map((panel, index) => {
+//           const panelId = `${title}-${index}`;
+//           const isOpened = openedPanels.includes(panelId);
+
+//           return (
+//             <div
+//               key={`${title}-${panel.name}-${index}`}
+//               onMouseEnter={() =>
+//                 setOpenedPanels((prev) =>
+//                   prev.includes(panelId) ? prev : [...prev, panelId]
+//                 )
+//               }
+//               onClick={() =>
+//                 setActivePccAnalytics(
+//                   createPccAnalyticsData(title, panel, index)
+//                 )
+//               }
+//               className="relative h-full flex-1 min-w-0 bg-[#081F5C] border-2 border-[#004AAD] border-r-0 last:border-r-2 text-white cursor-pointer"
+//             >
+//               <FlowArrow
+//                 type={panel.arrow}
+//                 id={`${title.replace(/\s/g, "")}-${index}`}
+//               />
+
+//               {isOpened ? (
+//                 <PanelFeatures heading={panel.name} />
+//               ) : (
+//                 <div className="absolute inset-0 flex items-center justify-center px-1">
+//                   <span className="text-[clamp(11px,1.5vh,14px)] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
+//                     {panel.name}
+//                   </span>
+//                 </div>
+//               )}
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <>
+//       <PopupShell
+//         title="Wing 2 LT Distribution Flow"
+//         onBack={() => setActivePopup("pccMain")}
+//       >
+//         <div className="w-full max-w-7xl mx-auto px-4 py-6 overflow-visible">
+//           <div className="relative w-full h-[520px] overflow-visible">
+//             <PCCRow title="PCC 3" top="top-[25px]" rowPanels={pcc3Panels} />
+//             <PCCRow title="PCC 4" top="top-[285px]" rowPanels={pcc4Panels} />
+//           </div>
+//         </div>
+//       </PopupShell>
+
+//       {activePccAnalytics && (
+//         <PccPanelAnalyticsView
+//           data={activePccAnalytics}
+//           onBack={() => setActivePccAnalytics(null)}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+// const PCCSimpleBox = ({ title, subtitle, onClick }) => (
+//   <div
+//     onClick={onClick}
+//     className="h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-xl panel-active-glow flex flex-col items-center justify-center text-center cursor-pointer overflow-hidden px-4"
+//   >
+//     <h4 className="text-xl font-bold uppercase tracking-[0.05em] text-white">
+//       {title}
+//     </h4>
+
+//     <span className="mt-1 text-[clamp(11px,1.5vh,14px)] text-slate-300 font-medium">
+//       {subtitle}
+//     </span>
+//   </div>
+// );
+
+// const PCCMainPopup = () => (
+//   <PopupShell title="PCC Main Overview">
+//     <div className="w-full max-w-6xl mx-auto px-6 py-10 overflow-hidden">
+//       <div className="relative w-full h-[360px]">
+//         <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[280px]">
+//           <PCCSimpleBox title="PCC" subtitle="Main LT Distribution" />
+//         </div>
+
+//         <svg
+//           className="absolute left-0 top-[145px] w-full h-[120px] overflow-visible pointer-events-none"
+//           viewBox="0 0 1000 120"
+//           fill="none"
+//         >
+//           <defs>
+//             <marker
+//               id="pcc-wing-arrow"
+//               viewBox="0 0 12 12"
+//               refX="5"
+//               refY="5"
+//               markerWidth="8"
+//               markerHeight="8"
+//               orient="auto"
+//             >
+//               <path d="M0 2 L6 5 L0 8 Z" fill="#00E5FF" />
+//             </marker>
+//           </defs>
+
+//           <path
+//             d="M500 0 V45 H250 V95"
+//             stroke="#004AAD"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           />
+
+//           <path
+//             d="M500 45 H750 V95"
+//             stroke="#004AAD"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           />
+
+//           <path
+//             d="M500 0 V45 H250 V95"
+//             stroke="#00E5FF"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             className="flow-path-left"
+//             markerEnd="url(#pcc-wing-arrow)"
+//           />
+
+//           <path
+//             d="M500 45 H750 V95"
+//             stroke="#00E5FF"
+//             strokeWidth="3"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             className="flow-path-right"
+//             markerEnd="url(#pcc-wing-arrow)"
+//           />
+//         </svg>
+
+//         <div className="absolute left-[8%] top-[240px] w-[36%]">
+//           <PCCSimpleBox
+//             title="PCC 1 / PCC 2"
+//             subtitle="Wing A"
+//             onClick={() => setActivePopup("wing1")}
+//           />
+//         </div>
+
+//         <div className="absolute right-[8%] top-[240px] w-[36%]">
+//           <PCCSimpleBox
+//             title="PCC 3 / PCC 4"
+//             subtitle="Wing B"
+//             onClick={() => setActivePopup("wing2")}
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   </PopupShell>
+// );
+
+
+
 const PccPanelAnalyticsView = ({ data, onBack }) => {
   if (!data) return null;
 
@@ -10056,54 +11241,29 @@ const createPccAnalyticsData = (title, panel, index) => ({
   status: "Stable",
 });
 
-const Pcc1Popup = () => {
-  const [openedPanels, setOpenedPanels] = React.useState([]);
-  const [activePccAnalytics, setActivePccAnalytics] = React.useState(null);
+const SinglePccPopup = ({
+  popupTitle,
+  pccTitle,
+  panels,
+}) => {
+  const [openedPanels, setOpenedPanels] =
+    React.useState([]);
 
-  const pcc1Panels = [
-    { name: "LT6\nIN", arrow: "down" },
-    { name: "DG1234\nIN", arrow: "down" },
-    { name: "OG 1", arrow: "up" },
-    { name: "RM1", arrow: "up" },
-    { name: "RM2", arrow: "up" },
-    { name: "Utility 1", arrow: "up" },
-    { name: "Spare 1", arrow: "up" },
-    { name: "Bus\nCoupler\nB/C", arrow: "both" },
-    { name: "LT5", arrow: "down" },
-    { name: "DG 1234", arrow: "down" },
-    { name: "RM1", arrow: "up" },
-    { name: "RM2", arrow: "up" },
-    { name: "Utility 2", arrow: "up" },
-    { name: "Spare 2", arrow: "up" },
-  ];
-
-  const pcc2Panels = [
-    { name: "LT1\nIN", arrow: "down" },
-    { name: "DG1234\nIN", arrow: "down" },
-    { name: "OG 1", arrow: "up" },
-    { name: "RM1", arrow: "up" },
-    { name: "RM2", arrow: "up" },
-    { name: "Utility 1", arrow: "up" },
-    { name: "Spare 1", arrow: "up" },
-    { name: "Bus\nCoupler\nB/C", arrow: "both" },
-    { name: "LT2", arrow: "down" },
-    { name: "DG 1234", arrow: "down" },
-    { name: "RM1", arrow: "up" },
-    { name: "RM2", arrow: "up" },
-    { name: "Utility 2", arrow: "up" },
-    { name: "Spare 2", arrow: "up" },
-  ];
+  const [
+    activePccAnalytics,
+    setActivePccAnalytics,
+  ] = React.useState(null);
 
   const FlowArrow = ({ type, id }) => (
     <svg
-      className="absolute left-0 -top-[48px] w-full h-12 overflow-visible pointer-events-none"
+      className="absolute left-0 -top-[48px] h-12 w-full overflow-visible pointer-events-none"
       viewBox="0 0 100 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
         <marker
-          id={`arrow-wing-${id}`}
+          id={`arrow-pcc-${id}`}
           viewBox="0 0 10 10"
           refX="4"
           refY="5"
@@ -10111,7 +11271,10 @@ const Pcc1Popup = () => {
           markerHeight="8"
           orient="auto-start-reverse"
         >
-          <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
+          <path
+            d="M 0 2 L 6 5 L 0 8 z"
+            fill="#00E5FF"
+          />
         </marker>
       </defs>
 
@@ -10123,13 +11286,13 @@ const Pcc1Popup = () => {
             strokeWidth="2.5"
             strokeLinecap="round"
           />
+
           <path
             d="M 50 0 V 48"
             stroke="#00E5FF"
             strokeWidth="2.5"
             strokeLinecap="round"
-            className="flow-path-right"
-            markerEnd={`url(#arrow-wing-${id})`}
+            markerEnd={`url(#arrow-pcc-${id})`}
           />
         </>
       )}
@@ -10142,13 +11305,13 @@ const Pcc1Popup = () => {
             strokeWidth="2.5"
             strokeLinecap="round"
           />
+
           <path
             d="M 50 48 V 0"
             stroke="#00E5FF"
             strokeWidth="2.5"
             strokeLinecap="round"
-            className="flow-path-left"
-            markerEnd={`url(#arrow-wing-${id})`}
+            markerEnd={`url(#arrow-pcc-${id})`}
           />
         </>
       )}
@@ -10161,105 +11324,206 @@ const Pcc1Popup = () => {
             strokeWidth="2.5"
             strokeLinecap="round"
           />
+
           <path
             d="M 18 24 H 82"
             stroke="#00E5FF"
             strokeWidth="2.5"
             strokeLinecap="round"
-            className="flow-path-right"
-            markerEnd={`url(#arrow-wing-${id})`}
+            markerEnd={`url(#arrow-pcc-${id})`}
           />
+
           <path
             d="M 82 24 H 18"
             stroke="#00E5FF"
             strokeWidth="2.5"
             strokeLinecap="round"
-            className="flow-path-left"
-            markerEnd={`url(#arrow-wing-${id})`}
+            markerEnd={`url(#arrow-pcc-${id})`}
           />
         </>
       )}
     </svg>
   );
 
-  const PanelFeatures = ({ heading }) => (
-    <div className="absolute inset-0 z-30 bg-[#081F5C] px-2 py-2">
-      <div className="text-center text-[9px] font-black text-blue-300 uppercase tracking-wide leading-tight border-b border-[#2B5DA8] pb-1 mb-1 whitespace-pre-line">
-        {heading}
-      </div>
+  const PanelFeatures = ({
+    heading,
+    index,
+  }) => {
+    const values = [
+      ["kWh", `${1245 + index * 18}`],
+      ["kVh", `${1180 + index * 15}`],
+      ["V", "433V"],
+      [
+        "PF",
+        index % 2 === 0
+          ? "0.98"
+          : "0.97",
+      ],
+      [
+        "Amps",
+        `${210 + index * 4}A`,
+      ],
+    ];
 
-      {[
-        ["kWh", "1245"],
-        ["kVh", "1180"],
-        ["V", "433V"],
-        ["PF", "0.98"],
-        ["Amps", "210A"],
-      ].map(([label, value]) => (
-        <div key={label} className="flex justify-between text-[9px] leading-[15px]">
-          <span className="text-blue-200">{label}</span>
-          <span className="text-white">{value}</span>
+    return (
+      <div className="absolute inset-0 z-30 bg-[#081F5C] px-2 py-2">
+        <div className="mb-1 border-b border-[#2B5DA8] pb-1 text-center text-[9px] font-black uppercase leading-tight tracking-wide text-blue-300 whitespace-pre-line">
+          {heading}
         </div>
-      ))}
-    </div>
-  );
 
-  const PCCRow = ({ title, top, rowPanels }) => (
-    <div className={`absolute left-0 ${top} w-full h-[210px]`}>
-      <div className="absolute left-[10px] top-[-34px] text-[#081F5C] text-base font-semibold">
-        {title}
-      </div>
-
-      <div className="absolute left-0 top-[45px] w-full h-[150px] flex items-stretch z-20">
-        {rowPanels.map((panel, index) => {
-          const panelId = `${title}-${index}`;
-          const isOpened = openedPanels.includes(panelId);
-
-          return (
+        {values.map(
+          ([label, value]) => (
             <div
-              key={`${title}-${panel.name}-${index}`}
-              onMouseEnter={() =>
-                setOpenedPanels((prev) =>
-                  prev.includes(panelId) ? prev : [...prev, panelId]
-                )
-              }
-              onClick={() =>
-                setActivePccAnalytics(
-                  createPccAnalyticsData(title, panel, index)
-                )
-              }
-              className="relative h-full flex-1 min-w-0 bg-[#081F5C] border-2 border-[#004AAD] border-r-0 last:border-r-2 text-white cursor-pointer"
+              key={label}
+              className="flex justify-between text-[9px] leading-[15px]"
             >
-              <FlowArrow
-                type={panel.arrow}
-                id={`${title.replace(/\s/g, "")}-${index}`}
-              />
+              <span className="text-blue-200">
+                {label}
+              </span>
 
-              {isOpened ? (
-                <PanelFeatures heading={panel.name} />
-              ) : (
-                <div className="absolute inset-0 z-20 flex items-center justify-center px-1">
-                  <span className="text-[clamp(11px,1.5vh,14px)] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
-                    {panel.name}
-                  </span>
-                </div>
-              )}
+              <span className="text-white">
+                {value}
+              </span>
             </div>
-          );
-        })}
+          )
+        )}
       </div>
-    </div>
-  );
+    );
+  };
+
+  const openPanel = (panelId) => {
+    setOpenedPanels((previous) => {
+      if (previous.includes(panelId)) {
+        return previous;
+      }
+
+      return [
+        ...previous,
+        panelId,
+      ];
+    });
+  };
+
+  const openPanelAnalytics = (
+    panelId,
+    panel,
+    index
+  ) => {
+    openPanel(panelId);
+
+    setActivePccAnalytics(
+      createPccAnalyticsData(
+        pccTitle,
+        panel,
+        index
+      )
+    );
+  };
 
   return (
     <>
       <PopupShell
-        title="Wing 1 LT Distribution Flow"
-        onBack={() => setActivePopup("pccMain")}
+        title={popupTitle}
+        onBack={() =>
+          setActivePopup("pccMain")
+        }
       >
-        <div className="w-full max-w-[1600px] mx-auto px-4 py-6 overflow-visible">
-          <div className="relative w-full h-[520px] overflow-visible">
-            <PCCRow title="PCC 1" top="top-[25px]" rowPanels={pcc1Panels} />
-            <PCCRow title="PCC 2" top="top-[285px]" rowPanels={pcc2Panels} />
+        <div className="mx-auto w-full max-w-[1600px] overflow-visible px-4 py-6">
+          <div className="relative h-[260px] w-full overflow-visible">
+            <div className="absolute left-0 top-[25px] h-[210px] w-full">
+              <div className="absolute left-[10px] top-[-34px] text-base font-semibold text-[#081F5C]">
+                {pccTitle}
+              </div>
+
+              <div className="absolute left-0 top-[45px] z-20 flex h-[150px] w-full items-stretch">
+                {panels.map(
+                  (panel, index) => {
+                    const panelId =
+                      `${pccTitle}-${index}`;
+
+                    const isOpened =
+                      openedPanels.includes(
+                        panelId
+                      );
+
+                    return (
+                      <div
+                        key={`${pccTitle}-${panel.name}-${index}`}
+                        onMouseEnter={() =>
+                          openPanel(panelId)
+                        }
+                        onFocus={() =>
+                          openPanel(panelId)
+                        }
+                        onClick={() =>
+                          openPanelAnalytics(
+                            panelId,
+                            panel,
+                            index
+                          )
+                        }
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(
+                          event
+                        ) => {
+                          if (
+                            event.key ===
+                              "Enter" ||
+                            event.key === " "
+                          ) {
+                            event.preventDefault();
+
+                            openPanelAnalytics(
+                              panelId,
+                              panel,
+                              index
+                            );
+                          }
+                        }}
+                        className="
+                          relative
+                          h-full
+                          min-w-0
+                          flex-1
+                          cursor-pointer
+                          border-2
+                          border-r-0
+                          border-[#004AAD]
+                          bg-[#081F5C]
+                          text-white
+                          outline-none
+                          last:border-r-2
+                        "
+                      >
+                        <FlowArrow
+                          type={panel.arrow}
+                          id={`${pccTitle.replace(
+                            /\s/g,
+                            ""
+                          )}-${index}`}
+                        />
+
+                        {isOpened ? (
+                          <PanelFeatures
+                            heading={
+                              panel.name
+                            }
+                            index={index}
+                          />
+                        ) : (
+                          <div className="absolute inset-0 z-20 flex items-center justify-center px-1">
+                            <span className="text-center text-[clamp(11px,1.5vh,14px)] font-semibold leading-tight whitespace-pre-line md:text-[12px]">
+                              {panel.name}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </PopupShell>
@@ -10267,258 +11531,448 @@ const Pcc1Popup = () => {
       {activePccAnalytics && (
         <PccPanelAnalyticsView
           data={activePccAnalytics}
-          onBack={() => setActivePccAnalytics(null)}
+          onBack={() =>
+            setActivePccAnalytics(null)
+          }
         />
       )}
     </>
   );
 };
+const pcc1Panels = [
+  {
+    name: "LT6\nIN",
+    arrow: "down",
+  },
+  {
+    name: "DG1234\nIN",
+    arrow: "down",
+  },
+  {
+    name: "OG 1",
+    arrow: "up",
+  },
+  {
+    name: "RM1",
+    arrow: "up",
+  },
+  {
+    name: "RM2",
+    arrow: "up",
+  },
+  {
+    name: "Utility 1",
+    arrow: "up",
+  },
+  {
+    name: "Spare 1",
+    arrow: "up",
+  },
+  {
+    name: "Bus\nCoupler\nB/C",
+    arrow: "both",
+  },
+  {
+    name: "LT5\nIN",
+    arrow: "down",
+  },
+  {
+    name: "DG 1234\nIN",
+    arrow: "down",
+  },
+  {
+    name: "RM1",
+    arrow: "up",
+  },
+  {
+    name: "RM2",
+    arrow: "up",
+  },
+  {
+    name: "Utility 2",
+    arrow: "up",
+  },
+  {
+    name: "Spare 2",
+    arrow: "up",
+  },
+];
 
-const Pcc2Popup = () => {
-  const [openedPanels, setOpenedPanels] = React.useState([]);
-  const [activePccAnalytics, setActivePccAnalytics] = React.useState(null);
+const pcc2Panels = [
+  {
+    name: "LT1\nIN",
+    arrow: "down",
+  },
+  {
+    name: "DG1234\nIN",
+    arrow: "down",
+  },
+  {
+    name: "OG 1",
+    arrow: "up",
+  },
+  {
+    name: "RM1",
+    arrow: "up",
+  },
+  {
+    name: "RM2",
+    arrow: "up",
+  },
+  {
+    name: "Utility 1",
+    arrow: "up",
+  },
+  {
+    name: "Spare 1",
+    arrow: "up",
+  },
+  {
+    name: "Bus\nCoupler\nB/C",
+    arrow: "both",
+  },
+  {
+    name: "LT2\nIN",
+    arrow: "down",
+  },
+  {
+    name: "DG 1234\nIN",
+    arrow: "down",
+  },
+  {
+    name: "RM1",
+    arrow: "up",
+  },
+  {
+    name: "RM2",
+    arrow: "up",
+  },
+  {
+    name: "Utility 2",
+    arrow: "up",
+  },
+  {
+    name: "Spare 2",
+    arrow: "up",
+  },
+];
 
-  const pcc3Panels = [
-    { name: "LT4\nIN", arrow: "down" },
-    { name: "DG567\nIN", arrow: "down" },
-    { name: "OG 1", arrow: "up" },
-    { name: "OG 2", arrow: "up" },
-    { name: "OG 3", arrow: "up" },
-    { name: "OG 4", arrow: "up" },
-    { name: "OG 5", arrow: "up" },
-    { name: "OG 6", arrow: "up" },
-    { name: "OG 7", arrow: "up" },
-    { name: "OG 8", arrow: "up" },
-    { name: "OG 9", arrow: "up" },
-    { name: "OG 10", arrow: "up" },
-  ];
+const pcc3Panels = [
+  {
+    name: "LT4\nIN",
+    arrow: "down",
+  },
+  {
+    name: "DG567\nIN",
+    arrow: "down",
+  },
+  {
+    name: "OG 1",
+    arrow: "up",
+  },
+  {
+    name: "OG 2",
+    arrow: "up",
+  },
+  {
+    name: "OG 3",
+    arrow: "up",
+  },
+  {
+    name: "OG 4",
+    arrow: "up",
+  },
+  {
+    name: "OG 5",
+    arrow: "up",
+  },
+  {
+    name: "OG 6",
+    arrow: "up",
+  },
+  {
+    name: "OG 7",
+    arrow: "up",
+  },
+  {
+    name: "OG 8",
+    arrow: "up",
+  },
+  {
+    name: "OG 9",
+    arrow: "up",
+  },
+  {
+    name: "OG 10",
+    arrow: "up",
+  },
+];
 
-  const pcc4Panels = [
-    { name: "LT3\nIN", arrow: "down" },
-    { name: "DG567\nIN", arrow: "down" },
-    { name: "OG 1", arrow: "up" },
-    { name: "OG 2", arrow: "up" },
-    { name: "OG 3", arrow: "up" },
-    { name: "OG 4", arrow: "up" },
-    { name: "OG 5", arrow: "up" },
-    { name: "OG 6", arrow: "up" },
-    { name: "OG 7", arrow: "up" },
-    { name: "OG 8", arrow: "up" },
-    { name: "OG 9", arrow: "up" },
-    { name: "OG 10", arrow: "up" },
-  ];
+const pcc4Panels = [
+  {
+    name: "LT3\nIN",
+    arrow: "down",
+  },
+  {
+    name: "DG567\nIN",
+    arrow: "down",
+  },
+  {
+    name: "OG 1",
+    arrow: "up",
+  },
+  {
+    name: "OG 2",
+    arrow: "up",
+  },
+  {
+    name: "OG 3",
+    arrow: "up",
+  },
+  {
+    name: "OG 4",
+    arrow: "up",
+  },
+  {
+    name: "OG 5",
+    arrow: "up",
+  },
+  {
+    name: "OG 6",
+    arrow: "up",
+  },
+  {
+    name: "OG 7",
+    arrow: "up",
+  },
+  {
+    name: "OG 8",
+    arrow: "up",
+  },
+  {
+    name: "OG 9",
+    arrow: "up",
+  },
+  {
+    name: "OG 10",
+    arrow: "up",
+  },
+];
 
-  const FlowArrow = ({ type, id }) => (
-    <svg
-      className="absolute left-0 -top-[48px] w-full h-12 overflow-visible pointer-events-none"
-      viewBox="0 0 100 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <marker
-          id={`arrow-wing2-${id}`}
-          viewBox="0 0 10 10"
-          refX="4"
-          refY="5"
-          markerWidth="8"
-          markerHeight="8"
-          orient="auto-start-reverse"
-        >
-          <path d="M 0 2 L 6 5 L 0 8 z" fill="#00E5FF" />
-        </marker>
-      </defs>
-
-      {type === "down" && (
-        <>
-          <path
-            d="M 50 0 V 48"
-            stroke="#004AAD"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 50 0 V 48"
-            stroke="#00E5FF"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            className="flow-path-right"
-            markerEnd={`url(#arrow-wing2-${id})`}
-          />
-        </>
-      )}
-
-      {type === "up" && (
-        <>
-          <path
-            d="M 50 48 V 0"
-            stroke="#004AAD"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 50 48 V 0"
-            stroke="#00E5FF"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            className="flow-path-left"
-            markerEnd={`url(#arrow-wing2-${id})`}
-          />
-        </>
-      )}
-
-      {type === "both" && (
-        <>
-          <path
-            d="M 18 24 H 82"
-            stroke="#004AAD"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 18 24 H 82"
-            stroke="#00E5FF"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            className="flow-path-right"
-            markerEnd={`url(#arrow-wing2-${id})`}
-          />
-          <path
-            d="M 82 24 H 18"
-            stroke="#00E5FF"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            className="flow-path-left"
-            markerEnd={`url(#arrow-wing2-${id})`}
-          />
-        </>
-      )}
-    </svg>
-  );
-
-  const PanelFeatures = ({ heading }) => (
-    <div className="absolute inset-0 z-30 bg-[#081F5C] px-2 py-2">
-      <div className="text-center text-[9px] font-black text-blue-300 uppercase tracking-wide leading-tight border-b border-[#2B5DA8] pb-1 mb-1 whitespace-pre-line">
-        {heading}
-      </div>
-
-      {[
-        ["kWh", "1245"],
-        ["kVh", "1180"],
-        ["V", "433V"],
-        ["PF", "0.98"],
-        ["Amps", "210A"],
-      ].map(([label, value]) => (
-        <div key={label} className="flex justify-between text-[9px] leading-[15px]">
-          <span className="text-blue-200">{label}</span>
-          <span className="text-white">{value}</span>
-        </div>
-      ))}
-    </div>
-  );
-
-  const PCCRow = ({ title, top, rowPanels }) => (
-    <div className={`absolute left-0 ${top} w-full h-[210px]`}>
-      <div className="absolute left-[10px] top-[-34px] text-[#081F5C] text-base font-semibold">
-        {title}
-      </div>
-
-      <div className="absolute left-0 top-[45px] w-full h-[150px] flex items-stretch z-20">
-        {rowPanels.map((panel, index) => {
-          const panelId = `${title}-${index}`;
-          const isOpened = openedPanels.includes(panelId);
-
-          return (
-            <div
-              key={`${title}-${panel.name}-${index}`}
-              onMouseEnter={() =>
-                setOpenedPanels((prev) =>
-                  prev.includes(panelId) ? prev : [...prev, panelId]
-                )
-              }
-              onClick={() =>
-                setActivePccAnalytics(
-                  createPccAnalyticsData(title, panel, index)
-                )
-              }
-              className="relative h-full flex-1 min-w-0 bg-[#081F5C] border-2 border-[#004AAD] border-r-0 last:border-r-2 text-white cursor-pointer"
-            >
-              <FlowArrow
-                type={panel.arrow}
-                id={`${title.replace(/\s/g, "")}-${index}`}
-              />
-
-              {isOpened ? (
-                <PanelFeatures heading={panel.name} />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center px-1">
-                  <span className="text-[clamp(11px,1.5vh,14px)] md:text-[12px] font-semibold leading-tight text-center whitespace-pre-line">
-                    {panel.name}
-                  </span>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-
-  return (
-    <>
-      <PopupShell
-        title="Wing 2 LT Distribution Flow"
-        onBack={() => setActivePopup("pccMain")}
-      >
-        <div className="w-full max-w-7xl mx-auto px-4 py-6 overflow-visible">
-          <div className="relative w-full h-[520px] overflow-visible">
-            <PCCRow title="PCC 3" top="top-[25px]" rowPanels={pcc3Panels} />
-            <PCCRow title="PCC 4" top="top-[285px]" rowPanels={pcc4Panels} />
-          </div>
-        </div>
-      </PopupShell>
-
-      {activePccAnalytics && (
-        <PccPanelAnalyticsView
-          data={activePccAnalytics}
-          onBack={() => setActivePccAnalytics(null)}
-        />
-      )}
-    </>
-  );
-};
-
-const PCCSimpleBox = ({ title, subtitle, onClick }) => (
-  <div
-    onClick={onClick}
-    className="h-[145px] w-full bg-[#081F5C] border-2 border-[#004AAD] text-white shadow-xl panel-active-glow flex flex-col items-center justify-center text-center cursor-pointer overflow-hidden px-4"
-  >
-    <h4 className="text-xl font-bold uppercase tracking-[0.05em] text-white">
-      {title}
-    </h4>
-
-    <span className="mt-1 text-[clamp(11px,1.5vh,14px)] text-slate-300 font-medium">
-      {subtitle}
-    </span>
-  </div>
+const Pcc1Popup = () => (
+  <SinglePccPopup
+    popupTitle="Wing A LT Distribution Flow"
+    pccTitle="PCC 1"
+    panels={pcc1Panels}
+  />
 );
+
+const Pcc2Popup = () => (
+  <SinglePccPopup
+    popupTitle="Wing B LT Distribution Flow"
+    pccTitle="PCC 2"
+    panels={pcc2Panels}
+  />
+);
+
+const Pcc3Popup = () => (
+  <SinglePccPopup
+    popupTitle="Chillers LT Distribution Flow"
+    pccTitle="PCC 3"
+    panels={pcc3Panels}
+  />
+);
+
+const Pcc4Popup = () => (
+  <SinglePccPopup
+    popupTitle="Chillers LT Distribution Flow"
+    pccTitle="PCC 4"
+    panels={pcc4Panels}
+  />
+);
+
+const PCCSimpleBox = ({
+  title,
+  subtitle,
+  incomings = [],
+  onClick,
+}) => {
+  const [isOpen, setIsOpen] =
+    React.useState(false);
+
+  const boxRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        boxRef.current &&
+        !boxRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleOutsideClick
+      );
+    };
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (incomings.length > 0) {
+      setIsOpen(true);
+    }
+  };
+
+  const handleClick = (event) => {
+    event.stopPropagation();
+
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  return (
+    <div
+      ref={boxRef}
+      onMouseEnter={handleMouseEnter}
+      onClick={handleClick}
+      className="
+        relative
+        h-[145px]
+        w-full
+        cursor-pointer
+        overflow-hidden
+        border-2
+        border-[#004AAD]
+        bg-[#081F5C]
+        px-3
+        text-white
+        shadow-xl
+        panel-active-glow
+      "
+    >
+      {isOpen &&
+      incomings.length > 0 ? (
+        <div className="absolute inset-0 z-20 bg-[#081F5C] px-4 py-3">
+          {/* PCC HEADING */}
+
+          <div className="mb-2 border-b border-[#2B5DA8] pb-1 text-center">
+            <h4 className="text-[10px] font-black uppercase tracking-wide text-blue-300">
+              {title}
+            </h4>
+          </div>
+
+          {/* LT INCOMING MONITORING */}
+
+          <div
+            className={`grid h-[calc(100%-24px)] gap-x-5 ${
+              incomings.length > 1
+                ? "grid-cols-2"
+                : "grid-cols-1"
+            }`}
+          >
+            {incomings.map(
+              (incoming, index) => (
+                <div
+                  key={`${title}-${incoming.name}-${index}`}
+                  className={`min-w-0 ${
+                    incomings.length === 1
+                      ? "mx-auto w-full max-w-[150px]"
+                      : ""
+                  }`}
+                >
+                  <div className="mb-1 border-b border-[#2B5DA8] pb-1 text-center text-[9px] font-black uppercase text-cyan-300">
+                    {incoming.name}
+                  </div>
+
+                  {[
+                    [
+                      "kWh",
+                      incoming.kwh,
+                    ],
+                    [
+                      "kVh",
+                      incoming.kvh,
+                    ],
+                    [
+                      "V",
+                      incoming.voltage,
+                    ],
+                    [
+                      "PF",
+                      incoming.pf,
+                    ],
+                    [
+                      "Amps",
+                      incoming.current,
+                    ],
+                  ].map(
+                    ([label, value]) => (
+                      <div
+                        key={label}
+                        className="flex items-center justify-between gap-2 text-[9px] leading-[16px]"
+                      >
+                        <span className="text-blue-200">
+                          {label}
+                        </span>
+
+                        <span className="font-medium text-white">
+                          {value}
+                        </span>
+                      </div>
+                    )
+                  )}
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="flex h-full w-full flex-col items-center justify-center text-center">
+          <h4 className="text-xl font-bold uppercase tracking-[0.05em] text-white">
+            {title}
+          </h4>
+
+          <span className="mt-1 text-[clamp(11px,1.5vh,14px)] font-medium text-slate-300">
+            {subtitle}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const PCCMainPopup = () => (
   <PopupShell title="PCC Main Overview">
-    <div className="w-full max-w-6xl mx-auto px-6 py-10 overflow-hidden">
-      <div className="relative w-full h-[360px]">
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[280px]">
-          <PCCSimpleBox title="PCC" subtitle="Main LT Distribution" />
+    <div className="mx-auto w-full max-w-6xl overflow-hidden px-6 py-10">
+      <div className="relative h-[520px] w-full">
+        {/* MAIN PCC BOX */}
+
+        <div className="absolute left-1/2 top-0 w-[280px] -translate-x-1/2">
+          <PCCSimpleBox
+            title="PCC"
+            subtitle="Main LT Distribution"
+          />
         </div>
 
+        {/* PCC FLOW LINES */}
+
         <svg
-          className="absolute left-0 top-[145px] w-full h-[120px] overflow-visible pointer-events-none"
+          className="pointer-events-none absolute left-0 top-[145px] h-[120px] w-full overflow-visible"
           viewBox="0 0 1000 120"
           fill="none"
         >
           <defs>
             <marker
-              id="pcc-wing-arrow"
+              id="pcc-main-arrow"
               viewBox="0 0 12 12"
               refX="5"
               refY="5"
@@ -10526,66 +11980,203 @@ const PCCMainPopup = () => (
               markerHeight="8"
               orient="auto"
             >
-              <path d="M0 2 L6 5 L0 8 Z" fill="#00E5FF" />
+              <path
+                d="M0 2 L6 5 L0 8 Z"
+                fill="#00E5FF"
+              />
             </marker>
           </defs>
 
+          {/* PCC 1 PATH */}
+
           <path
-            d="M500 0 V45 H250 V95"
+            d="M500 0 V45 H125 V95"
             stroke="#004AAD"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
+          {/* PCC 2 PATH */}
+
           <path
-            d="M500 45 H750 V95"
+            d="M500 45 H375 V95"
             stroke="#004AAD"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
-          <path
-            d="M500 0 V45 H250 V95"
-            stroke="#00E5FF"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="flow-path-left"
-            markerEnd="url(#pcc-wing-arrow)"
-          />
+          {/* PCC 3 PATH */}
 
           <path
-            d="M500 45 H750 V95"
+            d="M500 45 H625 V95"
+            stroke="#004AAD"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* PCC 4 PATH */}
+
+          <path
+            d="M500 45 H875 V95"
+            stroke="#004AAD"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* PCC 1 ACTIVE FLOW */}
+
+          <path
+            d="M500 0 V45 H125 V95"
             stroke="#00E5FF"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="flow-path-right"
-            markerEnd="url(#pcc-wing-arrow)"
+            markerEnd="url(#pcc-main-arrow)"
+          />
+
+          {/* PCC 2 ACTIVE FLOW */}
+
+          <path
+            d="M500 45 H375 V95"
+            stroke="#00E5FF"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            markerEnd="url(#pcc-main-arrow)"
+          />
+
+          {/* PCC 3 ACTIVE FLOW */}
+
+          <path
+            d="M500 45 H625 V95"
+            stroke="#00E5FF"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            markerEnd="url(#pcc-main-arrow)"
+          />
+
+          {/* PCC 4 ACTIVE FLOW */}
+
+          <path
+            d="M500 45 H875 V95"
+            stroke="#00E5FF"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            markerEnd="url(#pcc-main-arrow)"
           />
         </svg>
 
-        <div className="absolute left-[8%] top-[240px] w-[36%]">
-          <PCCSimpleBox
-            title="PCC 1 / PCC 2"
-            subtitle="Wing A"
-            onClick={() => setActivePopup("wing1")}
-          />
-        </div>
+        {/* PCC CARDS */}
 
-        <div className="absolute right-[8%] top-[240px] w-[36%]">
+        <div className="absolute left-0 top-[240px] grid w-full grid-cols-4 gap-4">
+          {/* PCC 1 */}
+
           <PCCSimpleBox
-            title="PCC 3 / PCC 4"
+            title="PCC 1"
+            subtitle="Wing A"
+            incomings={[
+              {
+                name: "LT6 IN",
+                kwh: "1245",
+                kvh: "1180",
+                voltage: "433V",
+                pf: "0.98",
+                current: "210A",
+              },
+              {
+                name: "LT5 IN",
+                kwh: "1328",
+                kvh: "1254",
+                voltage: "432V",
+                pf: "0.97",
+                current: "224A",
+              },
+            ]}
+            onClick={() =>
+              setActivePopup("pcc1")
+            }
+          />
+
+          {/* PCC 2 */}
+
+          <PCCSimpleBox
+            title="PCC 2"
             subtitle="Wing B"
-            onClick={() => setActivePopup("wing2")}
+            incomings={[
+              {
+                name: "LT1 IN",
+                kwh: "1375",
+                kvh: "1298",
+                voltage: "433V",
+                pf: "0.98",
+                current: "218A",
+              },
+              {
+                name: "LT2 IN",
+                kwh: "1410",
+                kvh: "1332",
+                voltage: "431V",
+                pf: "0.97",
+                current: "229A",
+              },
+            ]}
+            onClick={() =>
+              setActivePopup("pcc2")
+            }
+          />
+
+          {/* PCC 3 */}
+
+          <PCCSimpleBox
+            title="PCC 3"
+            subtitle="Chillers"
+            incomings={[
+              {
+                name: "LT4 IN",
+                kwh: "1518",
+                kvh: "1435",
+                voltage: "434V",
+                pf: "0.98",
+                current: "236A",
+              },
+            ]}
+            onClick={() =>
+              setActivePopup("pcc3")
+            }
+          />
+
+          {/* PCC 4 */}
+
+          <PCCSimpleBox
+            title="PCC 4"
+            subtitle="Chillers"
+            incomings={[
+              {
+                name: "LT3 IN",
+                kwh: "1580",
+                kvh: "1492",
+                voltage: "433V",
+                pf: "0.98",
+                current: "242A",
+              },
+            ]}
+            onClick={() =>
+              setActivePopup("pcc4")
+            }
           />
         </div>
       </div>
     </div>
   </PopupShell>
 );
+
+
 
 
 const RaisingMainAnalyticsView = ({ data, onBack }) => {
@@ -12117,8 +13708,25 @@ const BuildingsPopup = () => {
       {activePopup === "kiosks" && <KioskPopup />}
       {activePopup === "busbars" && <BusbarPopup />}
       {activePopup === "pccMain" && <PCCMainPopup />}
-{activePopup === "wing1" && <Pcc1Popup />}
-{activePopup === "wing2" && <Pcc2Popup />}
+{activePopup === "pccMain" && (
+  <PCCMainPopup />
+)}
+
+{activePopup === "pcc1" && (
+  <Pcc1Popup />
+)}
+
+{activePopup === "pcc2" && (
+  <Pcc2Popup />
+)}
+
+{activePopup === "pcc3" && (
+  <Pcc3Popup />
+)}
+
+{activePopup === "pcc4" && (
+  <Pcc4Popup />
+)}
 {activePopup === "raisingMain" && <RaisingMainPopup />}
 {activePopup === "buildings" && <BuildingsPopup />}
 
