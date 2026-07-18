@@ -887,7 +887,7 @@
 //     title: "INC1 Incoming Feeder",
 //     subtitle: "Primary Incoming Supply",
 //     kwh: "1,280",
-//     kvh: "1,195",
+//     kvah: "1,195",
 //     current: "420 A",
 //     voltage: "33.0 kV",
 //     pf: "0.98",
@@ -900,7 +900,7 @@
 //     title: "Outgoing Busbar",
 //     subtitle: "Outgoing Distribution Supply",
 //     kwh: "1,560",
-//     kvh: "1,430",
+//     kvah: "1,430",
 //     current: "460 A",
 //     voltage: "33.0 kV",
 //     pf: "0.99",
@@ -913,7 +913,7 @@
 //     title: "INC2 Incoming Feeder",
 //     subtitle: "Secondary Incoming Supply",
 //     kwh: "1,110",
-//     kvh: "1,020",
+//     kvah: "1,020",
 //     current: "390 A",
 //     voltage: "33.0 kV",
 //     pf: "0.97",
@@ -926,7 +926,7 @@
 //     title: "Metering Unit",
 //     subtitle: "33kV Energy Monitoring Meter",
 //     kwh: "1,420",
-//     kvh: "1,300",
+//     kvah: "1,300",
 //     current: "435 A",
 //     voltage: "33.0 kV",
 //     pf: "0.98",
@@ -939,7 +939,7 @@
 //     title: "33kV Feeder",
 //     subtitle: "Feeder Switchgear Panel",
 //     kwh: "1,385",
-//     kvh: "1,260",
+//     kvah: "1,260",
 //     current: "410 A",
 //     voltage: "33.0 kV",
 //     pf: "0.97",
@@ -1055,7 +1055,7 @@
 
 // const createElectricalAnalytics = (data) => {
 //   const kwh = numberFrom(data.kwh, 1280);
-//   const kvh = numberFrom(data.kvh, 1195);
+//   const kvah = numberFrom(data.kvah, 1195);
 //   const current = numberFrom(data.current, 420);
 //   const voltage = numberFrom(data.voltage, 33);
 //   const isHighVoltage = /kv/i.test(String(data.voltage));
@@ -1099,17 +1099,17 @@
 //   return {
 //     ...data,
 //     kwh,
-//     kvh,
+//     kvah,
 //     current,
 //     voltage,
 //     voltageUnit,
 //     isHighVoltage,
 //     kwhTrend,
-//     kvhComparison: [
-//       { label: "Today", value: kvh },
-//       { label: "Yesterday", value: Math.round(kvh * 0.904) },
+//     kvahComparison: [
+//       { label: "Today", value: kvah },
+//       { label: "Yesterday", value: Math.round(kvah * 0.904) },
 //     ],
-//     kvhMonthlyTrend: [
+//     kvahMonthlyTrend: [
 //       { day: "1", current: 4.2, previous: 2.1 },
 //       { day: "4", current: 7.1, previous: 6.9 },
 //       { day: "7", current: 8.1, previous: 12.4 },
@@ -1320,15 +1320,15 @@
 //             <MetricAnalyticsCard
 //               number="2"
 //               icon={<Activity className="h-5 w-5" />}
-//               title="kVh"
+//               title="kvah"
 //               subtitle="Monthly apparent energy comparison"
-//               value={analytics.kvh.toLocaleString()}
-//               unit="kVh"
+//               value={analytics.kvah.toLocaleString()}
+//               unit="kvah"
 //               change="10.7%"
 //               className="lg:col-span-2"
 //               footer={[
-//                 // { label: "Current month", value: `${Math.round(analytics.kvh * 30).toLocaleString()} kVh` },
-//                 // { label: "Last month", value: `${Math.round(analytics.kvh * 27.2).toLocaleString()} kVh` },
+//                 // { label: "Current month", value: `${Math.round(analytics.kvah * 30).toLocaleString()} kvah` },
+//                 // { label: "Last month", value: `${Math.round(analytics.kvah * 27.2).toLocaleString()} kvah` },
 //                 // { label: "Difference", value: "+10.7%" },
 //               ]}
 //             >
@@ -1340,15 +1340,15 @@
 
 //                 <ResponsiveContainer width="100%" height="100%">
 //                   <AreaChart
-//                     data={analytics.kvhMonthlyTrend}
+//                     data={analytics.kvahMonthlyTrend}
 //                     margin={{ top: 24, right: 8, left: -18, bottom: -4 }}
 //                   >
 //                     <defs>
-//                       <linearGradient id={`kvhCurrentArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+//                       <linearGradient id={`kvahCurrentArea-${type}`} x1="0" y1="0" x2="0" y2="1">
 //                         <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.34} />
 //                         <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.02} />
 //                       </linearGradient>
-//                       <linearGradient id={`kvhPreviousArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+//                       <linearGradient id={`kvahPreviousArea-${type}`} x1="0" y1="0" x2="0" y2="1">
 //                         <stop offset="0%" stopColor="#22D3EE" stopOpacity={0.28} />
 //                         <stop offset="100%" stopColor="#22D3EE" stopOpacity={0.02} />
 //                       </linearGradient>
@@ -1356,9 +1356,9 @@
 //                     <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" />
 //                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
 //                     <YAxis domain={[0, 20]} ticks={[0, 5, 10, 15, 20]} axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} tickFormatter={(value) => `${value}k`} />
-//                     <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value, name) => [`${value}k kVh`, name === "current" ? "Current Month" : "Last Month"]} />
-//                     <Area type="monotone" dataKey="previous" stroke="#22D3EE" strokeWidth={2.2} fill={`url(#kvhPreviousArea-${type})`} dot={{ r: 2.8, fill: "#22D3EE", stroke: "#CFFAFE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
-//                     <Area type="monotone" dataKey="current" stroke="#8B5CF6" strokeWidth={2.2} fill={`url(#kvhCurrentArea-${type})`} dot={{ r: 2.8, fill: "#8B5CF6", stroke: "#EDE9FE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+//                     <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value, name) => [`${value}k kvah`, name === "current" ? "Current Month" : "Last Month"]} />
+//                     <Area type="monotone" dataKey="previous" stroke="#22D3EE" strokeWidth={2.2} fill={`url(#kvahPreviousArea-${type})`} dot={{ r: 2.8, fill: "#22D3EE", stroke: "#CFFAFE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+//                     <Area type="monotone" dataKey="current" stroke="#8B5CF6" strokeWidth={2.2} fill={`url(#kvahCurrentArea-${type})`} dot={{ r: 2.8, fill: "#8B5CF6", stroke: "#EDE9FE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
 //                   </AreaChart>
 //                 </ResponsiveContainer>
 //               </div>
@@ -1637,7 +1637,7 @@
 // }) => {
 //   const monitorData = [
 //     ["kWh", "1,280"],
-//     ["kVh", "1,195"],
+//     ["kvah", "1,195"],
 //     ["PF", "0.98"],
 //     ["Voltage", "33.0 kV"],
 //     ["Current", "420 A"],
@@ -1867,7 +1867,7 @@
 //     title: "Incoming Feeder 1",
 //     subtitle: "33kV Incoming Feeder Supply",
 //     kwh: "1,480",
-//     kvh: "1,360",
+//     kvah: "1,360",
 //     current: "430 A",
 //     voltage: "33.0 kV",
 //     pf: "0.98",
@@ -1880,7 +1880,7 @@
 //     title: "OG 1 Feeder",
 //     subtitle: "Outgoing Feeder to Transformer",
 //     kwh: "980",
-//     kvh: "910",
+//     kvah: "910",
 //     current: "280 A",
 //     voltage: "33.0 kV",
 //     pf: "0.97",
@@ -1893,7 +1893,7 @@
 //     title: "OG 2 Feeder",
 //     subtitle: "Outgoing Feeder to Transformer",
 //     kwh: "1,020",
-//     kvh: "960",
+//     kvah: "960",
 //     current: "295 A",
 //     voltage: "33.0 kV",
 //     pf: "0.98",
@@ -1906,7 +1906,7 @@
 //     title: "OG 3 Feeder",
 //     subtitle: "Outgoing Feeder to Transformer",
 //     kwh: "1,120",
-//     kvh: "1,040",
+//     kvah: "1,040",
 //     current: "310 A",
 //     voltage: "33.0 kV",
 //     pf: "0.98",
@@ -1919,7 +1919,7 @@
 //     title: "OG 4 Feeder",
 //     subtitle: "Outgoing Feeder to Transformer",
 //     kwh: "940",
-//     kvh: "870",
+//     kvah: "870",
 //     current: "265 A",
 //     voltage: "33.0 kV",
 //     pf: "0.96",
@@ -1932,7 +1932,7 @@
 //     title: "OG 5 Feeder",
 //     subtitle: "Outgoing Feeder to Transformer",
 //     kwh: "1,080",
-//     kvh: "990",
+//     kvah: "990",
 //     current: "300 A",
 //     voltage: "33.0 kV",
 //     pf: "0.98",
@@ -1945,7 +1945,7 @@
 //     title: "OG 6 Feeder",
 //     subtitle: "Outgoing Feeder to Transformer",
 //     kwh: "1,150",
-//     kvh: "1,080",
+//     kvah: "1,080",
 //     current: "325 A",
 //     voltage: "33.0 kV",
 //     pf: "0.99",
@@ -2039,7 +2039,7 @@
 //           <div className="grid grid-cols-5 gap-3 mt-3">
 //             {[
 //               ["Energy", analyticsData.kwh, "kWh"],
-//               ["Reactive", analyticsData.kvh, "kVh"],
+//               ["Reactive", analyticsData.kvah, "kvah"],
 //               ["Current", analyticsData.current, ""],
 //               ["Voltage", analyticsData.voltage, ""],
 //               ["Power Factor", analyticsData.pf, ""],
@@ -2706,7 +2706,7 @@
 //           <div className="grid grid-cols-5 gap-3 mt-3">
 //             {[
 //               ["Energy", data.kwh, "kWh"],
-//               ["Reactive", data.kvh, "kVh"],
+//               ["Reactive", data.kvah, "kvah"],
 //               ["Current", data.current, ""],
 //               ["Voltage", data.voltage, ""],
 //               ["Power Factor", data.pf, ""],
@@ -2859,7 +2859,7 @@
 // }) => {
 //   const monitorData = [
 //     ["kWh", "1,280"],
-//     ["kVh", "1,195"],
+//     ["kvah", "1,195"],
 //     ["PF", "0.98"],
 //     ["AMPS", "420 A"],
 //     ["Voltage", "433 V"],
@@ -2992,7 +2992,7 @@
 //                     title: `KIOSK-${index + 1}`,
 //                     subtitle: "433V PANEL",
 //                     kwh: `${1280 + index * 60}`,
-//                     kvh: `${1195 + index * 55}`,
+//                     kvah: `${1195 + index * 55}`,
 //                     current: `${420 + index * 8} A`,
 //                     voltage: "433 V",
 //                     pf: index % 2 === 0 ? "0.98" : "0.97",
@@ -3495,7 +3495,7 @@
 //           <div className="grid grid-cols-5 gap-3 mt-3">
 //             {[
 //               ["Energy", data.kwh, "kWh"],
-//               ["Reactive", data.kvh, "kVh"],
+//               ["Reactive", data.kvah, "kvah"],
 //               ["Current", data.current, ""],
 //               ["Voltage", data.voltage, ""],
 //               ["Power Factor", data.pf, ""],
@@ -3639,7 +3639,7 @@
 //   title: `${title} - ${panel.name.replace(/\n/g, " ")}`,
 //   subtitle: "LT Distribution Panel Live Analytics",
 //   kwh: `${1245 + index * 18}`,
-//   kvh: `${1180 + index * 15}`,
+//   kvah: `${1180 + index * 15}`,
 //   voltage: "433 V",
 //   current: `${210 + index * 4} A`,
 //   pf: index % 2 === 0 ? "0.98" : "0.97",
@@ -3782,7 +3782,7 @@
 
 //       {[
 //         ["kWh", "1245"],
-//         ["kVh", "1180"],
+//         ["kvah", "1180"],
 //         ["V", "433V"],
 //         ["PF", "0.98"],
 //         ["Amps", "210A"],
@@ -3996,7 +3996,7 @@
 
 //       {[
 //         ["kWh", "1245"],
-//         ["kVh", "1180"],
+//         ["kvah", "1180"],
 //         ["V", "433V"],
 //         ["PF", "0.98"],
 //         ["Amps", "210A"],
@@ -4235,7 +4235,7 @@
 //           <div className="grid grid-cols-5 gap-3 mt-3">
 //             {[
 //               ["Energy", data.kwh, "kWh"],
-//               ["Reactive", data.kvh, "kVh"],
+//               ["Reactive", data.kvah, "kvah"],
 //               ["Current", data.current, ""],
 //               ["Voltage", data.voltage, ""],
 //               ["Power Factor", data.pf, ""],
@@ -4383,7 +4383,7 @@
 //     title,
 //     subtitle: subtitle || "433V Raising Main Distribution",
 //     kwh: `${1245 + index * 65}`,
-//     kvh: `${1180 + index * 58}`,
+//     kvah: `${1180 + index * 58}`,
 //     voltage: "433 V",
 //     current: `${210 + index * 12} A`,
 //     pf: index % 2 === 0 ? "0.98" : "0.97",
@@ -4404,7 +4404,7 @@
 
 //     const monitorData = [
 //       ["kWh", "1245"],
-//       ["kVh", "1180"],
+//       ["kvah", "1180"],
 //       ["V", "433V"],
 //       ["PF", "0.98"],
 //       ["Amps", "210A"],
@@ -5270,7 +5270,7 @@ const sourceAnalytics = {
     title: "INC1 Incoming Feeder",
     subtitle: "Primary Incoming Supply",
     kwh: "1,280",
-    kvh: "1,195",
+    kvah: "1,195",
     current: "420 A",
     voltage: "33.0 kV",
     pf: "0.98",
@@ -5283,7 +5283,7 @@ const sourceAnalytics = {
     title: "Outgoing Busbar",
     subtitle: "Outgoing Distribution Supply",
     kwh: "1,560",
-    kvh: "1,430",
+    kvah: "1,430",
     current: "460 A",
     voltage: "33.0 kV",
     pf: "0.99",
@@ -5296,7 +5296,7 @@ const sourceAnalytics = {
     title: "INC2 Incoming Feeder",
     subtitle: "Secondary Incoming Supply",
     kwh: "1,110",
-    kvh: "1,020",
+    kvah: "1,020",
     current: "390 A",
     voltage: "33.0 kV",
     pf: "0.97",
@@ -5309,7 +5309,7 @@ const sourceAnalytics = {
     title: "Metering Unit",
     subtitle: "33kV Energy Monitoring Meter",
     kwh: "1,420",
-    kvh: "1,300",
+    kvah: "1,300",
     current: "435 A",
     voltage: "33.0 kV",
     pf: "0.98",
@@ -5322,7 +5322,7 @@ const sourceAnalytics = {
     title: "33kV Feeder",
     subtitle: "Feeder Switchgear Panel",
     kwh: "1,385",
-    kvh: "1,260",
+    kvah: "1,260",
     current: "410 A",
     voltage: "33.0 kV",
     pf: "0.97",
@@ -5438,7 +5438,7 @@ const MetricAnalyticsCard = ({
 
 const createElectricalAnalytics = (data) => {
   const kwh = numberFrom(data.kwh, 1280);
-  const kvh = numberFrom(data.kvh, 1195);
+  const kvah = numberFrom(data.kvah, 1195);
   const current = numberFrom(data.current, 420);
   const voltage = numberFrom(data.voltage, 33);
   const isHighVoltage = /kv/i.test(String(data.voltage));
@@ -5482,17 +5482,17 @@ const createElectricalAnalytics = (data) => {
   return {
     ...data,
     kwh,
-    kvh,
+    kvah,
     current,
     voltage,
     voltageUnit,
     isHighVoltage,
     kwhTrend,
-    kvhComparison: [
-      { label: "Today", value: kvh },
-      { label: "Yesterday", value: Math.round(kvh * 0.904) },
+    kvahComparison: [
+      { label: "Today", value: kvah },
+      { label: "Yesterday", value: Math.round(kvah * 0.904) },
     ],
-    kvhMonthlyTrend: [
+    kvahMonthlyTrend: [
       { day: "1", current: 4.2, previous: 2.1 },
       { day: "4", current: 7.1, previous: 6.9 },
       { day: "7", current: 8.1, previous: 12.4 },
@@ -5708,15 +5708,15 @@ const IndividualSourceAnalytics = ({
             <MetricAnalyticsCard
               number="2"
               icon={<Activity className="h-5 w-5" />}
-              title="kVh"
+              title="kvah"
               subtitle="Monthly apparent energy comparison"
-              value={analytics.kvh.toLocaleString()}
-              unit="kVh"
+              value={analytics.kvah.toLocaleString()}
+              unit="kvah"
               change="10.7%"
               className="lg:col-span-2"
               footer={[
-                // { label: "Current month", value: `${Math.round(analytics.kvh * 30).toLocaleString()} kVh` },
-                // { label: "Last month", value: `${Math.round(analytics.kvh * 27.2).toLocaleString()} kVh` },
+                // { label: "Current month", value: `${Math.round(analytics.kvah * 30).toLocaleString()} kvah` },
+                // { label: "Last month", value: `${Math.round(analytics.kvah * 27.2).toLocaleString()} kvah` },
                 // { label: "Difference", value: "+10.7%" },
               ]}
             >
@@ -5728,15 +5728,15 @@ const IndividualSourceAnalytics = ({
 
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
-                    data={analytics.kvhMonthlyTrend}
+                    data={analytics.kvahMonthlyTrend}
                     margin={{ top: 24, right: 8, left: -18, bottom: -4 }}
                   >
                     <defs>
-                      <linearGradient id={`kvhCurrentArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id={`kvahCurrentArea-${type}`} x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.34} />
                         <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.02} />
                       </linearGradient>
-                      <linearGradient id={`kvhPreviousArea-${type}`} x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id={`kvahPreviousArea-${type}`} x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="#22D3EE" stopOpacity={0.28} />
                         <stop offset="100%" stopColor="#22D3EE" stopOpacity={0.02} />
                       </linearGradient>
@@ -5744,9 +5744,9 @@ const IndividualSourceAnalytics = ({
                     <CartesianGrid vertical={false} stroke="rgba(148,163,184,0.14)" />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} />
                     <YAxis domain={[0, 20]} ticks={[0, 5, 10, 15, 20]} axisLine={false} tickLine={false} tick={{ fill: "#8EA6C4", fontSize: 8 }} tickFormatter={(value) => `${value}k`} />
-                    <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value, name) => [`${value}k kVh`, name === "current" ? "Current Month" : "Last Month"]} />
-                    <Area type="monotone" dataKey="previous" stroke="#22D3EE" strokeWidth={2.2} fill={`url(#kvhPreviousArea-${type})`} dot={{ r: 2.8, fill: "#22D3EE", stroke: "#CFFAFE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
-                    <Area type="monotone" dataKey="current" stroke="#8B5CF6" strokeWidth={2.2} fill={`url(#kvhCurrentArea-${type})`} dot={{ r: 2.8, fill: "#8B5CF6", stroke: "#EDE9FE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+                    <Tooltip contentStyle={analyticsTooltipStyle} formatter={(value, name) => [`${value}k kvah`, name === "current" ? "Current Month" : "Last Month"]} />
+                    <Area type="monotone" dataKey="previous" stroke="#22D3EE" strokeWidth={2.2} fill={`url(#kvahPreviousArea-${type})`} dot={{ r: 2.8, fill: "#22D3EE", stroke: "#CFFAFE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
+                    <Area type="monotone" dataKey="current" stroke="#8B5CF6" strokeWidth={2.2} fill={`url(#kvahCurrentArea-${type})`} dot={{ r: 2.8, fill: "#8B5CF6", stroke: "#EDE9FE", strokeWidth: 1 }} activeDot={{ r: 4 }} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -6025,7 +6025,7 @@ const SourceBox = ({
 }) => {
   const monitorData = [
     ["kWh", "1,280"],
-    ["kVh", "1,195"],
+    ["kvah", "1,195"],
     ["PF", "0.98"],
     ["Voltage", "33.0 kV"],
     ["Current", "420 A"],
@@ -6255,7 +6255,7 @@ const feederAnalytics = {
     title: "Incoming Feeder 1",
     subtitle: "33kV Incoming Feeder Supply",
     kwh: "1,480",
-    kvh: "1,360",
+    kvah: "1,360",
     current: "430 A",
     voltage: "33.0 kV",
     pf: "0.98",
@@ -6268,7 +6268,7 @@ const feederAnalytics = {
     title: "OG 1 Feeder",
     subtitle: "Outgoing Feeder to Transformer",
     kwh: "980",
-    kvh: "910",
+    kvah: "910",
     current: "280 A",
     voltage: "33.0 kV",
     pf: "0.97",
@@ -6281,7 +6281,7 @@ const feederAnalytics = {
     title: "OG 2 Feeder",
     subtitle: "Outgoing Feeder to Transformer",
     kwh: "1,020",
-    kvh: "960",
+    kvah: "960",
     current: "295 A",
     voltage: "33.0 kV",
     pf: "0.98",
@@ -6294,7 +6294,7 @@ const feederAnalytics = {
     title: "OG 3 Feeder",
     subtitle: "Outgoing Feeder to Transformer",
     kwh: "1,120",
-    kvh: "1,040",
+    kvah: "1,040",
     current: "310 A",
     voltage: "33.0 kV",
     pf: "0.98",
@@ -6307,7 +6307,7 @@ const feederAnalytics = {
     title: "OG 4 Feeder",
     subtitle: "Outgoing Feeder to Transformer",
     kwh: "940",
-    kvh: "870",
+    kvah: "870",
     current: "265 A",
     voltage: "33.0 kV",
     pf: "0.96",
@@ -6320,7 +6320,7 @@ const feederAnalytics = {
     title: "OG 5 Feeder",
     subtitle: "Outgoing Feeder to Transformer",
     kwh: "1,080",
-    kvh: "990",
+    kvah: "990",
     current: "300 A",
     voltage: "33.0 kV",
     pf: "0.98",
@@ -6333,7 +6333,7 @@ const feederAnalytics = {
     title: "OG 6 Feeder",
     subtitle: "Outgoing Feeder to Transformer",
     kwh: "1,150",
-    kvh: "1,080",
+    kvah: "1,080",
     current: "325 A",
     voltage: "33.0 kV",
     pf: "0.99",
@@ -6489,7 +6489,7 @@ const IncomingFeederMonitorBox = ({
 }) => {
   const monitorData = [
     ["kWh", "1,480"],
-    ["kVh", "1,360"],
+    ["kvah", "1,360"],
     ["PF", "0.98"],
     ["AMPS", "430 A"],
     ["Voltage", "33.0 kV"],
@@ -6593,7 +6593,7 @@ const FeederPopup = () => {
 
     monitorData: [
       ["kWh", "1,480"],
-      ["kVh", "1,360"],
+      ["kvah", "1,360"],
       ["PF", "0.98"],
       ["AMPS", "430 A"],
       ["Voltage", "33.0 kV"],
@@ -6608,7 +6608,7 @@ const FeederPopup = () => {
 
     monitorData: [
       ["kWh", `${980 + index * 40}`],
-      ["kVh", `${910 + index * 35}`],
+      ["kvah", `${910 + index * 35}`],
       ["PF", index % 2 === 0 ? "0.98" : "0.97"],
       ["AMPS", `${280 + index * 15} A`],
       ["Voltage", "33.0 kV"],
@@ -7728,8 +7728,8 @@ const KioskAnalyticsView = ({ data, onBack }) => {
   const kwhNumber =
     Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
 
-  const kvhNumber =
-    Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+  const kvahNumber =
+    Number(String(data.kvah).replace(/[^\d.-]/g, "")) || 0;
 
   const currentNumber =
     Number(String(data.current).replace(/[^\d.-]/g, "")) || 0;
@@ -7744,7 +7744,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "08:00",
       kwh: Math.max(kwhNumber - 420, 0),
-      kvh: Math.max(kvhNumber - 390, 0),
+      kvah: Math.max(kvahNumber - 390, 0),
       amps: Math.max(currentNumber - 22, 0),
       voltage: voltageNumber - 5,
       pf: Math.max(pfNumber - 0.04, 0),
@@ -7752,7 +7752,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "09:00",
       kwh: Math.max(kwhNumber - 375, 0),
-      kvh: Math.max(kvhNumber - 345, 0),
+      kvah: Math.max(kvahNumber - 345, 0),
       amps: Math.max(currentNumber - 17, 0),
       voltage: voltageNumber - 3,
       pf: Math.max(pfNumber - 0.03, 0),
@@ -7760,7 +7760,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "10:00",
       kwh: Math.max(kwhNumber - 325, 0),
-      kvh: Math.max(kvhNumber - 300, 0),
+      kvah: Math.max(kvahNumber - 300, 0),
       amps: Math.max(currentNumber - 12, 0),
       voltage: voltageNumber - 1,
       pf: Math.max(pfNumber - 0.02, 0),
@@ -7768,7 +7768,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "11:00",
       kwh: Math.max(kwhNumber - 275, 0),
-      kvh: Math.max(kvhNumber - 250, 0),
+      kvah: Math.max(kvahNumber - 250, 0),
       amps: Math.max(currentNumber - 7, 0),
       voltage: voltageNumber + 1,
       pf: Math.max(pfNumber - 0.01, 0),
@@ -7776,7 +7776,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "12:00",
       kwh: Math.max(kwhNumber - 225, 0),
-      kvh: Math.max(kvhNumber - 205, 0),
+      kvah: Math.max(kvahNumber - 205, 0),
       amps: currentNumber + 3,
       voltage: voltageNumber + 2,
       pf: Math.min(pfNumber + 0.005, 1),
@@ -7784,7 +7784,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "13:00",
       kwh: Math.max(kwhNumber - 175, 0),
-      kvh: Math.max(kvhNumber - 160, 0),
+      kvah: Math.max(kvahNumber - 160, 0),
       amps: currentNumber + 9,
       voltage: voltageNumber + 3,
       pf: Math.min(pfNumber + 0.01, 1),
@@ -7792,7 +7792,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "14:00",
       kwh: Math.max(kwhNumber - 125, 0),
-      kvh: Math.max(kvhNumber - 115, 0),
+      kvah: Math.max(kvahNumber - 115, 0),
       amps: currentNumber + 15,
       voltage: voltageNumber + 2,
       pf: Math.min(pfNumber + 0.015, 1),
@@ -7800,7 +7800,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "15:00",
       kwh: Math.max(kwhNumber - 80, 0),
-      kvh: Math.max(kvhNumber - 70, 0),
+      kvah: Math.max(kvahNumber - 70, 0),
       amps: currentNumber + 8,
       voltage: voltageNumber,
       pf: Math.min(pfNumber + 0.01, 1),
@@ -7808,7 +7808,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "16:00",
       kwh: Math.max(kwhNumber - 35, 0),
-      kvh: Math.max(kvhNumber - 30, 0),
+      kvah: Math.max(kvahNumber - 30, 0),
       amps: currentNumber + 4,
       voltage: voltageNumber - 1,
       pf: pfNumber,
@@ -7816,7 +7816,7 @@ const KioskAnalyticsView = ({ data, onBack }) => {
     {
       time: "Now",
       kwh: kwhNumber,
-      kvh: kvhNumber,
+      kvah: kvahNumber,
       amps: currentNumber,
       voltage: voltageNumber,
       pf: pfNumber,
@@ -7992,17 +7992,17 @@ const KioskAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
 
-            {/* kVh ANALYTICS */}
+            {/* kvah ANALYTICS */}
             <div className="relative min-h-0 overflow-hidden rounded-xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 lg:col-span-2">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
 
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
-                  kVh Analytics
+                  kvah Analytics
                 </h3>
 
                 <p className="text-[19px] font-semibold text-purple-300">
-                  {kvhNumber.toLocaleString()} kVh
+                  {kvahNumber.toLocaleString()} kvah
                 </p>
               </div>
 
@@ -8045,13 +8045,13 @@ const KioskAnalyticsView = ({ data, onBack }) => {
                     <Tooltip
                       contentStyle={analyticsTooltipStyle}
                       formatter={(value) => [
-                        `${Number(value).toLocaleString()} kVh`,
+                        `${Number(value).toLocaleString()} kvah`,
                         "Apparent Energy",
                       ]}
                     />
 
                     <Bar
-                      dataKey="kvh"
+                      dataKey="kvah"
                       fill="#A78BFA"
                       radius={[5, 5, 0, 0]}
                       maxBarSize={26}
@@ -8351,7 +8351,7 @@ const KioskMonitorBox = ({
 }) => {
   const monitorData = [
     ["kWh", "1,280"],
-    ["kVh", "1,195"],
+    ["kvah", "1,195"],
     ["PF", "0.98"],
     ["AMPS", "420 A"],
     ["Voltage", "433 V"],
@@ -8484,7 +8484,7 @@ const KioskPopup = () => {
                     title: `KIOSK-${index + 1}`,
                     subtitle: "433V PANEL",
                     kwh: `${1280 + index * 60}`,
-                    kvh: `${1195 + index * 55}`,
+                    kvah: `${1195 + index * 55}`,
                     current: `${420 + index * 8} A`,
                     voltage: "433 V",
                     pf: index % 2 === 0 ? "0.98" : "0.97",
@@ -9413,8 +9413,8 @@ const BusbarPopup = () => {
 //   const kwhNumber =
 //     Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
 
-//   const kvhNumber =
-//     Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+//   const kvahNumber =
+//     Number(String(data.kvah).replace(/[^\d.-]/g, "")) || 0;
 
 //   const currentNumber =
 //     Number(String(data.current).replace(/[^\d.-]/g, "")) || 0;
@@ -9429,7 +9429,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "08:00",
 //       kwh: Math.max(kwhNumber - 420, 0),
-//       kvh: Math.max(kvhNumber - 390, 0),
+//       kvah: Math.max(kvahNumber - 390, 0),
 //       current: Math.max(currentNumber - 24, 0),
 //       voltage: voltageNumber - 5,
 //       pf: Math.max(pfNumber - 0.04, 0),
@@ -9437,7 +9437,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "09:00",
 //       kwh: Math.max(kwhNumber - 375, 0),
-//       kvh: Math.max(kvhNumber - 345, 0),
+//       kvah: Math.max(kvahNumber - 345, 0),
 //       current: Math.max(currentNumber - 18, 0),
 //       voltage: voltageNumber - 3,
 //       pf: Math.max(pfNumber - 0.03, 0),
@@ -9445,7 +9445,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "10:00",
 //       kwh: Math.max(kwhNumber - 325, 0),
-//       kvh: Math.max(kvhNumber - 300, 0),
+//       kvah: Math.max(kvahNumber - 300, 0),
 //       current: Math.max(currentNumber - 12, 0),
 //       voltage: voltageNumber - 1,
 //       pf: Math.max(pfNumber - 0.02, 0),
@@ -9453,7 +9453,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "11:00",
 //       kwh: Math.max(kwhNumber - 275, 0),
-//       kvh: Math.max(kvhNumber - 250, 0),
+//       kvah: Math.max(kvahNumber - 250, 0),
 //       current: Math.max(currentNumber - 6, 0),
 //       voltage: voltageNumber + 1,
 //       pf: Math.max(pfNumber - 0.01, 0),
@@ -9461,7 +9461,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "12:00",
 //       kwh: Math.max(kwhNumber - 225, 0),
-//       kvh: Math.max(kvhNumber - 205, 0),
+//       kvah: Math.max(kvahNumber - 205, 0),
 //       current: currentNumber + 4,
 //       voltage: voltageNumber + 2,
 //       pf: Math.min(pfNumber + 0.005, 1),
@@ -9469,7 +9469,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "13:00",
 //       kwh: Math.max(kwhNumber - 175, 0),
-//       kvh: Math.max(kvhNumber - 160, 0),
+//       kvah: Math.max(kvahNumber - 160, 0),
 //       current: currentNumber + 10,
 //       voltage: voltageNumber + 3,
 //       pf: Math.min(pfNumber + 0.01, 1),
@@ -9477,7 +9477,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "14:00",
 //       kwh: Math.max(kwhNumber - 125, 0),
-//       kvh: Math.max(kvhNumber - 115, 0),
+//       kvah: Math.max(kvahNumber - 115, 0),
 //       current: currentNumber + 16,
 //       voltage: voltageNumber + 2,
 //       pf: Math.min(pfNumber + 0.015, 1),
@@ -9485,7 +9485,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "15:00",
 //       kwh: Math.max(kwhNumber - 80, 0),
-//       kvh: Math.max(kvhNumber - 70, 0),
+//       kvah: Math.max(kvahNumber - 70, 0),
 //       current: currentNumber + 9,
 //       voltage: voltageNumber,
 //       pf: Math.min(pfNumber + 0.01, 1),
@@ -9493,7 +9493,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "16:00",
 //       kwh: Math.max(kwhNumber - 35, 0),
-//       kvh: Math.max(kvhNumber - 30, 0),
+//       kvah: Math.max(kvahNumber - 30, 0),
 //       current: currentNumber + 4,
 //       voltage: voltageNumber - 1,
 //       pf: pfNumber,
@@ -9501,7 +9501,7 @@ const BusbarPopup = () => {
 //     {
 //       time: "Now",
 //       kwh: kwhNumber,
-//       kvh: kvhNumber,
+//       kvah: kvahNumber,
 //       current: currentNumber,
 //       voltage: voltageNumber,
 //       pf: pfNumber,
@@ -9690,17 +9690,17 @@ const BusbarPopup = () => {
 //               </div>
 //             </div>
 
-//             {/* KVH */}
+//             {/* kvah */}
 //             <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
 //               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
 
 //               <div className="flex items-start justify-between gap-3">
 //                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
-//                   kVh Analytics
+//                   kvah Analytics
 //                 </h3>
 
 //                 <p className="text-[19px] font-semibold text-purple-300">
-//                   {kvhNumber.toLocaleString()} kVh
+//                   {kvahNumber.toLocaleString()} kvah
 //                 </p>
 //               </div>
 
@@ -9744,13 +9744,13 @@ const BusbarPopup = () => {
 //                     <Tooltip
 //                       contentStyle={analyticsTooltipStyle}
 //                       formatter={(value) => [
-//                         `${Number(value).toLocaleString()} kVh`,
+//                         `${Number(value).toLocaleString()} kvah`,
 //                         "Apparent Energy",
 //                       ]}
 //                     />
 
 //                     <Bar
-//                       dataKey="kvh"
+//                       dataKey="kvah"
 //                       fill="#A78BFA"
 //                       radius={[5, 5, 0, 0]}
 //                       maxBarSize={26}
@@ -10047,7 +10047,7 @@ const BusbarPopup = () => {
 //   title: `${title} - ${panel.name.replace(/\n/g, " ")}`,
 //   subtitle: "LT Distribution Panel Live Analytics",
 //   kwh: `${1245 + index * 18}`,
-//   kvh: `${1180 + index * 15}`,
+//   kvah: `${1180 + index * 15}`,
 //   voltage: "433 V",
 //   current: `${210 + index * 4} A`,
 //   pf: index % 2 === 0 ? "0.98" : "0.97",
@@ -10190,7 +10190,7 @@ const BusbarPopup = () => {
 
 //       {[
 //         ["kWh", "1245"],
-//         ["kVh", "1180"],
+//         ["kvah", "1180"],
 //         ["V", "433V"],
 //         ["PF", "0.98"],
 //         ["Amps", "210A"],
@@ -10404,7 +10404,7 @@ const BusbarPopup = () => {
 
 //       {[
 //         ["kWh", "1245"],
-//         ["kVh", "1180"],
+//         ["kvah", "1180"],
 //         ["V", "433V"],
 //         ["PF", "0.98"],
 //         ["Amps", "210A"],
@@ -10598,8 +10598,8 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
   const kwhNumber =
     Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
 
-  const kvhNumber =
-    Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+  const kvahNumber =
+    Number(String(data.kvah).replace(/[^\d.-]/g, "")) || 0;
 
   const currentNumber =
     Number(String(data.current).replace(/[^\d.-]/g, "")) || 0;
@@ -10614,7 +10614,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "08:00",
       kwh: Math.max(kwhNumber - 420, 0),
-      kvh: Math.max(kvhNumber - 390, 0),
+      kvah: Math.max(kvahNumber - 390, 0),
       current: Math.max(currentNumber - 24, 0),
       voltage: voltageNumber - 5,
       pf: Math.max(pfNumber - 0.04, 0),
@@ -10622,7 +10622,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "09:00",
       kwh: Math.max(kwhNumber - 375, 0),
-      kvh: Math.max(kvhNumber - 345, 0),
+      kvah: Math.max(kvahNumber - 345, 0),
       current: Math.max(currentNumber - 18, 0),
       voltage: voltageNumber - 3,
       pf: Math.max(pfNumber - 0.03, 0),
@@ -10630,7 +10630,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "10:00",
       kwh: Math.max(kwhNumber - 325, 0),
-      kvh: Math.max(kvhNumber - 300, 0),
+      kvah: Math.max(kvahNumber - 300, 0),
       current: Math.max(currentNumber - 12, 0),
       voltage: voltageNumber - 1,
       pf: Math.max(pfNumber - 0.02, 0),
@@ -10638,7 +10638,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "11:00",
       kwh: Math.max(kwhNumber - 275, 0),
-      kvh: Math.max(kvhNumber - 250, 0),
+      kvah: Math.max(kvahNumber - 250, 0),
       current: Math.max(currentNumber - 6, 0),
       voltage: voltageNumber + 1,
       pf: Math.max(pfNumber - 0.01, 0),
@@ -10646,7 +10646,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "12:00",
       kwh: Math.max(kwhNumber - 225, 0),
-      kvh: Math.max(kvhNumber - 205, 0),
+      kvah: Math.max(kvahNumber - 205, 0),
       current: currentNumber + 4,
       voltage: voltageNumber + 2,
       pf: Math.min(pfNumber + 0.005, 1),
@@ -10654,7 +10654,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "13:00",
       kwh: Math.max(kwhNumber - 175, 0),
-      kvh: Math.max(kvhNumber - 160, 0),
+      kvah: Math.max(kvahNumber - 160, 0),
       current: currentNumber + 10,
       voltage: voltageNumber + 3,
       pf: Math.min(pfNumber + 0.01, 1),
@@ -10662,7 +10662,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "14:00",
       kwh: Math.max(kwhNumber - 125, 0),
-      kvh: Math.max(kvhNumber - 115, 0),
+      kvah: Math.max(kvahNumber - 115, 0),
       current: currentNumber + 16,
       voltage: voltageNumber + 2,
       pf: Math.min(pfNumber + 0.015, 1),
@@ -10670,7 +10670,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "15:00",
       kwh: Math.max(kwhNumber - 80, 0),
-      kvh: Math.max(kvhNumber - 70, 0),
+      kvah: Math.max(kvahNumber - 70, 0),
       current: currentNumber + 9,
       voltage: voltageNumber,
       pf: Math.min(pfNumber + 0.01, 1),
@@ -10678,7 +10678,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "16:00",
       kwh: Math.max(kwhNumber - 35, 0),
-      kvh: Math.max(kvhNumber - 30, 0),
+      kvah: Math.max(kvahNumber - 30, 0),
       current: currentNumber + 4,
       voltage: voltageNumber - 1,
       pf: pfNumber,
@@ -10686,7 +10686,7 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
     {
       time: "Now",
       kwh: kwhNumber,
-      kvh: kvhNumber,
+      kvah: kvahNumber,
       current: currentNumber,
       voltage: voltageNumber,
       pf: pfNumber,
@@ -10875,17 +10875,17 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
 
-            {/* KVH */}
+            {/* kvah */}
             <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
 
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
-                  kVh Analytics
+                  kvah Analytics
                 </h3>
 
                 <p className="text-[19px] font-semibold text-purple-300">
-                  {kvhNumber.toLocaleString()} kVh
+                  {kvahNumber.toLocaleString()} kvah
                 </p>
               </div>
 
@@ -10929,13 +10929,13 @@ const PccPanelAnalyticsView = ({ data, onBack }) => {
                     <Tooltip
                       contentStyle={analyticsTooltipStyle}
                       formatter={(value) => [
-                        `${Number(value).toLocaleString()} kVh`,
+                        `${Number(value).toLocaleString()} kvah`,
                         "Apparent Energy",
                       ]}
                     />
 
                     <Bar
-                      dataKey="kvh"
+                      dataKey="kvah"
                       fill="#A78BFA"
                       radius={[5, 5, 0, 0]}
                       maxBarSize={26}
@@ -11232,7 +11232,7 @@ const createPccAnalyticsData = (title, panel, index) => ({
   title: `${title} - ${panel.name.replace(/\n/g, " ")}`,
   subtitle: "LT Distribution Panel Live Analytics",
   kwh: `${1245 + index * 18}`,
-  kvh: `${1180 + index * 15}`,
+  kvah: `${1180 + index * 15}`,
   voltage: "433 V",
   current: `${210 + index * 4} A`,
   pf: index % 2 === 0 ? "0.98" : "0.97",
@@ -11351,7 +11351,7 @@ const SinglePccPopup = ({
   }) => {
     const values = [
       ["kWh", `${1245 + index * 18}`],
-      ["kVh", `${1180 + index * 15}`],
+      ["kvah", `${1180 + index * 15}`],
       ["V", "433V"],
       [
         "PF",
@@ -11899,8 +11899,8 @@ const PCCSimpleBox = ({
                       incoming.kwh,
                     ],
                     [
-                      "kVh",
-                      incoming.kvh,
+                      "kvah",
+                      incoming.kvah,
                     ],
                     [
                       "V",
@@ -12084,7 +12084,7 @@ const PCCMainPopup = () => (
               {
                 name: "LT6 IN",
                 kwh: "1245",
-                kvh: "1180",
+                kvah: "1180",
                 voltage: "433V",
                 pf: "0.98",
                 current: "210A",
@@ -12092,7 +12092,7 @@ const PCCMainPopup = () => (
               {
                 name: "LT5 IN",
                 kwh: "1328",
-                kvh: "1254",
+                kvah: "1254",
                 voltage: "432V",
                 pf: "0.97",
                 current: "224A",
@@ -12112,7 +12112,7 @@ const PCCMainPopup = () => (
               {
                 name: "LT1 IN",
                 kwh: "1375",
-                kvh: "1298",
+                kvah: "1298",
                 voltage: "433V",
                 pf: "0.98",
                 current: "218A",
@@ -12120,7 +12120,7 @@ const PCCMainPopup = () => (
               {
                 name: "LT2 IN",
                 kwh: "1410",
-                kvh: "1332",
+                kvah: "1332",
                 voltage: "431V",
                 pf: "0.97",
                 current: "229A",
@@ -12140,7 +12140,7 @@ const PCCMainPopup = () => (
               {
                 name: "LT4 IN",
                 kwh: "1518",
-                kvh: "1435",
+                kvah: "1435",
                 voltage: "434V",
                 pf: "0.98",
                 current: "236A",
@@ -12160,7 +12160,7 @@ const PCCMainPopup = () => (
               {
                 name: "LT3 IN",
                 kwh: "1580",
-                kvh: "1492",
+                kvah: "1492",
                 voltage: "433V",
                 pf: "0.98",
                 current: "242A",
@@ -12185,8 +12185,8 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
   const kwhNumber =
     Number(String(data.kwh).replace(/[^\d.-]/g, "")) || 0;
 
-  const kvhNumber =
-    Number(String(data.kvh).replace(/[^\d.-]/g, "")) || 0;
+  const kvahNumber =
+    Number(String(data.kvah).replace(/[^\d.-]/g, "")) || 0;
 
   const voltageNumber =
     Number(String(data.voltage).replace(/[^\d.-]/g, "")) || 0;
@@ -12201,7 +12201,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "08:00",
       kwh: Math.max(kwhNumber - 420, 0),
-      kvh: Math.max(kvhNumber - 390, 0),
+      kvah: Math.max(kvahNumber - 390, 0),
       voltage: voltageNumber - 6,
       pf: Math.max(pfNumber - 0.04, 0),
       amps: Math.max(currentNumber - 24, 0),
@@ -12209,7 +12209,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "09:00",
       kwh: Math.max(kwhNumber - 375, 0),
-      kvh: Math.max(kvhNumber - 345, 0),
+      kvah: Math.max(kvahNumber - 345, 0),
       voltage: voltageNumber - 4,
       pf: Math.max(pfNumber - 0.03, 0),
       amps: Math.max(currentNumber - 18, 0),
@@ -12217,7 +12217,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "10:00",
       kwh: Math.max(kwhNumber - 325, 0),
-      kvh: Math.max(kvhNumber - 300, 0),
+      kvah: Math.max(kvahNumber - 300, 0),
       voltage: voltageNumber - 2,
       pf: Math.max(pfNumber - 0.02, 0),
       amps: Math.max(currentNumber - 12, 0),
@@ -12225,7 +12225,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "11:00",
       kwh: Math.max(kwhNumber - 275, 0),
-      kvh: Math.max(kvhNumber - 250, 0),
+      kvah: Math.max(kvahNumber - 250, 0),
       voltage: voltageNumber,
       pf: Math.max(pfNumber - 0.01, 0),
       amps: Math.max(currentNumber - 6, 0),
@@ -12233,7 +12233,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "12:00",
       kwh: Math.max(kwhNumber - 225, 0),
-      kvh: Math.max(kvhNumber - 205, 0),
+      kvah: Math.max(kvahNumber - 205, 0),
       voltage: voltageNumber + 2,
       pf: Math.min(pfNumber + 0.005, 1),
       amps: currentNumber + 4,
@@ -12241,7 +12241,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "13:00",
       kwh: Math.max(kwhNumber - 175, 0),
-      kvh: Math.max(kvhNumber - 160, 0),
+      kvah: Math.max(kvahNumber - 160, 0),
       voltage: voltageNumber + 3,
       pf: Math.min(pfNumber + 0.01, 1),
       amps: currentNumber + 10,
@@ -12249,7 +12249,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "14:00",
       kwh: Math.max(kwhNumber - 125, 0),
-      kvh: Math.max(kvhNumber - 115, 0),
+      kvah: Math.max(kvahNumber - 115, 0),
       voltage: voltageNumber + 2,
       pf: Math.min(pfNumber + 0.015, 1),
       amps: currentNumber + 16,
@@ -12257,7 +12257,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "15:00",
       kwh: Math.max(kwhNumber - 80, 0),
-      kvh: Math.max(kvhNumber - 70, 0),
+      kvah: Math.max(kvahNumber - 70, 0),
       voltage: voltageNumber + 1,
       pf: Math.min(pfNumber + 0.01, 1),
       amps: currentNumber + 9,
@@ -12265,7 +12265,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "16:00",
       kwh: Math.max(kwhNumber - 35, 0),
-      kvh: Math.max(kvhNumber - 30, 0),
+      kvah: Math.max(kvahNumber - 30, 0),
       voltage: voltageNumber - 1,
       pf: pfNumber,
       amps: currentNumber + 4,
@@ -12273,7 +12273,7 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
     {
       time: "Now",
       kwh: kwhNumber,
-      kvh: kvhNumber,
+      kvah: kvahNumber,
       voltage: voltageNumber,
       pf: pfNumber,
       amps: currentNumber,
@@ -12499,22 +12499,22 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
               </div>
             </div>
 
-            {/* KVH ANALYTICS */}
+            {/* kvah ANALYTICS */}
             <div className="relative col-span-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-[#1B4D83] bg-[linear-gradient(145deg,rgba(7,27,65,0.99),rgba(2,15,42,0.99))] p-4 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent" />
 
               <div className="flex shrink-0 items-start justify-between gap-3">
                 <h3 className="text-[clamp(11px,1.5vh,14px)] font-black uppercase tracking-[0.06em] text-white">
-                  kVh Analytics
+                  kvah Analytics
                 </h3>
 
                 <div className="text-right">
                   <p className="text-[19px] font-semibold leading-none text-purple-300">
-                    {kvhNumber.toLocaleString()}
+                    {kvahNumber.toLocaleString()}
                   </p>
 
                   <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-500">
-                    kVh
+                    kvah
                   </span>
                 </div>
               </div>
@@ -12562,13 +12562,13 @@ const RaisingMainAnalyticsView = ({ data, onBack }) => {
                     <Tooltip
                       contentStyle={tooltipStyle}
                       formatter={(value) => [
-                        `${Number(value).toLocaleString()} kVh`,
+                        `${Number(value).toLocaleString()} kvah`,
                         "Apparent Energy",
                       ]}
                     />
 
                     <Bar
-                      dataKey="kvh"
+                      dataKey="kvah"
                       fill="#A78BFA"
                       radius={[5, 5, 0, 0]}
                       maxBarSize={26}
@@ -12954,7 +12954,7 @@ const RaisingMainPopup = () => {
     title,
     subtitle: subtitle || "433V Raising Main Distribution",
     kwh: `${1245 + index * 65}`,
-    kvh: `${1180 + index * 58}`,
+    kvah: `${1180 + index * 58}`,
     voltage: "433 V",
     current: `${210 + index * 12} A`,
     pf: index % 2 === 0 ? "0.98" : "0.97",
@@ -12975,7 +12975,7 @@ const RaisingMainPopup = () => {
 
     const monitorData = [
       ["kWh", "1245"],
-      ["kVh", "1180"],
+      ["kvah", "1180"],
       ["V", "433V"],
       ["PF", "0.98"],
       ["Amps", "210A"],

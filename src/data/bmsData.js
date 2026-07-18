@@ -111,7 +111,7 @@ export const systemSummary = {
   ems: {
     title: "EMS / Energy",
     kwh: "12,430",
-    kw: "820",
+    kvah: "820",
     pf: "0.96",
     voltage: "415V",
     amps: "1240A",
