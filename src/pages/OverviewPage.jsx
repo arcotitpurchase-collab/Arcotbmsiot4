@@ -4060,10 +4060,1087 @@
 
 
 
+// import React, { useMemo, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import prestigeLogo from "../assets/ser-removebg.png";
+
+
+// const EQUIPMENT_OPTIONS = [
+//   { key: "system", label: "Entire System" },
+//   { key: "source", label: "33kV Source" },
+//   { key: "feeder", label: "33kV Feeder" },
+//   { key: "transformer", label: "Transformer" },
+//   { key: "kiosk", label: "LT Kiosk" },
+//   { key: "busbar", label: "LT Busbar" },
+//   { key: "pcc", label: "PCC Main" },
+//   { key: "wing-a", label: "Wing A" },
+//   { key: "wing-b", label: "Wing B" },
+//   { key: "chillers", label: "Chillers" },
+// ];
+
+// const EQUIPMENT_MULTIPLIERS = {
+//   system: 1,
+//   source: 0.98,
+//   feeder: 0.94,
+//   transformer: 0.89,
+//   kiosk: 0.84,
+//   busbar: 0.81,
+//   pcc: 0.77,
+//   "wing-a": 0.30,
+//   "wing-b": 0.28,
+//   chillers: 0.19,
+// };
+
+// const formatDateKey = (date) => {
+//   const year = date.getFullYear();
+//   const month = String(date.getMonth() + 1).padStart(2, "0");
+//   const day = String(date.getDate()).padStart(2, "0");
+//   return `${year}-${month}-${day}`;
+// };
+
+// const getCurrentMonth = () => {
+//   const date = new Date();
+//   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+// };
+
+// const generateAnalyticsData = () => {
+//   const rows = [];
+//   const today = new Date();
+
+//   for (let dayOffset = 60; dayOffset >= 0; dayOffset -= 1) {
+//     const date = new Date(today);
+//     date.setDate(today.getDate() - dayOffset);
+//     const dateKey = formatDateKey(date);
+
+//     EQUIPMENT_OPTIONS.forEach((equipment, equipmentIndex) => {
+//       const multiplier = EQUIPMENT_MULTIPLIERS[equipment.key];
+
+//       for (let hour = 0; hour < 24; hour += 1) {
+//         const daylightFactor =
+//           hour >= 6 && hour <= 22
+//             ? 0.72 + Math.sin(((hour - 6) / 16) * Math.PI) * 0.38
+//             : 0.52;
+
+//         const weekdayFactor =
+//           date.getDay() === 0 || date.getDay() === 6 ? 0.88 : 1;
+
+//         const baseIncoming =
+//           1080 *
+//           multiplier *
+//           daylightFactor *
+//           weekdayFactor;
+
+//         const dailyNoise =
+//           ((dayOffset * 13 + hour * 7 + equipmentIndex * 11) % 35) - 17;
+
+//         const incomingKw = Math.max(
+//           30,
+//           Math.round(baseIncoming + dailyNoise)
+//         );
+
+//         const lossRatio =
+//           equipment.key === "system"
+//             ? 0.085
+//             : 0.025 + equipmentIndex * 0.004;
+
+//         const outgoingKw = Math.max(
+//           20,
+//           Math.round(incomingKw * (1 - lossRatio))
+//         );
+
+//         const energyKwh = Number(
+//           ((incomingKw + outgoingKw) / 2).toFixed(2)
+//         );
+
+//         const voltageBase =
+//           equipment.key === "source" || equipment.key === "feeder"
+//             ? 33000
+//             : 433;
+
+//         const voltageVariation =
+//           equipment.key === "source" || equipment.key === "feeder"
+//             ? ((hour + dayOffset) % 9) * 18 - 72
+//             : ((hour + equipmentIndex) % 7) - 3;
+
+//         const voltage = voltageBase + voltageVariation;
+//         const current = Number(
+//           (
+//             (outgoingKw * 1000) /
+//             (Math.sqrt(3) *
+//               voltage *
+//               (0.95 + (equipmentIndex % 3) * 0.01))
+//           ).toFixed(2)
+//         );
+
+//         const powerFactor = Number(
+//           (0.95 + ((hour + equipmentIndex) % 4) * 0.01).toFixed(2)
+//         );
+
+//         const timestamp = `${dateKey}T${String(hour).padStart(2, "0")}:00:00`;
+
+//         rows.push({
+//           timestamp,
+//           equipment: equipment.key,
+//           equipmentLabel: equipment.label,
+//           incomingKw,
+//           outgoingKw,
+//           energyKwh,
+//           voltage,
+//           current,
+//           powerFactor,
+//           status:
+//             outgoingKw / incomingKw < 0.88
+//               ? "Attention"
+//               : "Normal",
+//         });
+//       }
+//     });
+//   }
+
+//   return rows;
+// };
+
+// const ANALYTICS_DATA = generateAnalyticsData();
+
+
+// const Card = ({ children, className = "" }) => (
+//   <div
+//     className={`overflow-hidden rounded-[18px] border border-[#D7E4F2] bg-white shadow-[0_10px_28px_rgba(8,31,92,0.07)] ${className}`}
+//   >
+//     {children}
+//   </div>
+// );
+
+// const SectionTitle = ({ title, subtitle, rightContent }) => (
+//   <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
+//     <div>
+//       <h2 className="text-[15px] font-semibold text-[#081F5C]">
+//         {title}
+//       </h2>
+//       {subtitle && (
+//         <p className="mt-1 text-[10px] leading-relaxed text-[#6B7F99]">
+//           {subtitle}
+//         </p>
+//       )}
+//     </div>
+//     {rightContent}
+//   </div>
+// );
+
+// const MetricCard = ({
+//   label,
+//   value,
+//   unit,
+//   helper,
+//   tone = "blue",
+// }) => {
+//   const toneMap = {
+//     blue: ["text-[#2563EB]", "bg-[#2563EB]"],
+//     cyan: ["text-[#0891B2]", "bg-[#22D3EE]"],
+//     green: ["text-[#15805F]", "bg-[#34D399]"],
+//     amber: ["text-[#B7791F]", "bg-[#FBBF24]"],
+//     red: ["text-[#B42318]", "bg-[#F87171]"],
+//   };
+
+//   const [valueClass, accentClass] =
+//     toneMap[tone] || toneMap.blue;
+
+//   return (
+//     <Card className="relative p-4">
+//       <div className={`absolute inset-y-0 left-0 w-1 ${accentClass}`} />
+
+//       <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#6B7F99]">
+//         {label}
+//       </p>
+
+//       <div className="mt-3 flex items-end gap-2">
+//         <h3 className={`text-[29px] font-semibold leading-none ${valueClass}`}>
+//           {value}
+//         </h3>
+//         {unit && (
+//           <span className="pb-1 text-[9px] font-semibold uppercase text-[#8292A8]">
+//             {unit}
+//           </span>
+//         )}
+//       </div>
+
+//       <p className="mt-3 text-[9px] leading-relaxed text-[#8292A8]">
+//         {helper}
+//       </p>
+//     </Card>
+//   );
+// };
+
+// const TrendChart = ({ rows }) => {
+//   if (!rows.length) {
+//     return (
+//       <div className="flex h-[260px] items-center justify-center text-[11px] text-[#6B7F99]">
+//         No analytics data found for the selected filters.
+//       </div>
+//     );
+//   }
+
+//   const width = 820;
+//   const height = 270;
+//   const left = 58;
+//   const right = 790;
+//   const top = 24;
+//   const bottom = 215;
+//   const chartWidth = right - left;
+//   const chartHeight = bottom - top;
+
+//   const maxValue = Math.max(
+//     ...rows.flatMap((row) => [row.incomingKw, row.outgoingKw]),
+//     1
+//   );
+
+//   const step = Math.max(1, Math.ceil(rows.length / 24));
+//   const chartRows = rows.filter(
+//     (_, index) => index % step === 0 || index === rows.length - 1
+//   );
+
+//   const coordinates = chartRows.map((row, index) => {
+//     const x =
+//       chartRows.length === 1
+//         ? left
+//         : left + (index / (chartRows.length - 1)) * chartWidth;
+
+//     return {
+//       x,
+//       incomingY:
+//         bottom - (Number(row.incomingKw) / maxValue) * chartHeight,
+//       outgoingY:
+//         bottom - (Number(row.outgoingKw) / maxValue) * chartHeight,
+//       row,
+//     };
+//   });
+
+//   const incomingPoints = coordinates
+//     .map((item) => `${item.x},${item.incomingY}`)
+//     .join(" ");
+
+//   const outgoingPoints = coordinates
+//     .map((item) => `${item.x},${item.outgoingY}`)
+//     .join(" ");
+
+//   const labelStep = Math.max(1, Math.ceil(coordinates.length / 7));
+
+//   return (
+//     <svg viewBox={`0 0 ${width} ${height}`} className="h-[270px] w-full">
+//       {[0, 1, 2, 3, 4].map((index) => {
+//         const y = top + index * (chartHeight / 4);
+//         const value = maxValue - index * (maxValue / 4);
+
+//         return (
+//           <React.Fragment key={index}>
+//             <line
+//               x1={left}
+//               x2={right}
+//               y1={y}
+//               y2={y}
+//               stroke="rgba(107,127,153,0.16)"
+//               strokeDasharray="4 4"
+//             />
+//             <text
+//               x={left - 8}
+//               y={y + 3}
+//               textAnchor="end"
+//               fontSize="8"
+//               fill="#8292A8"
+//             >
+//               {Math.round(value)}
+//             </text>
+//           </React.Fragment>
+//         );
+//       })}
+
+//       <polyline
+//         points={incomingPoints}
+//         fill="none"
+//         stroke="#F59E0B"
+//         strokeWidth="3"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+
+//       <polyline
+//         points={outgoingPoints}
+//         fill="none"
+//         stroke="#2563EB"
+//         strokeWidth="3"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+
+//       {coordinates.map((item, index) => (
+//         <g key={`${item.row.timestamp}-${index}`}>
+//           <circle
+//             cx={item.x}
+//             cy={item.incomingY}
+//             r="3"
+//             fill="#F59E0B"
+//           />
+//           <circle
+//             cx={item.x}
+//             cy={item.outgoingY}
+//             r="3"
+//             fill="#2563EB"
+//           />
+
+//           <title>
+//             {`${new Date(item.row.timestamp).toLocaleString()} | Incoming ${item.row.incomingKw} kW | Outgoing ${item.row.outgoingKw} kW`}
+//           </title>
+
+//           {(index % labelStep === 0 ||
+//             index === coordinates.length - 1) && (
+//             <text
+//               x={item.x}
+//               y="240"
+//               textAnchor="middle"
+//               fontSize="8"
+//               fill="#6B7F99"
+//             >
+//               {new Date(item.row.timestamp).toLocaleDateString(undefined, {
+//                 month: "short",
+//                 day: "2-digit",
+//                 hour: "2-digit",
+//               })}
+//             </text>
+//           )}
+//         </g>
+//       ))}
+
+//       <g transform="translate(610,15)">
+//         <circle cx="0" cy="0" r="4" fill="#F59E0B" />
+//         <text x="10" y="3" fontSize="9" fill="#6B7F99">
+//           Incoming
+//         </text>
+
+//         <circle cx="90" cy="0" r="4" fill="#2563EB" />
+//         <text x="100" y="3" fontSize="9" fill="#6B7F99">
+//           Outgoing
+//         </text>
+//       </g>
+//     </svg>
+//   );
+// };
+
+// const EnergyBars = ({ rows }) => {
+//   if (!rows.length) {
+//     return null;
+//   }
+
+//   const grouped = rows.reduce((accumulator, row) => {
+//     const key = row.timestamp.slice(0, 13);
+//     accumulator[key] =
+//       (accumulator[key] || 0) + Number(row.energyKwh || 0);
+//     return accumulator;
+//   }, {});
+
+//   const points = Object.entries(grouped).slice(-12);
+//   const maxValue = Math.max(...points.map(([, value]) => value), 1);
+
+//   return (
+//     <div className="flex h-[190px] items-end gap-2">
+//       {points.map(([label, value]) => (
+//         <div
+//           key={label}
+//           className="flex min-w-0 flex-1 flex-col items-center justify-end"
+//         >
+//           <div className="mb-2 text-[8px] font-semibold text-[#2563EB]">
+//             {Math.round(value)}
+//           </div>
+
+//           <div
+//             className="w-full max-w-[28px] rounded-t bg-[#2563EB]"
+//             style={{
+//               height: `${Math.max(10, (value / maxValue) * 125)}px`,
+//             }}
+//           />
+
+//           <p className="mt-2 truncate text-[7px] text-[#6B7F99]">
+//             {label.slice(11, 13)}h
+//           </p>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+// const escapeCsv = (value) =>
+//   `"${String(value ?? "").replace(/"/g, '""')}"`;
+
+// const triggerDownload = (blob, filename) => {
+//   const url = URL.createObjectURL(blob);
+//   const link = document.createElement("a");
+
+//   link.href = url;
+//   link.download = filename;
+//   document.body.appendChild(link);
+//   link.click();
+//   link.remove();
+//   URL.revokeObjectURL(url);
+// };
+
+// export default function OverviewPage() {
+//   const navigate = useNavigate();
+
+//   const [selectedEquipment, setSelectedEquipment] =
+//     useState("system");
+
+//   const [selectedPeriod, setSelectedPeriod] =
+//     useState("daily");
+
+//   const [selectedDate, setSelectedDate] =
+//     useState(formatDateKey(new Date()));
+
+//   const [selectedMonth, setSelectedMonth] =
+//     useState(getCurrentMonth());
+
+//   const [fromTime, setFromTime] = useState("00:00");
+//   const [toTime, setToTime] = useState("23:59");
+//   const [customStart, setCustomStart] = useState("");
+//   const [customEnd, setCustomEnd] = useState("");
+
+//   const filteredData = useMemo(() => {
+//     return ANALYTICS_DATA.filter((row) => {
+//       if (row.equipment !== selectedEquipment) {
+//         return false;
+//       }
+
+//       const timestamp = new Date(row.timestamp);
+//       const rowDate = row.timestamp.slice(0, 10);
+//       const rowMonth = row.timestamp.slice(0, 7);
+//       const rowTime = row.timestamp.slice(11, 16);
+
+//       if (selectedPeriod === "daily") {
+//         return (
+//           rowDate === selectedDate &&
+//           rowTime >= fromTime &&
+//           rowTime <= toTime
+//         );
+//       }
+
+//       if (selectedPeriod === "weekly") {
+//         const selected = new Date(`${selectedDate}T00:00:00`);
+//         const weekStart = new Date(selected);
+//         weekStart.setDate(selected.getDate() - selected.getDay());
+
+//         const weekEnd = new Date(weekStart);
+//         weekEnd.setDate(weekStart.getDate() + 7);
+
+//         return timestamp >= weekStart && timestamp < weekEnd;
+//       }
+
+//       if (selectedPeriod === "monthly") {
+//         return rowMonth === selectedMonth;
+//       }
+
+//       if (selectedPeriod === "custom") {
+//         const start = customStart ? new Date(customStart) : null;
+//         const end = customEnd ? new Date(customEnd) : null;
+
+//         if (start && timestamp < start) {
+//           return false;
+//         }
+
+//         if (end && timestamp > end) {
+//           return false;
+//         }
+
+//         return true;
+//       }
+
+//       return true;
+//     });
+//   }, [
+//     selectedEquipment,
+//     selectedPeriod,
+//     selectedDate,
+//     selectedMonth,
+//     fromTime,
+//     toTime,
+//     customStart,
+//     customEnd,
+//   ]);
+
+//   const summary = useMemo(() => {
+//     if (!filteredData.length) {
+//       return {
+//         totalEnergy: 0,
+//         peakLoad: 0,
+//         averageLoad: 0,
+//         totalLoss: 0,
+//         efficiency: 0,
+//         averageVoltage: 0,
+//         averageCurrent: 0,
+//         averagePowerFactor: 0,
+//       };
+//     }
+
+//     const totalEnergy = filteredData.reduce(
+//       (sum, row) => sum + Number(row.energyKwh || 0),
+//       0
+//     );
+
+//     const peakLoad = Math.max(
+//       ...filteredData.map((row) => Number(row.incomingKw || 0))
+//     );
+
+//     const averageLoad =
+//       filteredData.reduce(
+//         (sum, row) => sum + Number(row.outgoingKw || 0),
+//         0
+//       ) / filteredData.length;
+
+//     const totalIncoming = filteredData.reduce(
+//       (sum, row) => sum + Number(row.incomingKw || 0),
+//       0
+//     );
+
+//     const totalOutgoing = filteredData.reduce(
+//       (sum, row) => sum + Number(row.outgoingKw || 0),
+//       0
+//     );
+
+//     const averageVoltage =
+//       filteredData.reduce(
+//         (sum, row) => sum + Number(row.voltage || 0),
+//         0
+//       ) / filteredData.length;
+
+//     const averageCurrent =
+//       filteredData.reduce(
+//         (sum, row) => sum + Number(row.current || 0),
+//         0
+//       ) / filteredData.length;
+
+//     const averagePowerFactor =
+//       filteredData.reduce(
+//         (sum, row) => sum + Number(row.powerFactor || 0),
+//         0
+//       ) / filteredData.length;
+
+//     return {
+//       totalEnergy,
+//       peakLoad,
+//       averageLoad,
+//       totalLoss: Math.max(0, totalIncoming - totalOutgoing),
+//       efficiency:
+//         totalIncoming > 0 ? (totalOutgoing / totalIncoming) * 100 : 0,
+//       averageVoltage,
+//       averageCurrent,
+//       averagePowerFactor,
+//     };
+//   }, [filteredData]);
+
+//   const selectedEquipmentLabel =
+//     EQUIPMENT_OPTIONS.find(
+//       (item) => item.key === selectedEquipment
+//     )?.label || "Entire System";
+
+//   const downloadCsv = () => {
+//     if (!filteredData.length) return;
+
+//     const headers = [
+//       "Timestamp",
+//       "Equipment",
+//       "Incoming kW",
+//       "Outgoing kW",
+//       "Energy kWh",
+//       "Voltage",
+//       "Current",
+//       "Power Factor",
+//       "Status",
+//     ];
+
+//     const rows = filteredData.map((row) => [
+//       row.timestamp,
+//       row.equipmentLabel,
+//       row.incomingKw,
+//       row.outgoingKw,
+//       row.energyKwh,
+//       row.voltage,
+//       row.current,
+//       row.powerFactor,
+//       row.status,
+//     ]);
+
+//     const csv = [headers, ...rows]
+//       .map((row) => row.map(escapeCsv).join(","))
+//       .join("\n");
+
+//     triggerDownload(
+//       new Blob([csv], {
+//         type: "text/csv;charset=utf-8;",
+//       }),
+//       `power-analytics-${selectedEquipment}-${selectedPeriod}.csv`
+//     );
+//   };
+
+//   const downloadJson = () => {
+//     const report = {
+//       generatedAt: new Date().toISOString(),
+//       filters: {
+//         equipment: selectedEquipment,
+//         period: selectedPeriod,
+//         selectedDate,
+//         selectedMonth,
+//         fromTime,
+//         toTime,
+//         customStart,
+//         customEnd,
+//       },
+//       summary,
+//       readings: filteredData,
+//     };
+
+//     triggerDownload(
+//       new Blob([JSON.stringify(report, null, 2)], {
+//         type: "application/json",
+//       }),
+//       `power-analytics-${selectedEquipment}-${selectedPeriod}.json`
+//     );
+//   };
+
+//   const resetFilters = () => {
+//     setSelectedEquipment("system");
+//     setSelectedPeriod("daily");
+//     setSelectedDate(formatDateKey(new Date()));
+//     setSelectedMonth(getCurrentMonth());
+//     setFromTime("00:00");
+//     setToTime("23:59");
+//     setCustomStart("");
+//     setCustomEnd("");
+//   };
+
+//   return (
+//     <div className="min-h-screen w-full bg-[#F4F8FC] text-[#081F5C]">
+//       <header className="sticky top-0 z-50 flex h-[64px] items-center justify-between border-b border-[#D7E4F2] bg-white px-6 shadow-[0_4px_14px_rgba(8,31,92,0.05)]">
+//         <div
+//           onClick={() => navigate("/")}
+//           className="flex cursor-pointer items-center"
+//         >
+//           <div>
+//             <h1 className="text-[22px] font-semibold uppercase leading-none tracking-[0.18em] text-[#081F5C]">
+//               ARCOT{" "}
+//               <span className="text-[#2563EB]">
+//                 IIOT 1.0
+//               </span>
+//             </h1>
+
+//             <p className="mt-2 text-[8px] uppercase tracking-[0.35em] text-[#4271AB]">
+//               Industrial Internet of Things
+//             </p>
+//           </div>
+
+//           <div className="mx-4 h-[44px] border-l border-[#D7E4F2]" />
+
+//           <img
+//             src={prestigeLogo}
+//             alt="Prestige"
+//             className="h-[46px] w-[94px] object-contain"
+//           />
+//         </div>
+
+//         <button
+//           type="button"
+//           onClick={() => navigate("/")}
+//           className="rounded-lg border border-[#2563EB] px-5 py-2 text-[9px] font-bold uppercase tracking-[0.12em] text-[#2563EB]"
+//         >
+//           Dashboard
+//         </button>
+//       </header>
+
+//       <main className="mx-auto w-full max-w-[1700px] p-4">
+//         <Card className="p-4">
+//           <SectionTitle
+//             title="Power Analytics Filters"
+//             subtitle="Select equipment and time period to inspect exact consumption and operating performance."
+//             rightContent={
+//               <div className="flex flex-wrap gap-2">
+//                 <button
+//                   type="button"
+//                   onClick={downloadCsv}
+//                   className="rounded-lg bg-[#2563EB] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-white"
+//                 >
+//                   Download CSV
+//                 </button>
+
+//                 <button
+//                   type="button"
+//                   onClick={downloadJson}
+//                   className="rounded-lg border border-[#2563EB] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-[#2563EB]"
+//                 >
+//                   Download JSON
+//                 </button>
+
+//                 <button
+//                   type="button"
+//                   onClick={() => window.print()}
+//                   className="rounded-lg border border-[#D7E4F2] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-[#5D718C]"
+//                 >
+//                   Print Report
+//                 </button>
+//               </div>
+//             }
+//           />
+
+//           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-7">
+//             <select
+//               value={selectedEquipment}
+//               onChange={(event) =>
+//                 setSelectedEquipment(event.target.value)
+//               }
+//               className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//             >
+//               {EQUIPMENT_OPTIONS.map((option) => (
+//                 <option key={option.key} value={option.key}>
+//                   {option.label}
+//                 </option>
+//               ))}
+//             </select>
+
+//             <select
+//               value={selectedPeriod}
+//               onChange={(event) =>
+//                 setSelectedPeriod(event.target.value)
+//               }
+//               className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//             >
+//               <option value="daily">Daily</option>
+//               <option value="weekly">Weekly</option>
+//               <option value="monthly">Monthly</option>
+//               <option value="custom">Custom Range</option>
+//             </select>
+
+//             {(selectedPeriod === "daily" ||
+//               selectedPeriod === "weekly") && (
+//               <input
+//                 type="date"
+//                 value={selectedDate}
+//                 onChange={(event) =>
+//                   setSelectedDate(event.target.value)
+//                 }
+//                 className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//               />
+//             )}
+
+//             {selectedPeriod === "monthly" && (
+//               <input
+//                 type="month"
+//                 value={selectedMonth}
+//                 onChange={(event) =>
+//                   setSelectedMonth(event.target.value)
+//                 }
+//                 className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//               />
+//             )}
+
+//             {selectedPeriod === "daily" && (
+//               <>
+//                 <input
+//                   type="time"
+//                   value={fromTime}
+//                   onChange={(event) =>
+//                     setFromTime(event.target.value)
+//                   }
+//                   className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//                 />
+
+//                 <input
+//                   type="time"
+//                   value={toTime}
+//                   onChange={(event) =>
+//                     setToTime(event.target.value)
+//                   }
+//                   className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//                 />
+//               </>
+//             )}
+
+//             {selectedPeriod === "custom" && (
+//               <>
+//                 <input
+//                   type="datetime-local"
+//                   value={customStart}
+//                   onChange={(event) =>
+//                     setCustomStart(event.target.value)
+//                   }
+//                   className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//                 />
+
+//                 <input
+//                   type="datetime-local"
+//                   value={customEnd}
+//                   onChange={(event) =>
+//                     setCustomEnd(event.target.value)
+//                   }
+//                   className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
+//                 />
+//               </>
+//             )}
+
+//             <button
+//               type="button"
+//               onClick={resetFilters}
+//               className="rounded-lg border border-[#D7E4F2] bg-[#F8FBFE] px-4 py-2.5 text-[8px] font-bold uppercase tracking-[0.1em] text-[#5D718C]"
+//             >
+//               Reset Filters
+//             </button>
+//           </div>
+//         </Card>
+
+//         <section className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+//           <MetricCard
+//             label="Consumed Energy"
+//             value={summary.totalEnergy.toLocaleString(undefined, {
+//               maximumFractionDigits: 0,
+//             })}
+//             unit="kWh"
+//             tone="blue"
+//             helper="Total energy consumed in the selected time range"
+//           />
+
+//           <MetricCard
+//             label="Peak Load"
+//             value={summary.peakLoad.toLocaleString(undefined, {
+//               maximumFractionDigits: 0,
+//             })}
+//             unit="kW"
+//             tone="amber"
+//             helper="Highest incoming load recorded"
+//           />
+
+//           <MetricCard
+//             label="Average Load"
+//             value={summary.averageLoad.toLocaleString(undefined, {
+//               maximumFractionDigits: 0,
+//             })}
+//             unit="kW"
+//             tone="cyan"
+//             helper="Average delivered power during the period"
+//           />
+
+//           <MetricCard
+//             label="Distribution Loss"
+//             value={summary.totalLoss.toLocaleString(undefined, {
+//               maximumFractionDigits: 0,
+//             })}
+//             unit="kW"
+//             tone="red"
+//             helper="Accumulated incoming-to-outgoing difference"
+//           />
+
+//           <MetricCard
+//             label="Efficiency"
+//             value={`${summary.efficiency.toFixed(1)}%`}
+//             tone="green"
+//             helper="Overall delivery efficiency for selected readings"
+//           />
+//         </section>
+
+//         <section className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-12">
+//           <Card className="p-4 xl:col-span-8">
+//             <SectionTitle
+//               title={`${selectedEquipmentLabel} Load Trend`}
+//               subtitle="Incoming and outgoing power across the selected period."
+//             />
+
+//             <div className="rounded-[14px] border border-[#DCE8F3] bg-[#FBFDFF] p-2">
+//               <TrendChart rows={filteredData} />
+//             </div>
+//           </Card>
+
+//           <div className="space-y-4 xl:col-span-4">
+//             <Card className="p-4">
+//               <SectionTitle
+//                 title="Electrical Quality"
+//                 subtitle="Average electrical conditions for the selected data."
+//               />
+
+//               <div className="grid grid-cols-3 gap-3">
+//                 <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
+//                   <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
+//                     Voltage
+//                   </p>
+//                   <h3 className="mt-2 text-[20px] font-semibold text-[#2563EB]">
+//                     {summary.averageVoltage.toFixed(1)}
+//                   </h3>
+//                   <p className="mt-1 text-[8px] text-[#8292A8]">V</p>
+//                 </div>
+
+//                 <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
+//                   <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
+//                     Current
+//                   </p>
+//                   <h3 className="mt-2 text-[20px] font-semibold text-[#0891B2]">
+//                     {summary.averageCurrent.toFixed(1)}
+//                   </h3>
+//                   <p className="mt-1 text-[8px] text-[#8292A8]">A</p>
+//                 </div>
+
+//                 <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
+//                   <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
+//                     PF
+//                   </p>
+//                   <h3 className="mt-2 text-[20px] font-semibold text-[#15805F]">
+//                     {summary.averagePowerFactor.toFixed(2)}
+//                   </h3>
+//                   <p className="mt-1 text-[8px] text-[#8292A8]">
+//                     Average
+//                   </p>
+//                 </div>
+//               </div>
+//             </Card>
+
+//             <Card className="p-4">
+//               <SectionTitle
+//                 title="Hourly Consumption"
+//                 subtitle="Recent energy consumption blocks."
+//               />
+//               <EnergyBars rows={filteredData} />
+//             </Card>
+//           </div>
+//         </section>
+
+//         <section className="mt-4">
+//           <Card className="p-4">
+//             <SectionTitle
+//               title="Detailed Analytical Readings"
+//               subtitle={`${filteredData.length.toLocaleString()} readings match the selected filters.`}
+//             />
+
+//             <div className="max-h-[420px] overflow-auto">
+//               <table className="w-full min-w-[1050px] border-collapse">
+//                 <thead className="sticky top-0 z-10 bg-white">
+//                   <tr className="border-b border-[#DCE8F3]">
+//                     {[
+//                       "Timestamp",
+//                       "Equipment",
+//                       "Incoming",
+//                       "Outgoing",
+//                       "Energy",
+//                       "Voltage",
+//                       "Current",
+//                       "Power Factor",
+//                       "Loss",
+//                       "Status",
+//                     ].map((heading) => (
+//                       <th
+//                         key={heading}
+//                         className="px-3 py-3 text-left text-[8px] font-bold uppercase tracking-[0.1em] text-[#8292A8]"
+//                       >
+//                         {heading}
+//                       </th>
+//                     ))}
+//                   </tr>
+//                 </thead>
+
+//                 <tbody>
+//                   {filteredData.map((row, index) => {
+//                     const loss = Math.max(
+//                       0,
+//                       Number(row.incomingKw) -
+//                         Number(row.outgoingKw)
+//                     );
+
+//                     return (
+//                       <tr
+//                         key={`${row.timestamp}-${row.equipment}-${index}`}
+//                         className="border-b border-[#EDF2F7] last:border-b-0"
+//                       >
+//                         <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+//                           {new Date(row.timestamp).toLocaleString()}
+//                         </td>
+
+//                         <td className="px-3 py-3 text-[9px] font-semibold text-[#081F5C]">
+//                           {row.equipmentLabel}
+//                         </td>
+
+//                         <td className="px-3 py-3 text-[9px] text-[#081F5C]">
+//                           {row.incomingKw} kW
+//                         </td>
+
+//                         <td className="px-3 py-3 text-[9px] text-[#081F5C]">
+//                           {row.outgoingKw} kW
+//                         </td>
+
+//                         <td className="px-3 py-3 text-[9px] text-[#081F5C]">
+//                           {row.energyKwh} kWh
+//                         </td>
+
+//                         <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+//                           {row.voltage} V
+//                         </td>
+
+//                         <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+//                           {row.current} A
+//                         </td>
+
+//                         <td className="px-3 py-3 text-[9px] text-[#5D718C]">
+//                           {row.powerFactor}
+//                         </td>
+
+//                         <td
+//                           className={`px-3 py-3 text-[9px] font-semibold ${
+//                             loss > row.incomingKw * 0.1
+//                               ? "text-[#B42318]"
+//                               : loss > row.incomingKw * 0.06
+//                                 ? "text-[#B7791F]"
+//                                 : "text-[#15805F]"
+//                           }`}
+//                         >
+//                           {loss} kW
+//                         </td>
+
+//                         <td className="px-3 py-3">
+//                           <span
+//                             className={`inline-flex rounded-full border px-2.5 py-1 text-[7px] font-bold uppercase tracking-[0.08em] ${
+//                               row.status === "Normal"
+//                                 ? "border-[#BEE8D4] bg-[#E8F5EE] text-[#15805F]"
+//                                 : "border-[#F4D3B2] bg-[#FFF5DD] text-[#B7791F]"
+//                             }`}
+//                           >
+//                             {row.status}
+//                           </span>
+//                         </td>
+//                       </tr>
+//                     );
+//                   })}
+//                 </tbody>
+//               </table>
+//             </div>
+//           </Card>
+//         </section>
+//       </main>
+//     </div>
+//   );
+// }
+
+
+
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Activity,
+  ArrowDownToLine,
+  BarChart3,
+  CalendarDays,
+  ChevronDown,
+  Clock3,
+  Download,
+  FileJson,
+  Gauge,
+  Layers3,
+  Printer,
+  RefreshCw,
+  Search,
+  ShieldCheck,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 import prestigeLogo from "../assets/ser-removebg.png";
-
 
 const EQUIPMENT_OPTIONS = [
   { key: "system", label: "Entire System" },
@@ -4086,7 +5163,7 @@ const EQUIPMENT_MULTIPLIERS = {
   kiosk: 0.84,
   busbar: 0.81,
   pcc: 0.77,
-  "wing-a": 0.30,
+  "wing-a": 0.3,
   "wing-b": 0.28,
   chillers: 0.19,
 };
@@ -4124,33 +5201,22 @@ const generateAnalyticsData = () => {
         const weekdayFactor =
           date.getDay() === 0 || date.getDay() === 6 ? 0.88 : 1;
 
-        const baseIncoming =
-          1080 *
-          multiplier *
-          daylightFactor *
-          weekdayFactor;
+        const baseIncoming = 1080 * multiplier * daylightFactor * weekdayFactor;
 
         const dailyNoise =
           ((dayOffset * 13 + hour * 7 + equipmentIndex * 11) % 35) - 17;
 
-        const incomingKw = Math.max(
-          30,
-          Math.round(baseIncoming + dailyNoise)
-        );
+        const incomingKw = Math.max(30, Math.round(baseIncoming + dailyNoise));
 
         const lossRatio =
-          equipment.key === "system"
-            ? 0.085
-            : 0.025 + equipmentIndex * 0.004;
+          equipment.key === "system" ? 0.085 : 0.025 + equipmentIndex * 0.004;
 
         const outgoingKw = Math.max(
           20,
-          Math.round(incomingKw * (1 - lossRatio))
+          Math.round(incomingKw * (1 - lossRatio)),
         );
 
-        const energyKwh = Number(
-          ((incomingKw + outgoingKw) / 2).toFixed(2)
-        );
+        const energyKwh = Number(((incomingKw + outgoingKw) / 2).toFixed(2));
 
         const voltageBase =
           equipment.key === "source" || equipment.key === "feeder"
@@ -4166,14 +5232,12 @@ const generateAnalyticsData = () => {
         const current = Number(
           (
             (outgoingKw * 1000) /
-            (Math.sqrt(3) *
-              voltage *
-              (0.95 + (equipmentIndex % 3) * 0.01))
-          ).toFixed(2)
+            (Math.sqrt(3) * voltage * (0.95 + (equipmentIndex % 3) * 0.01))
+          ).toFixed(2),
         );
 
         const powerFactor = Number(
-          (0.95 + ((hour + equipmentIndex) % 4) * 0.01).toFixed(2)
+          (0.95 + ((hour + equipmentIndex) % 4) * 0.01).toFixed(2),
         );
 
         const timestamp = `${dateKey}T${String(hour).padStart(2, "0")}:00:00`;
@@ -4188,10 +5252,7 @@ const generateAnalyticsData = () => {
           voltage,
           current,
           powerFactor,
-          status:
-            outgoingKw / incomingKw < 0.88
-              ? "Attention"
-              : "Normal",
+          status: outgoingKw / incomingKw < 0.88 ? "Attention" : "Normal",
         });
       }
     });
@@ -4202,27 +5263,37 @@ const generateAnalyticsData = () => {
 
 const ANALYTICS_DATA = generateAnalyticsData();
 
-
 const Card = ({ children, className = "" }) => (
   <div
-    className={`overflow-hidden rounded-[18px] border border-[#D7E4F2] bg-white shadow-[0_10px_28px_rgba(8,31,92,0.07)] ${className}`}
+    className={`relative overflow-hidden rounded-[20px] border border-[#D5E3F0] bg-white shadow-[0_14px_36px_rgba(8,31,92,0.075)] ${className}`}
   >
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#17A8DB]/45 to-transparent" />
     {children}
   </div>
 );
 
-const SectionTitle = ({ title, subtitle, rightContent }) => (
-  <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
-    <div>
-      <h2 className="text-[15px] font-semibold text-[#081F5C]">
-        {title}
-      </h2>
-      {subtitle && (
-        <p className="mt-1 text-[10px] leading-relaxed text-[#6B7F99]">
-          {subtitle}
-        </p>
+const SectionTitle = ({ title, subtitle, rightContent, icon: Icon }) => (
+  <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
+    <div className="flex items-start gap-3">
+      {Icon && (
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[11px] border border-[#C9DCEF] bg-[linear-gradient(145deg,#F8FBFF,#E8F2FA)] text-[#1B73C9] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+          <Icon size={18} strokeWidth={2} />
+        </div>
       )}
+
+      <div>
+        <h2 className="text-[14px] font-semibold tracking-[-0.01em] text-[#06224F]">
+          {title}
+        </h2>
+
+        {subtitle && (
+          <p className="mt-1 max-w-3xl text-[9px] leading-relaxed text-[#687F99]">
+            {subtitle}
+          </p>
+        )}
+      </div>
     </div>
+
     {rightContent}
   </div>
 );
@@ -4233,40 +5304,94 @@ const MetricCard = ({
   unit,
   helper,
   tone = "blue",
+  icon: Icon,
+  trend,
 }) => {
   const toneMap = {
-    blue: ["text-[#2563EB]", "bg-[#2563EB]"],
-    cyan: ["text-[#0891B2]", "bg-[#22D3EE]"],
-    green: ["text-[#15805F]", "bg-[#34D399]"],
-    amber: ["text-[#B7791F]", "bg-[#FBBF24]"],
-    red: ["text-[#B42318]", "bg-[#F87171]"],
+    blue: {
+      text: "text-[#1B73C9]",
+      icon: "text-[#1B73C9]",
+      iconBg: "bg-[#EAF4FD]",
+      iconBorder: "border-[#D8E6FF]",
+      accent: "from-[#1B73C9] to-[#17A8DB]",
+    },
+    cyan: {
+      text: "text-[#0E86B7]",
+      icon: "text-[#0E86B7]",
+      iconBg: "bg-[#ECFEFF]",
+      iconBorder: "border-[#C7F1F5]",
+      accent: "from-[#17A8DB] to-[#5DD9FF]",
+    },
+    green: {
+      text: "text-[#15805F]",
+      icon: "text-[#15805F]",
+      iconBg: "bg-[#ECFDF5]",
+      iconBorder: "border-[#CBEFDB]",
+      accent: "from-[#16A34A] to-[#34D399]",
+    },
+    amber: {
+      text: "text-[#B7791F]",
+      icon: "text-[#B7791F]",
+      iconBg: "bg-[#FFF8E8]",
+      iconBorder: "border-[#F8E4B0]",
+      accent: "from-[#F59E0B] to-[#FBBF24]",
+    },
+    red: {
+      text: "text-[#B42318]",
+      icon: "text-[#B42318]",
+      iconBg: "bg-[#FFF1F2]",
+      iconBorder: "border-[#FFD5D9]",
+      accent: "from-[#DC2626] to-[#F87171]",
+    },
   };
 
-  const [valueClass, accentClass] =
-    toneMap[tone] || toneMap.blue;
+  const activeTone = toneMap[tone] || toneMap.blue;
 
   return (
-    <Card className="relative p-4">
-      <div className={`absolute inset-y-0 left-0 w-1 ${accentClass}`} />
+    <Card className="print-safe group h-full min-h-0 p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#BDD2E8] hover:shadow-[0_18px_42px_rgba(8,31,92,0.12)]">
+      <div
+        className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${activeTone.accent}`}
+      />
 
-      <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#6B7F99]">
-        {label}
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#687F99]">
+            {label}
+          </p>
 
-      <div className="mt-3 flex items-end gap-2">
-        <h3 className={`text-[29px] font-semibold leading-none ${valueClass}`}>
-          {value}
-        </h3>
-        {unit && (
-          <span className="pb-1 text-[9px] font-semibold uppercase text-[#8292A8]">
-            {unit}
-          </span>
+          <div className="mt-3 flex items-end gap-2">
+            <h3
+              className={`text-[25px] font-semibold leading-none tracking-[-0.03em] ${activeTone.text}`}
+            >
+              {value}
+            </h3>
+
+            {unit && (
+              <span className="pb-1 text-[9px] font-semibold uppercase text-[#8192A7]">
+                {unit}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {Icon && (
+          <div
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] border ${activeTone.iconBorder} ${activeTone.iconBg} ${activeTone.icon}`}
+          >
+            <Icon size={18} strokeWidth={2.1} />
+          </div>
         )}
       </div>
 
-      <p className="mt-3 text-[9px] leading-relaxed text-[#8292A8]">
-        {helper}
-      </p>
+      <div className="mt-2.5 flex items-end justify-between gap-3">
+        <p className="text-[9px] leading-relaxed text-[#8192A7]">{helper}</p>
+
+        {trend && (
+          <span className="shrink-0 rounded-full border border-[#CBEFDB] bg-[#ECFDF5] px-2 py-1 text-[7px] font-bold uppercase tracking-[0.08em] text-[#15805F]">
+            {trend}
+          </span>
+        )}
+      </div>
     </Card>
   );
 };
@@ -4274,29 +5399,29 @@ const MetricCard = ({
 const TrendChart = ({ rows }) => {
   if (!rows.length) {
     return (
-      <div className="flex h-[260px] items-center justify-center text-[11px] text-[#6B7F99]">
+      <div className="flex h-[260px] items-center justify-center text-[11px] text-[#687F99]">
         No analytics data found for the selected filters.
       </div>
     );
   }
 
   const width = 820;
-  const height = 270;
+  const height = 230;
   const left = 58;
   const right = 790;
   const top = 24;
-  const bottom = 215;
+  const bottom = 180;
   const chartWidth = right - left;
   const chartHeight = bottom - top;
 
   const maxValue = Math.max(
     ...rows.flatMap((row) => [row.incomingKw, row.outgoingKw]),
-    1
+    1,
   );
 
   const step = Math.max(1, Math.ceil(rows.length / 24));
   const chartRows = rows.filter(
-    (_, index) => index % step === 0 || index === rows.length - 1
+    (_, index) => index % step === 0 || index === rows.length - 1,
   );
 
   const coordinates = chartRows.map((row, index) => {
@@ -4307,10 +5432,8 @@ const TrendChart = ({ rows }) => {
 
     return {
       x,
-      incomingY:
-        bottom - (Number(row.incomingKw) / maxValue) * chartHeight,
-      outgoingY:
-        bottom - (Number(row.outgoingKw) / maxValue) * chartHeight,
+      incomingY: bottom - (Number(row.incomingKw) / maxValue) * chartHeight,
+      outgoingY: bottom - (Number(row.outgoingKw) / maxValue) * chartHeight,
       row,
     };
   });
@@ -4326,7 +5449,7 @@ const TrendChart = ({ rows }) => {
   const labelStep = Math.max(1, Math.ceil(coordinates.length / 7));
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-[270px] w-full">
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-full min-h-0 w-full">
       {[0, 1, 2, 3, 4].map((index) => {
         const y = top + index * (chartHeight / 4);
         const value = maxValue - index * (maxValue / 4);
@@ -4338,7 +5461,7 @@ const TrendChart = ({ rows }) => {
               x2={right}
               y1={y}
               y2={y}
-              stroke="rgba(107,127,153,0.16)"
+              stroke="rgba(8,31,92,0.10)"
               strokeDasharray="4 4"
             />
             <text
@@ -4346,7 +5469,7 @@ const TrendChart = ({ rows }) => {
               y={y + 3}
               textAnchor="end"
               fontSize="8"
-              fill="#8292A8"
+              fill="#8192A7"
             >
               {Math.round(value)}
             </text>
@@ -4357,7 +5480,7 @@ const TrendChart = ({ rows }) => {
       <polyline
         points={incomingPoints}
         fill="none"
-        stroke="#F59E0B"
+        stroke="#17A8DB"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -4366,7 +5489,7 @@ const TrendChart = ({ rows }) => {
       <polyline
         points={outgoingPoints}
         fill="none"
-        stroke="#2563EB"
+        stroke="#06224F"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -4374,31 +5497,20 @@ const TrendChart = ({ rows }) => {
 
       {coordinates.map((item, index) => (
         <g key={`${item.row.timestamp}-${index}`}>
-          <circle
-            cx={item.x}
-            cy={item.incomingY}
-            r="3"
-            fill="#F59E0B"
-          />
-          <circle
-            cx={item.x}
-            cy={item.outgoingY}
-            r="3"
-            fill="#2563EB"
-          />
+          <circle cx={item.x} cy={item.incomingY} r="3" fill="#17A8DB" />
+          <circle cx={item.x} cy={item.outgoingY} r="3" fill="#06224F" />
 
           <title>
             {`${new Date(item.row.timestamp).toLocaleString()} | Incoming ${item.row.incomingKw} kW | Outgoing ${item.row.outgoingKw} kW`}
           </title>
 
-          {(index % labelStep === 0 ||
-            index === coordinates.length - 1) && (
+          {(index % labelStep === 0 || index === coordinates.length - 1) && (
             <text
               x={item.x}
-              y="240"
+              y="205"
               textAnchor="middle"
               fontSize="8"
-              fill="#6B7F99"
+              fill="#687F99"
             >
               {new Date(item.row.timestamp).toLocaleDateString(undefined, {
                 month: "short",
@@ -4411,13 +5523,13 @@ const TrendChart = ({ rows }) => {
       ))}
 
       <g transform="translate(610,15)">
-        <circle cx="0" cy="0" r="4" fill="#F59E0B" />
-        <text x="10" y="3" fontSize="9" fill="#6B7F99">
+        <circle cx="0" cy="0" r="4" fill="#17A8DB" />
+        <text x="10" y="3" fontSize="9" fill="#687F99">
           Incoming
         </text>
 
-        <circle cx="90" cy="0" r="4" fill="#2563EB" />
-        <text x="100" y="3" fontSize="9" fill="#6B7F99">
+        <circle cx="90" cy="0" r="4" fill="#06224F" />
+        <text x="100" y="3" fontSize="9" fill="#687F99">
           Outgoing
         </text>
       </g>
@@ -4432,8 +5544,7 @@ const EnergyBars = ({ rows }) => {
 
   const grouped = rows.reduce((accumulator, row) => {
     const key = row.timestamp.slice(0, 13);
-    accumulator[key] =
-      (accumulator[key] || 0) + Number(row.energyKwh || 0);
+    accumulator[key] = (accumulator[key] || 0) + Number(row.energyKwh || 0);
     return accumulator;
   }, {});
 
@@ -4441,24 +5552,24 @@ const EnergyBars = ({ rows }) => {
   const maxValue = Math.max(...points.map(([, value]) => value), 1);
 
   return (
-    <div className="flex h-[190px] items-end gap-2">
+    <div className="flex h-full min-h-0 items-end gap-2 pb-1">
       {points.map(([label, value]) => (
         <div
           key={label}
           className="flex min-w-0 flex-1 flex-col items-center justify-end"
         >
-          <div className="mb-2 text-[8px] font-semibold text-[#2563EB]">
+          <div className="mb-2 text-[8px] font-semibold text-[#06224F]">
             {Math.round(value)}
           </div>
 
           <div
-            className="w-full max-w-[28px] rounded-t bg-[#2563EB]"
+            className="w-full max-w-[30px] rounded-t-[8px] bg-[linear-gradient(180deg,#17A8DB_0%,#1B73C9_100%)] shadow-[0_8px_16px_rgba(37,99,235,0.16)]"
             style={{
-              height: `${Math.max(10, (value / maxValue) * 125)}px`,
+              height: `${Math.max(10, (value / maxValue) * 70)}px`,
             }}
           />
 
-          <p className="mt-2 truncate text-[7px] text-[#6B7F99]">
+          <p className="mt-1.5 truncate text-[7px] text-[#687F99]">
             {label.slice(11, 13)}h
           </p>
         </div>
@@ -4467,8 +5578,7 @@ const EnergyBars = ({ rows }) => {
   );
 };
 
-const escapeCsv = (value) =>
-  `"${String(value ?? "").replace(/"/g, '""')}"`;
+const escapeCsv = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
 
 const triggerDownload = (blob, filename) => {
   const url = URL.createObjectURL(blob);
@@ -4485,22 +5595,19 @@ const triggerDownload = (blob, filename) => {
 export default function OverviewPage() {
   const navigate = useNavigate();
 
-  const [selectedEquipment, setSelectedEquipment] =
-    useState("system");
+  const [selectedEquipment, setSelectedEquipment] = useState("system");
 
-  const [selectedPeriod, setSelectedPeriod] =
-    useState("daily");
+  const [selectedPeriod, setSelectedPeriod] = useState("daily");
 
-  const [selectedDate, setSelectedDate] =
-    useState(formatDateKey(new Date()));
+  const [selectedDate, setSelectedDate] = useState(formatDateKey(new Date()));
 
-  const [selectedMonth, setSelectedMonth] =
-    useState(getCurrentMonth());
+  const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
 
   const [fromTime, setFromTime] = useState("00:00");
   const [toTime, setToTime] = useState("23:59");
   const [customStart, setCustomStart] = useState("");
   const [customEnd, setCustomEnd] = useState("");
+  const [activeWorkspace, setActiveWorkspace] = useState("analytics");
 
   const filteredData = useMemo(() => {
     return ANALYTICS_DATA.filter((row) => {
@@ -4515,9 +5622,7 @@ export default function OverviewPage() {
 
       if (selectedPeriod === "daily") {
         return (
-          rowDate === selectedDate &&
-          rowTime >= fromTime &&
-          rowTime <= toTime
+          rowDate === selectedDate && rowTime >= fromTime && rowTime <= toTime
         );
       }
 
@@ -4580,54 +5685,45 @@ export default function OverviewPage() {
 
     const totalEnergy = filteredData.reduce(
       (sum, row) => sum + Number(row.energyKwh || 0),
-      0
+      0,
     );
 
     const peakLoad = Math.max(
-      ...filteredData.map((row) => Number(row.incomingKw || 0))
+      ...filteredData.map((row) => Number(row.incomingKw || 0)),
     );
 
     const averageLoad =
-      filteredData.reduce(
-        (sum, row) => sum + Number(row.outgoingKw || 0),
-        0
-      ) / filteredData.length;
+      filteredData.reduce((sum, row) => sum + Number(row.outgoingKw || 0), 0) /
+      filteredData.length;
 
     const totalIncoming = filteredData.reduce(
       (sum, row) => sum + Number(row.incomingKw || 0),
-      0
+      0,
     );
 
     const totalOutgoing = filteredData.reduce(
       (sum, row) => sum + Number(row.outgoingKw || 0),
-      0
+      0,
     );
 
     const averageVoltage =
-      filteredData.reduce(
-        (sum, row) => sum + Number(row.voltage || 0),
-        0
-      ) / filteredData.length;
+      filteredData.reduce((sum, row) => sum + Number(row.voltage || 0), 0) /
+      filteredData.length;
 
     const averageCurrent =
-      filteredData.reduce(
-        (sum, row) => sum + Number(row.current || 0),
-        0
-      ) / filteredData.length;
+      filteredData.reduce((sum, row) => sum + Number(row.current || 0), 0) /
+      filteredData.length;
 
     const averagePowerFactor =
-      filteredData.reduce(
-        (sum, row) => sum + Number(row.powerFactor || 0),
-        0
-      ) / filteredData.length;
+      filteredData.reduce((sum, row) => sum + Number(row.powerFactor || 0), 0) /
+      filteredData.length;
 
     return {
       totalEnergy,
       peakLoad,
       averageLoad,
       totalLoss: Math.max(0, totalIncoming - totalOutgoing),
-      efficiency:
-        totalIncoming > 0 ? (totalOutgoing / totalIncoming) * 100 : 0,
+      efficiency: totalIncoming > 0 ? (totalOutgoing / totalIncoming) * 100 : 0,
       averageVoltage,
       averageCurrent,
       averagePowerFactor,
@@ -4635,9 +5731,8 @@ export default function OverviewPage() {
   }, [filteredData]);
 
   const selectedEquipmentLabel =
-    EQUIPMENT_OPTIONS.find(
-      (item) => item.key === selectedEquipment
-    )?.label || "Entire System";
+    EQUIPMENT_OPTIONS.find((item) => item.key === selectedEquipment)?.label ||
+    "Entire System";
 
   const downloadCsv = () => {
     if (!filteredData.length) return;
@@ -4674,7 +5769,7 @@ export default function OverviewPage() {
       new Blob([csv], {
         type: "text/csv;charset=utf-8;",
       }),
-      `power-analytics-${selectedEquipment}-${selectedPeriod}.csv`
+      `power-analytics-${selectedEquipment}-${selectedPeriod}.csv`,
     );
   };
 
@@ -4699,7 +5794,7 @@ export default function OverviewPage() {
       new Blob([JSON.stringify(report, null, 2)], {
         type: "application/json",
       }),
-      `power-analytics-${selectedEquipment}-${selectedPeriod}.json`
+      `power-analytics-${selectedEquipment}-${selectedPeriod}.json`,
     );
   };
 
@@ -4715,183 +5810,309 @@ export default function OverviewPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F4F8FC] text-[#081F5C]">
-      <header className="sticky top-0 z-50 flex h-[64px] items-center justify-between border-b border-[#D7E4F2] bg-white px-6 shadow-[0_4px_14px_rgba(8,31,92,0.05)]">
-        <div
-          onClick={() => navigate("/")}
-          className="flex cursor-pointer items-center"
-        >
-          <div>
-            <h1 className="text-[22px] font-semibold uppercase leading-none tracking-[0.18em] text-[#081F5C]">
-              ARCOT{" "}
-              <span className="text-[#2563EB]">
-                IIOT 1.0
-              </span>
-            </h1>
+    <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-[radial-gradient(circle_at_50%_0%,rgba(0,174,239,0.07),transparent_28%),linear-gradient(180deg,#F7FAFD_0%,#EEF5FA_100%)] text-[#06224F]">
+      <header className="relative z-50 h-[60px] shrink-0 before:absolute before:inset-x-0 before:top-0 before:h-[3px] before:bg-[linear-gradient(90deg,#06224F_0%,#1B73C9_55%,#17A8DB_100%)] border-b border-[#D5E2EF] bg-white/95 shadow-[0_6px_20px_rgba(8,31,92,0.06)] backdrop-blur-xl">
+        <div className="mx-auto flex h-full w-full max-w-[1720px] items-center justify-between px-4 sm:px-5 lg:px-6">
+          <div
+            onClick={() => navigate("/")}
+            className="flex min-w-0 cursor-pointer items-center"
+          >
+            <div className="min-w-0">
+              <h1 className="truncate text-[clamp(18px,2vw,22px)] font-semibold uppercase leading-none tracking-[0.16em] text-[#06224F]">
+                ARCOT <span className="text-[#1B73C9]">IIOT 1.0</span>
+              </h1>
 
-            <p className="mt-2 text-[8px] uppercase tracking-[0.35em] text-[#4271AB]">
-              Industrial Internet of Things
-            </p>
+              <p className="mt-2 truncate text-[8px] font-medium uppercase tracking-[0.3em] text-[#487AAE]">
+                Industrial Internet of Things
+              </p>
+            </div>
+
+            <div className="mx-4 hidden h-[42px] border-l border-[#D3E2EF] sm:block" />
+
+            <img
+              src={prestigeLogo}
+              alt="Prestige"
+              className="hidden h-[38px] w-[88px] object-contain sm:block"
+            />
           </div>
 
-          <div className="mx-4 h-[44px] border-l border-[#D7E4F2]" />
-
-          <img
-            src={prestigeLogo}
-            alt="Prestige"
-            className="h-[46px] w-[94px] object-contain"
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          className="rounded-lg border border-[#2563EB] px-5 py-2 text-[9px] font-bold uppercase tracking-[0.12em] text-[#2563EB]"
-        >
-          Dashboard
-        </button>
-      </header>
-
-      <main className="mx-auto w-full max-w-[1700px] p-4">
-        <Card className="p-4">
-          <SectionTitle
-            title="Power Analytics Filters"
-            subtitle="Select equipment and time period to inspect exact consumption and operating performance."
-            rightContent={
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={downloadCsv}
-                  className="rounded-lg bg-[#2563EB] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-white"
-                >
-                  Download CSV
-                </button>
-
-                <button
-                  type="button"
-                  onClick={downloadJson}
-                  className="rounded-lg border border-[#2563EB] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-[#2563EB]"
-                >
-                  Download JSON
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => window.print()}
-                  className="rounded-lg border border-[#D7E4F2] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-[#5D718C]"
-                >
-                  Print Report
-                </button>
-              </div>
-            }
-          />
-
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-7">
-            <select
-              value={selectedEquipment}
-              onChange={(event) =>
-                setSelectedEquipment(event.target.value)
-              }
-              className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-            >
-              {EQUIPMENT_OPTIONS.map((option) => (
-                <option key={option.key} value={option.key}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={selectedPeriod}
-              onChange={(event) =>
-                setSelectedPeriod(event.target.value)
-              }
-              className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-            >
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-              <option value="custom">Custom Range</option>
-            </select>
-
-            {(selectedPeriod === "daily" ||
-              selectedPeriod === "weekly") && (
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(event) =>
-                  setSelectedDate(event.target.value)
-                }
-                className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-              />
-            )}
-
-            {selectedPeriod === "monthly" && (
-              <input
-                type="month"
-                value={selectedMonth}
-                onChange={(event) =>
-                  setSelectedMonth(event.target.value)
-                }
-                className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-              />
-            )}
-
-            {selectedPeriod === "daily" && (
-              <>
-                <input
-                  type="time"
-                  value={fromTime}
-                  onChange={(event) =>
-                    setFromTime(event.target.value)
-                  }
-                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-                />
-
-                <input
-                  type="time"
-                  value={toTime}
-                  onChange={(event) =>
-                    setToTime(event.target.value)
-                  }
-                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-                />
-              </>
-            )}
-
-            {selectedPeriod === "custom" && (
-              <>
-                <input
-                  type="datetime-local"
-                  value={customStart}
-                  onChange={(event) =>
-                    setCustomStart(event.target.value)
-                  }
-                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-                />
-
-                <input
-                  type="datetime-local"
-                  value={customEnd}
-                  onChange={(event) =>
-                    setCustomEnd(event.target.value)
-                  }
-                  className="rounded-lg border border-[#D7E4F2] bg-white px-3 py-2.5 text-[10px] text-[#081F5C] outline-none"
-                />
-              </>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-2 rounded-full border border-[#CDEBD9] bg-[#F0FAF4] px-3 py-2 sm:flex">
+              <span className="h-2 w-2 rounded-full bg-[#16A34A] shadow-[0_0_0_4px_rgba(22,163,74,0.10)]" />
+              <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-[#15805F]">
+                Analytics Online
+              </span>
+            </div>
 
             <button
               type="button"
-              onClick={resetFilters}
-              className="rounded-lg border border-[#D7E4F2] bg-[#F8FBFE] px-4 py-2.5 text-[8px] font-bold uppercase tracking-[0.1em] text-[#5D718C]"
+              onClick={() => navigate("/")}
+              className="rounded-[10px] border border-[#1B73C9] bg-[#1B73C9] px-3.5 py-2 text-[8px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_8px_18px_rgba(37,99,235,0.18)] transition hover:bg-[#155FA8]"
             >
-              Reset Filters
+              Dashboard
             </button>
           </div>
-        </Card>
+        </div>
+      </header>
 
-        <section className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <style>{`
+        @media (min-width: 1024px) and (max-height: 820px) {
+          .overview-main-grid {
+            grid-template-rows: 150px 106px 42px minmax(0, 1fr);
+            gap: 10px;
+          }
+        }
+
+        @media print {
+          header,
+          button,
+          select,
+          input {
+            display: none !important;
+          }
+
+          body {
+            background: white !important;
+          }
+
+          main {
+            max-width: none !important;
+            padding: 0 !important;
+          }
+
+          .print-safe {
+            box-shadow: none !important;
+            break-inside: avoid;
+          }
+        }
+      `}</style>
+
+      <main className="overview-main-grid mx-auto grid h-[calc(100dvh-60px)] w-full max-w-[1720px] grid-rows-[168px_112px_44px_minmax(0,1fr)] gap-3 overflow-y-auto px-4 py-3 sm:px-5 lg:overflow-hidden lg:px-6">
+        <section className="grid h-full min-h-0 grid-cols-12 gap-3">
+          <div className="relative col-span-12 overflow-hidden rounded-[22px] border border-[#0A326B] bg-[linear-gradient(135deg,#041A3E_0%,#073066_56%,#0A5E91_100%)] px-5 py-4 text-white shadow-[0_18px_42px_rgba(8,31,92,0.22)] lg:col-span-4">
+            <div className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full border border-white/10 bg-white/[0.04]" />
+            <div className="pointer-events-none absolute -bottom-24 left-16 h-52 w-52 rounded-full bg-[#17A8DB]/15 blur-3xl" />
+
+            <div className="relative flex h-full flex-col justify-between">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-3 py-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#48D6A0] shadow-[0_0_0_4px_rgba(72,225,168,0.12)]" />
+                    <span className="text-[8px] font-bold uppercase tracking-[0.16em] text-[#D5F2FC]">
+                      Live intelligence
+                    </span>
+                  </div>
+
+                  <h2 className="mt-3 text-[20px] font-semibold leading-tight tracking-[-0.03em]">
+                    Power Analytics
+                    <span className="block text-[#5DD9FF]">Command Centre</span>
+                  </h2>
+                  <p className="mt-2 max-w-md text-[9px] leading-[1.7] text-[#B7D2E8]">
+                    Monitor consumption, load transfer, electrical quality, and
+                    distribution performance from one operational view.
+                  </p>
+                </div>
+
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/15 bg-white/[0.08] text-[#5DD9FF] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
+                  <BarChart3 size={21} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 pt-3">
+                <div className="rounded-[12px] border border-white/10 bg-white/[0.07] px-3 py-2 backdrop-blur-sm">
+                  <p className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#88B5D7]">
+                    Asset
+                  </p>
+                  <p className="mt-1 truncate text-[10px] font-semibold text-white">
+                    {selectedEquipmentLabel}
+                  </p>
+                </div>
+                <div className="rounded-[12px] border border-white/10 bg-white/[0.07] px-3 py-2 backdrop-blur-sm">
+                  <p className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#88B5D7]">
+                    Period
+                  </p>
+                  <p className="mt-1 capitalize text-[10px] font-semibold text-white">
+                    {selectedPeriod}
+                  </p>
+                </div>
+                <div className="rounded-[12px] border border-white/10 bg-white/[0.07] px-3 py-2 backdrop-blur-sm">
+                  <p className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#88B5D7]">
+                    Records
+                  </p>
+                  <p className="mt-1 text-[10px] font-semibold text-white">
+                    {filteredData.length.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Card className="print-safe col-span-12 flex h-full min-h-0 flex-col p-3.5 lg:col-span-8">
+            <div className="flex items-center justify-between gap-3 border-b border-[#E3ECF5] pb-2.5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-[11px] border border-[#D6E4F2] bg-[#EDF5FA] text-[#1B73C9]">
+                  <Gauge size={17} />
+                </div>
+                <div>
+                  <h3 className="text-[13px] font-semibold text-[#06224F]">
+                    Analysis Controls
+                  </h3>
+                  <p className="mt-0.5 text-[8px] text-[#7D91A7]">
+                    Select the asset and reporting window.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={downloadCsv}
+                  className="inline-flex items-center gap-1.5 rounded-[9px] bg-[#1B73C9] px-3 py-2 text-[7px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_7px_16px_rgba(37,99,235,0.18)] transition hover:bg-[#155FA8]"
+                >
+                  <Download size={12} /> CSV
+                </button>
+                <button
+                  type="button"
+                  onClick={downloadJson}
+                  className="inline-flex items-center gap-1.5 rounded-[9px] border border-[#CCDCEB] bg-white px-3 py-2 text-[7px] font-bold uppercase tracking-[0.1em] text-[#416483] transition hover:border-[#1B73C9] hover:text-[#1B73C9]"
+                >
+                  <FileJson size={12} /> JSON
+                </button>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="hidden h-8 w-8 items-center justify-center rounded-[9px] border border-[#CCDCEB] bg-white text-[#657B92] transition hover:border-[#06224F] hover:text-[#06224F] sm:flex"
+                >
+                  <Printer size={13} />
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-3 grid min-h-0 flex-1 grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-6">
+              <label className="flex min-w-0 flex-col gap-1">
+                <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                  Equipment
+                </span>
+                <select
+                  value={selectedEquipment}
+                  onChange={(event) => setSelectedEquipment(event.target.value)}
+                  className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none transition focus:border-[#1B73C9] focus:ring-2 focus:ring-[#1B73C9]/10"
+                >
+                  {EQUIPMENT_OPTIONS.map((option) => (
+                    <option key={option.key} value={option.key}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="flex min-w-0 flex-col gap-1">
+                <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                  Period
+                </span>
+                <select
+                  value={selectedPeriod}
+                  onChange={(event) => setSelectedPeriod(event.target.value)}
+                  className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none transition focus:border-[#1B73C9] focus:ring-2 focus:ring-[#1B73C9]/10"
+                >
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="custom">Custom Range</option>
+                </select>
+              </label>
+
+              {(selectedPeriod === "daily" || selectedPeriod === "weekly") && (
+                <label className="flex min-w-0 flex-col gap-1">
+                  <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                    Date
+                  </span>
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(event) => setSelectedDate(event.target.value)}
+                    className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none focus:border-[#1B73C9]"
+                  />
+                </label>
+              )}
+              {selectedPeriod === "monthly" && (
+                <label className="flex min-w-0 flex-col gap-1">
+                  <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                    Month
+                  </span>
+                  <input
+                    type="month"
+                    value={selectedMonth}
+                    onChange={(event) => setSelectedMonth(event.target.value)}
+                    className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none focus:border-[#1B73C9]"
+                  />
+                </label>
+              )}
+              {selectedPeriod === "daily" && (
+                <>
+                  <label className="flex min-w-0 flex-col gap-1">
+                    <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                      From
+                    </span>
+                    <input
+                      type="time"
+                      value={fromTime}
+                      onChange={(event) => setFromTime(event.target.value)}
+                      className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none focus:border-[#1B73C9]"
+                    />
+                  </label>
+                  <label className="flex min-w-0 flex-col gap-1">
+                    <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                      To
+                    </span>
+                    <input
+                      type="time"
+                      value={toTime}
+                      onChange={(event) => setToTime(event.target.value)}
+                      className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none focus:border-[#1B73C9]"
+                    />
+                  </label>
+                </>
+              )}
+              {selectedPeriod === "custom" && (
+                <>
+                  <label className="flex min-w-0 flex-col gap-1 md:col-span-2">
+                    <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                      Range start
+                    </span>
+                    <input
+                      type="datetime-local"
+                      value={customStart}
+                      onChange={(event) => setCustomStart(event.target.value)}
+                      className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none focus:border-[#1B73C9]"
+                    />
+                  </label>
+                  <label className="flex min-w-0 flex-col gap-1 md:col-span-2">
+                    <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-[#8192A7]">
+                      Range end
+                    </span>
+                    <input
+                      type="datetime-local"
+                      value={customEnd}
+                      onChange={(event) => setCustomEnd(event.target.value)}
+                      className="h-9 min-w-0 rounded-[9px] border border-[#C6D8E9] bg-[#FAFCFE] px-2.5 text-[9px] font-semibold text-[#06224F] outline-none focus:border-[#1B73C9]"
+                    />
+                  </label>
+                </>
+              )}
+
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="mt-auto inline-flex h-9 items-center justify-center gap-1.5 rounded-[9px] border border-[#C6D8E9] bg-[#F7FAFD] px-3 text-[7px] font-bold uppercase tracking-[0.1em] text-[#657B92] transition hover:border-[#1B73C9] hover:bg-white hover:text-[#1B73C9]"
+              >
+                <RefreshCw size={12} /> Reset
+              </button>
+            </div>
+          </Card>
+        </section>
+
+        <section className="grid h-full grid-cols-2 gap-3 lg:grid-cols-5">
           <MetricCard
             label="Consumed Energy"
             value={summary.totalEnergy.toLocaleString(undefined, {
@@ -4900,6 +6121,8 @@ export default function OverviewPage() {
             unit="kWh"
             tone="blue"
             helper="Total energy consumed in the selected time range"
+            icon={Zap}
+            trend="Live"
           />
 
           <MetricCard
@@ -4910,6 +6133,7 @@ export default function OverviewPage() {
             unit="kW"
             tone="amber"
             helper="Highest incoming load recorded"
+            icon={TrendingUp}
           />
 
           <MetricCard
@@ -4920,6 +6144,7 @@ export default function OverviewPage() {
             unit="kW"
             tone="cyan"
             helper="Average delivered power during the period"
+            icon={Activity}
           />
 
           <MetricCard
@@ -4930,6 +6155,7 @@ export default function OverviewPage() {
             unit="kW"
             tone="red"
             helper="Accumulated incoming-to-outgoing difference"
+            icon={ArrowDownToLine}
           />
 
           <MetricCard
@@ -4937,182 +6163,225 @@ export default function OverviewPage() {
             value={`${summary.efficiency.toFixed(1)}%`}
             tone="green"
             helper="Overall delivery efficiency for selected readings"
+            icon={ShieldCheck}
           />
         </section>
 
-        <section className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-12">
-          <Card className="p-4 xl:col-span-8">
-            <SectionTitle
-              title={`${selectedEquipmentLabel} Load Trend`}
-              subtitle="Incoming and outgoing power across the selected period."
-            />
+        <div className="flex h-full items-center justify-between rounded-[14px] border border-[#D3E2EF] bg-white px-1.5 shadow-[0_8px_22px_rgba(8,31,92,0.06)]">
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setActiveWorkspace("analytics")}
+              className={`inline-flex items-center gap-2 rounded-[9px] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] transition ${
+                activeWorkspace === "analytics"
+                  ? "bg-[#06224F] text-white shadow-[0_8px_18px_rgba(8,31,92,0.18)]"
+                  : "text-[#687F99] hover:bg-[#EDF5FA] hover:text-[#06224F]"
+              }`}
+            >
+              <BarChart3 size={13} />
+              Analytics
+            </button>
 
-            <div className="rounded-[14px] border border-[#DCE8F3] bg-[#FBFDFF] p-2">
-              <TrendChart rows={filteredData} />
-            </div>
-          </Card>
+            <button
+              type="button"
+              onClick={() => setActiveWorkspace("readings")}
+              className={`inline-flex items-center gap-2 rounded-[9px] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.1em] transition ${
+                activeWorkspace === "readings"
+                  ? "bg-[#06224F] text-white shadow-[0_8px_18px_rgba(8,31,92,0.18)]"
+                  : "text-[#687F99] hover:bg-[#EDF5FA] hover:text-[#06224F]"
+              }`}
+            >
+              <Layers3 size={13} />
+              Detailed Readings
+            </button>
+          </div>
 
-          <div className="space-y-4 xl:col-span-4">
-            <Card className="p-4">
+          <div className="hidden items-center gap-2 pr-2 md:flex">
+            <span className="h-2 w-2 rounded-full bg-[#16A34A] shadow-[0_0_0_4px_rgba(22,163,74,0.10)]" />
+            <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-[#15805F]">
+              {filteredData.length.toLocaleString()} records loaded
+            </span>
+          </div>
+        </div>
+
+        {activeWorkspace === "analytics" ? (
+          <section className="grid h-full min-h-0 grid-cols-12 gap-3 overflow-hidden">
+            <Card className="print-safe col-span-12 flex h-full min-h-0 flex-col p-4 xl:col-span-8">
               <SectionTitle
-                title="Electrical Quality"
-                subtitle="Average electrical conditions for the selected data."
+                title={`${selectedEquipmentLabel} Load Trend`}
+                subtitle="Incoming and outgoing power across the selected period."
+                icon={TrendingUp}
               />
 
-              <div className="grid grid-cols-3 gap-3">
-                <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
-                  <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
-                    Voltage
-                  </p>
-                  <h3 className="mt-2 text-[20px] font-semibold text-[#2563EB]">
-                    {summary.averageVoltage.toFixed(1)}
-                  </h3>
-                  <p className="mt-1 text-[8px] text-[#8292A8]">V</p>
-                </div>
-
-                <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
-                  <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
-                    Current
-                  </p>
-                  <h3 className="mt-2 text-[20px] font-semibold text-[#0891B2]">
-                    {summary.averageCurrent.toFixed(1)}
-                  </h3>
-                  <p className="mt-1 text-[8px] text-[#8292A8]">A</p>
-                </div>
-
-                <div className="rounded-xl border border-[#DCE8F3] bg-[#F8FBFE] p-3 text-center">
-                  <p className="text-[8px] uppercase tracking-[0.1em] text-[#8292A8]">
-                    PF
-                  </p>
-                  <h3 className="mt-2 text-[20px] font-semibold text-[#15805F]">
-                    {summary.averagePowerFactor.toFixed(2)}
-                  </h3>
-                  <p className="mt-1 text-[8px] text-[#8292A8]">
-                    Average
-                  </p>
-                </div>
+              <div className="flex min-h-0 flex-1 items-stretch rounded-[16px] border border-[#D8E6F2] bg-[linear-gradient(180deg,#FAFCFE_0%,#F6FAFE_100%)] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                <TrendChart rows={filteredData} />
               </div>
             </Card>
 
-            <Card className="p-4">
+            <div className="col-span-12 grid h-full min-h-0 grid-cols-2 gap-3 xl:col-span-4 xl:grid-cols-1 xl:grid-rows-[0.82fr_1.18fr]">
+              <Card className="print-safe flex h-full min-h-0 flex-col p-3.5">
+                <SectionTitle
+                  title="Electrical Quality"
+                  subtitle="Average electrical conditions for the selected data."
+                  icon={Gauge}
+                />
+
+                <div className="grid min-h-0 flex-1 grid-cols-3 items-stretch gap-2">
+                  <div className="flex min-h-0 flex-col items-center justify-center rounded-[14px] border border-[#D8E6F2] bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F9FC_100%)] p-2 text-center shadow-[0_8px_18px_rgba(8,31,92,0.05)]">
+                    <p className="text-[8px] uppercase tracking-[0.1em] text-[#8192A7]">
+                      Voltage
+                    </p>
+                    <h3 className="mt-2 text-[18px] font-semibold text-[#1B73C9]">
+                      {summary.averageVoltage.toFixed(1)}
+                    </h3>
+                    <p className="mt-1 text-[8px] text-[#8192A7]">V</p>
+                  </div>
+
+                  <div className="flex min-h-0 flex-col items-center justify-center rounded-[14px] border border-[#D8E6F2] bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F9FC_100%)] p-2 text-center shadow-[0_8px_18px_rgba(8,31,92,0.05)]">
+                    <p className="text-[8px] uppercase tracking-[0.1em] text-[#8192A7]">
+                      Current
+                    </p>
+                    <h3 className="mt-2 text-[18px] font-semibold text-[#0E86B7]">
+                      {summary.averageCurrent.toFixed(1)}
+                    </h3>
+                    <p className="mt-1 text-[8px] text-[#8192A7]">A</p>
+                  </div>
+
+                  <div className="flex min-h-0 flex-col items-center justify-center rounded-[14px] border border-[#D8E6F2] bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F9FC_100%)] p-2 text-center shadow-[0_8px_18px_rgba(8,31,92,0.05)]">
+                    <p className="text-[8px] uppercase tracking-[0.1em] text-[#8192A7]">
+                      PF
+                    </p>
+                    <h3 className="mt-2 text-[18px] font-semibold text-[#15805F]">
+                      {summary.averagePowerFactor.toFixed(2)}
+                    </h3>
+                    <p className="mt-1 text-[8px] text-[#8192A7]">Average</p>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="print-safe flex h-full min-h-0 flex-col p-3.5">
+                <SectionTitle
+                  title="Hourly Consumption"
+                  subtitle="Recent energy consumption blocks."
+                  icon={BarChart3}
+                />
+                <div className="min-h-0 flex-1 overflow-hidden px-1 pt-1">
+                  <EnergyBars rows={filteredData} />
+                </div>
+              </Card>
+            </div>
+          </section>
+        ) : (
+          <section className="h-full min-h-0">
+            <Card className="print-safe flex h-full min-h-0 flex-col p-3.5">
               <SectionTitle
-                title="Hourly Consumption"
-                subtitle="Recent energy consumption blocks."
+                title="Detailed Analytical Readings"
+                subtitle={`${filteredData.length.toLocaleString()} readings match the selected filters.`}
+                icon={Layers3}
               />
-              <EnergyBars rows={filteredData} />
-            </Card>
-          </div>
-        </section>
 
-        <section className="mt-4">
-          <Card className="p-4">
-            <SectionTitle
-              title="Detailed Analytical Readings"
-              subtitle={`${filteredData.length.toLocaleString()} readings match the selected filters.`}
-            />
-
-            <div className="max-h-[420px] overflow-auto">
-              <table className="w-full min-w-[1050px] border-collapse">
-                <thead className="sticky top-0 z-10 bg-white">
-                  <tr className="border-b border-[#DCE8F3]">
-                    {[
-                      "Timestamp",
-                      "Equipment",
-                      "Incoming",
-                      "Outgoing",
-                      "Energy",
-                      "Voltage",
-                      "Current",
-                      "Power Factor",
-                      "Loss",
-                      "Status",
-                    ].map((heading) => (
-                      <th
-                        key={heading}
-                        className="px-3 py-3 text-left text-[8px] font-bold uppercase tracking-[0.1em] text-[#8292A8]"
-                      >
-                        {heading}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {filteredData.map((row, index) => {
-                    const loss = Math.max(
-                      0,
-                      Number(row.incomingKw) -
-                        Number(row.outgoingKw)
-                    );
-
-                    return (
-                      <tr
-                        key={`${row.timestamp}-${row.equipment}-${index}`}
-                        className="border-b border-[#EDF2F7] last:border-b-0"
-                      >
-                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
-                          {new Date(row.timestamp).toLocaleString()}
-                        </td>
-
-                        <td className="px-3 py-3 text-[9px] font-semibold text-[#081F5C]">
-                          {row.equipmentLabel}
-                        </td>
-
-                        <td className="px-3 py-3 text-[9px] text-[#081F5C]">
-                          {row.incomingKw} kW
-                        </td>
-
-                        <td className="px-3 py-3 text-[9px] text-[#081F5C]">
-                          {row.outgoingKw} kW
-                        </td>
-
-                        <td className="px-3 py-3 text-[9px] text-[#081F5C]">
-                          {row.energyKwh} kWh
-                        </td>
-
-                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
-                          {row.voltage} V
-                        </td>
-
-                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
-                          {row.current} A
-                        </td>
-
-                        <td className="px-3 py-3 text-[9px] text-[#5D718C]">
-                          {row.powerFactor}
-                        </td>
-
-                        <td
-                          className={`px-3 py-3 text-[9px] font-semibold ${
-                            loss > row.incomingKw * 0.1
-                              ? "text-[#B42318]"
-                              : loss > row.incomingKw * 0.06
-                                ? "text-[#B7791F]"
-                                : "text-[#15805F]"
-                          }`}
+              <div className="min-h-0 flex-1 overflow-auto rounded-[12px] border border-[#E2EBF4]">
+                <table className="w-full min-w-[1050px] border-collapse">
+                  <thead className="sticky top-0 z-10 bg-[#F5F9FC]/95 backdrop-blur">
+                    <tr className="border-b border-[#D8E6F2]">
+                      {[
+                        "Timestamp",
+                        "Equipment",
+                        "Incoming",
+                        "Outgoing",
+                        "Energy",
+                        "Voltage",
+                        "Current",
+                        "Power Factor",
+                        "Loss",
+                        "Status",
+                      ].map((heading) => (
+                        <th
+                          key={heading}
+                          className="px-3 py-2.5 text-left text-[8px] font-bold uppercase tracking-[0.1em] text-[#8192A7]"
                         >
-                          {loss} kW
-                        </td>
+                          {heading}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
 
-                        <td className="px-3 py-3">
-                          <span
-                            className={`inline-flex rounded-full border px-2.5 py-1 text-[7px] font-bold uppercase tracking-[0.08em] ${
-                              row.status === "Normal"
-                                ? "border-[#BEE8D4] bg-[#E8F5EE] text-[#15805F]"
-                                : "border-[#F4D3B2] bg-[#FFF5DD] text-[#B7791F]"
+                  <tbody>
+                    {filteredData.map((row, index) => {
+                      const loss = Math.max(
+                        0,
+                        Number(row.incomingKw) - Number(row.outgoingKw),
+                      );
+
+                      return (
+                        <tr
+                          key={`${row.timestamp}-${row.equipment}-${index}`}
+                          className="border-b border-[#EDF2F7] transition hover:bg-[#F5F9FC] last:border-b-0"
+                        >
+                          <td className="px-3 py-2.5 text-[9px] text-[#5F738D]">
+                            {new Date(row.timestamp).toLocaleString()}
+                          </td>
+
+                          <td className="px-3 py-2.5 text-[9px] font-semibold text-[#06224F]">
+                            {row.equipmentLabel}
+                          </td>
+
+                          <td className="px-3 py-2.5 text-[9px] text-[#06224F]">
+                            {row.incomingKw} kW
+                          </td>
+
+                          <td className="px-3 py-2.5 text-[9px] text-[#06224F]">
+                            {row.outgoingKw} kW
+                          </td>
+
+                          <td className="px-3 py-2.5 text-[9px] text-[#06224F]">
+                            {row.energyKwh} kWh
+                          </td>
+
+                          <td className="px-3 py-2.5 text-[9px] text-[#5F738D]">
+                            {row.voltage} V
+                          </td>
+
+                          <td className="px-3 py-2.5 text-[9px] text-[#5F738D]">
+                            {row.current} A
+                          </td>
+
+                          <td className="px-3 py-2.5 text-[9px] text-[#5F738D]">
+                            {row.powerFactor}
+                          </td>
+
+                          <td
+                            className={`px-3 py-3 text-[9px] font-semibold ${
+                              loss > row.incomingKw * 0.1
+                                ? "text-[#B42318]"
+                                : loss > row.incomingKw * 0.06
+                                  ? "text-[#B7791F]"
+                                  : "text-[#15805F]"
                             }`}
                           >
-                            {row.status}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </Card>
-        </section>
+                            {loss} kW
+                          </td>
+
+                          <td className="px-3 py-3">
+                            <span
+                              className={`inline-flex rounded-full border px-2.5 py-1 text-[7px] font-bold uppercase tracking-[0.08em] ${
+                                row.status === "Normal"
+                                  ? "border-[#BEE8D4] bg-[#E8F5EE] text-[#15805F]"
+                                  : "border-[#F4D3B2] bg-[#FFF5DD] text-[#B7791F]"
+                              }`}
+                            >
+                              {row.status}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </section>
+        )}
       </main>
     </div>
   );
