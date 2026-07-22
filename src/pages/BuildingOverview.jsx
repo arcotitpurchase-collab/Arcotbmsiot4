@@ -443,12 +443,13 @@ export default function BuildingOverview() {
     {/* RIGHT */}
     <div className="flex items-center gap-3">
 
-      <button
-        onClick={() => window.history.back()}
-        className="h-[32px] px-4 bg-[#004AAD] border border-cyan-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-[#0058d6]"
+      <Link
+        to="/"
+        replace
+        className="h-[32px] px-4 flex items-center justify-center bg-[#004AAD] border border-cyan-400 text-white text-[10px] font-black tracking-[0.15em] uppercase hover:bg-[#0058d6]"
       >
         Back
-      </button>
+      </Link>
 
       <div className="flex items-center gap-2 bg-[#05143C] border border-[#004AAD] px-3 py-1.5 rounded-sm">
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
