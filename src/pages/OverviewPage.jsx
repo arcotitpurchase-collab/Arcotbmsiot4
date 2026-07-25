@@ -6401,6 +6401,7 @@
 
 
 
+
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -6422,6 +6423,7 @@ import {
   Zap,
 } from "lucide-react";
 import prestigeLogo from "../assets/ser-removebg.png";
+import { tempApi } from "../tempAdminApi";
 
 const EQUIPMENT_OPTIONS = [
   { key: "system", label: "Entire System" },
@@ -6871,6 +6873,11 @@ const triggerDownload = (blob, filename) => {
 };
 
 export default function OverviewPage() {
+  const currentUser = tempApi.getCurrentUser();
+  const userPermissions = currentUser?.permissions || [];
+  const canViewReports = userPermissions.includes("view_reports");
+  const canDownloadReports = userPermissions.includes("download_reports");
+
   const [selectedEquipment, setSelectedEquipment] = useState("system");
 
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
@@ -7085,11 +7092,61 @@ export default function OverviewPage() {
     setCustomEnd("");
   };
 
+  if (!currentUser) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
+        <section className="w-full max-w-md border-2 border-red-400 bg-[#081F5C] p-8 text-center text-white">
+          <h1 className="text-2xl font-black">
+            User Session Required
+          </h1>
+
+          <p className="mt-3 text-sm leading-6 text-blue-200">
+            Please sign in with an active User account to open the analytical overview.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => {
+              tempApi.logout();
+              window.location.href = "/auth";
+            }}
+            className="mt-6 inline-flex items-center justify-center border border-cyan-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
+          >
+            Go to Login
+          </button>
+        </section>
+      </main>
+    );
+  }
+
+  if (!canViewReports) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
+        <section className="w-full max-w-lg border-2 border-amber-400 bg-[#081F5C] p-8 text-center text-white">
+          <h1 className="text-2xl font-black">
+            Report Access Not Assigned
+          </h1>
+
+          <p className="mt-3 text-sm leading-6 text-blue-200">
+            Your account does not have the view_reports permission required to open this page.
+          </p>
+
+          <Link
+            to="/dashboard"
+            className="mt-6 inline-flex items-center justify-center border border-cyan-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
+          >
+            Back to Dashboard
+          </Link>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-[radial-gradient(circle_at_50%_0%,rgba(0,174,239,0.07),transparent_28%),linear-gradient(180deg,#F7FAFD_0%,#EEF5FA_100%)] text-[#06224F]">
       <header className="sticky top-0 z-[1000] h-[72px] shrink-0 border-b-4 border-[#004AAD] bg-[#081F5C] px-4 text-white shadow-[0_8px_30px_rgba(3,23,65,0.20)]">
         <div className="flex h-full w-full items-center justify-between">
-          <Link to="/" className="flex min-w-0 items-center no-underline">
+          <Link to="/dashboard" className="flex min-w-0 items-center no-underline">
             <div className="min-w-0">
               <h1 className="truncate text-[clamp(18px,2vw,26px)] font-semibold uppercase leading-none tracking-[0.18em] text-white">
                 ARCOT
@@ -7112,12 +7169,23 @@ export default function OverviewPage() {
 
           <div className="flex shrink-0 items-center gap-3">
             <Link
-              to="/"
+              to="/dashboard"
               replace
               className="flex h-[32px] items-center justify-center border border-cyan-400 bg-[#004AAD] px-4 text-[10px] font-black uppercase tracking-[0.15em] text-white transition hover:bg-[#0058D6]"
             >
               Back
             </Link>
+
+            <div className="hidden border border-[#004AAD] bg-[#05143C] px-3 py-1.5 lg:block">
+              <p className="max-w-[190px] truncate text-[9px] font-bold text-cyan-200">
+                {currentUser.name}
+              </p>
+
+              <p className="max-w-[190px] truncate text-[7px] uppercase tracking-[0.08em] text-blue-300">
+                {currentUser.designation || "USER"} ·{" "}
+                {currentUser.companyName || "Assigned Company"}
+              </p>
+            </div>
 
             <div className="hidden items-center gap-2 border border-[#004AAD] bg-[#05143C] px-3 py-1.5 md:flex">
               <span className="h-2 w-2 bg-emerald-400" />
@@ -7130,7 +7198,7 @@ export default function OverviewPage() {
             <button
               type="button"
               onClick={() => {
-                localStorage.removeItem("bmsLoggedIn");
+                tempApi.logout();
                 window.location.href = "/auth";
               }}
               className="h-[32px] border border-red-400 bg-red-600 px-4 text-[10px] font-black uppercase tracking-[0.15em] text-white transition hover:bg-red-700"
@@ -7187,6 +7255,12 @@ export default function OverviewPage() {
         Monitoring Workspace
       </span>
     </h2>
+
+    <p className="mt-3 max-w-[320px] truncate text-[9px] font-semibold uppercase tracking-[0.08em] text-blue-200">
+      {currentUser.companyName || "Assigned Company"} ·{" "}
+      {currentUser.accessType || "BUILDING"}:{" "}
+      {currentUser.accessName || "Assigned Access"}
+    </p>
   </div>
 
   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] border border-white/15 bg-white/[0.08] text-[#5DD9FF] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
@@ -7217,7 +7291,17 @@ export default function OverviewPage() {
       <button
         type="button"
         onClick={downloadCsv}
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] bg-[#1B73C9] px-4 text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_8px_18px_rgba(37,99,235,0.2)] transition hover:bg-[#155FA8]"
+        disabled={!canDownloadReports}
+        title={
+          canDownloadReports
+            ? "Download CSV report"
+            : "Download permission is not assigned"
+        }
+        className={`inline-flex h-10 items-center justify-center gap-2 rounded-[10px] px-4 text-[9px] font-bold uppercase tracking-[0.1em] transition ${
+          canDownloadReports
+            ? "bg-[#1B73C9] text-white shadow-[0_8px_18px_rgba(37,99,235,0.2)] hover:bg-[#155FA8]"
+            : "cursor-not-allowed bg-slate-200 text-slate-400"
+        }`}
       >
         <Download size={15} />
         CSV
@@ -7226,7 +7310,17 @@ export default function OverviewPage() {
       <button
         type="button"
         onClick={downloadJson}
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-[#CCDCEB] bg-white px-4 text-[9px] font-bold uppercase tracking-[0.1em] text-[#416483] transition hover:border-[#1B73C9] hover:text-[#1B73C9]"
+        disabled={!canDownloadReports}
+        title={
+          canDownloadReports
+            ? "Download JSON report"
+            : "Download permission is not assigned"
+        }
+        className={`inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border px-4 text-[9px] font-bold uppercase tracking-[0.1em] transition ${
+          canDownloadReports
+            ? "border-[#CCDCEB] bg-white text-[#416483] hover:border-[#1B73C9] hover:text-[#1B73C9]"
+            : "cursor-not-allowed border-slate-300 bg-slate-100 text-slate-400"
+        }`}
       >
         <FileJson size={15} />
         JSON
@@ -7234,8 +7328,22 @@ export default function OverviewPage() {
 
       <button
         type="button"
-        onClick={() => window.print()}
-        className="hidden h-10 w-10 items-center justify-center rounded-[10px] border border-[#CCDCEB] bg-white text-[#657B92] transition hover:border-[#06224F] hover:text-[#06224F] sm:flex"
+        onClick={() => {
+          if (canDownloadReports) {
+            window.print();
+          }
+        }}
+        disabled={!canDownloadReports}
+        title={
+          canDownloadReports
+            ? "Print analytics"
+            : "Download permission is not assigned"
+        }
+        className={`hidden h-10 w-10 items-center justify-center rounded-[10px] border transition sm:flex ${
+          canDownloadReports
+            ? "border-[#CCDCEB] bg-white text-[#657B92] hover:border-[#06224F] hover:text-[#06224F]"
+            : "cursor-not-allowed border-slate-300 bg-slate-100 text-slate-400"
+        }`}
         aria-label="Print analytics"
       >
         <Printer size={16} />

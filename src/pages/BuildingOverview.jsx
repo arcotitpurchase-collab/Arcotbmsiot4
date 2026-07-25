@@ -696,6 +696,7 @@ import {
 } from "lucide-react";
 import { buildings, systemSummary } from "../data/bmsData";
 import prestigeLogo from "../assets/ser-removebg.png";
+import { tempApi } from "../tempAdminApi";
 
 const RATE_PER_KWH = 8.5;
 
@@ -1079,7 +1080,11 @@ function SystemCard({ system }) {
   );
 }
 
-function ViewSelector({ activeView, onChange }) {
+function ViewSelector({
+  activeView,
+  onChange,
+  canViewAnalytics = false,
+}) {
   return (
     <div className="flex border border-[#004AAD] bg-white">
       <button
@@ -1097,11 +1102,23 @@ function ViewSelector({ activeView, onChange }) {
 
       <button
         type="button"
-        onClick={() => onChange("analytics")}
+        onClick={() => {
+          if (canViewAnalytics) {
+            onChange("analytics");
+          }
+        }}
+        disabled={!canViewAnalytics}
+        title={
+          canViewAnalytics
+            ? "Open analytical view"
+            : "Your account does not have report access"
+        }
         className={`flex h-[36px] items-center gap-2 border-l border-[#004AAD] px-4 text-[9px] font-black uppercase tracking-[0.12em] transition ${
-          activeView === "analytics"
-            ? "bg-[#004AAD] text-white"
-            : "text-[#004AAD] hover:bg-blue-50"
+          !canViewAnalytics
+            ? "cursor-not-allowed bg-slate-100 text-slate-400"
+            : activeView === "analytics"
+              ? "bg-[#004AAD] text-white"
+              : "text-[#004AAD] hover:bg-blue-50"
         }`}
       >
         <BarChart3 size={13} />
@@ -1813,9 +1830,41 @@ export default function BuildingOverview() {
   const { buildingId } = useParams();
   const [activeView, setActiveView] = useState("monitoring");
 
+  const currentUser = tempApi.getCurrentUser();
+  const userPermissions = currentUser?.permissions || [];
+  const canViewAnalytics = userPermissions.includes("view_reports");
+
   const building = buildings.find(
     (item) => String(item.id) === String(buildingId)
   );
+
+  if (!currentUser) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
+        <div className="max-w-md border-2 border-red-400 bg-[#081F5C] p-8 text-center text-white">
+          <h2 className="text-2xl font-black">
+            User Session Required
+          </h2>
+
+          <p className="mt-2 text-xs text-blue-200">
+            Please sign in with an active User account to open the building dashboard.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => {
+              tempApi.logout();
+              window.location.href = "/auth";
+            }}
+            className="mt-6 inline-flex items-center gap-2 border border-cyan-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Go to Login
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   if (!building) {
     return (
@@ -1830,7 +1879,7 @@ export default function BuildingOverview() {
           </p>
 
           <Link
-            to="/"
+            to="/dashboard"
             className="mt-6 inline-flex items-center gap-2 border border-blue-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -1856,7 +1905,7 @@ export default function BuildingOverview() {
     >
       <header className="sticky top-0 z-[1000] h-[72px] shrink-0 border-b-4 border-[#004AAD] bg-[#081F5C] px-4 text-white">
         <div className="flex h-full w-full items-center justify-between">
-          <Link to="/" className="flex items-center no-underline">
+          <Link to="/dashboard" className="flex items-center no-underline">
             <div>
               <h1 className="text-[26px] font-semibold uppercase leading-none tracking-[0.18em] text-white">
                 ARCOT
@@ -1879,12 +1928,22 @@ export default function BuildingOverview() {
 
           <div className="flex items-center gap-3">
             <Link
-              to="/"
+              to="/dashboard"
               replace
               className="flex h-[32px] items-center justify-center border border-cyan-400 bg-[#004AAD] px-4 text-[10px] font-black uppercase tracking-[0.15em] text-white hover:bg-[#0058D6]"
             >
               Back
             </Link>
+
+            <div className="hidden border border-[#004AAD] bg-[#05143C] px-3 py-1.5 lg:block">
+              <p className="max-w-[190px] truncate text-[9px] font-bold text-cyan-200">
+                {currentUser.name}
+              </p>
+              <p className="max-w-[190px] truncate text-[7px] uppercase tracking-[0.08em] text-blue-300">
+                {currentUser.designation || "USER"} ·{" "}
+                {currentUser.companyName || building.name}
+              </p>
+            </div>
 
             <div className="hidden items-center gap-2 border border-[#004AAD] bg-[#05143C] px-3 py-1.5 md:flex">
               <span className="h-2 w-2 bg-emerald-400" />
@@ -1897,7 +1956,7 @@ export default function BuildingOverview() {
             <button
               type="button"
               onClick={() => {
-                localStorage.removeItem("bmsLoggedIn");
+                tempApi.logout();
                 window.location.href = "/auth";
               }}
               className="h-[32px] border border-red-400 bg-red-600 px-4 text-[10px] font-black uppercase tracking-[0.15em] text-white hover:bg-red-700"
@@ -1929,12 +1988,19 @@ export default function BuildingOverview() {
                 ? "Monitoring"
                 : "System Charges"}
             </h2>
+
+            <p className="mt-0.5 text-[8px] font-semibold text-slate-500">
+              {currentUser.companyName || "Assigned Company"} ·{" "}
+              {currentUser.accessType || "BUILDING"}:{" "}
+              {currentUser.accessName || building.name}
+            </p>
           </div>
 
           <div className="flex items-center gap-3">
             <ViewSelector
               activeView={activeView}
               onChange={setActiveView}
+              canViewAnalytics={canViewAnalytics}
             />
 
             <span className="flex items-center gap-2 text-[9px] font-black uppercase text-emerald-600">

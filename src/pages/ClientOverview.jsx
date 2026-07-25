@@ -612,6 +612,7 @@ import {
 } from "lucide-react";
 import { clients } from "../data/bmsData";
 import prestigeLogo from "../assets/ser-removebg.png";
+import { tempApi } from "../tempAdminApi";
 
 const PERIODS = [
   { id: "hourly", label: "Hourly" },
@@ -643,9 +644,42 @@ export default function ClientOverview() {
   const { buildingId = "", floorId = "1", clientId = "1" } = useParams();
 
   const [activeView, setActiveView] = useState("systems");
+
+  const currentUser = tempApi.getCurrentUser();
+  const userPermissions = currentUser?.permissions || [];
+  const canViewReports = userPermissions.includes("view_reports");
+  const canDownloadReports = userPermissions.includes("download_reports");
   const [period, setPeriod] = useState("daily");
   const [selectedSystem, setSelectedSystem] = useState("all");
   const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  if (!currentUser) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
+        <div className="max-w-md border-2 border-red-400 bg-[#081F5C] p-8 text-center text-white">
+          <h2 className="text-2xl font-black">
+            User Session Required
+          </h2>
+
+          <p className="mt-2 text-xs text-blue-200">
+            Please sign in with an active User account to open the client dashboard.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => {
+              tempApi.logout();
+              window.location.href = "/auth";
+            }}
+            className="mt-6 inline-flex items-center gap-2 border border-cyan-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Go to Login
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   const floorNumber = Number(floorId) || 1;
   const clientNumber = Number(clientId) || 1;
@@ -815,6 +849,7 @@ export default function ClientOverview() {
         buildingId={buildingId}
         floorId={floorId}
         clientName={clientName}
+        currentUser={currentUser}
       />
 
       <section
@@ -838,12 +873,19 @@ export default function ClientOverview() {
                 ? "Systems Overview"
                 : "Analytic Overview"}
             </h2>
+
+            <p className="mt-0.5 truncate text-[8px] font-semibold text-slate-500">
+              {currentUser.companyName || "Assigned Company"} ·{" "}
+              {currentUser.accessType || "CLIENT"}:{" "}
+              {currentUser.accessName || clientName}
+            </p>
           </div>
 
           <div className="flex items-center gap-3">
             <ViewSelector
               activeView={activeView}
               onChange={setActiveView}
+              canViewReports={canViewReports}
             />
 
             <span className="hidden items-center gap-2 text-[9px] font-black uppercase text-emerald-600 sm:flex">
@@ -882,6 +924,7 @@ export default function ClientOverview() {
             consumptionData={consumptionData}
             lastUpdated={lastUpdated}
             onRefresh={() => setLastUpdated(new Date())}
+            canDownloadReports={canDownloadReports}
           />
         )}
       </section>
@@ -904,11 +947,11 @@ export default function ClientOverview() {
   );
 }
 
-function DashboardHeader({ buildingId, floorId, clientName }) {
+function DashboardHeader({ buildingId, floorId, clientName, currentUser }) {
   return (
     <header className="sticky top-0 z-[1000] h-[72px] shrink-0 border-b-4 border-[#004AAD] bg-[#081F5C] px-4 text-white shadow-md">
       <div className="flex h-full w-full items-center justify-between">
-        <Link to="/" className="flex min-w-0 items-center no-underline">
+        <Link to="/dashboard" className="flex min-w-0 items-center no-underline">
           <div className="min-w-0">
             <h1 className="truncate text-[clamp(18px,2vw,26px)] font-semibold uppercase leading-none tracking-[0.16em] text-white">
               ARCOT
@@ -948,6 +991,17 @@ function DashboardHeader({ buildingId, floorId, clientName }) {
             <span className="hidden sm:inline">Back</span>
           </Link>
 
+          <div className="hidden border border-[#004AAD] bg-[#05143C] px-3 py-1.5 lg:block">
+            <p className="max-w-[180px] truncate text-[9px] font-bold text-cyan-200">
+              {currentUser?.name || "Dashboard User"}
+            </p>
+
+            <p className="max-w-[180px] truncate text-[7px] uppercase tracking-[0.08em] text-blue-300">
+              {currentUser?.designation || "USER"} ·{" "}
+              {currentUser?.companyName || "Assigned Company"}
+            </p>
+          </div>
+
           <div className="hidden items-center gap-2 border border-[#004AAD] bg-[#05143C] px-3 py-1.5 md:flex">
             <span className="h-2 w-2 bg-emerald-400" />
             <span className="text-[9px] font-bold uppercase tracking-[0.13em]">
@@ -958,7 +1012,7 @@ function DashboardHeader({ buildingId, floorId, clientName }) {
           <button
             type="button"
             onClick={() => {
-              localStorage.removeItem("bmsLoggedIn");
+              tempApi.logout();
               window.location.href = "/auth";
             }}
             className="h-[32px] border border-red-400 bg-red-600 px-3 text-[9px] font-black uppercase tracking-[0.13em] text-white hover:bg-red-700"
@@ -971,7 +1025,11 @@ function DashboardHeader({ buildingId, floorId, clientName }) {
   );
 }
 
-function ViewSelector({ activeView, onChange }) {
+function ViewSelector({
+  activeView,
+  onChange,
+  canViewReports = false,
+}) {
   return (
     <div className="flex border border-[#004AAD] bg-white">
       <button
@@ -989,11 +1047,23 @@ function ViewSelector({ activeView, onChange }) {
 
       <button
         type="button"
-        onClick={() => onChange("analytics")}
+        onClick={() => {
+          if (canViewReports) {
+            onChange("analytics");
+          }
+        }}
+        disabled={!canViewReports}
+        title={
+          canViewReports
+            ? "Open analytical view"
+            : "Your account does not have report access"
+        }
         className={`flex h-[36px] items-center gap-2 border-l border-[#004AAD] px-4 text-[9px] font-black uppercase tracking-[0.1em] ${
-          activeView === "analytics"
-            ? "bg-[#004AAD] text-white"
-            : "text-[#004AAD] hover:bg-blue-50"
+          !canViewReports
+            ? "cursor-not-allowed bg-slate-100 text-slate-400"
+            : activeView === "analytics"
+              ? "bg-[#004AAD] text-white"
+              : "text-[#004AAD] hover:bg-blue-50"
         }`}
       >
         <BarChart3 size={13} />
@@ -1325,6 +1395,7 @@ function ClientAnalyticsView({
   consumptionData,
   lastUpdated,
   onRefresh,
+  canDownloadReports = false,
 }) {
   const selectedSystems = useMemo(
     () =>
@@ -1549,7 +1620,17 @@ function ClientAnalyticsView({
           <button
             type="button"
             onClick={downloadCsv}
-            className="inline-flex h-[32px] items-center gap-2 bg-[#004AAD] px-3 text-[8px] font-black uppercase text-white"
+            disabled={!canDownloadReports}
+            title={
+              canDownloadReports
+                ? "Download CSV report"
+                : "Download permission is not assigned"
+            }
+            className={`inline-flex h-[32px] items-center gap-2 px-3 text-[8px] font-black uppercase ${
+              canDownloadReports
+                ? "bg-[#004AAD] text-white"
+                : "cursor-not-allowed bg-slate-200 text-slate-400"
+            }`}
           >
             <ArrowDownToLine size={12} />
             CSV
@@ -1558,7 +1639,17 @@ function ClientAnalyticsView({
           <button
             type="button"
             onClick={downloadJson}
-            className="inline-flex h-[32px] items-center gap-2 border border-[#004AAD] px-3 text-[8px] font-black uppercase text-[#004AAD]"
+            disabled={!canDownloadReports}
+            title={
+              canDownloadReports
+                ? "Download JSON report"
+                : "Download permission is not assigned"
+            }
+            className={`inline-flex h-[32px] items-center gap-2 border px-3 text-[8px] font-black uppercase ${
+              canDownloadReports
+                ? "border-[#004AAD] text-[#004AAD]"
+                : "cursor-not-allowed border-slate-300 bg-slate-100 text-slate-400"
+            }`}
           >
             <FileJson size={12} />
             JSON

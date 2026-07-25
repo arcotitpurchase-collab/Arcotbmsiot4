@@ -397,26 +397,294 @@
 
 
 
-import { useState } from "react";
+// import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import loginBg from "../assets/login-bg3.png";
+// import prestigeLogo from "../assets/ser-removebg.png";
+
+// const AUTHORIZED_USERNAME = "Arcot";
+// const AUTHORIZED_PASSWORD = "Arcot123";
+
+// export default function AuthPage() {
+//   const navigate = useNavigate();
+
+//   const [isRegister, setIsRegister] = useState(true);
+
+//   const [form, setForm] = useState({
+//     username: "",
+//     password: "",
+//   });
+
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState("");
+
+//   const handleChange = (event) => {
+//     const { name, value } = event.target;
+
+//     setForm((previousForm) => ({
+//       ...previousForm,
+//       [name]: value,
+//     }));
+
+//     setError("");
+//     setSuccess("");
+//   };
+
+//   const resetForm = () => {
+//     setForm({
+//       username: "",
+//       password: "",
+//     });
+//   };
+
+//   const handleRegister = (event) => {
+//     event.preventDefault();
+
+//     const username = form.username.trim();
+//     const password = form.password.trim();
+
+//     if (!username || !password) {
+//       setError("Username and password are required.");
+//       return;
+//     }
+
+//     if (
+//       username !== AUTHORIZED_USERNAME ||
+//       password !== AUTHORIZED_PASSWORD
+//     ) {
+//       setError("Invalid authorized username or password.");
+//       return;
+//     }
+
+//     localStorage.setItem(
+//       "bmsUser",
+//       JSON.stringify({
+//         username: AUTHORIZED_USERNAME,
+//       })
+//     );
+
+//     localStorage.setItem("bmsRegistered", "true");
+
+//     setError("");
+//     setSuccess("Registered successfully. Please login.");
+
+//     setIsRegister(false);
+
+//     setForm({
+//       username: AUTHORIZED_USERNAME,
+//       password: "",
+//     });
+//   };
+
+//   const handleLogin = (event) => {
+//     event.preventDefault();
+
+//     const username = form.username.trim();
+//     const password = form.password.trim();
+
+//     if (!username || !password) {
+//       setError("Username and password are required.");
+//       return;
+//     }
+
+//     const isRegistered =
+//       localStorage.getItem("bmsRegistered") === "true";
+
+//     if (!isRegistered) {
+//       setError("Please register first.");
+//       setSuccess("");
+//       setIsRegister(true);
+//       resetForm();
+//       return;
+//     }
+
+//     if (
+//       username !== AUTHORIZED_USERNAME ||
+//       password !== AUTHORIZED_PASSWORD
+//     ) {
+//       setError("Invalid username or password.");
+//       setSuccess("");
+//       return;
+//     }
+
+//     localStorage.setItem("bmsLoggedIn", "true");
+//     localStorage.setItem("bmsRole", "admin");
+//     localStorage.setItem("bmsUsername", AUTHORIZED_USERNAME);
+
+//     navigate("/", { replace: true });
+//   };
+
+//   const switchAuthMode = () => {
+//     setIsRegister((previousValue) => !previousValue);
+//     setError("");
+//     setSuccess("");
+//     resetForm();
+//   };
+
+//   return (
+//     <div
+//       className="relative flex min-h-screen items-center justify-end bg-cover bg-center bg-no-repeat px-6"
+//       style={{
+//         backgroundImage: `url(${loginBg})`,
+//       }}
+//     >
+//       <div className="absolute inset-0 bg-slate-950/10" />
+
+//       <div className="relative z-10 w-full max-w-[470px] border border-cyan-400 bg-[#081F5C]/75 px-7 py-7 text-white shadow-[0_0_30px_rgba(0,74,173,0.6)] backdrop-blur-[2px]">
+//         <div className="mb-6 flex items-center justify-center">
+//           <div>
+//             <h1 className="text-[26px] font-bold uppercase leading-none tracking-[0.13em]">
+//               ARCOT
+//               <span className="ml-2 text-[#67E8F9]">
+//                 IIoT
+//               </span>
+//             </h1>
+
+//             <p className="mt-2 text-[8px] uppercase tracking-[0.25em] text-blue-300">
+//               Industrial Internet of Things
+//             </p>
+//           </div>
+
+//           <div className="mx-4 h-[52px] w-px bg-[#004AAD]" />
+
+//           <img
+//             src={prestigeLogo}
+//             alt="Prestige Group"
+//             className="h-[60px] w-auto object-contain"
+//           />
+//         </div>
+
+//         <h2 className="text-center text-[22px] font-semibold uppercase tracking-wide">
+//           {isRegister ? "Register" : "Login"}
+//         </h2>
+
+//         <p className="mt-1 text-center text-xs text-blue-200">
+//           {isRegister
+//             ? "Register the authorized dashboard account"
+//             : "Login with your registered credentials"}
+//         </p>
+
+//         <form
+//           onSubmit={
+//             isRegister ? handleRegister : handleLogin
+//           }
+//           className="mt-5 space-y-3"
+//         >
+//           <input
+//             name="username"
+//             type="text"
+//             value={form.username}
+//             onChange={handleChange}
+//             placeholder="Username"
+//             autoComplete="username"
+//             spellCheck={false}
+//             className="h-10 w-full border border-[#004AAD] bg-[#05143C] px-4 text-sm font-semibold text-white outline-none transition-colors placeholder:text-blue-300 focus:border-cyan-400"
+//           />
+
+//           <input
+//             name="password"
+//             type="password"
+//             value={form.password}
+//             onChange={handleChange}
+//             placeholder="Password"
+//             autoComplete={
+//               isRegister
+//                 ? "new-password"
+//                 : "current-password"
+//             }
+//             className="h-10 w-full border border-[#004AAD] bg-[#05143C] px-4 text-sm font-semibold text-white outline-none transition-colors placeholder:text-blue-300 focus:border-cyan-400"
+//           />
+
+//           {error && (
+//             <div
+//               role="alert"
+//               className="border border-red-400/40 bg-red-500/10 px-3 py-2"
+//             >
+//               <p className="text-sm font-semibold text-red-300">
+//                 {error}
+//               </p>
+//             </div>
+//           )}
+
+//           {success && (
+//             <div
+//               role="status"
+//               className="border border-emerald-400/40 bg-emerald-500/10 px-3 py-2"
+//             >
+//               <p className="text-sm font-medium text-emerald-300">
+//                 {success}
+//               </p>
+//             </div>
+//           )}
+
+//           <button
+//             type="submit"
+//             className="h-10 w-full border border-cyan-400 bg-[#004AAD] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#0058D6] focus:outline-none focus:ring-2 focus:ring-cyan-300/60"
+//           >
+//             {isRegister ? "Register" : "Login"}
+//           </button>
+//         </form>
+
+//         <button
+//           type="button"
+//           onClick={switchAuthMode}
+//           className="mt-4 block w-full text-center text-sm font-medium text-cyan-300 transition-colors hover:text-white"
+//         >
+//           {isRegister
+//             ? "Already registered? Login"
+//             : "Register authorized account"}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginBg from "../assets/login-bg3.png";
 import prestigeLogo from "../assets/ser-removebg.png";
+import { SYSTEM_ROLES, tempApi } from "../tempAdminApi";
 
-const AUTHORIZED_USERNAME = "Arcot";
-const AUTHORIZED_PASSWORD = "Arcot123";
+const ROLE_ROUTES = {
+  [SYSTEM_ROLES.SUPER_ADMIN]: "/super-admin",
+  [SYSTEM_ROLES.ADMIN]: "/admin/dashboard",
+  [SYSTEM_ROLES.USER]: "/",
+};
 
 export default function AuthPage() {
   const navigate = useNavigate();
 
-  const [isRegister, setIsRegister] = useState(true);
-
   const [form, setForm] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const currentAccount = tempApi.getCurrentAccount();
+
+    if (!currentAccount) {
+      return;
+    }
+
+    const targetRoute =
+      ROLE_ROUTES[currentAccount.systemRole];
+
+    if (targetRoute) {
+      navigate(targetRoute, {
+        replace: true,
+      });
+    }
+  }, [navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -427,125 +695,114 @@ export default function AuthPage() {
     }));
 
     setError("");
-    setSuccess("");
-  };
-
-  const resetForm = () => {
-    setForm({
-      username: "",
-      password: "",
-    });
-  };
-
-  const handleRegister = (event) => {
-    event.preventDefault();
-
-    const username = form.username.trim();
-    const password = form.password.trim();
-
-    if (!username || !password) {
-      setError("Username and password are required.");
-      return;
-    }
-
-    if (
-      username !== AUTHORIZED_USERNAME ||
-      password !== AUTHORIZED_PASSWORD
-    ) {
-      setError("Invalid authorized username or password.");
-      return;
-    }
-
-    localStorage.setItem(
-      "bmsUser",
-      JSON.stringify({
-        username: AUTHORIZED_USERNAME,
-      })
-    );
-
-    localStorage.setItem("bmsRegistered", "true");
-
-    setError("");
-    setSuccess("Registered successfully. Please login.");
-
-    setIsRegister(false);
-
-    setForm({
-      username: AUTHORIZED_USERNAME,
-      password: "",
-    });
   };
 
   const handleLogin = (event) => {
     event.preventDefault();
 
-    const username = form.username.trim();
+    const email = form.email.trim();
     const password = form.password.trim();
 
-    if (!username || !password) {
-      setError("Username and password are required.");
+    if (!email || !password) {
+      setError("Email and password are required.");
       return;
     }
 
-    const isRegistered =
-      localStorage.getItem("bmsRegistered") === "true";
-
-    if (!isRegistered) {
-      setError("Please register first.");
-      setSuccess("");
-      setIsRegister(true);
-      resetForm();
-      return;
-    }
-
-    if (
-      username !== AUTHORIZED_USERNAME ||
-      password !== AUTHORIZED_PASSWORD
-    ) {
-      setError("Invalid username or password.");
-      setSuccess("");
-      return;
-    }
-
-    localStorage.setItem("bmsLoggedIn", "true");
-    localStorage.setItem("bmsRole", "admin");
-    localStorage.setItem("bmsUsername", AUTHORIZED_USERNAME);
-
-    navigate("/", { replace: true });
-  };
-
-  const switchAuthMode = () => {
-    setIsRegister((previousValue) => !previousValue);
+    setIsSubmitting(true);
     setError("");
-    setSuccess("");
-    resetForm();
+
+    try {
+      const result = tempApi.login(email, password);
+
+      if (!result.success) {
+        setError(
+          result.message || "Invalid email or password."
+        );
+        return;
+      }
+
+      const targetRoute =
+        ROLE_ROUTES[result.account.systemRole];
+
+      if (!targetRoute) {
+        tempApi.logout();
+
+        setError(
+          "This account does not have a valid system role."
+        );
+
+        return;
+      }
+
+      navigate(targetRoute, {
+        replace: true,
+      });
+    } catch (loginError) {
+      console.error("Login failed:", loginError);
+
+      setError(
+        "Unable to complete login. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div
-      className="relative flex min-h-screen items-center justify-end bg-cover bg-center bg-no-repeat px-6"
+    <main
+      className="
+        relative flex min-h-screen items-center justify-end
+        overflow-hidden bg-cover bg-center bg-no-repeat px-5
+        py-8 sm:px-8 lg:px-12
+      "
       style={{
         backgroundImage: `url(${loginBg})`,
       }}
     >
-      <div className="absolute inset-0 bg-slate-950/10" />
+      <div className="absolute inset-0 bg-slate-950/15" />
 
-      <div className="relative z-10 w-full max-w-[470px] border border-cyan-400 bg-[#081F5C]/75 px-7 py-7 text-white shadow-[0_0_30px_rgba(0,74,173,0.6)] backdrop-blur-[2px]">
+      <div
+        className="
+          absolute inset-0
+          bg-[linear-gradient(90deg,rgba(2,11,36,0.08)_0%,rgba(2,11,36,0.12)_48%,rgba(2,11,36,0.48)_100%)]
+        "
+      />
+
+      <section
+        className="
+          relative z-10 w-full max-w-[470px]
+          border border-cyan-400/80 bg-[#081F5C]/80
+          px-7 py-7 text-white
+          shadow-[0_20px_60px_rgba(0,20,70,0.55),0_0_30px_rgba(0,74,173,0.42)]
+          backdrop-blur-[4px]
+        "
+        aria-labelledby="login-heading"
+      >
         <div className="mb-6 flex items-center justify-center">
           <div>
-            <h1 className="text-[26px] font-bold uppercase leading-none tracking-[0.13em]">
+            <h1
+              className="
+                text-[26px] font-bold uppercase leading-none
+                tracking-[0.13em]
+              "
+            >
               ARCOT
               <span className="ml-2 text-[#67E8F9]">
                 IIoT
               </span>
             </h1>
 
-            <p className="mt-2 text-[8px] uppercase tracking-[0.25em] text-blue-300">
+            <p
+              className="
+                mt-2 text-[8px] uppercase tracking-[0.25em]
+                text-blue-300
+              "
+            >
               Industrial Internet of Things
             </p>
           </div>
 
-          <div className="mx-4 h-[52px] w-px bg-[#004AAD]" />
+          <div className="mx-4 h-[52px] w-px bg-[#2084E8]" />
 
           <img
             src={prestigeLogo}
@@ -554,87 +811,163 @@ export default function AuthPage() {
           />
         </div>
 
-        <h2 className="text-center text-[22px] font-semibold uppercase tracking-wide">
-          {isRegister ? "Register" : "Login"}
-        </h2>
+        <div className="text-center">
+          <p
+            className="
+              text-[10px] font-semibold uppercase
+              tracking-[0.22em] text-cyan-300
+            "
+          >
+            Secure access portal
+          </p>
 
-        <p className="mt-1 text-center text-xs text-blue-200">
-          {isRegister
-            ? "Register the authorized dashboard account"
-            : "Login with your registered credentials"}
-        </p>
+          <h2
+            id="login-heading"
+            className="
+              mt-2 text-[22px] font-semibold uppercase
+              tracking-wide
+            "
+          >
+            Account Login
+          </h2>
+
+          <p className="mt-1 text-xs leading-5 text-blue-200">
+            Sign in using your Super Admin, Admin or User
+            credentials.
+          </p>
+        </div>
 
         <form
-          onSubmit={
-            isRegister ? handleRegister : handleLogin
-          }
-          className="mt-5 space-y-3"
+          onSubmit={handleLogin}
+          className="mt-6 space-y-4"
+          noValidate
         >
-          <input
-            name="username"
-            type="text"
-            value={form.username}
-            onChange={handleChange}
-            placeholder="Username"
-            autoComplete="username"
-            spellCheck={false}
-            className="h-10 w-full border border-[#004AAD] bg-[#05143C] px-4 text-sm font-semibold text-white outline-none transition-colors placeholder:text-blue-300 focus:border-cyan-400"
-          />
+          <div>
+            <label
+              htmlFor="email"
+              className="
+                mb-1.5 block text-[11px] font-semibold
+                uppercase tracking-[0.12em] text-blue-200
+              "
+            >
+              Email address
+            </label>
 
-          <input
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Password"
-            autoComplete={
-              isRegister
-                ? "new-password"
-                : "current-password"
-            }
-            className="h-10 w-full border border-[#004AAD] bg-[#05143C] px-4 text-sm font-semibold text-white outline-none transition-colors placeholder:text-blue-300 focus:border-cyan-400"
-          />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              autoComplete="email"
+              spellCheck={false}
+              disabled={isSubmitting}
+              className="
+                h-11 w-full border border-[#1F68BB]
+                bg-[#05143C]/95 px-4 text-sm
+                font-medium text-white outline-none
+                transition-colors
+                placeholder:font-normal placeholder:text-blue-300/70
+                focus:border-cyan-400
+                disabled:cursor-not-allowed disabled:opacity-60
+              "
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="
+                mb-1.5 block text-[11px] font-semibold
+                uppercase tracking-[0.12em] text-blue-200
+              "
+            >
+              Password
+            </label>
+
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              disabled={isSubmitting}
+              className="
+                h-11 w-full border border-[#1F68BB]
+                bg-[#05143C]/95 px-4 text-sm
+                font-medium text-white outline-none
+                transition-colors
+                placeholder:font-normal placeholder:text-blue-300/70
+                focus:border-cyan-400
+                disabled:cursor-not-allowed disabled:opacity-60
+              "
+            />
+          </div>
 
           {error && (
             <div
               role="alert"
-              className="border border-red-400/40 bg-red-500/10 px-3 py-2"
+              className="
+                border border-red-400/45 bg-red-500/10
+                px-3 py-2.5
+              "
             >
-              <p className="text-sm font-semibold text-red-300">
+              <p className="text-sm font-medium text-red-300">
                 {error}
-              </p>
-            </div>
-          )}
-
-          {success && (
-            <div
-              role="status"
-              className="border border-emerald-400/40 bg-emerald-500/10 px-3 py-2"
-            >
-              <p className="text-sm font-medium text-emerald-300">
-                {success}
               </p>
             </div>
           )}
 
           <button
             type="submit"
-            className="h-10 w-full border border-cyan-400 bg-[#004AAD] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#0058D6] focus:outline-none focus:ring-2 focus:ring-cyan-300/60"
+            disabled={isSubmitting}
+            className="
+              flex h-11 w-full items-center justify-center
+              border border-cyan-300 bg-[#004AAD]
+              px-4 text-sm font-semibold uppercase
+              tracking-[0.1em] text-white
+              transition-colors
+              hover:bg-[#075BC8]
+              focus:outline-none focus:ring-2
+              focus:ring-cyan-300/60
+              disabled:cursor-not-allowed
+              disabled:opacity-60
+            "
           >
-            {isRegister ? "Register" : "Login"}
+            {isSubmitting ? "Signing in..." : "Login"}
           </button>
         </form>
 
-        <button
-          type="button"
-          onClick={switchAuthMode}
-          className="mt-4 block w-full text-center text-sm font-medium text-cyan-300 transition-colors hover:text-white"
-        >
-          {isRegister
-            ? "Already registered? Login"
-            : "Register authorized account"}
-        </button>
-      </div>
-    </div>
+        <div className="mt-5 border-t border-white/10 pt-4">
+          <div
+            className="
+              grid grid-cols-3 gap-2 text-center
+              text-[10px] uppercase tracking-[0.08em]
+              text-blue-300
+            "
+          >
+            <span className="border border-white/10 bg-white/[0.04] px-2 py-2">
+              Super Admin
+            </span>
+
+            <span className="border border-white/10 bg-white/[0.04] px-2 py-2">
+              Admin
+            </span>
+
+            <span className="border border-white/10 bg-white/[0.04] px-2 py-2">
+              User
+            </span>
+          </div>
+        </div>
+
+        <p className="mt-4 text-center text-[10px] leading-4 text-blue-300/80">
+          Access is controlled according to the assigned account
+          role and permissions.
+        </p>
+      </section>
+    </main>
   );
 }
