@@ -650,16 +650,17 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginBg from "../assets/login-bg3.png";
 import prestigeLogo from "../assets/ser-removebg.png";
-import { SYSTEM_ROLES, tempApi } from "../tempAdminApi";
-
-const ROLE_ROUTES = {
-  [SYSTEM_ROLES.SUPER_ADMIN]: "/super-admin",
-  [SYSTEM_ROLES.ADMIN]: "/admin/dashboard",
-  [SYSTEM_ROLES.USER]: "/",
-};
+import { useAuth } from "../context/AuthContext";
+import { getLandingRoute } from "../services/authService";
 
 export default function AuthPage() {
   const navigate = useNavigate();
+  const {
+    currentUser,
+    isAuthenticated,
+    isInitializing,
+    login,
+  } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -670,21 +671,19 @@ export default function AuthPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const currentAccount = tempApi.getCurrentAccount();
-
-    if (!currentAccount) {
+    if (isInitializing || !isAuthenticated || !currentUser) {
       return;
     }
 
-    const targetRoute =
-      ROLE_ROUTES[currentAccount.systemRole];
-
-    if (targetRoute) {
-      navigate(targetRoute, {
-        replace: true,
-      });
-    }
-  }, [navigate]);
+    navigate(getLandingRoute(currentUser), {
+      replace: true,
+    });
+  }, [
+    currentUser,
+    isAuthenticated,
+    isInitializing,
+    navigate,
+  ]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -712,7 +711,7 @@ export default function AuthPage() {
     setError("");
 
     try {
-      const result = tempApi.login(email, password);
+      const result = login(email, password);
 
       if (!result.success) {
         setError(
@@ -721,12 +720,9 @@ export default function AuthPage() {
         return;
       }
 
-      const targetRoute =
-        ROLE_ROUTES[result.account.systemRole];
+      const targetRoute = result.landingRoute;
 
       if (!targetRoute) {
-        tempApi.logout();
-
         setError(
           "This account does not have a valid system role."
         );

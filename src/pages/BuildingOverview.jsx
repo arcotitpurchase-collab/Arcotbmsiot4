@@ -689,6 +689,7 @@ import {
   FileJson,
   Gauge,
   Lightbulb,
+  Lock,
   RefreshCw,
   ShieldCheck,
   TrendingUp,
@@ -697,6 +698,15 @@ import {
 import { buildings, systemSummary } from "../data/bmsData";
 import prestigeLogo from "../assets/ser-removebg.png";
 import { tempApi } from "../tempAdminApi";
+import { USER_PERMISSIONS } from "../data/permissionOptions";
+import {
+  canAccessBuilding,
+  canAccessFloor,
+  hasPermission as accountHasPermission,
+  isSuperAdmin,
+  normalizeFloorId,
+  resolveNearestAllowedParentRoute,
+} from "../utils/accessControl";
 
 const RATE_PER_KWH = 8.5;
 
@@ -941,7 +951,7 @@ function StatusBadge({ tone, children }) {
   );
 }
 
-function SystemCard({ system }) {
+function SystemCard({ system, locked = false }) {
   const Icon = system.icon;
 
   const statusStyles = {
@@ -968,25 +978,37 @@ function SystemCard({ system }) {
     },
   };
 
-  const status = statusStyles[system.tone] ?? statusStyles.green;
+  const status = locked
+    ? {
+        dot: "bg-slate-400",
+        text: "text-slate-200",
+        border: "border-slate-300/30",
+        background: "bg-slate-300/10",
+        line: "bg-slate-500",
+      }
+    : statusStyles[system.tone] ?? statusStyles.green;
 
   const primaryMetrics = [
     {
       label: "Current Load",
-      value: system.currentLoad.toLocaleString("en-IN"),
-      unit: "kW",
+      value: locked ? "No Access" : system.currentLoad.toLocaleString("en-IN"),
+      unit: locked ? "" : "kW",
       valueClass: "text-cyan-300",
     },
     {
       label: "Consumption",
-      value: system.baseConsumption.toLocaleString("en-IN"),
-      unit: "kWh",
+      value: locked ? "No Access" : system.baseConsumption.toLocaleString("en-IN"),
+      unit: locked ? "" : "kWh",
       valueClass: "text-white",
     },
   ];
 
   return (
-    <article className="group relative flex h-full min-h-[255px] flex-col overflow-hidden border border-[#1A5A9B] bg-[linear-gradient(155deg,#0B3778_0%,#08295F_48%,#061D47_100%)] text-white shadow-[0_12px_26px_rgba(3,35,90,0.18),inset_0_1px_0_rgba(255,255,255,0.07)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#3AA7FF] hover:shadow-[0_18px_34px_rgba(3,45,105,0.26)]">
+    <article className={`group relative flex h-full min-h-[255px] flex-col overflow-hidden border text-white shadow-[0_12px_26px_rgba(3,35,90,0.18),inset_0_1px_0_rgba(255,255,255,0.07)] transition-all duration-300 ${
+      locked
+        ? "border-slate-500 bg-[#10203F] opacity-75"
+        : "border-[#1A5A9B] bg-[linear-gradient(155deg,#0B3778_0%,#08295F_48%,#061D47_100%)] hover:-translate-y-0.5 hover:border-[#3AA7FF] hover:shadow-[0_18px_34px_rgba(3,45,105,0.26)]"
+    }`}>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_0%,rgba(34,211,238,0.13),transparent_31%)]" />
       <div className="absolute inset-x-0 top-0 h-[3px] bg-[#1BB8E6]" />
 
@@ -1003,7 +1025,7 @@ function SystemCard({ system }) {
               </h3>
 
               <p className="mt-1.5 text-[8px] font-bold uppercase tracking-[0.13em] text-blue-200/60">
-                Live Operational Data
+                {locked ? "Hierarchy Only" : "Live Operational Data"}
               </p>
             </div>
           </div>
@@ -1012,7 +1034,14 @@ function SystemCard({ system }) {
             className={`inline-flex shrink-0 items-center gap-1.5 border px-2.5 py-1.5 text-[8px] font-black uppercase tracking-[0.08em] ${status.border} ${status.background} ${status.text}`}
           >
             <span className={`h-1.5 w-1.5 ${status.dot}`} />
-            {system.status}
+            {locked ? (
+              <>
+                <Lock size={11} />
+                No Access
+              </>
+            ) : (
+              system.status
+            )}
           </span>
         </header>
 
@@ -1041,20 +1070,26 @@ function SystemCard({ system }) {
         <div className="mx-5 my-2 h-px bg-white/8" />
 
         <div className="flex flex-1 flex-col justify-center px-5 py-2">
-          {system.readings.slice(0, 3).map((reading) => (
-            <div
-              key={reading.label}
-              className="flex min-h-[32px] items-center justify-between gap-4 py-1.5"
-            >
-              <span className="min-w-0 truncate text-[9px] font-bold uppercase tracking-[0.065em] text-blue-100/65">
-                {reading.label}
-              </span>
-
-              <span className="shrink-0 text-right text-[11px] font-black text-white">
-                {reading.value}
-              </span>
+          {locked ? (
+            <div className="border border-amber-300/25 bg-amber-300/10 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-amber-100">
+              Operational readings hidden
             </div>
-          ))}
+          ) : (
+            system.readings.slice(0, 3).map((reading) => (
+              <div
+                key={reading.label}
+                className="flex min-h-[32px] items-center justify-between gap-4 py-1.5"
+              >
+                <span className="min-w-0 truncate text-[9px] font-bold uppercase tracking-[0.065em] text-blue-100/65">
+                  {reading.label}
+                </span>
+
+                <span className="shrink-0 text-right text-[11px] font-black text-white">
+                  {reading.value}
+                </span>
+              </div>
+            ))
+          )}
         </div>
 
         <footer className="px-5 pb-4 pt-2">
@@ -1064,14 +1099,14 @@ function SystemCard({ system }) {
             </span>
 
             <span className="text-[10px] font-black text-cyan-300">
-              {system.efficiency}%
+              {locked ? "No Access" : `${system.efficiency}%`}
             </span>
           </div>
 
           <div className="h-1.5 overflow-hidden bg-white/10">
             <div
               className={`h-full ${status.line}`}
-              style={{ width: `${system.efficiency}%` }}
+              style={{ width: locked ? "0%" : `${system.efficiency}%` }}
             />
           </div>
         </footer>
@@ -1128,7 +1163,12 @@ function ViewSelector({
   );
 }
 
-function FloorMatrix({ building, floors }) {
+function FloorMatrix({
+  building,
+  floors,
+  currentUser,
+  onLockedAccess,
+}) {
   return (
     <aside className="grid grid-rows-[auto_auto_auto] overflow-hidden border border-[#174B89] bg-[#071B47] text-white shadow-[0_14px_34px_rgba(8,31,92,0.16)]">
       <header className="flex items-center justify-between border-b border-white/10 bg-[#0A2A68] px-4 py-3.5">
@@ -1151,12 +1191,27 @@ function FloorMatrix({ building, floors }) {
         <div className="space-y-2">
           {floors.map((floor, index) => {
             const hasAlert = index === 2;
+            const floorResourceId = normalizeFloorId(building.id, floor);
+            const locked = !canAccessFloor(currentUser, floorResourceId);
+            const Wrapper = locked ? "button" : Link;
+            const wrapperProps = locked
+              ? {
+                  type: "button",
+                  onClick: () => onLockedAccess?.(`Floor ${floor}`),
+                }
+              : {
+                  to: `/building/${building.id}/floor/${floor}`,
+                };
 
             return (
-              <Link
+              <Wrapper
                 key={floor}
-                to={`/building/${building.id}/floor/${floor}`}
-                className="group flex h-[52px] items-center justify-between border border-white/10 bg-[#0A255C] px-3 text-white transition duration-200 hover:border-cyan-300 hover:bg-[#0D347D]"
+                {...wrapperProps}
+                className={`group flex h-[52px] w-full items-center justify-between border px-3 text-left text-white transition duration-200 ${
+                  locked
+                    ? "cursor-not-allowed border-slate-500/40 bg-[#10203F] opacity-75"
+                    : "border-white/10 bg-[#0A255C] hover:border-cyan-300 hover:bg-[#0D347D]"
+                }`}
               >
                 <div className="flex min-w-0 items-center gap-3">
                   <div className="flex h-8 w-10 shrink-0 items-center justify-center border border-cyan-400/30 bg-[#004AAD] text-[10px] font-black">
@@ -1169,27 +1224,35 @@ function FloorMatrix({ building, floors }) {
                     </p>
 
                     <p className="mt-0.5 truncate text-[7px] text-blue-200">
-                      {720 + index * 28} kWh
+                      {locked ? "Hierarchy only" : `${720 + index * 28} kWh`}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex shrink-0 items-center gap-1.5">
-                  <span
-                    className={`h-1.5 w-1.5 ${
-                      hasAlert ? "bg-amber-400" : "bg-emerald-400"
-                    }`}
-                  />
+                  {locked ? (
+                    <Lock size={12} className="text-amber-300" />
+                  ) : (
+                    <span
+                      className={`h-1.5 w-1.5 ${
+                        hasAlert ? "bg-amber-400" : "bg-emerald-400"
+                      }`}
+                    />
+                  )}
 
                   <span
                     className={`text-[7px] font-black uppercase tracking-[0.06em] ${
-                      hasAlert ? "text-amber-300" : "text-emerald-300"
+                      locked
+                        ? "text-amber-200"
+                        : hasAlert
+                          ? "text-amber-300"
+                          : "text-emerald-300"
                     }`}
                   >
-                    {hasAlert ? "Alert" : "Online"}
+                    {locked ? "No Access" : hasAlert ? "Alert" : "Online"}
                   </span>
                 </div>
-              </Link>
+              </Wrapper>
             );
           })}
         </div>
@@ -1201,7 +1264,9 @@ function FloorMatrix({ building, floors }) {
             Online Floors
           </p>
           <p className="mt-1 text-[13px] font-black text-white">
-            {Math.max(building.floors - 1, 0)}
+            {floors.filter((floor) =>
+              canAccessFloor(currentUser, normalizeFloorId(building.id, floor))
+            ).length}
           </p>
         </div>
 
@@ -1210,7 +1275,7 @@ function FloorMatrix({ building, floors }) {
             Active Alerts
           </p>
           <p className="mt-1 text-[13px] font-black text-amber-300">
-            1
+            Scoped
           </p>
         </div>
       </footer>
@@ -1348,7 +1413,7 @@ function getCustomDayCount(startDate, endDate) {
   return Math.floor(difference / 86400000) + 1;
 }
 
-function AnalyticsView({ building }) {
+function AnalyticsView({ building, canDownloadReports = false }) {
   const [period, setPeriod] = useState("daily");
   const [selectedSystem, setSelectedSystem] = useState("all");
   const [startDate, setStartDate] = useState("2026-07-01");
@@ -1545,6 +1610,8 @@ function AnalyticsView({ building }) {
   };
 
   const downloadCsv = () => {
+    if (!canDownloadReports) return;
+
     const rowsForCsv = [
       [
         "System Name",
@@ -1585,6 +1652,8 @@ function AnalyticsView({ building }) {
   };
 
   const downloadJson = () => {
+    if (!canDownloadReports) return;
+
     const payload = {
       generatedAt: new Date().toISOString(),
       period: periodDescription,
@@ -1685,10 +1754,28 @@ function AnalyticsView({ building }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <button type="button" onClick={downloadCsv} className="inline-flex h-[32px] items-center gap-2 bg-[#004AAD] px-3 text-[8px] font-black uppercase text-white">
+            <button
+              type="button"
+              onClick={downloadCsv}
+              disabled={!canDownloadReports}
+              className={`inline-flex h-[32px] items-center gap-2 px-3 text-[8px] font-black uppercase ${
+                canDownloadReports
+                  ? "bg-[#004AAD] text-white"
+                  : "cursor-not-allowed bg-slate-200 text-slate-400"
+              }`}
+            >
               <Download size={12} /> CSV
             </button>
-            <button type="button" onClick={downloadJson} className="inline-flex h-[32px] items-center gap-2 border border-[#004AAD] px-3 text-[8px] font-black uppercase text-[#004AAD]">
+            <button
+              type="button"
+              onClick={downloadJson}
+              disabled={!canDownloadReports}
+              className={`inline-flex h-[32px] items-center gap-2 border px-3 text-[8px] font-black uppercase ${
+                canDownloadReports
+                  ? "border-[#004AAD] text-[#004AAD]"
+                  : "cursor-not-allowed border-slate-300 text-slate-400"
+              }`}
+            >
               <FileJson size={12} /> JSON
             </button>
             <button type="button" onClick={() => setLastUpdated(new Date())} className="flex h-[32px] w-[32px] items-center justify-center border border-slate-300 text-slate-600">
@@ -1829,10 +1916,18 @@ function AnalyticsView({ building }) {
 export default function BuildingOverview() {
   const { buildingId } = useParams();
   const [activeView, setActiveView] = useState("monitoring");
+  const [accessMessage, setAccessMessage] = useState("");
 
-  const currentUser = tempApi.getCurrentUser();
-  const userPermissions = currentUser?.permissions || [];
-  const canViewAnalytics = userPermissions.includes("view_reports");
+  const currentUser = tempApi.getCurrentAccount();
+  const canViewAnalytics = accountHasPermission(
+    currentUser,
+    USER_PERMISSIONS.ANALYTICS_VIEW
+  );
+
+  const showLockedMessage = (resourceName) => {
+    setAccessMessage(`${resourceName} is visible in the site hierarchy, but operational access is not assigned to your account.`);
+    window.setTimeout(() => setAccessMessage(""), 3200);
+  };
 
   const building = buildings.find(
     (item) => String(item.id) === String(buildingId)
@@ -1866,6 +1961,26 @@ export default function BuildingOverview() {
     );
   }
 
+  if (building && !canAccessBuilding(currentUser, building.id)) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
+        <div className="max-w-md border-2 border-amber-400 bg-[#081F5C] p-8 text-center text-white">
+          <h2 className="text-2xl font-black">Access Denied</h2>
+          <p className="mt-2 text-xs text-blue-200">
+            This building is outside your assigned BMS scope.
+          </p>
+          <Link
+            to={resolveNearestAllowedParentRoute(currentUser, { buildingId })}
+            className="mt-6 inline-flex items-center gap-2 border border-blue-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to permitted scope
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   if (!building) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
@@ -1894,6 +2009,11 @@ export default function BuildingOverview() {
     { length: building.floors },
     (_, index) => building.floors - index
   );
+  const hasBuildingSystemScope =
+    isSuperAdmin(currentUser) ||
+    currentUser.assignedSystemIds?.some((systemId) =>
+      String(systemId).startsWith(`${building.id}:`)
+    );
 
   return (
     <main
@@ -1903,6 +2023,15 @@ export default function BuildingOverview() {
           : "min-h-screen overflow-x-hidden"
       }`}
     >
+      {accessMessage && (
+        <div className="fixed right-5 top-24 z-[1200] max-w-sm border border-amber-300 bg-[#081F5C] px-4 py-3 text-sm font-semibold text-white shadow-2xl">
+          <div className="flex items-start gap-2">
+            <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+            <span>{accessMessage}</span>
+          </div>
+        </div>
+      )}
+
       <header className="sticky top-0 z-[1000] h-[72px] shrink-0 border-b-4 border-[#004AAD] bg-[#081F5C] px-4 text-white">
         <div className="flex h-full w-full items-center justify-between">
           <Link to="/dashboard" className="flex items-center no-underline">
@@ -2019,16 +2148,31 @@ export default function BuildingOverview() {
         >
           {activeView === "monitoring" ? (
             <div className="grid items-start gap-3 xl:grid-cols-[320px_minmax(0,1fr)]">
-              <FloorMatrix building={building} floors={floors} />
+              <FloorMatrix
+                building={building}
+                floors={floors}
+                currentUser={currentUser}
+                onLockedAccess={showLockedMessage}
+              />
 
               <section className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {SYSTEMS.map((system) => (
-                  <SystemCard key={system.id} system={system} />
+                  <SystemCard
+                    key={system.id}
+                    system={system}
+                    locked={!hasBuildingSystemScope}
+                  />
                 ))}
               </section>
             </div>
           ) : (
-            <AnalyticsView building={building} />
+            <AnalyticsView
+              building={building}
+              canDownloadReports={accountHasPermission(
+                currentUser,
+                USER_PERMISSIONS.DATA_DOWNLOAD
+              )}
+            />
           )}
         </div>
       </section>

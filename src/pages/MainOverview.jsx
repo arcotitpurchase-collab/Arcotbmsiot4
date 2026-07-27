@@ -13761,6 +13761,7 @@ import {
   Gauge,
   Grid2X2,
   Leaf,
+  Lock,
   Maximize2,
   Network,
   PanelsTopLeft,
@@ -13776,6 +13777,12 @@ import {
 import aiLogo from "../assets/AI LOGO.png";
 import prestigeLogo from "../assets/ser-removebg.png";
 import { tempApi } from "../tempAdminApi";
+import { USER_PERMISSIONS } from "../data/permissionOptions";
+import { buildings } from "../data/bmsData";
+import {
+  canAccessBuilding,
+  hasPermission as accountHasPermission,
+} from "../utils/accessControl";
 import {
   Area,
   AreaChart,
@@ -13802,15 +13809,15 @@ export default function MainOverview() {
   const [kiosksExpanded, setKiosksExpanded] = useState(true);
   const [dgsExpanded, setDgsExpanded] = useState(true);
   const [busbarsExpanded, setBusbarsExpanded] = useState(true);
+  const [accessMessage, setAccessMessage] = useState("");
 
 const [openedBusbars, setOpenedBusbars] = useState([]);
 const navigate = useNavigate();
 
-  const currentUser = tempApi.getCurrentUser();
-  const permissions = currentUser?.permissions || [];
+  const currentUser = tempApi.getCurrentAccount();
 
   const hasPermission = (permission) =>
-    permissions.includes(permission);
+    accountHasPermission(currentUser, permission);
 
   const openPermittedPopup = (permission, popupName) => {
     if (!hasPermission(permission)) {
@@ -13819,6 +13826,11 @@ const navigate = useNavigate();
     }
 
     setActivePopup(popupName);
+  };
+
+  const showLockedMessage = (resourceName) => {
+    setAccessMessage(`${resourceName} is visible in the site hierarchy, but operational access is not assigned to your account.`);
+    window.setTimeout(() => setAccessMessage(""), 3200);
   };
 
   const handleLogout = () => {
@@ -22228,11 +22240,29 @@ const RaisingMainPopup = () => {
 
 
 const BuildingsPopup = () => {
- const BuildingBox = ({ title, subtitle, onClick, showIcon = false }) => (
-  <div
+ const BuildingBox = ({
+  title,
+  subtitle,
+  onClick,
+  showIcon = false,
+  locked = false,
+ }) => (
+  <button
+    type="button"
     onClick={onClick}
-    className="h-[125px] w-full bg-gradient-to-br from-[#081F5C] to-[#061746] border border-[#1F6FEB] text-white shadow-[0_12px_30px_rgba(8,31,92,0.25)] flex items-center justify-center text-center cursor-pointer px-5 overflow-hidden"
+    className={`relative h-[125px] w-full border text-white shadow-[0_12px_30px_rgba(8,31,92,0.25)] flex items-center justify-center text-center px-5 overflow-hidden transition ${
+      locked
+        ? "cursor-not-allowed border-slate-500 bg-[#10203F] opacity-70"
+        : "cursor-pointer border-[#1F6FEB] bg-gradient-to-br from-[#081F5C] to-[#061746] hover:border-cyan-300"
+    }`}
   >
+    {locked && (
+      <span className="absolute right-3 top-3 inline-flex items-center gap-1 border border-amber-300/40 bg-amber-300/10 px-2 py-1 text-[8px] font-black uppercase tracking-[0.08em] text-amber-200">
+        <Lock size={11} />
+        No Access
+      </span>
+    )}
+
     {showIcon && (
       <div className="w-[62px] h-[92px] border border-[#1F6FEB] bg-[#05143C] p-2 flex flex-col justify-between shrink-0 mr-5">
         <div className="h-[3px] w-full bg-[#00E5FF]" />
@@ -22255,11 +22285,11 @@ const BuildingsPopup = () => {
         {title}
       </h4>
 
-      <span className="mt-2 text-[11px] text-blue-200 font-semibold">
+      <span className={`mt-2 text-[11px] font-semibold ${locked ? "text-slate-300" : "text-blue-200"}`}>
         {subtitle}
       </span>
     </div>
-  </div>
+  </button>
 );
 
   return (
@@ -22332,25 +22362,33 @@ const BuildingsPopup = () => {
             />
           </svg>
 
-<div className="absolute left-[12%] top-[240px] w-[30%]">
-  <Link to="/building/wing-a">
-    <BuildingBox
-      title="Wing A"
-      subtitle="20 Floors / 40 Zones"
-      showIcon
-    />
-  </Link>
-</div>
+{buildings.map((building, index) => {
+  const locked = !canAccessBuilding(currentUser, building.id);
 
-<div className="absolute right-[12%] top-[240px] w-[30%]">
-  <Link to="/building/wing-b">
+  return (
+  <div
+    key={building.id}
+    className={`absolute top-[240px] w-[30%] ${
+      index === 0 ? "left-[12%]" : "right-[12%]"
+    }`}
+  >
     <BuildingBox
-      title="Wing B"
-      subtitle="20 Floors / 40 Zones"
+      title={building.name}
+      subtitle={locked ? `${building.floors} Floors / Structure Only` : `${building.floors} Floors / 40 Zones`}
       showIcon
+      locked={locked}
+      onClick={() => {
+        if (locked) {
+          showLockedMessage(building.name);
+          return;
+        }
+
+        navigate(`/building/${building.id}`);
+      }}
     />
-  </Link>
-</div>
+  </div>
+  );
+})}
         </div>
       </div>
     </PopupShell>
@@ -22362,6 +22400,14 @@ const BuildingsPopup = () => {
   return (
 
     <main className="min-h-screen bg-white text-[#081F5C] flex flex-col font-sans">
+      {accessMessage && (
+        <div className="fixed right-5 top-24 z-[1200] max-w-sm border border-amber-300 bg-[#081F5C] px-4 py-3 text-sm font-semibold text-white shadow-2xl">
+          <div className="flex items-start gap-2">
+            <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+            <span>{accessMessage}</span>
+          </div>
+        </div>
+      )}
   
 
 <header className="sticky top-0 z-[1000] h-[72px] border-b-[3px] border-[#0B64B8] bg-[linear-gradient(90deg,#08285F_0%,#061D4B_48%,#04163B_100%)] px-5 text-white shadow-[0_8px_24px_rgba(2,24,59,0.22)]">
@@ -22396,13 +22442,7 @@ const BuildingsPopup = () => {
     <div className="grid shrink-0 grid-cols-4 gap-3">
       <button
         type="button"
-        onClick={() => {
-          if (hasPermission("view_reports")) {
-            navigate("/overview");
-          } else {
-            navigate("/unauthorized");
-          }
-        }}
+        onClick={() => navigate("/overview")}
         className="flex h-[44px] w-[168px] items-center justify-center rounded-[4px] border border-[#1CC8F0] bg-[#0750A3] px-4 text-[11px] font-black uppercase tracking-[0.13em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_5px_12px_rgba(0,0,0,0.16)] transition hover:bg-[#0862C4]"
       >
         Overview
@@ -22453,7 +22493,12 @@ const BuildingsPopup = () => {
         subtitle="2 Incoming / 1 Outgoing"
         icon={<UtilityPole className="h-7 w-7" strokeWidth={1.8} />}
         accent="#00D9FF"
-        onClick={() => openPermittedPopup("view_source", "source")}
+        onClick={() =>
+          openPermittedPopup(
+            USER_PERMISSIONS.LIVE_MONITORING_VIEW,
+            "source"
+          )
+        }
       />
 
       <FlowLineH />
@@ -22463,7 +22508,12 @@ const BuildingsPopup = () => {
         subtitle="1 Incoming / 6 Outgoing"
         icon={<Network className="h-7 w-7" strokeWidth={1.8} />}
         accent="#FFD000"
-        onClick={() => openPermittedPopup("view_feeder", "feeders")}
+        onClick={() =>
+          openPermittedPopup(
+            USER_PERMISSIONS.LIVE_MONITORING_VIEW,
+            "feeders"
+          )
+        }
       />
 
       <FlowLineH />
@@ -22473,7 +22523,12 @@ const BuildingsPopup = () => {
         subtitle="33kV / 433V"
         icon={<Factory className="h-7 w-7" strokeWidth={1.8} />}
         accent="#A56AF2"
-        onClick={() => openPermittedPopup("view_transformer", "transformers")}
+        onClick={() =>
+          openPermittedPopup(
+            USER_PERMISSIONS.LIVE_MONITORING_VIEW,
+            "transformers"
+          )
+        }
       />
 
       <FlowLineH />

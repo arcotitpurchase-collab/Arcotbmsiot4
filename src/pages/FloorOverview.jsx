@@ -159,15 +159,26 @@ import {
   FileJson,
   Gauge,
   Lightbulb,
+  Lock,
   RefreshCw,
   TrendingUp,
   Users,
   Wind,
   Zap,
 } from "lucide-react";
-import { clients } from "../data/bmsData";
 import prestigeLogo from "../assets/ser-removebg.png";
 import { tempApi } from "../tempAdminApi";
+import { USER_PERMISSIONS } from "../data/permissionOptions";
+import {
+  canAccessBuilding,
+  canAccessFloor,
+  canAccessZone,
+  hasPermission as accountHasPermission,
+  isSuperAdmin,
+  normalizeFloorId,
+  resolveNearestAllowedParentRoute,
+} from "../utils/accessControl";
+import { getZonesForFloor } from "../utils/bmsHierarchy";
 
 const FLOOR_RATE_PER_KWH = 8.5;
 
@@ -205,10 +216,18 @@ const SYSTEM_STYLES = {
 export default function FloorOverview() {
   const { buildingId, floorId } = useParams();
   const [activeView, setActiveView] = useState("monitoring");
+  const [accessMessage, setAccessMessage] = useState("");
 
-  const currentUser = tempApi.getCurrentUser();
-  const userPermissions = currentUser?.permissions || [];
-  const canViewReports = userPermissions.includes("view_reports");
+  const currentUser = tempApi.getCurrentAccount();
+  const canViewReports = accountHasPermission(
+    currentUser,
+    USER_PERMISSIONS.ANALYTICS_VIEW
+  );
+
+  const showLockedMessage = (resourceName) => {
+    setAccessMessage(`${resourceName} is visible in the site hierarchy, but operational access is not assigned to your account.`);
+    window.setTimeout(() => setAccessMessage(""), 3200);
+  };
 
   if (!currentUser) {
     return (
@@ -239,25 +258,101 @@ export default function FloorOverview() {
   }
 
   const floorNumber = Number(floorId);
-  const startIndex = Math.max(0, (floorNumber - 1) * 4);
-  const floorClients = clients.slice(startIndex, startIndex + 4);
+  const normalizedFloorId = normalizeFloorId(buildingId, floorId);
+
+  if (
+    !canAccessBuilding(currentUser, buildingId) ||
+    !canAccessFloor(currentUser, normalizedFloorId)
+  ) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
+        <div className="max-w-md border-2 border-amber-400 bg-[#081F5C] p-8 text-center text-white">
+          <h2 className="text-2xl font-black">Access Denied</h2>
+          <p className="mt-2 text-xs text-blue-200">
+            This floor is outside your assigned BMS scope.
+          </p>
+          <Link
+            to={resolveNearestAllowedParentRoute(currentUser, { buildingId })}
+            className="mt-6 inline-flex items-center gap-2 border border-cyan-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to permitted scope
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const floorZones = getZonesForFloor(normalizedFloorId);
+  const floorClientRecords = floorZones.map((zone) => ({
+    name: zone.zoneName || zone.clientName || zone.name,
+    routeId: zone.routeId,
+    zone,
+    locked: !canAccessZone(currentUser, zone.id),
+  }));
+  const floorClients = floorClientRecords
+    .filter((client) => !client.locked)
+    .map((client) => client.name);
   const floorData = getSampleFloorRealtimeData(floorNumber);
+  const accessibleZoneCount = floorClientRecords.filter(
+    (client) => !client.locked
+  ).length;
+  const totalZoneCount = Math.max(floorClientRecords.length, 1);
+  const zoneAccessFactor =
+    isSuperAdmin(currentUser) || accessibleZoneCount === totalZoneCount
+      ? 1
+      : accessibleZoneCount / totalZoneCount;
+  const scaleZoneValue = (value) =>
+    Math.max(0, Math.round(Number(value || 0) * zoneAccessFactor));
+  const scopedFloorData = {
+    ...floorData,
+    ahu: {
+      ...floorData.ahu,
+      running: scaleZoneValue(floorData.ahu.running),
+      stopped: scaleZoneValue(floorData.ahu.stopped),
+    },
+    lighting: {
+      ...floorData.lighting,
+      inactiveZones: scaleZoneValue(floorData.lighting.inactiveZones),
+    },
+    tenants: {
+      ...floorData.tenants,
+      occupied: scaleZoneValue(floorData.tenants.occupied),
+      available: scaleZoneValue(floorData.tenants.available),
+    },
+    alerts: {
+      ...floorData.alerts,
+      count: scaleZoneValue(floorData.alerts.count),
+    },
+    zones: floorClientRecords
+      .filter((client) => !client.locked)
+      .map((client) => {
+        const zoneIndex = Math.max(0, Number(client.routeId) - 1);
+        return floorData.zones[zoneIndex];
+      })
+      .filter(Boolean),
+  };
+  const hasFloorSystemScope =
+    isSuperAdmin(currentUser) ||
+    currentUser.assignedSystemIds?.some((systemId) =>
+      String(systemId).startsWith(`${normalizedFloorId}:`)
+    );
 
   const floorMonitoring = [
     {
       id: "ahu",
       title: "AHU / HVAC",
       icon: Fan,
-      status: floorData.ahu.stopped > 0 ? "Attention" : "Healthy",
-      tone: floorData.ahu.stopped > 0 ? "warning" : "healthy",
-      currentLoad: Math.round((150 + floorNumber * 6) * 0.38),
-      consumption: 940 + floorNumber * 34,
-      efficiency: floorData.ahu.stopped > 0 ? 86 : 94,
+      status: scopedFloorData.ahu.stopped > 0 ? "Attention" : "Healthy",
+      tone: scopedFloorData.ahu.stopped > 0 ? "warning" : "healthy",
+      currentLoad: scaleZoneValue(Math.round((150 + floorNumber * 6) * 0.38)),
+      consumption: scaleZoneValue(940 + floorNumber * 34),
+      efficiency: scopedFloorData.ahu.stopped > 0 ? 86 : 94,
       metrics: [
-        ["Running AHUs", `${floorData.ahu.running} Units`],
-        ["Stopped AHUs", `${floorData.ahu.stopped}`],
-        ["Average Temperature", floorData.ahu.temperature],
-        ["Humidity", floorData.ahu.humidity],
+        ["Running AHUs", `${scopedFloorData.ahu.running} Units`],
+        ["Stopped AHUs", `${scopedFloorData.ahu.stopped}`],
+        ["Average Temperature", scopedFloorData.ahu.temperature],
+        ["Humidity", scopedFloorData.ahu.humidity],
       ],
     },
     {
@@ -266,14 +361,14 @@ export default function FloorOverview() {
       icon: Lightbulb,
       status: "Healthy",
       tone: "healthy",
-      currentLoad: 18 + floorNumber,
-      consumption: 610 + floorNumber * 26,
+      currentLoad: scaleZoneValue(18 + floorNumber),
+      consumption: scaleZoneValue(610 + floorNumber * 26),
       efficiency: 91,
       metrics: [
-        ["Active Zones", `${floorData.lighting.activeZones}`],
-        ["Inactive Zones", `${floorData.lighting.inactiveZones}`],
-        ["Connected Load", floorData.lighting.load],
-        ["Operating Status", floorData.lighting.status],
+        ["Accessible Zones", `${accessibleZoneCount}/${totalZoneCount}`],
+        ["Inactive Zones", `${scopedFloorData.lighting.inactiveZones}`],
+        ["Connected Load", scopedFloorData.lighting.load],
+        ["Operating Status", scopedFloorData.lighting.status],
       ],
     },
     {
@@ -282,57 +377,57 @@ export default function FloorOverview() {
       icon: Gauge,
       status: "Healthy",
       tone: "healthy",
-      currentLoad: 150 + floorNumber * 6,
-      consumption: 2200 + floorNumber * 95,
+      currentLoad: scaleZoneValue(150 + floorNumber * 6),
+      consumption: scaleZoneValue(2200 + floorNumber * 95),
       efficiency: 98,
       metrics: [
-        ["Demand", floorData.energy.demand],
-        ["Power Factor", floorData.energy.pf],
-        ["Voltage", floorData.energy.voltage],
-        ["Current", floorData.energy.current],
+        ["Demand", scopedFloorData.energy.demand],
+        ["Power Factor", scopedFloorData.energy.pf],
+        ["Voltage", scopedFloorData.energy.voltage],
+        ["Current", scopedFloorData.energy.current],
       ],
     },
     {
       id: "air",
       title: "Air Quality",
       icon: Wind,
-      status: floorData.air.status,
-      tone: floorData.air.status === "Healthy" ? "healthy" : "warning",
-      currentLoad: 10 + (floorNumber % 5),
-      consumption: 160 + floorNumber * 9,
-      efficiency: floorData.air.status === "Healthy" ? 95 : 82,
+      status: scopedFloorData.air.status,
+      tone: scopedFloorData.air.status === "Healthy" ? "healthy" : "warning",
+      currentLoad: scaleZoneValue(10 + (floorNumber % 5)),
+      consumption: scaleZoneValue(160 + floorNumber * 9),
+      efficiency: scopedFloorData.air.status === "Healthy" ? 95 : 82,
       metrics: [
-        ["CO₂ Level", floorData.air.co2],
-        ["PM2.5", floorData.air.pm25],
-        ["Temperature", floorData.ahu.temperature],
-        ["Air Quality", floorData.air.status],
+        ["CO₂ Level", scopedFloorData.air.co2],
+        ["PM2.5", scopedFloorData.air.pm25],
+        ["Temperature", scopedFloorData.ahu.temperature],
+        ["Air Quality", scopedFloorData.air.status],
       ],
     },
     {
       id: "tenants",
       title: "Occupancy / Zones",
       icon: Users,
-      status: floorData.tenants.status,
-      tone: floorData.tenants.status === "Healthy" ? "healthy" : "warning",
-      currentLoad: Math.round((150 + floorNumber * 6) * 0.44),
-      consumption: 1120 + floorNumber * 41,
+      status: scopedFloorData.tenants.status,
+      tone: scopedFloorData.tenants.status === "Healthy" ? "healthy" : "warning",
+      currentLoad: scaleZoneValue(Math.round((150 + floorNumber * 6) * 0.44)),
+      consumption: scaleZoneValue(1120 + floorNumber * 41),
       efficiency: 93,
       metrics: [
-        ["Configured Zones", `${floorData.tenants.occupied + floorData.tenants.available}`],
-        ["Occupied Zones", `${floorData.tenants.occupied}`],
-        ["Available Zones", `${floorData.tenants.available}`],
-        ["Zone Status", floorData.tenants.status],
+        ["Accessible Zones", `${accessibleZoneCount}/${totalZoneCount}`],
+        ["Occupied Zones", `${scopedFloorData.tenants.occupied}`],
+        ["Available Zones", `${scopedFloorData.tenants.available}`],
+        ["Zone Status", scopedFloorData.tenants.status],
       ],
     },
     {
       id: "alerts",
       title: "Floor Alerts",
       icon: AlertTriangle,
-      status: floorData.alerts.count > 0 ? "Attention" : "Healthy",
-      tone: floorData.alerts.count > 0 ? "warning" : "healthy",
-      currentLoad: floorData.alerts.count,
+      status: scopedFloorData.alerts.count > 0 ? "Attention" : "Healthy",
+      tone: scopedFloorData.alerts.count > 0 ? "warning" : "healthy",
+      currentLoad: scopedFloorData.alerts.count,
       consumption: 0,
-      efficiency: floorData.alerts.count > 0 ? 88 : 100,
+      efficiency: scopedFloorData.alerts.count > 0 ? 88 : 100,
       metricLabels: {
         load: "Active Alerts",
         consumption: "Communication Loss",
@@ -340,10 +435,10 @@ export default function FloorOverview() {
         consumptionUnit: "",
       },
       metrics: [
-        ["Active Alerts", `${floorData.alerts.count}`],
-        ["Communication", floorData.alerts.communication],
-        ["Floor Health", floorData.alerts.health],
-        ["Last Update", floorData.alerts.lastUpdate],
+        ["Active Alerts", `${scopedFloorData.alerts.count}`],
+        ["Communication", scopedFloorData.alerts.communication],
+        ["Floor Health", scopedFloorData.alerts.health],
+        ["Last Update", scopedFloorData.alerts.lastUpdate],
       ],
     },
   ];
@@ -372,6 +467,15 @@ export default function FloorOverview() {
           : "min-h-screen overflow-x-hidden"
       }`}
     >
+      {accessMessage && (
+        <div className="fixed right-5 top-24 z-[1200] max-w-sm border border-amber-300 bg-[#081F5C] px-4 py-3 text-sm font-semibold text-white shadow-2xl">
+          <div className="flex items-start gap-2">
+            <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+            <span>{accessMessage}</span>
+          </div>
+        </div>
+      )}
+
       <header className="sticky top-0 z-[1000] h-[72px] shrink-0 border-b-4 border-[#004AAD] bg-[#081F5C] px-4 text-white">
         <div className="flex h-full w-full items-center justify-between">
           <Link to="/dashboard" className="flex min-w-0 items-center no-underline">
@@ -514,14 +618,14 @@ export default function FloorOverview() {
 
               <SummaryTile
                 label="Active Alerts"
-                value={`${floorData.alerts.count}`}
+                value={`${scopedFloorData.alerts.count}`}
                 helper={
-                  floorData.alerts.count > 0
+                  scopedFloorData.alerts.count > 0
                     ? "Requires operator attention"
                     : "No critical alarms"
                 }
                 icon={AlertTriangle}
-                attention={floorData.alerts.count > 0}
+                attention={scopedFloorData.alerts.count > 0}
               />
             </div>
 
@@ -537,54 +641,83 @@ export default function FloorOverview() {
 
                 <span className="inline-flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.1em] text-blue-100">
                   <Users size={14} className="text-cyan-300" />
-                  {floorClients.length} Total Clients
+                  {floorClientRecords.length} Total Clients
                 </span>
               </header>
 
               <div className="grid grid-cols-1 gap-2 p-3 sm:grid-cols-2 xl:grid-cols-4">
-                {floorClients.map((client, index) => {
-                  const zone = floorData.zones[index] ?? floorData.zones[0];
-                  const warning = zone.health === "Warning";
+                {floorClientRecords.map((client) => {
+                  const zoneIndex = Math.max(0, Number(client.routeId) - 1);
+                  const zone = floorData.zones[zoneIndex] ?? floorData.zones[0];
+                  const warning = !client.locked && zone.health === "Warning";
+                  const Wrapper = client.locked ? "button" : Link;
+                  const wrapperProps = client.locked
+                    ? {
+                        type: "button",
+                        "aria-disabled": true,
+                        onClick: () => showLockedMessage(client.name),
+                      }
+                    : {
+                        to: `/building/${buildingId}/floor/${floorId}/client/${client.routeId}`,
+                      };
 
                   return (
-                    <Link
-                      key={`${client}-${index}`}
-                      to={`/building/${buildingId}/floor/${floorId}/client/${index + 1}`}
-                      className="group flex min-h-[148px] flex-col justify-between bg-[#0A255C] px-4 py-4 text-white transition hover:bg-[#112f6c]"
+                    <Wrapper
+                      key={client.zone.id}
+                      {...wrapperProps}
+                      className={`group flex min-h-[148px] w-full flex-col justify-between px-4 py-4 text-left text-white transition ${
+                        client.locked
+                          ? "cursor-not-allowed bg-[#10203F] opacity-75"
+                          : "bg-[#0A255C] hover:bg-[#112f6c]"
+                      }`}
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <p className="line-clamp-2 text-[16px] font-black uppercase leading-tight tracking-[0.045em] text-white">
-                            {client}
+                            {client.name}
                           </p>
 
                           <p className="mt-2 text-[9px] font-bold uppercase tracking-[0.12em] text-cyan-200/75">
-                            Zone {index + 1}
+                            {client.zone.zoneLabel || `Zone ${client.routeId}`}
                           </p>
                         </div>
 
                         <span
                           className={`inline-flex shrink-0 items-center gap-1.5 border px-2.5 py-1 text-[8px] font-black uppercase tracking-[0.06em] ${
-                            warning
+                            client.locked
+                              ? "border-amber-300/40 bg-amber-300/10 text-amber-200"
+                              : warning
                               ? "border-amber-400/30 bg-amber-400/10 text-amber-300"
                               : "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
                           }`}
                         >
-                          <span
-                            className={`h-1.5 w-1.5 ${
-                              warning ? "bg-amber-400" : "bg-emerald-400"
-                            }`}
-                          />
-                          {zone.health}
+                          {client.locked ? (
+                            <Lock size={11} />
+                          ) : (
+                            <span
+                              className={`h-1.5 w-1.5 ${
+                                warning ? "bg-amber-400" : "bg-emerald-400"
+                              }`}
+                            />
+                          )}
+                          {client.locked ? "No Access" : zone.health}
                         </span>
                       </div>
 
                       <div className="mt-4 space-y-2">
-                        <ClientReading label="Power Load" value={zone.load} />
-                        <ClientReading label="AHU Status" value={zone.ahu} />
-                        <ClientReading label="Lighting" value={zone.lighting} />
+                        {client.locked ? (
+                          <div className="border border-amber-300/25 bg-amber-300/10 px-3 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-amber-100">
+                            Operational readings hidden
+                          </div>
+                        ) : (
+                          <>
+                            <ClientReading label="Power Load" value={zone.load} />
+                            <ClientReading label="AHU Status" value={zone.ahu} />
+                            <ClientReading label="Lighting" value={zone.lighting} />
+                          </>
+                        )}
                       </div>
-                    </Link>
+                    </Wrapper>
                   );
                 })}
               </div>
@@ -592,7 +725,11 @@ export default function FloorOverview() {
 
             <section className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 xl:auto-rows-fr">
               {floorMonitoring.map((system) => (
-                <FloorSystemCard key={system.id} system={system} />
+                <FloorSystemCard
+                  key={system.id}
+                  system={system}
+                  locked={!hasFloorSystemScope}
+                />
               ))}
             </section>
           </>
@@ -602,8 +739,11 @@ export default function FloorOverview() {
             buildingId={buildingId}
             systems={floorMonitoring}
             floorClients={floorClients}
-            floorData={floorData}
-            canDownloadReports={userPermissions.includes("download_reports")}
+            floorData={scopedFloorData}
+            canDownloadReports={accountHasPermission(
+              currentUser,
+              USER_PERMISSIONS.DATA_DOWNLOAD
+            )}
           />
         )}
       </section>
@@ -779,6 +919,8 @@ function FloorAnalyticsView({
   };
 
   const downloadCsv = () => {
+    if (!canDownloadReports) return;
+
     const content = [
       ["System", "Period", "Energy (kWh)", "Rate (INR)", "Charge (INR)"],
       ...rows.map((row) => [
@@ -802,6 +944,8 @@ function FloorAnalyticsView({
   };
 
   const downloadJson = () => {
+    if (!canDownloadReports) return;
+
     downloadFile(
       JSON.stringify(
         {
@@ -1270,9 +1414,17 @@ function SummaryTile({ label, value, helper, icon: Icon, attention = false }) {
   );
 }
 
-function FloorSystemCard({ system }) {
+function FloorSystemCard({ system, locked = false }) {
   const Icon = system.icon;
-  const style = SYSTEM_STYLES[system.tone] ?? SYSTEM_STYLES.healthy;
+  const style = locked
+    ? {
+        dot: "bg-slate-400",
+        text: "text-slate-200",
+        border: "border-slate-300/30",
+        background: "bg-slate-300/10",
+        progress: "bg-slate-500",
+      }
+    : SYSTEM_STYLES[system.tone] ?? SYSTEM_STYLES.healthy;
 
   const loadLabel = system.metricLabels?.load ?? "Current Load";
   const consumptionLabel =
@@ -1282,7 +1434,11 @@ function FloorSystemCard({ system }) {
     system.metricLabels?.consumptionUnit ?? "kWh";
 
   return (
-    <article className="group relative flex h-full min-h-[285px] flex-col overflow-hidden border border-[#1A5A9B] bg-[linear-gradient(155deg,#0B3778_0%,#08295F_48%,#061D47_100%)] text-white shadow-[0_12px_26px_rgba(3,35,90,0.18),inset_0_1px_0_rgba(255,255,255,0.07)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#3AA7FF] hover:shadow-[0_18px_34px_rgba(3,45,105,0.26)]">
+    <article className={`group relative flex h-full min-h-[285px] flex-col overflow-hidden border text-white shadow-[0_12px_26px_rgba(3,35,90,0.18),inset_0_1px_0_rgba(255,255,255,0.07)] transition-all duration-300 ${
+      locked
+        ? "border-slate-500 bg-[#10203F] opacity-75"
+        : "border-[#1A5A9B] bg-[linear-gradient(155deg,#0B3778_0%,#08295F_48%,#061D47_100%)] hover:-translate-y-0.5 hover:border-[#3AA7FF] hover:shadow-[0_18px_34px_rgba(3,45,105,0.26)]"
+    }`}>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_0%,rgba(34,211,238,0.13),transparent_31%)]" />
       <div className="absolute inset-x-0 top-0 h-[3px] bg-[#1BB8E6]" />
 
@@ -1299,7 +1455,7 @@ function FloorSystemCard({ system }) {
               </h3>
 
               <p className="mt-1.5 text-[8px] font-bold uppercase tracking-[0.13em] text-blue-200/60">
-                Floor Operational Data
+                {locked ? "Hierarchy Only" : "Floor Operational Data"}
               </p>
             </div>
           </div>
@@ -1307,32 +1463,55 @@ function FloorSystemCard({ system }) {
           <span
             className={`inline-flex shrink-0 items-center gap-1.5 border px-2.5 py-1.5 text-[7px] font-black uppercase tracking-[0.08em] ${style.border} ${style.background} ${style.text}`}
           >
-            <span className={`h-1.5 w-1.5 ${style.dot}`} />
-            {system.status}
+            {locked ? (
+              <>
+                <Lock size={11} />
+                No Access
+              </>
+            ) : (
+              <>
+                <span className={`h-1.5 w-1.5 ${style.dot}`} />
+                {system.status}
+              </>
+            )}
           </span>
         </header>
 
         <div className="mx-5 grid grid-cols-2 gap-x-5 py-2">
-          <PrimaryMetric
-            label={loadLabel}
-            value={system.currentLoad}
-            unit={loadUnit}
-            highlight
-          />
+          {locked ? (
+            <LockedMetric label={loadLabel} />
+          ) : (
+            <PrimaryMetric
+              label={loadLabel}
+              value={system.currentLoad}
+              unit={loadUnit}
+              highlight
+            />
+          )}
 
-          <PrimaryMetric
-            label={consumptionLabel}
-            value={system.consumption}
-            unit={consumptionUnit}
-          />
+          {locked ? (
+            <LockedMetric label={consumptionLabel} />
+          ) : (
+            <PrimaryMetric
+              label={consumptionLabel}
+              value={system.consumption}
+              unit={consumptionUnit}
+            />
+          )}
         </div>
 
         <div className="mx-5 my-2 h-px bg-white/10" />
 
         <div className="flex flex-1 flex-col justify-center px-5 py-2">
-          {system.metrics.map(([label, value]) => (
-            <CompactReading key={label} label={label} value={value} />
-          ))}
+          {locked ? (
+            <div className="border border-amber-300/25 bg-amber-300/10 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.08em] text-amber-100">
+              Operational readings hidden
+            </div>
+          ) : (
+            system.metrics.map(([label, value]) => (
+              <CompactReading key={label} label={label} value={value} />
+            ))
+          )}
         </div>
 
         <footer className="px-5 pb-4 pt-2">
@@ -1342,19 +1521,35 @@ function FloorSystemCard({ system }) {
             </span>
 
             <span className="text-[10px] font-black text-cyan-300">
-              {system.efficiency}%
+              {locked ? "No Access" : `${system.efficiency}%`}
             </span>
           </div>
 
           <div className="h-1.5 overflow-hidden bg-white/10">
             <div
               className={`h-full ${style.progress}`}
-              style={{ width: `${system.efficiency}%` }}
+              style={{ width: locked ? "0%" : `${system.efficiency}%` }}
             />
           </div>
         </footer>
       </div>
     </article>
+  );
+}
+
+function LockedMetric({ label }) {
+  return (
+    <div className="min-w-0">
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="truncate text-[8px] font-black uppercase tracking-[0.1em] text-blue-100/60">
+          {label}
+        </span>
+      </div>
+
+      <p className="mt-1.5 truncate text-[16px] font-black uppercase leading-none text-amber-100">
+        No Access
+      </p>
+    </div>
   );
 }
 

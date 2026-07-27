@@ -1,202 +1,31 @@
-// const STORAGE_KEY = "arcot_bms_temp_admin_system";
+import {
+  ADMIN_PERMISSIONS,
+  SYSTEM_ROLES,
+  USER_PERMISSIONS,
+} from "./data/permissionOptions";
+import {
+  authenticateAccount,
+  getCurrentAccount,
+  logout as authLogout,
+} from "./services/authService";
+import {
+  createId,
+  getAdmins,
+  getCurrentSession,
+  getMockDatabase,
+  getSuperAdmin,
+  getUsers,
+  initializeMockData,
+  resetMockApplication,
+  saveAdmins,
+  saveMockDatabase,
+  saveUsers,
+} from "./services/storageService";
 
-// export const ADDONS = [
-//   { key: "energy", name: "Energy Analytics", price: 250 },
-//   { key: "reports", name: "Reports", price: 300 },
-//   { key: "alarms", name: "Alarm Monitoring", price: 350 },
-//   { key: "billing", name: "Tenant Billing", price: 500 },
-//   { key: "ai", name: "AI Assistant", price: 750 },
-// ];
+// FRONTEND DEMO ONLY: localStorage is not secure production authentication.
+// Replace this compatibility facade with backend APIs before going live.
 
-// export const PERMISSIONS = [
-//   "view_dashboard",
-//   "view_source",
-//   "view_feeder",
-//   "view_transformer",
-//   "view_reports",
-//   "download_reports",
-//   "acknowledge_alarms",
-// ];
-
-// export const CLOUD_RATES = {
-//   storageGB: 8,
-//   api1000: 2,
-//   device: 50,
-//   dataTransferGB: 10,
-// };
-
-// const defaultData = {
-//   admins: [],
-//   users: [],
-// };
-
-// export const tempApi = {
-//   getData() {
-//     const saved = localStorage.getItem(STORAGE_KEY);
-//     return saved ? JSON.parse(saved) : defaultData;
-//   },
-
-//   saveData(data) {
-//     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-//   },
-
-//   resetData() {
-//     localStorage.removeItem(STORAGE_KEY);
-//     localStorage.removeItem("adminLoggedIn");
-//     localStorage.removeItem("currentAdminId");
-//     return defaultData;
-//   },
-
-//   createAdmin(adminData) {
-//     const db = this.getData();
-
-//     const newAdmin = {
-//       id: Date.now(),
-//       companyName: adminData.companyName,
-//       buildingName: adminData.buildingName,
-//       adminName: adminData.adminName,
-//       adminEmail: adminData.adminEmail,
-//       password: adminData.password,
-//       phone: adminData.phone,
-//       status: "Active",
-//       addons: [],
-//       cloudUsage: {
-//         storageGB: 20,
-//         apiCalls: 12000,
-//         devices: 5,
-//         dataTransferGB: 10,
-//       },
-//       createdAt: new Date().toISOString(),
-//     };
-
-//     db.admins.push(newAdmin);
-//     this.saveData(db);
-//     return db;
-//   },
-
-//   loginAdmin(email, password) {
-//     const db = this.getData();
-
-//     const admin = db.admins.find(
-//       (item) =>
-//         item.adminEmail === email.trim() &&
-//         item.password === password.trim()
-//     );
-
-//     if (!admin) {
-//       return { success: false, message: "wrong" };
-//     }
-
-//     localStorage.setItem("adminLoggedIn", "true");
-//     localStorage.setItem("currentAdminId", String(admin.id));
-
-//     return { success: true, admin };
-//   },
-
-//   logoutAdmin() {
-//     localStorage.removeItem("adminLoggedIn");
-//     localStorage.removeItem("currentAdminId");
-//   },
-
-//   getCurrentAdmin() {
-//     const db = this.getData();
-//     const currentAdminId = Number(localStorage.getItem("currentAdminId"));
-//     return db.admins.find((admin) => admin.id === currentAdminId) || null;
-//   },
-
-//   createUser(adminId, userData) {
-//     const db = this.getData();
-
-//     const newUser = {
-//       id: Date.now(),
-//       adminId,
-//       name: userData.name,
-//       email: userData.email,
-//       role: userData.role,
-//       accessType: userData.accessType,
-//       accessName: userData.accessName,
-//       permissions: userData.permissions || ["view_dashboard"],
-//       addedBy: userData.addedBy,
-//       status: "Active",
-//       createdAt: new Date().toISOString(),
-//     };
-
-//     db.users.push(newUser);
-//     this.saveData(db);
-//     return db;
-//   },
-
-//   updateAdmin(adminId, updater) {
-//     const db = this.getData();
-
-//     db.admins = db.admins.map((admin) =>
-//       admin.id === adminId ? updater(admin) : admin
-//     );
-
-//     this.saveData(db);
-//     return db;
-//   },
-
-//   deleteAdmin(adminId) {
-//     const db = this.getData();
-
-//     db.admins = db.admins.filter((admin) => admin.id !== adminId);
-//     db.users = db.users.filter((user) => user.adminId !== adminId);
-
-//     this.saveData(db);
-//     return db;
-//   },
-// };
-
-// export const calculateAdminBill = (admin, users) => {
-//   const storageCharge = admin.cloudUsage.storageGB * CLOUD_RATES.storageGB;
-
-//   const apiCharge =
-//     Math.ceil(admin.cloudUsage.apiCalls / 1000) * CLOUD_RATES.api1000;
-
-//   const deviceCharge = admin.cloudUsage.devices * CLOUD_RATES.device;
-
-//   const transferCharge =
-//     admin.cloudUsage.dataTransferGB * CLOUD_RATES.dataTransferGB;
-
-//   const addonCharge = admin.addons.reduce((sum, addonKey) => {
-//     const addon = ADDONS.find((item) => item.key === addonKey);
-//     return sum + (addon?.price || 0);
-//   }, 0);
-
-//   return {
-//     userCount: users.filter((user) => user.adminId === admin.id).length,
-//     storageCharge,
-//     apiCharge,
-//     deviceCharge,
-//     transferCharge,
-//     addonCharge,
-//     total:
-//       storageCharge +
-//       apiCharge +
-//       deviceCharge +
-//       transferCharge +
-//       addonCharge,
-//   };
-// };
-
-
-
-
-
-
-// FRONTEND DEMO ONLY
-// This file temporarily acts like a database and authentication service.
-// Replace it with backend APIs before production.
-
-const STORAGE_KEY = "arcot_bms_temp_admin_system";
-const SESSION_KEY = "arcot_bms_current_session";
-
-export const SYSTEM_ROLES = {
-  SUPER_ADMIN: "SUPER_ADMIN",
-  ADMIN: "ADMIN",
-  USER: "USER",
-};
+export { SYSTEM_ROLES };
 
 export const USER_DESIGNATIONS = [
   "ENGINEER",
@@ -219,15 +48,7 @@ export const ADDONS = [
   { key: "ai", name: "AI Assistant", price: 750 },
 ];
 
-export const PERMISSIONS = [
-  "view_dashboard",
-  "view_source",
-  "view_feeder",
-  "view_transformer",
-  "view_reports",
-  "download_reports",
-  "acknowledge_alarms",
-];
+export const PERMISSIONS = Object.values(USER_PERMISSIONS);
 
 export const CLOUD_RATES = {
   storageGB: 8,
@@ -236,261 +57,200 @@ export const CLOUD_RATES = {
   dataTransferGB: 10,
 };
 
-const createDefaultData = () => ({
-  superAdmins: [
-    {
-      id: "super-admin-1",
-      name: "ARCOT Super Admin",
-      email: "superadmin@arcot.com",
-      password: "super123",
-      systemRole: SYSTEM_ROLES.SUPER_ADMIN,
-      status: "ACTIVE",
-      createdAt: new Date().toISOString(),
-    },
-  ],
-
-  admins: [],
-
-  users: [],
-});
-
 const normalizeEmail = (email = "") =>
-  email.trim().toLowerCase();
+  String(email).trim().toLowerCase();
 
 const normalizeStatus = (status = "ACTIVE") =>
-  status.toUpperCase();
+  String(status).trim().toUpperCase();
 
-const generateId = (prefix) =>
-  `${prefix}-${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2, 8)}`;
+const normalizeScope = (value) =>
+  Array.isArray(value) ? value.map(String) : [];
 
-const getSafeData = (data) => ({
-  superAdmins: Array.isArray(data?.superAdmins)
-    ? data.superAdmins
-    : createDefaultData().superAdmins,
+const getPasswordSafeAccount = (account) => {
+  if (!account) {
+    return null;
+  }
 
-  admins: Array.isArray(data?.admins)
-    ? data.admins
-    : [],
+  const { password, ...safeAccount } = account;
+  return safeAccount;
+};
 
-  users: Array.isArray(data?.users)
-    ? data.users
-    : [],
-});
+const isDeleted = (account) =>
+  Boolean(account?.isDeleted || account?.deletedAt);
+
+const emailExists = (email, excludedId = null) => {
+  const normalizedEmail = normalizeEmail(email);
+  const db = getMockDatabase();
+  const accounts = [
+    ...db.superAdmins,
+    ...db.admins,
+    ...db.users,
+  ];
+
+  return accounts.some(
+    (account) =>
+      !isDeleted(account) &&
+      normalizeEmail(account.email || account.adminEmail) ===
+        normalizedEmail &&
+      String(account.id) !== String(excludedId)
+  );
+};
 
 export const tempApi = {
   initialize() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-
-    if (!saved) {
-      const initialData = createDefaultData();
-      this.saveData(initialData);
-      return initialData;
-    }
-
-    try {
-      const parsed = JSON.parse(saved);
-      const normalized = getSafeData(parsed);
-
-      this.saveData(normalized);
-
-      return normalized;
-    } catch (error) {
-      console.error("Unable to read temporary data:", error);
-
-      const initialData = createDefaultData();
-      this.saveData(initialData);
-
-      return initialData;
-    }
+    return initializeMockData();
   },
 
   getData() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-
-    if (!saved) {
-      return this.initialize();
-    }
-
-    try {
-      return getSafeData(JSON.parse(saved));
-    } catch (error) {
-      console.error("Unable to parse temporary data:", error);
-      return this.initialize();
-    }
+    return getMockDatabase();
   },
 
   saveData(data) {
-    const normalized = getSafeData(data);
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(normalized)
-    );
-
-    return normalized;
+    return saveMockDatabase(data);
   },
 
   resetData() {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(SESSION_KEY);
-
-    const initialData = createDefaultData();
-    this.saveData(initialData);
-
-    return initialData;
+    return resetMockApplication();
   },
 
   getSession() {
-    const savedSession = localStorage.getItem(SESSION_KEY);
-
-    if (!savedSession) {
-      return null;
-    }
-
-    try {
-      return JSON.parse(savedSession);
-    } catch (error) {
-      console.error("Unable to parse session:", error);
-      localStorage.removeItem(SESSION_KEY);
-      return null;
-    }
+    return getCurrentSession();
   },
 
   setSession(account) {
-    const session = {
-      accountId: account.id,
-      systemRole: account.systemRole,
-      loginAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(
-      SESSION_KEY,
-      JSON.stringify(session)
+    const result = authenticateAccount(
+      account.email || account.adminEmail,
+      account.password || ""
     );
 
-    return session;
+    return result.session || null;
   },
 
   clearSession() {
-    localStorage.removeItem(SESSION_KEY);
+    authLogout();
   },
 
   login(email, password) {
-    const db = this.getData();
-
-    const normalizedEmail = normalizeEmail(email);
-    const normalizedPassword = password.trim();
-
-    const allAccounts = [
-      ...db.superAdmins,
-      ...db.admins,
-      ...db.users,
-    ];
-
-    const account = allAccounts.find((item) => {
-      const itemEmail = normalizeEmail(
-        item.email || item.adminEmail
-      );
-
-      return (
-        itemEmail === normalizedEmail &&
-        item.password === normalizedPassword &&
-        normalizeStatus(item.status) === "ACTIVE"
-      );
-    });
-
-    if (!account) {
-      return {
-        success: false,
-        message: "Invalid email or password.",
-      };
-    }
-
-    this.setSession(account);
+    const result = authenticateAccount(email, password);
 
     return {
-      success: true,
-      account,
+      success: result.success,
+      message: result.message,
+      account: result.account,
+      landingRoute: result.landingRoute,
+      session: result.session,
     };
   },
 
+  loginAdmin(email, password) {
+    const result = this.login(email, password);
+
+    if (
+      result.success &&
+      result.account?.systemRole !== SYSTEM_ROLES.ADMIN
+    ) {
+      this.logout();
+      return {
+        success: false,
+        message: "This login is only for Admin accounts.",
+      };
+    }
+
+    return result;
+  },
+
+  loginAdmin(email, password) {
+    const result = this.login(email, password);
+
+    if (
+      result.success &&
+      result.account?.systemRole !== SYSTEM_ROLES.ADMIN
+    ) {
+      this.logout();
+      return {
+        success: false,
+        message: "This login is only for Admin accounts.",
+      };
+    }
+
+    return result;
+  },
+
+  loginAdmin(email, password) {
+    const result = this.login(email, password);
+
+    if (
+      result.success &&
+      result.account?.systemRole !== SYSTEM_ROLES.ADMIN
+    ) {
+      this.logout();
+      return {
+        success: false,
+        message: "This login is only for Admin accounts.",
+      };
+    }
+
+    return result;
+  },
+
   logout() {
-    this.clearSession();
+    authLogout();
+  },
+
+  logoutAdmin() {
+    authLogout();
+  },
+
+  logoutAdmin() {
+    authLogout();
+  },
+
+  logoutAdmin() {
+    authLogout();
   },
 
   getCurrentAccount() {
-    const session = this.getSession();
-
-    if (!session) {
-      return null;
-    }
-
-    const db = this.getData();
-
-    const allAccounts = [
-      ...db.superAdmins,
-      ...db.admins,
-      ...db.users,
-    ];
-
-    return (
-      allAccounts.find(
-        (account) =>
-          String(account.id) ===
-            String(session.accountId) &&
-          account.systemRole === session.systemRole
-      ) || null
-    );
+    return getCurrentAccount();
   },
 
   getCurrentSuperAdmin() {
-    const account = this.getCurrentAccount();
-
-    return account?.systemRole ===
-      SYSTEM_ROLES.SUPER_ADMIN
+    const account = getCurrentAccount();
+    return account?.systemRole === SYSTEM_ROLES.SUPER_ADMIN
       ? account
       : null;
   },
 
   getCurrentAdmin() {
-    const account = this.getCurrentAccount();
-
+    const account = getCurrentAccount();
     return account?.systemRole === SYSTEM_ROLES.ADMIN
       ? account
       : null;
   },
 
   getCurrentUser() {
-    const account = this.getCurrentAccount();
-
+    const account = getCurrentAccount();
     return account?.systemRole === SYSTEM_ROLES.USER
       ? account
       : null;
   },
 
-  emailExists(email, excludedId = null) {
-    const db = this.getData();
-    const normalizedEmail = normalizeEmail(email);
-
-    const allAccounts = [
-      ...db.superAdmins,
-      ...db.admins,
-      ...db.users,
-    ];
-
-    return allAccounts.some(
-      (account) =>
-        normalizeEmail(account.email) ===
-          normalizedEmail &&
-        String(account.id) !== String(excludedId)
-    );
+  getCurrentUser() {
+    const account = getCurrentAccount();
+    return account?.systemRole === SYSTEM_ROLES.USER
+      ? account
+      : null;
   },
 
-  createAdmin(adminData) {
-    const db = this.getData();
+  getCurrentUser() {
+    const account = getCurrentAccount();
+    return account?.systemRole === SYSTEM_ROLES.USER
+      ? account
+      : null;
+  },
 
+  emailExists,
+
+  createAdmin(adminData) {
     const requiredFields = [
       adminData.companyName,
       adminData.adminName,
@@ -498,7 +258,7 @@ export const tempApi = {
       adminData.password,
     ];
 
-    if (requiredFields.some((value) => !value?.trim())) {
+    if (requiredFields.some((value) => !String(value || "").trim())) {
       return {
         success: false,
         message:
@@ -506,64 +266,73 @@ export const tempApi = {
       };
     }
 
-    if (this.emailExists(adminData.adminEmail)) {
+    if (emailExists(adminData.adminEmail)) {
       return {
         success: false,
-        message:
-          "An account already exists with this email.",
+        message: "An account already exists with this email.",
       };
     }
 
+    const createdAt = new Date().toISOString();
+    const admins = getAdmins();
     const newAdmin = {
-      id: generateId("admin"),
+      id: createId("admin"),
       systemRole: SYSTEM_ROLES.ADMIN,
-
       companyName: adminData.companyName.trim(),
-      buildingName:
-        adminData.buildingName?.trim() || "",
-
+      buildingName: adminData.buildingName?.trim() || "",
       name: adminData.adminName.trim(),
       adminName: adminData.adminName.trim(),
-
       email: normalizeEmail(adminData.adminEmail),
-      adminEmail: normalizeEmail(
-        adminData.adminEmail
-      ),
-
-      password: adminData.password.trim(),
+      adminEmail: normalizeEmail(adminData.adminEmail),
+      password: adminData.password,
       phone: adminData.phone?.trim() || "",
-
-      status: "ACTIVE",
-
+      status: normalizeStatus(adminData.status || "ACTIVE"),
+      isDeleted: false,
+      permissions:
+        Array.isArray(adminData.permissions) &&
+        adminData.permissions.length > 0
+          ? adminData.permissions
+          : Object.values(ADMIN_PERMISSIONS),
+      assignedClientIds: normalizeScope(
+        adminData.assignedClientIds
+      ),
+      assignedBuildingIds: normalizeScope(
+        adminData.assignedBuildingIds
+      ),
+      assignedBlockIds: normalizeScope(
+        adminData.assignedBlockIds
+      ),
+      assignedFloorIds: normalizeScope(
+        adminData.assignedFloorIds
+      ),
+      assignedSystemIds: normalizeScope(
+        adminData.assignedSystemIds
+      ),
       addons: [],
-
       cloudUsage: {
         storageGB: 20,
         apiCalls: 12000,
         devices: 5,
         dataTransferGB: 10,
       },
-
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt,
+      updatedAt: createdAt,
+      lastLoginAt: null,
     };
 
-    db.admins.push(newAdmin);
-    this.saveData(db);
+    saveAdmins([...admins, newAdmin]);
 
     return {
       success: true,
-      admin: newAdmin,
-      data: db,
+      admin: getPasswordSafeAccount(newAdmin),
+      data: this.getData(),
     };
   },
 
   updateAdmin(adminId, updater) {
-    const db = this.getData();
-
     let updatedAdmin = null;
 
-    db.admins = db.admins.map((admin) => {
+    const admins = getAdmins().map((admin) => {
       if (String(admin.id) !== String(adminId)) {
         return admin;
       }
@@ -571,10 +340,7 @@ export const tempApi = {
       const updated =
         typeof updater === "function"
           ? updater(admin)
-          : {
-              ...admin,
-              ...updater,
-            };
+          : { ...admin, ...updater };
 
       updatedAdmin = {
         ...updated,
@@ -584,12 +350,12 @@ export const tempApi = {
       return updatedAdmin;
     });
 
-    this.saveData(db);
+    saveAdmins(admins);
 
     return {
       success: Boolean(updatedAdmin),
-      admin: updatedAdmin,
-      data: db,
+      admin: getPasswordSafeAccount(updatedAdmin),
+      data: this.getData(),
     };
   },
 
@@ -601,77 +367,54 @@ export const tempApi = {
   },
 
   deleteAdmin(adminId) {
-    const db = this.getData();
+    const deletedAt = new Date().toISOString();
+    const result = this.updateAdmin(adminId, (admin) => ({
+      ...admin,
+      status: "DELETED",
+      isDeleted: true,
+      deletedAt,
+    }));
 
-    const exists = db.admins.some(
-      (admin) =>
-        String(admin.id) === String(adminId)
-    );
-
-    if (!exists) {
-      return {
-        success: false,
-        message: "Admin not found.",
-        data: db,
-      };
+    if (result.success) {
+      saveUsers(
+        getUsers().map((user) =>
+          String(user.adminId) === String(adminId)
+            ? {
+                ...user,
+                status: "DELETED",
+                isDeleted: true,
+                deletedAt,
+                updatedAt: deletedAt,
+              }
+            : user
+        )
+      );
     }
-
-    db.admins = db.admins.filter(
-      (admin) =>
-        String(admin.id) !== String(adminId)
-    );
-
-    db.users = db.users.filter(
-      (user) =>
-        String(user.adminId) !== String(adminId)
-    );
-
-    const session = this.getSession();
-
-    if (
-      session &&
-      String(session.accountId) === String(adminId)
-    ) {
-      this.clearSession();
-    }
-
-    this.saveData(db);
 
     return {
-      success: true,
-      data: db,
+      ...result,
+      data: this.getData(),
     };
   },
 
   getAdminById(adminId) {
-    const db = this.getData();
-
     return (
-      db.admins.find(
-        (admin) =>
-          String(admin.id) === String(adminId)
+      getAdmins().find(
+        (admin) => String(admin.id) === String(adminId)
       ) || null
     );
   },
 
   getUsersByAdmin(adminId) {
-    const db = this.getData();
-
-    return db.users.filter(
-      (user) =>
-        String(user.adminId) === String(adminId)
+    return getUsers().filter(
+      (user) => String(user.adminId) === String(adminId)
     );
   },
 
   createUser(adminId, userData) {
-    const db = this.getData();
+    const admin = this.getAdminById(adminId);
 
-    const admin = db.admins.find(
-      (item) =>
-        String(item.id) === String(adminId)
-    );
-
-    if (!admin) {
+    if (!admin || isDeleted(admin)) {
       return {
         success: false,
         message: "Admin account was not found.",
@@ -684,76 +427,64 @@ export const tempApi = {
       userData.password,
     ];
 
-    if (requiredFields.some((value) => !value?.trim())) {
+    if (requiredFields.some((value) => !String(value || "").trim())) {
       return {
         success: false,
-        message:
-          "User name, email and password are required.",
+        message: "User name, email and password are required.",
       };
     }
 
-    if (this.emailExists(userData.email)) {
+    if (emailExists(userData.email)) {
       return {
         success: false,
-        message:
-          "An account already exists with this email.",
+        message: "An account already exists with this email.",
       };
     }
 
+    const createdAt = new Date().toISOString();
     const newUser = {
-      id: generateId("user"),
+      id: createId("user"),
       systemRole: SYSTEM_ROLES.USER,
+      role: SYSTEM_ROLES.USER,
       adminId: admin.id,
-
+      createdBy: admin.id,
       companyName: admin.companyName,
       buildingName: admin.buildingName,
-
       name: userData.name.trim(),
       email: normalizeEmail(userData.email),
-      password: userData.password.trim(),
-
-      designation:
-        userData.designation || "VIEWER",
-
-      accessType:
-        userData.accessType || "BUILDING",
-
-      accessName:
-        userData.accessName?.trim() || "",
-
-      permissions:
-        Array.isArray(userData.permissions) &&
-        userData.permissions.length > 0
-          ? userData.permissions
-          : ["view_dashboard"],
-
-      addedBy:
-        userData.addedBy ||
-        admin.adminEmail ||
-        admin.email,
-
-      status: "ACTIVE",
-
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      password: userData.password,
+      designation: userData.designation || "VIEWER",
+      accessType: userData.accessType || "BUILDING",
+      accessName: userData.accessName?.trim() || "",
+      permissions: normalizeScope(userData.permissions),
+      assignedClientIds: normalizeScope(userData.assignedClientIds),
+      assignedBuildingIds: normalizeScope(userData.assignedBuildingIds),
+      assignedBlockIds: normalizeScope(userData.assignedBlockIds),
+      assignedFloorIds: normalizeScope(userData.assignedFloorIds),
+      assignedZoneIds: normalizeScope(userData.assignedZoneIds),
+      addedBy: userData.addedBy || admin.adminEmail || admin.email,
+      status: normalizeStatus(userData.status || "ACTIVE"),
+      isActive:
+        normalizeStatus(userData.status || "ACTIVE") === "ACTIVE",
+      isDeleted: false,
+      createdAt,
+      updatedAt: createdAt,
+      lastLoginAt: null,
     };
 
-    db.users.push(newUser);
-    this.saveData(db);
+    saveUsers([...getUsers(), newUser]);
 
     return {
       success: true,
-      user: newUser,
-      data: db,
+      user: getPasswordSafeAccount(newUser),
+      data: this.getData(),
     };
   },
 
   updateUser(userId, updater) {
-    const db = this.getData();
-
     let updatedUser = null;
 
-    db.users = db.users.map((user) => {
+    const users = getUsers().map((user) => {
       if (String(user.id) !== String(userId)) {
         return user;
       }
@@ -761,10 +492,7 @@ export const tempApi = {
       const updated =
         typeof updater === "function"
           ? updater(user)
-          : {
-              ...user,
-              ...updater,
-            };
+          : { ...user, ...updater };
 
       updatedUser = {
         ...updated,
@@ -774,12 +502,12 @@ export const tempApi = {
       return updatedUser;
     });
 
-    this.saveData(db);
+    saveUsers(users);
 
     return {
       success: Boolean(updatedUser),
-      user: updatedUser,
-      data: db,
+      user: getPasswordSafeAccount(updatedUser),
+      data: this.getData(),
     };
   },
 
@@ -791,110 +519,65 @@ export const tempApi = {
   },
 
   deleteUser(userId) {
-    const db = this.getData();
+    const deletedAt = new Date().toISOString();
 
-    const exists = db.users.some(
-      (user) =>
-        String(user.id) === String(userId)
-    );
-
-    if (!exists) {
-      return {
-        success: false,
-        message: "User not found.",
-        data: db,
-      };
-    }
-
-    db.users = db.users.filter(
-      (user) =>
-        String(user.id) !== String(userId)
-    );
-
-    const session = this.getSession();
-
-    if (
-      session &&
-      String(session.accountId) === String(userId)
-    ) {
-      this.clearSession();
-    }
-
-    this.saveData(db);
-
-    return {
-      success: true,
-      data: db,
-    };
+    return this.updateUser(userId, (user) => ({
+      ...user,
+      status: "DELETED",
+      isDeleted: true,
+      deletedAt,
+    }));
   },
 
   hasPermission(permission) {
-    const user = this.getCurrentUser();
+    const account = getCurrentAccount();
 
-    if (!user) {
+    if (!account) {
       return false;
     }
 
-    return user.permissions?.includes(permission);
+    if (account.systemRole === SYSTEM_ROLES.SUPER_ADMIN) {
+      return true;
+    }
+
+    return account.permissions?.includes(permission);
   },
 };
 
-export const calculateAdminBill = (
-  admin,
-  users = []
-) => {
+export const calculateAdminBill = (admin, users = []) => {
   const cloudUsage = admin?.cloudUsage || {
     storageGB: 0,
     apiCalls: 0,
     devices: 0,
     dataTransferGB: 0,
   };
-
-  const addons = Array.isArray(admin?.addons)
-    ? admin.addons
-    : [];
-
+  const addons = Array.isArray(admin?.addons) ? admin.addons : [];
   const storageCharge =
-    Number(cloudUsage.storageGB || 0) *
-    CLOUD_RATES.storageGB;
-
+    Number(cloudUsage.storageGB || 0) * CLOUD_RATES.storageGB;
   const apiCharge =
-    Math.ceil(
-      Number(cloudUsage.apiCalls || 0) / 1000
-    ) * CLOUD_RATES.api1000;
-
+    Math.ceil(Number(cloudUsage.apiCalls || 0) / 1000) *
+    CLOUD_RATES.api1000;
   const deviceCharge =
-    Number(cloudUsage.devices || 0) *
-    CLOUD_RATES.device;
-
+    Number(cloudUsage.devices || 0) * CLOUD_RATES.device;
   const transferCharge =
     Number(cloudUsage.dataTransferGB || 0) *
     CLOUD_RATES.dataTransferGB;
-
-  const addonCharge = addons.reduce(
-    (sum, addonKey) => {
-      const addon = ADDONS.find(
-        (item) => item.key === addonKey
-      );
-
-      return sum + Number(addon?.price || 0);
-    },
-    0
-  );
+  const addonCharge = addons.reduce((sum, addonKey) => {
+    const addon = ADDONS.find((item) => item.key === addonKey);
+    return sum + Number(addon?.price || 0);
+  }, 0);
 
   return {
     userCount: users.filter(
       (user) =>
-        String(user.adminId) ===
-        String(admin?.id)
+        !isDeleted(user) &&
+        String(user.adminId) === String(admin?.id)
     ).length,
-
     storageCharge,
     apiCharge,
     deviceCharge,
     transferCharge,
     addonCharge,
-
     total:
       storageCharge +
       apiCharge +

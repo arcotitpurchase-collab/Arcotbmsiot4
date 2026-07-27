@@ -613,6 +613,16 @@ import {
 import { clients } from "../data/bmsData";
 import prestigeLogo from "../assets/ser-removebg.png";
 import { tempApi } from "../tempAdminApi";
+import { USER_PERMISSIONS } from "../data/permissionOptions";
+import {
+  canAccessBuilding,
+  canAccessFloor,
+  canAccessZone,
+  hasPermission as accountHasPermission,
+  normalizeFloorId,
+  resolveNearestAllowedParentRoute,
+} from "../utils/accessControl";
+import { getZoneForFloorRoute } from "../utils/bmsHierarchy";
 
 const PERIODS = [
   { id: "hourly", label: "Hourly" },
@@ -645,10 +655,15 @@ export default function ClientOverview() {
 
   const [activeView, setActiveView] = useState("systems");
 
-  const currentUser = tempApi.getCurrentUser();
-  const userPermissions = currentUser?.permissions || [];
-  const canViewReports = userPermissions.includes("view_reports");
-  const canDownloadReports = userPermissions.includes("download_reports");
+  const currentUser = tempApi.getCurrentAccount();
+  const canViewReports = accountHasPermission(
+    currentUser,
+    USER_PERMISSIONS.ANALYTICS_VIEW
+  );
+  const canDownloadReports = accountHasPermission(
+    currentUser,
+    USER_PERMISSIONS.DATA_DOWNLOAD
+  );
   const [period, setPeriod] = useState("daily");
   const [selectedSystem, setSelectedSystem] = useState("all");
   const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -687,6 +702,36 @@ export default function ClientOverview() {
 
   const clientName =
     clients[startIndex + clientNumber - 1] || `Client ${clientId}`;
+  const normalizedFloorId = normalizeFloorId(buildingId, floorId);
+  const routeZone = getZoneForFloorRoute(
+    buildingId,
+    floorNumber,
+    String(clientNumber)
+  );
+
+  if (
+    !canAccessBuilding(currentUser, buildingId) ||
+    !canAccessFloor(currentUser, normalizedFloorId) ||
+    !canAccessZone(currentUser, routeZone?.id)
+  ) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
+        <div className="max-w-md border-2 border-amber-400 bg-[#081F5C] p-8 text-center text-white">
+          <h2 className="text-2xl font-black">Access Denied</h2>
+          <p className="mt-2 text-xs text-blue-200">
+            This client is outside your assigned BMS scope.
+          </p>
+          <Link
+            to={resolveNearestAllowedParentRoute(currentUser, { buildingId })}
+            className="mt-6 inline-flex items-center gap-2 border border-cyan-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to permitted scope
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   const clientData = useMemo(
     () => getSampleClientRealtimeData(floorNumber, clientNumber),
@@ -1476,6 +1521,8 @@ function ClientAnalyticsView({
     .toLowerCase();
 
   const downloadCsv = () => {
+    if (!canDownloadReports) return;
+
     const exportSystems = systems.filter(
       (system) => system.id !== "communication"
     );
@@ -1530,6 +1577,8 @@ function ClientAnalyticsView({
   };
 
   const downloadJson = () => {
+    if (!canDownloadReports) return;
+
     downloadFile(
       JSON.stringify(
         {

@@ -6424,6 +6424,14 @@ import {
 } from "lucide-react";
 import prestigeLogo from "../assets/ser-removebg.png";
 import { tempApi } from "../tempAdminApi";
+import { SYSTEM_ROLES, USER_PERMISSIONS } from "../data/permissionOptions";
+import { buildings } from "../data/bmsData";
+import {
+  filterReadingsForAccount,
+  hasPermission as accountHasPermission,
+  isSuperAdmin,
+} from "../utils/accessControl";
+import { getAllZones, normalizeId } from "../utils/bmsHierarchy";
 
 const EQUIPMENT_OPTIONS = [
   { key: "system", label: "Entire System" },
@@ -6579,6 +6587,20 @@ const SectionTitle = ({ title, subtitle, rightContent, icon: Icon }) => (
 
     {rightContent}
   </div>
+);
+
+const RestrictedState = ({ title, message, icon: Icon = ShieldCheck }) => (
+  <Card className="flex h-full min-h-[260px] flex-col items-center justify-center p-6 text-center">
+    <div className="flex h-12 w-12 items-center justify-center rounded-[14px] border border-amber-200 bg-amber-50 text-amber-600">
+      <Icon size={22} />
+    </div>
+    <h3 className="mt-4 text-[15px] font-bold text-[#06224F]">
+      {title}
+    </h3>
+    <p className="mt-2 max-w-md text-[11px] leading-6 text-[#687F99]">
+      {message}
+    </p>
+  </Card>
 );
 
 const MetricCard = ({
@@ -6872,11 +6894,44 @@ const triggerDownload = (blob, filename) => {
   URL.revokeObjectURL(url);
 };
 
+const getFirstBuildingIdFromScope = (account) => {
+  const assignedBuildingId = account?.assignedBuildingIds?.[0];
+  const assignedFloorId = account?.assignedFloorIds?.[0];
+
+  return (
+    assignedBuildingId ||
+    normalizeId(assignedFloorId).split(":")[0] ||
+    buildings[0]?.id ||
+    ""
+  );
+};
+
+const getFirstFloorIdFromScope = (account, buildingId) => {
+  const assignedFloorId = account?.assignedFloorIds?.find((floorId) =>
+    normalizeId(floorId).startsWith(`${buildingId}:`)
+  );
+
+  return assignedFloorId || (buildingId ? `${buildingId}:1` : "");
+};
+
+const scaleReadingForZoneCount = (row, zoneCount) => ({
+  ...row,
+  incomingKw: Math.max(0, Math.round(Number(row.incomingKw || 0) / zoneCount)),
+  outgoingKw: Math.max(0, Math.round(Number(row.outgoingKw || 0) / zoneCount)),
+  energyKwh: Number((Number(row.energyKwh || 0) / zoneCount).toFixed(2)),
+  current: Number((Number(row.current || 0) / zoneCount).toFixed(2)),
+});
+
 export default function OverviewPage() {
-  const currentUser = tempApi.getCurrentUser();
-  const userPermissions = currentUser?.permissions || [];
-  const canViewReports = userPermissions.includes("view_reports");
-  const canDownloadReports = userPermissions.includes("download_reports");
+  const currentUser = tempApi.getCurrentAccount();
+  const canViewReports = accountHasPermission(
+    currentUser,
+    USER_PERMISSIONS.ANALYTICS_VIEW
+  );
+  const canDownloadReports = accountHasPermission(
+    currentUser,
+    USER_PERMISSIONS.DATA_DOWNLOAD
+  );
 
   const [selectedEquipment, setSelectedEquipment] = useState("system");
 
@@ -6892,8 +6947,91 @@ export default function OverviewPage() {
   const [customEnd, setCustomEnd] = useState("");
   const [activeWorkspace, setActiveWorkspace] = useState("analytics");
 
+  const isPrivilegedAccount =
+    isSuperAdmin(currentUser) ||
+    currentUser?.systemRole === SYSTEM_ROLES.ADMIN;
+  const canViewLiveReadings = accountHasPermission(
+    currentUser,
+    USER_PERMISSIONS.LIVE_MONITORING_VIEW
+  );
+  const accessibleZones = useMemo(() => {
+    if (!currentUser || isPrivilegedAccount) {
+      return [];
+    }
+
+    const assignedZoneIds = new Set(
+      (currentUser.assignedZoneIds ?? []).map(normalizeId)
+    );
+
+    return getAllZones().filter((zone) =>
+      assignedZoneIds.has(normalizeId(zone.id))
+    );
+  }, [currentUser, isPrivilegedAccount]);
+  const hasOverviewDataScope =
+    isPrivilegedAccount || accessibleZones.length > 0;
+
+  const scopedSourceData = useMemo(() => {
+    if (!currentUser) {
+      return [];
+    }
+
+    if (!isPrivilegedAccount && accessibleZones.length === 0) {
+      return [];
+    }
+
+    if (!isPrivilegedAccount) {
+      const scopedRows = ANALYTICS_DATA.flatMap((row) => {
+        const zonesForRow =
+          row.equipment === "wing-a" || row.equipment === "wing-b"
+            ? accessibleZones.filter(
+                (zone) =>
+                  normalizeId(zone.buildingId) === normalizeId(row.equipment)
+              )
+            : accessibleZones;
+
+        if (zonesForRow.length === 0) {
+          return [];
+        }
+
+        return zonesForRow.map((zone) => ({
+          ...scaleReadingForZoneCount(row, zonesForRow.length),
+          buildingId: zone.buildingId,
+          blockId: zone.blockId,
+          floorId: zone.floorId,
+          zoneId: zone.id,
+          clientId: zone.clientId,
+          systemId: "",
+        }));
+      });
+
+      return filterReadingsForAccount(currentUser, scopedRows);
+    }
+
+    const fallbackBuildingId = getFirstBuildingIdFromScope(currentUser);
+
+    const scopedRows = ANALYTICS_DATA.map((row) => {
+      const buildingId =
+        row.equipment === "wing-a" || row.equipment === "wing-b"
+          ? row.equipment
+          : fallbackBuildingId;
+      const floorId = getFirstFloorIdFromScope(currentUser, buildingId);
+      const blockId = buildingId ? `${buildingId}-core` : "";
+
+      return {
+        ...row,
+        buildingId,
+        blockId,
+        floorId,
+        systemId: "",
+        clientId: currentUser?.assignedClientIds?.[0] || "",
+      };
+    });
+
+    return filterReadingsForAccount(currentUser, scopedRows);
+  }, [accessibleZones, currentUser, isPrivilegedAccount]);
+
   const filteredData = useMemo(() => {
-    return ANALYTICS_DATA.filter((row) => {
+    return scopedSourceData.filter((row) => {
       if (row.equipment !== selectedEquipment) {
         return false;
       }
@@ -6942,6 +7080,7 @@ export default function OverviewPage() {
       return true;
     });
   }, [
+    scopedSourceData,
     selectedEquipment,
     selectedPeriod,
     selectedDate,
@@ -7018,6 +7157,7 @@ export default function OverviewPage() {
     "Entire System";
 
   const downloadCsv = () => {
+    if (!canDownloadReports) return;
     if (!filteredData.length) return;
 
     const headers = [
@@ -7057,6 +7197,7 @@ export default function OverviewPage() {
   };
 
   const downloadJson = () => {
+    if (!canDownloadReports) return;
     const report = {
       generatedAt: new Date().toISOString(),
       filters: {
@@ -7119,18 +7260,14 @@ export default function OverviewPage() {
     );
   }
 
-  if (!canViewReports) {
+  if (!hasOverviewDataScope) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#EEF3F8] px-6 py-10">
         <section className="w-full max-w-lg border-2 border-amber-400 bg-[#081F5C] p-8 text-center text-white">
-          <h1 className="text-2xl font-black">
-            Report Access Not Assigned
-          </h1>
-
+          <h1 className="text-2xl font-black">No access scope assigned</h1>
           <p className="mt-3 text-sm leading-6 text-blue-200">
-            Your account does not have the view_reports permission required to open this page.
+            No Floor or Zone access has been assigned.
           </p>
-
           <Link
             to="/dashboard"
             className="mt-6 inline-flex items-center justify-center border border-cyan-400 bg-[#004AAD] px-6 py-2.5 text-sm font-black text-white hover:bg-[#003B8A]"
@@ -7579,7 +7716,8 @@ export default function OverviewPage() {
         </div>
 
         {activeWorkspace === "analytics" ? (
-          <section className="grid h-full min-h-0 grid-cols-12 gap-2.5 overflow-hidden">
+          canViewReports ? (
+            <section className="grid h-full min-h-0 grid-cols-12 gap-2.5 overflow-hidden">
             <Card className="print-safe col-span-12 flex h-full min-h-0 flex-col p-3.5 xl:col-span-8">
               <SectionTitle
                 title={`${selectedEquipmentLabel} Load Trend`}
@@ -7644,9 +7782,17 @@ export default function OverviewPage() {
                 </div>
               </Card>
             </div>
-          </section>
+            </section>
+          ) : (
+            <RestrictedState
+              title="Analytics access has not been assigned."
+              message="Overview remains available. Ask an Admin to assign Analytics access for trend charts and historical analysis."
+              icon={BarChart3}
+            />
+          )
         ) : (
-          <section className="h-full min-h-0">
+          canViewLiveReadings ? (
+            <section className="h-full min-h-0">
             <Card className="print-safe flex h-full min-h-0 flex-col p-3.5">
               <SectionTitle
                 title="Detailed Analytical Readings"
@@ -7681,7 +7827,17 @@ export default function OverviewPage() {
                   </thead>
 
                   <tbody>
-                    {filteredData.map((row, index) => {
+                    {filteredData.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={10}
+                          className="px-3 py-8 text-center text-[11px] font-semibold text-[#687F99]"
+                        >
+                          No monitoring readings are available for the assigned Zones.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredData.map((row, index) => {
                       const loss = Math.max(
                         0,
                         Number(row.incomingKw) - Number(row.outgoingKw),
@@ -7749,12 +7905,20 @@ export default function OverviewPage() {
                           </td>
                         </tr>
                       );
-                    })}
+                    })
+                    )}
                   </tbody>
                 </table>
               </div>
             </Card>
-          </section>
+            </section>
+          ) : (
+            <RestrictedState
+              title="Live monitoring access has not been assigned."
+              message="Overview remains available. Current readings are hidden until Live Monitoring access is assigned."
+              icon={Layers3}
+            />
+          )
         )}
       </main>
     </div>
