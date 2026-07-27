@@ -174,6 +174,7 @@ import {
   canAccessFloor,
   canAccessZone,
   hasPermission as accountHasPermission,
+  isAdmin,
   isSuperAdmin,
   normalizeFloorId,
   resolveNearestAllowedParentRoute,
@@ -334,9 +335,8 @@ export default function FloorOverview() {
   };
   const hasFloorSystemScope =
     isSuperAdmin(currentUser) ||
-    currentUser.assignedSystemIds?.some((systemId) =>
-      String(systemId).startsWith(`${normalizedFloorId}:`)
-    );
+    isAdmin(currentUser) ||
+    canAccessFloor(currentUser, normalizedFloorId);
 
   const floorMonitoring = [
     {

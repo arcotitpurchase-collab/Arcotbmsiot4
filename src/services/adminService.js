@@ -10,12 +10,6 @@ import {
   getUsers,
   saveAdmins,
 } from "./storageService";
-import {
-  getScopeLabels,
-  hierarchySnapshot,
-  pruneScope,
-} from "../utils/bmsHierarchy";
-
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const allowedAdminPermissions = new Set(
   ADMIN_PERMISSION_OPTIONS.map((permission) => permission.id)
@@ -72,53 +66,6 @@ const findEmailOwner = (email, excludedAdminId = null) => {
   });
 };
 
-const validateScope = (payload) => {
-  const requestedScope = {
-    assignedClientIds: payload.assignedClientIds,
-    assignedBuildingIds: payload.assignedBuildingIds,
-    assignedBlockIds: payload.assignedBlockIds,
-    assignedFloorIds: payload.assignedFloorIds,
-    assignedSystemIds: payload.assignedSystemIds,
-  };
-
-  const prunedScope = pruneScope(requestedScope);
-  const errors = {};
-
-  if (prunedScope.assignedClientIds.length === 0) {
-    errors.assignedClientIds = "Select at least one client.";
-  }
-
-  if (prunedScope.assignedBuildingIds.length === 0) {
-    errors.assignedBuildingIds = "Select at least one building.";
-  }
-
-  if (prunedScope.assignedBlockIds.length === 0) {
-    errors.assignedBlockIds = "Select at least one block.";
-  }
-
-  if (prunedScope.assignedFloorIds.length === 0) {
-    errors.assignedFloorIds = "Select at least one floor.";
-  }
-
-  if (prunedScope.assignedSystemIds.length === 0) {
-    errors.assignedSystemIds = "Select at least one system.";
-  }
-
-  Object.entries(requestedScope).forEach(([key, values]) => {
-    const submittedCount = uniqueValues(values).length;
-    const validCount = prunedScope[key].length;
-
-    if (submittedCount > validCount && !errors[key]) {
-      errors[key] = "One or more selected IDs are outside the permitted hierarchy.";
-    }
-  });
-
-  return {
-    scope: prunedScope,
-    errors,
-  };
-};
-
 const validateAdminPayload = (
   payload,
   { mode, adminId = null } = {}
@@ -127,6 +74,7 @@ const validateAdminPayload = (
   const name = normalizeString(payload.name || payload.adminName);
   const email = normalizeEmail(payload.email || payload.adminEmail);
   const password = String(payload.password || "");
+  const confirmPassword = String(payload.confirmPassword || "");
 
   if (!name) {
     errors.name = "Name is required.";
@@ -146,8 +94,16 @@ const validateAdminPayload = (
     } else if (password.length < 8) {
       errors.password = "Use at least 8 characters for the temporary password.";
     }
+
+    if (!confirmPassword) {
+      errors.confirmPassword = "Confirm the temporary password.";
+    } else if (password && confirmPassword !== password) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
   } else if (password && password.length < 8) {
     errors.password = "Use at least 8 characters for the temporary password.";
+  } else if (password && confirmPassword !== password) {
+    errors.confirmPassword = "Passwords do not match.";
   }
 
   if (
@@ -171,22 +127,14 @@ const validateAdminPayload = (
     errors.permissions = "Select at least one Admin permission.";
   }
 
-  const scopeResult = validateScope(payload);
-
   return {
-    isValid:
-      Object.keys(errors).length === 0 &&
-      Object.keys(scopeResult.errors).length === 0,
-    errors: {
-      ...errors,
-      ...scopeResult.errors,
-    },
+    isValid: Object.keys(errors).length === 0,
+    errors,
     normalized: {
       name,
       email,
       password,
       permissions,
-      scope: scopeResult.scope,
     },
   };
 };
@@ -197,7 +145,6 @@ const enrichAdmin = (admin) => {
   return {
     ...withoutPassword(admin),
     summary,
-    scopeLabels: getScopeLabels(admin),
   };
 };
 
@@ -240,12 +187,8 @@ export const createAdmin = (payload) => {
   const admin = {
     id: createId("admin"),
     systemRole: SYSTEM_ROLES.ADMIN,
-    companyName:
-      payload.companyName?.trim() ||
-      validation.normalized.scope.assignedClientIds[0],
-    buildingName:
-      payload.buildingName?.trim() ||
-      validation.normalized.scope.assignedBuildingIds[0],
+    companyName: payload.companyName?.trim() || "",
+    buildingName: payload.buildingName?.trim() || "",
     name: validation.normalized.name,
     adminName: validation.normalized.name,
     email: validation.normalized.email,
@@ -261,7 +204,6 @@ export const createAdmin = (payload) => {
     isDeleted: false,
     deletedAt: null,
     permissions: validation.normalized.permissions,
-    ...validation.normalized.scope,
     addons: Array.isArray(payload.addons) ? payload.addons : [],
     cloudUsage: {
       storageGB: Number(payload.cloudUsage?.storageGB || 0),
@@ -321,12 +263,8 @@ export const updateAdmin = (adminId, payload) => {
 
     updatedAdmin = {
       ...admin,
-      companyName:
-        payload.companyName?.trim() ||
-        validation.normalized.scope.assignedClientIds[0],
-      buildingName:
-        payload.buildingName?.trim() ||
-        validation.normalized.scope.assignedBuildingIds[0],
+      companyName: payload.companyName?.trim() || admin.companyName || "",
+      buildingName: payload.buildingName?.trim() || admin.buildingName || "",
       name: validation.normalized.name,
       adminName: validation.normalized.name,
       email: validation.normalized.email,
@@ -339,7 +277,6 @@ export const updateAdmin = (adminId, payload) => {
           ? admin.disabledAt || updatedAt
           : null,
       permissions: validation.normalized.permissions,
-      ...validation.normalized.scope,
       updatedAt,
     };
 
@@ -518,12 +455,14 @@ export const getAdminSummary = (adminId) => {
     (user) => !isActive(user) && !isDeleted(user)
   );
   const deletedUsers = users.filter(isDeleted);
-  const floorCount = uniqueValues(admin?.assignedFloorIds).length;
-  const systemCount = uniqueValues(admin?.assignedSystemIds).length;
-  const clientCount = uniqueValues(admin?.assignedClientIds).length;
-  const scopedConsumption =
-    floorCount * 1250 + systemCount * 180 + clientCount * 95;
-  const scopedCharges = scopedConsumption * 8.5;
+  const scopedConsumption = users.reduce(
+    (sum, user) => sum + Number(user.consumption || 0),
+    0
+  );
+  const scopedCharges = users.reduce(
+    (sum, user) => sum + Number(user.charges || 0),
+    0
+  );
 
   return {
     userCount: users.length,
@@ -569,27 +508,4 @@ export const getSuperAdminDashboardSummary = () => {
   );
 };
 
-export const getAdminFormOptions = (scope = {}) => {
-  const prunedScope = pruneScope(scope);
-
-  return {
-    clients: hierarchySnapshot.clients,
-    buildings: hierarchySnapshot.buildings.filter((building) =>
-      prunedScope.assignedClientIds.some((clientId) =>
-        building.clientIds.includes(clientId)
-      )
-    ),
-    blocks: hierarchySnapshot.blocks.filter((block) =>
-      prunedScope.assignedBuildingIds.includes(block.buildingId)
-    ),
-    floors: hierarchySnapshot.floors.filter((floor) =>
-      prunedScope.assignedBlockIds.includes(floor.blockId)
-    ),
-    systems: hierarchySnapshot.systems.filter((system) =>
-      prunedScope.assignedFloorIds.includes(system.floorId)
-    ),
-    scope: prunedScope,
-  };
-};
-
-export { pruneScope, isActive, isDeleted };
+export { isActive, isDeleted };

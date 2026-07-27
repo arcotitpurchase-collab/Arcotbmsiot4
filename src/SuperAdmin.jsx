@@ -9,12 +9,10 @@ import { useAuth } from "./context/AuthContext";
 import {
   createAdmin,
   getAdminById,
-  getAdminFormOptions,
   getAllAdmins,
   getSuperAdminDashboardSummary,
   getUsersCreatedByAdmin,
   isDeleted,
-  pruneScope,
   resetAdminPassword,
   restoreAdmin,
   setAdminStatus,
@@ -26,16 +24,9 @@ const emptyForm = {
   name: "",
   email: "",
   password: "",
-  phone: "",
-  companyName: "",
-  buildingName: "",
+  confirmPassword: "",
   mustChangePassword: true,
   isActive: true,
-  assignedClientIds: [],
-  assignedBuildingIds: [],
-  assignedBlockIds: [],
-  assignedFloorIds: [],
-  assignedSystemIds: [],
   permissions: Object.values(ADMIN_PERMISSIONS),
 };
 
@@ -184,66 +175,6 @@ function TextField({
   );
 }
 
-function MultiSelect({
-  label,
-  values,
-  options,
-  onChange,
-  error,
-}) {
-  const selectedValues = new Set(values);
-
-  const toggle = (id) => {
-    const nextValues = selectedValues.has(id)
-      ? values.filter((value) => value !== id)
-      : [...values, id];
-
-    onChange(nextValues);
-  };
-
-  return (
-    <section>
-      <div className="mb-2 flex items-center justify-between gap-3">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-slate-400">
-          {label}
-        </p>
-        <p className="text-[10px] text-slate-500">
-          {values.length} selected
-        </p>
-      </div>
-      <div className="max-h-44 overflow-y-auto border border-white/10 bg-[#06184A] p-2">
-        {options.length === 0 ? (
-          <p className="px-2 py-4 text-center text-xs text-slate-500">
-            Select the parent scope first.
-          </p>
-        ) : (
-          <div className="grid gap-2 sm:grid-cols-2">
-            {options.map((option) => (
-              <button
-                key={option.id}
-                type="button"
-                onClick={() => toggle(option.id)}
-                className={`min-h-9 border px-2 py-2 text-left text-xs transition ${
-                  selectedValues.has(option.id)
-                    ? "border-cyan-400 bg-cyan-400/10 text-cyan-200"
-                    : "border-white/10 bg-[#041237] text-slate-300 hover:border-cyan-400/50"
-                }`}
-              >
-                {option.name || option.title || option.id}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-      {error && (
-        <p className="mt-1 text-[11px] font-medium text-red-300">
-          {error}
-        </p>
-      )}
-    </section>
-  );
-}
-
 function AdminFormModal({
   mode,
   initialValue,
@@ -254,29 +185,16 @@ function AdminFormModal({
     ...emptyForm,
     ...initialValue,
     password: "",
+    confirmPassword: "",
   }));
   const [errors, setErrors] = React.useState({});
   const [message, setMessage] = React.useState("");
   const [isSaving, setIsSaving] = React.useState(false);
 
-  const formOptions = getAdminFormOptions(form);
-
   const updateField = (name, value) => {
     setErrors({});
     setMessage("");
     setForm((previous) => ({ ...previous, [name]: value }));
-  };
-
-  const updateScope = (field, values) => {
-    setErrors({});
-    setMessage("");
-    setForm((previous) => ({
-      ...previous,
-      ...pruneScope({
-        ...previous,
-        [field]: values,
-      }),
-    }));
   };
 
   const togglePermission = (permission) => {
@@ -355,18 +273,6 @@ function AdminFormModal({
                   onChange={updateField}
                   error={errors.email}
                 />
-                <TextField
-                  label="Phone"
-                  name="phone"
-                  value={form.phone}
-                  onChange={updateField}
-                />
-                <TextField
-                  label="Company Label"
-                  name="companyName"
-                  value={form.companyName}
-                  onChange={updateField}
-                />
               </div>
             </section>
 
@@ -386,6 +292,14 @@ function AdminFormModal({
                   value={form.password}
                   onChange={updateField}
                   error={errors.password}
+                />
+                <TextField
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  type="password"
+                  value={form.confirmPassword}
+                  onChange={updateField}
+                  error={errors.confirmPassword}
                 />
                 <label className="flex h-10 items-center gap-3 self-end border border-white/10 bg-[#06184A] px-3 text-sm text-slate-300">
                   <input
@@ -413,61 +327,6 @@ function AdminFormModal({
               </label>
             </section>
           </div>
-
-          <section className="mt-5 border border-white/10 bg-white/[0.04] p-4">
-            <h3 className="text-sm font-semibold text-white">
-              Assigned Data Scope
-            </h3>
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
-              <MultiSelect
-                label="Clients"
-                values={form.assignedClientIds}
-                options={formOptions.clients}
-                onChange={(values) =>
-                  updateScope("assignedClientIds", values)
-                }
-                error={errors.assignedClientIds}
-              />
-              <MultiSelect
-                label="Buildings"
-                values={form.assignedBuildingIds}
-                options={formOptions.buildings}
-                onChange={(values) =>
-                  updateScope("assignedBuildingIds", values)
-                }
-                error={errors.assignedBuildingIds}
-              />
-              <MultiSelect
-                label="Blocks"
-                values={form.assignedBlockIds}
-                options={formOptions.blocks}
-                onChange={(values) =>
-                  updateScope("assignedBlockIds", values)
-                }
-                error={errors.assignedBlockIds}
-              />
-              <MultiSelect
-                label="Floors"
-                values={form.assignedFloorIds}
-                options={formOptions.floors}
-                onChange={(values) =>
-                  updateScope("assignedFloorIds", values)
-                }
-                error={errors.assignedFloorIds}
-              />
-              <div className="lg:col-span-2">
-                <MultiSelect
-                  label="Systems"
-                  values={form.assignedSystemIds}
-                  options={formOptions.systems}
-                  onChange={(values) =>
-                    updateScope("assignedSystemIds", values)
-                  }
-                  error={errors.assignedSystemIds}
-                />
-              </div>
-            </div>
-          </section>
 
           <section className="mt-5 border border-white/10 bg-white/[0.04] p-4">
             <h3 className="text-sm font-semibold text-white">
@@ -620,20 +479,18 @@ function DetailsModal({ admin, onClose, onResetPassword }) {
             </section>
 
             <section className="border border-white/10 bg-white/[0.04] p-4">
-              <h3 className="text-sm font-semibold">Assignment Scope</h3>
+              <h3 className="text-sm font-semibold">Access Scope</h3>
               <div className="mt-3 space-y-3 text-xs text-slate-300">
                 {[
-                  ["Clients", admin.scopeLabels.clients],
-                  ["Buildings", admin.scopeLabels.buildings],
-                  ["Blocks", admin.scopeLabels.blocks],
-                  ["Floors", admin.scopeLabels.floors],
-                  ["Systems", admin.scopeLabels.systems],
-                ].map(([label, values]) => (
+                  ["Project", "Full Project Access"],
+                  ["Buildings", "All Buildings"],
+                  ["Floors", "All Floors"],
+                  ["Zones", "All Zones"],
+                  ["Systems", "All Systems"],
+                ].map(([label, value]) => (
                   <div key={label}>
                     <p className="text-slate-500">{label}</p>
-                    <p className="mt-1">
-                      {values.length ? values.join(", ") : "-"}
-                    </p>
+                    <p className="mt-1">{value}</p>
                   </div>
                 ))}
               </div>
@@ -962,7 +819,7 @@ export default function SuperAdmin() {
                 Admin Accounts
               </p>
               <h2 className="mt-1 text-lg font-semibold">
-                Access, Scope and Usage
+                Access and Usage
               </h2>
             </div>
             <label className="flex items-center gap-2 text-xs text-slate-300">
@@ -986,10 +843,7 @@ export default function SuperAdmin() {
                     "Email",
                     "Status",
                     "Users",
-                    "Clients",
-                    "Buildings",
-                    "Blocks",
-                    "Floors",
+                    "Access Scope",
                     "Permissions",
                     "Consumption",
                     "Charges",
@@ -1022,16 +876,7 @@ export default function SuperAdmin() {
                       {admin.summary.userCount}
                     </td>
                     <td className="px-4 py-3">
-                      {admin.assignedClientIds.length}
-                    </td>
-                    <td className="px-4 py-3">
-                      {admin.assignedBuildingIds.length}
-                    </td>
-                    <td className="px-4 py-3">
-                      {admin.assignedBlockIds.length}
-                    </td>
-                    <td className="px-4 py-3">
-                      {admin.assignedFloorIds.length}
+                      Full Project
                     </td>
                     <td className="px-4 py-3">
                       {admin.permissions.length}

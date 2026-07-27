@@ -703,6 +703,7 @@ import {
   canAccessBuilding,
   canAccessFloor,
   hasPermission as accountHasPermission,
+  isAdmin,
   isSuperAdmin,
   normalizeFloorId,
   resolveNearestAllowedParentRoute,
@@ -2011,9 +2012,8 @@ export default function BuildingOverview() {
   );
   const hasBuildingSystemScope =
     isSuperAdmin(currentUser) ||
-    currentUser.assignedSystemIds?.some((systemId) =>
-      String(systemId).startsWith(`${building.id}:`)
-    );
+    isAdmin(currentUser) ||
+    canAccessBuilding(currentUser, building.id);
 
   return (
     <main

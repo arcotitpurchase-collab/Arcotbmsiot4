@@ -1,4 +1,4 @@
-import { SYSTEM_ROLES } from "../data/permissionOptions";
+import { SYSTEM_ROLES, USER_PERMISSIONS } from "../data/permissionOptions";
 import { buildings as bmsBuildings, clients as bmsClients } from "../data/bmsData";
 import {
   getBlockById,
@@ -22,9 +22,41 @@ const includesId = (values, id) =>
 export const isSuperAdmin = (account) =>
   account?.systemRole === SYSTEM_ROLES.SUPER_ADMIN;
 
+export const isAdmin = (account) =>
+  account?.systemRole === SYSTEM_ROLES.ADMIN;
+
+const hasFullProjectAccess = (account) =>
+  isSuperAdmin(account) || isAdmin(account);
+
+const STANDARD_MONITORING_PERMISSIONS = new Set([
+  USER_PERMISSIONS.LOGIN,
+  USER_PERMISSIONS.DASHBOARD_VIEW,
+  USER_PERMISSIONS.LIVE_MONITORING_VIEW,
+  USER_PERMISSIONS.ANALYTICS_VIEW,
+  USER_PERMISSIONS.CONSUMPTION_VIEW,
+  USER_PERMISSIONS.ALERTS_VIEW,
+]);
+
+const getAssignedZoneSet = (account) =>
+  new Set(asStrings(account?.assignedZoneIds));
+
+const getAssignedZones = (account) => {
+  const assignedZoneIds = getAssignedZoneSet(account);
+
+  return hierarchySnapshot.zones.filter((zone) =>
+    assignedZoneIds.has(normalizeId(zone.id))
+  );
+};
+
 export const hasPermission = (account, permission) => {
   if (!account) return false;
   if (isSuperAdmin(account)) return true;
+  if (
+    (isAdmin(account) || account.systemRole === SYSTEM_ROLES.USER) &&
+    STANDARD_MONITORING_PERMISSIONS.has(permission)
+  ) {
+    return true;
+  }
   return account.permissions?.includes(permission);
 };
 
@@ -45,46 +77,53 @@ export const getClientIdFromRoute = (floorId, clientRouteId) => {
 
 export const canAccessClient = (account, clientId) => {
   if (!account || !clientId || !getClientById(clientId)) return false;
-  if (isSuperAdmin(account)) return true;
-  return includesId(account.assignedClientIds, clientId);
+  if (hasFullProjectAccess(account)) return true;
+  return getAssignedZones(account).some(
+    (zone) => normalizeId(zone.clientId) === normalizeId(clientId)
+  );
 };
 
 export const canAccessBuilding = (account, buildingId) => {
   if (!account || !buildingId || !getBuildingById(buildingId)) return false;
-  if (isSuperAdmin(account)) return true;
-  return includesId(account.assignedBuildingIds, buildingId);
+  if (hasFullProjectAccess(account)) return true;
+  return getAssignedZones(account).some(
+    (zone) => normalizeId(zone.buildingId) === normalizeId(buildingId)
+  );
 };
 
 export const canAccessBlock = (account, blockId) => {
   if (!account || !blockId || !getBlockById(blockId)) return false;
-  if (isSuperAdmin(account)) return true;
-  return includesId(account.assignedBlockIds, blockId);
+  if (hasFullProjectAccess(account)) return true;
+  return getAssignedZones(account).some(
+    (zone) => normalizeId(zone.blockId) === normalizeId(blockId)
+  );
 };
 
 export const canAccessFloor = (account, floorId) => {
   if (!account || !floorId || !getFloorById(floorId)) return false;
-  if (isSuperAdmin(account)) return true;
+  if (hasFullProjectAccess(account)) return true;
   const assignedZoneIds = new Set(asStrings(account.assignedZoneIds));
 
-  return (
-    includesId(account.assignedFloorIds, floorId) ||
-    getZonesForFloor(floorId).some((zone) =>
-      assignedZoneIds.has(normalizeId(zone.id))
-    )
+  return getZonesForFloor(floorId).some((zone) =>
+    assignedZoneIds.has(normalizeId(zone.id))
   );
 };
 
 export const canAccessZone = (account, zoneId) => {
   if (!account || !zoneId || !getZoneById(zoneId)) return false;
-  if (isSuperAdmin(account)) return true;
-  if (account.systemRole === SYSTEM_ROLES.ADMIN) return true;
+  if (hasFullProjectAccess(account)) return true;
   return includesId(account.assignedZoneIds, zoneId);
 };
 
 export const canAccessSystem = (account, systemId) => {
   if (!account || !systemId) return false;
-  if (isSuperAdmin(account)) return true;
-  return includesId(account.assignedSystemIds, systemId);
+  if (hasFullProjectAccess(account)) return true;
+  const system =
+    hierarchySnapshot.systems.find(
+      (item) => normalizeId(item.id) === normalizeId(systemId)
+    ) || null;
+
+  return system ? canAccessFloor(account, system.floorId) : false;
 };
 
 export const filterClientsForAccount = (account, clients = []) => {
@@ -92,43 +131,43 @@ export const filterClientsForAccount = (account, clients = []) => {
     typeof client === "string" ? { id: client, name: client } : client
   );
 
-  return isSuperAdmin(account)
+  return hasFullProjectAccess(account)
     ? normalized
     : normalized.filter((client) => canAccessClient(account, client.id));
 };
 
 export const filterBuildingsForAccount = (account, buildings = []) =>
-  isSuperAdmin(account)
+  hasFullProjectAccess(account)
     ? buildings
     : buildings.filter((building) => canAccessBuilding(account, building.id));
 
 export const filterBlocksForAccount = (account, blocks = []) =>
-  isSuperAdmin(account)
+  hasFullProjectAccess(account)
     ? blocks
     : blocks.filter((block) => canAccessBlock(account, block.id));
 
 export const filterFloorsForAccount = (account, floors = []) =>
-  isSuperAdmin(account)
+  hasFullProjectAccess(account)
     ? floors
     : floors.filter((floor) => canAccessFloor(account, floor.id));
 
 export const filterSystemsForAccount = (account, systems = []) =>
-  isSuperAdmin(account)
+  hasFullProjectAccess(account)
     ? systems
     : systems.filter((system) => canAccessSystem(account, system.id));
 
 export const getAccessibleZoneIds = (account) =>
-  isSuperAdmin(account)
+  hasFullProjectAccess(account)
     ? hierarchySnapshot.zones.map((zone) => zone.id)
     : asStrings(account?.assignedZoneIds);
 
 export const filterZonesForAccount = (account, zones = []) =>
-  isSuperAdmin(account)
+  hasFullProjectAccess(account)
     ? zones
     : zones.filter((zone) => canAccessZone(account, zone.id));
 
 export const filterReadingsForAccount = (account, readings = []) =>
-  isSuperAdmin(account)
+  hasFullProjectAccess(account)
     ? readings
     : readings.filter((reading) => {
         if (reading.clientId && !canAccessClient(account, reading.clientId)) return false;
@@ -194,11 +233,5 @@ export const calculateScopedCharges = (account, readingsOrCharges = []) =>
   );
 
 export const hasAnyAssignedScope = (account) =>
-  isSuperAdmin(account) ||
-  [
-    account?.assignedClientIds,
-    account?.assignedBuildingIds,
-    account?.assignedBlockIds,
-    account?.assignedFloorIds,
-    account?.assignedSystemIds,
-  ].some((values) => Array.isArray(values) && values.length > 0);
+  hasFullProjectAccess(account) ||
+  asStrings(account?.assignedZoneIds).length > 0;

@@ -749,9 +749,9 @@ export const getAdminDashboardSummary = (currentAdmin) => {
     activeUsers: activeUsers.length,
     disabledUsers: disabledUsers.length,
     deletedUsers: deletedUsers.length,
-    assignedClients: uniqueValues(currentAdmin?.assignedClientIds).length,
-    assignedBlocks: uniqueValues(currentAdmin?.assignedBlockIds).length,
-    assignedFloors: uniqueValues(currentAdmin?.assignedFloorIds).length,
+    assignedClients: getAllClients().length,
+    assignedBlocks: getAllBlocks().length,
+    assignedFloors: getAllFloors().length,
     scopedConsumption: users.reduce(
       (sum, user) => sum + Number(user.consumption || 0),
       0
